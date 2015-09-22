@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Focus</string>
+    <string name="app_id">411653219032604</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="login_intro">Check out your Facebook profile by logging in with the button below!</string>
+    <string name="gender">Gender</string>
+    <string name="email">Email</string>
+    <string name="dashboard">Dashboard</string>
 </resources>

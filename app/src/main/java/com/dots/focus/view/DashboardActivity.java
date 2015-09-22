@@ -1,88 +1,119 @@
 package com.dots.focus.view;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.dots.focus.R;
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseFacebookUtils;
+import com.dots.focus.controller.DashboardController;
+import com.facebook.login.widget.ProfilePictureView;
 import com.parse.ParseUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.Arrays;
-import java.util.List;
+public class DashboardActivity extends BaseActivity {
 
-
-public class DashboardActivity extends ActionBarActivity {
-
-  private Dialog progressDialog;
   static final String TAG = "DashboardActivity";
+  DashboardController mDashboardController = new DashboardController();
+
+  private ProfilePictureView userProfilePictureView;
+  private TextView userNameView;
+  private TextView userGenderView;
+  private TextView userEmailView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     setContentView(R.layout.activity_dashboard);
-  }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-    return true;
-  }
+    userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
+    userNameView = (TextView) findViewById(R.id.userName);
+    userGenderView = (TextView) findViewById(R.id.userGender);
+    userEmailView = (TextView) findViewById(R.id.userEmail);
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
 
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-      return true;
+    //Fetch Facebook user info if it is logged
+    ParseUser currentUser = ParseUser.getCurrentUser();
+    if ((currentUser != null) && currentUser.isAuthenticated()) {
+      mDashboardController.makeMeRequest();
+      // Show the user info
+      updateViewsWithProfileInfo();
     }
-
-    return super.onOptionsItemSelected(item);
   }
 
-  public void onLoginClick(View v) {
-    progressDialog = ProgressDialog.show(DashboardActivity.this, "", "Logging in...", true);
+  @Override
+  public void onResume() {
+    super.onResume();
 
-    // "public_profile, email, user_status, user_friends, user_about_me, user_location"
-    List<String> permissions = Arrays.asList("public_profile, user_friends");
-    Log.d(TAG, Arrays.toString(permissions.toArray()));
+    ParseUser currentUser = ParseUser.getCurrentUser();
+    if (currentUser != null) {
+      // Check if the user is currently logged
+      // and show any cached content
+      updateViewsWithProfileInfo();
+    } else {
+      // If the user is not logged in, go to the
+      // activity showing the login view.
+      startLoginActivity();
+    }
+  }
 
-    // for extended permissions, like "user_about_me", your app must be reviewed by Facebook team
-    // (https://developers.facebook.com/docs/facebook-login/permissions/)
-    ParseFacebookUtils.logInWithReadPermissionsInBackground(this, permissions, new LogInCallback() {
-      @Override
-      public void done(ParseUser user, ParseException err) {
-        progressDialog.dismiss();
-        if (user == null) {
-          Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
-        } else if (user.isNew()) {
-          Log.d(TAG, "User signed up and logged in through Facebook!");
-          showUserDetailsActivity();
+  public void updateViewsWithProfileInfo() {
+    ParseUser currentUser = ParseUser.getCurrentUser();
+    if (currentUser.has("profile")) {
+      JSONObject userProfile = currentUser.getJSONObject("profile");
+      try {
+
+        if (userProfile.has("facebookId")) {
+          userProfilePictureView.setProfileId(userProfile.getString("facebookId"));
         } else {
-          Log.d(TAG, "User logged in through Facebook!");
-          Log.d(TAG, AccessToken.getCurrentAccessToken().getPermissions().toString());
-          showUserDetailsActivity();
+          // Show the default, blank user profile picture
+          userProfilePictureView.setProfileId(null);
         }
+
+        if (userProfile.has("name")) {
+          userNameView.setText(userProfile.getString("name"));
+        } else {
+          userNameView.setText("");
+        }
+
+        if (userProfile.has("gender")) {
+          userGenderView.setText(userProfile.getString("gender"));
+        } else {
+          userGenderView.setText("");
+        }
+
+        if (userProfile.has("email")) {
+          userEmailView.setText(userProfile.getString("email"));
+        } else {
+          userEmailView.setText("");
+        }
+
+      } catch (JSONException e) {
+        Log.d(TAG, "Error parsing saved user data.");
       }
-    });
+    }
   }
 
-  private void showUserDetailsActivity() {
-    Intent intent = new Intent(this, UserDetailsActivity.class);
+  public void onLogoutClick(View v) {
+    logout();
+  }
+
+  private void logout() {
+    // Log the user out
+    ParseUser.logOut();
+
+    // Go to the login view
+    startLoginActivity();
+  }
+
+  private void startLoginActivity() {
+    Intent intent = new Intent(this, LoginActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(intent);
   }
 }
