@@ -1,4 +1,4 @@
-package com.dots.focus.view;
+package com.dots.focus.ui;
 
 import android.app.Activity;
 
