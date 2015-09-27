@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
 import com.dots.focus.R;
-import com.github.paolorotolo.appintro.AppIntro2;
+import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
 /**
  * Created by AdrianHsu on 15/9/27.
  */
-public class IntroActivity extends AppIntro2 {
+public class IntroActivity extends AppIntro {
 
   static final String TAG = "IntroActivity";
   // Please DO NOT override onCreate. Use init
@@ -35,7 +35,7 @@ public class IntroActivity extends AppIntro2 {
 
 
     // Hide Skip/Done button
-//    showSkipButton(true);
+    showSkipButton(true);
     showDoneButton(true);
     setDepthAnimation();
 
@@ -43,6 +43,11 @@ public class IntroActivity extends AppIntro2 {
     // NOTE: you will probably need to ask VIBRATE permission in Manifest
     setVibrate(true);
     setVibrateIntensity(50);
+  }
+  @Override
+  public void onSkipPressed() {
+    // Do something when users tap on Done button.
+    showLoginActivity();
   }
 
   @Override

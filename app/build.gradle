@@ -24,7 +24,10 @@ android {
         exclude 'META-INF/NOTICE'
     }
 }
-
+// material dialog
+//repositories {
+//    maven { url "https://jitpack.io" }
+//}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.0'
@@ -33,5 +36,14 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile fileTree(dir: 'libs', include: 'ParseFacebookUtilsV4-*.jar')
+//    intro
     compile 'com.github.paolorotolo:appintro:3.2.0'
+//    material button for set info
+    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
+//    material edittext for set info
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+//    material dialog
+//    compile('com.afollestad.material-dialogs:core:0.8.1.0@aar') {
+//        transitive = true
+//    }
 }

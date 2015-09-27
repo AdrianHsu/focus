@@ -50,7 +50,7 @@ public class LoginActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     if( mLoginController.hasLoggedIn() ) {
-      showDashboardActivity();
+      showSetInfoActivity();
 //      Parse.enableLocalDatastore(this); //Exception not yet resolved
     }
   }
@@ -64,13 +64,7 @@ public class LoginActivity extends BaseActivity {
   protected void onResume() {
 
     super.onResume();
-
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-    boolean previouslyStarted = prefs.getBoolean(getString(R.string.pref_previously_started), false);
-    if(!previouslyStarted) {
-      SharedPreferences.Editor edit = prefs.edit();
-      edit.putBoolean(getString(R.string.pref_previously_started), Boolean.TRUE);
-      edit.commit();
+    if ( mLoginController.checkPreviousLogin(this) ) {
       showIntroActivity();
     }
   }
@@ -78,7 +72,7 @@ public class LoginActivity extends BaseActivity {
   public void onLoginClick(View v) {
     progressDialog = ProgressDialog.show(LoginActivity.this, "", "Logging in...", true);
 
-    List<String> permissions = Arrays.asList("public_profile", "email");
+    List<String> permissions = Arrays.asList("public_profile", "user_friends");
     // NOTE: for extended permissions, like "user_about_me", your app must be reviewed by the Facebook team
     // (https://developers.facebook.com/docs/facebook-login/permissions/)
 
@@ -90,10 +84,10 @@ public class LoginActivity extends BaseActivity {
           Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
         } else if (user.isNew()) {
           Log.d(TAG, "User signed up and logged in through Facebook!");
-          showDashboardActivity();
+          showSetInfoActivity();
         } else {
           Log.d(TAG, "User logged in through Facebook!");
-          showDashboardActivity();
+          showSetInfoActivity();
         }
       }
     });
@@ -169,7 +163,14 @@ public class LoginActivity extends BaseActivity {
     startActivity(intent);
   }
 
+  private void showSetInfoActivity() {
+    Intent intent = new Intent(this, SetInfoActivity.class);
+    startActivity(intent);
+  }
+
   private void showDashboardActivity() {
+
+
     Intent intent = new Intent(this, DashboardActivity.class);
     startActivity(intent);
   }
