@@ -2,19 +2,14 @@ package com.dots.focus.ui;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
 import com.dots.focus.R;
-import com.dots.focus.config.Config;
 import com.dots.focus.controller.LoginController;
 
-import com.dots.focus.service.GetAppsService;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -31,7 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -164,7 +158,7 @@ public class LoginActivity extends BaseActivity {
   }
 
   private void showSetInfoActivity() {
-    Intent intent = new Intent(this, SetInfoActivity.class);
+    Intent intent = new Intent(this, CreateInfoActivity.class);
     startActivity(intent);
   }
 

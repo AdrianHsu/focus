@@ -4,26 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.dots.focus.R;
-import com.dots.focus.ui.fragment.SetInfoSlide;
+import com.dots.focus.ui.fragment.CreateInfoSlide;
 import com.github.paolorotolo.appintro.AppIntro;
 
 /**
  * Created by AdrianHsu on 15/9/27.
  */
-public class SetInfoActivity extends AppIntro {
+public class CreateInfoActivity extends AppIntro {
 
-  static final String TAG = "SetInfoActivity";
+  static final String TAG = "CreateInfoActivity";
   // Please DO NOT override onCreate. Use init
   @Override
   public void init(Bundle savedInstanceState) {
 
     super.getSupportActionBar().hide();
-    addSlide(SetInfoSlide.newInstance(R.layout.set_info_access));
-    addSlide(SetInfoSlide.newInstance(R.layout.set_info_email));
-    addSlide(SetInfoSlide.newInstance(R.layout.set_info_gender));
-    addSlide(SetInfoSlide.newInstance(R.layout.set_info_birth));
-    addSlide(SetInfoSlide.newInstance(R.layout.set_info_occupation));
-    addSlide(SetInfoSlide.newInstance(R.layout.set_info_welcome));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_access));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_email));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_gender));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_birth));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_occupation));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_welcome));
 
     // Hide Skip/Done button
     showSkipButton(false);

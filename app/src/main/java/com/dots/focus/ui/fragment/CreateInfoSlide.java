@@ -16,7 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.gc.materialdesign.views.Button;
 
-public class SetInfoSlide extends Fragment {
+public class CreateInfoSlide extends Fragment {
 
   private static final String ARG_LAYOUT_RES_ID = "layoutResId";
   private Button accessBtn;
@@ -24,8 +24,8 @@ public class SetInfoSlide extends Fragment {
   private Button birthBtn;
   private Button occupationBtn;
 
-  public static SetInfoSlide newInstance(int layoutResId) {
-    SetInfoSlide setInfoSlide = new SetInfoSlide();
+  public static CreateInfoSlide newInstance(int layoutResId) {
+    CreateInfoSlide setInfoSlide = new CreateInfoSlide();
 
     Bundle args = new Bundle();
     args.putInt(ARG_LAYOUT_RES_ID, layoutResId);
@@ -35,7 +35,7 @@ public class SetInfoSlide extends Fragment {
   }
 
   private int layoutResId;
-  public SetInfoSlide() {}
+  public CreateInfoSlide() {}
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {

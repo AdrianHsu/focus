@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--IntroActivity-->
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!--SetInfoActivity-->
+    <!--CreateInfoActivity-->
 
     <application
         android:name=".application.MainApplication"
@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SetInfoActivity"></activity>
+        <activity android:name=".ui.CreateInfoActivity"></activity>
         <activity
             android:name=".ui.DashboardActivity"
             android:label="@string/dashboard">
