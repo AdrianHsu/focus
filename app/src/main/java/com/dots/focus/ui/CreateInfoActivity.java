@@ -5,12 +5,12 @@ import android.os.Bundle;
 
 import com.dots.focus.R;
 import com.dots.focus.ui.fragment.CreateInfoSlide;
-import com.github.paolorotolo.appintro.AppIntro;
+import com.github.paolorotolo.appintro.AppIntro2;
 
 /**
  * Created by AdrianHsu on 15/9/27.
  */
-public class CreateInfoActivity extends AppIntro {
+public class CreateInfoActivity extends AppIntro2 {
 
   static final String TAG = "CreateInfoActivity";
   // Please DO NOT override onCreate. Use init
@@ -26,7 +26,7 @@ public class CreateInfoActivity extends AppIntro {
     addSlide(CreateInfoSlide.newInstance(R.layout.set_info_welcome));
 
     // Hide Skip/Done button
-    showSkipButton(false);
+//    showSkipButton(false);
     showDoneButton(true);
     setDepthAnimation();
 
@@ -35,11 +35,11 @@ public class CreateInfoActivity extends AppIntro {
     setVibrate(true);
     setVibrateIntensity(50);
   }
-  @Override
-  public void onSkipPressed() {
-    // Do something when users tap on Done button.
-//    showDashboardActivity();
-  }
+//  @Override
+//  public void onSkipPressed() {
+//    // Do something when users tap on Done button.
+////    showDashboardActivity();
+//  }
 
   @Override
   public void onDonePressed() {
