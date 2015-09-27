@@ -11,13 +11,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DialerFilter;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.gc.materialdesign.views.Button;
 
-public class SampleSlide extends Fragment {
+public class SetInfoSlide extends Fragment {
 
   private static final String ARG_LAYOUT_RES_ID = "layoutResId";
   private Button accessBtn;
@@ -25,18 +24,18 @@ public class SampleSlide extends Fragment {
   private Button birthBtn;
   private Button occupationBtn;
 
-  public static SampleSlide newInstance(int layoutResId) {
-    SampleSlide sampleSlide = new SampleSlide();
+  public static SetInfoSlide newInstance(int layoutResId) {
+    SetInfoSlide setInfoSlide = new SetInfoSlide();
 
     Bundle args = new Bundle();
     args.putInt(ARG_LAYOUT_RES_ID, layoutResId);
-    sampleSlide.setArguments(args);
+    setInfoSlide.setArguments(args);
 
-    return sampleSlide;
+    return setInfoSlide;
   }
 
   private int layoutResId;
-  public SampleSlide() {}
+  public SetInfoSlide() {}
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {

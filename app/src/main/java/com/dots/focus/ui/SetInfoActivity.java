@@ -2,12 +2,9 @@ package com.dots.focus.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.View;
 
 import com.dots.focus.R;
-import com.dots.focus.ui.fragment.SampleSlide;
-import com.gc.materialdesign.views.Button;
+import com.dots.focus.ui.fragment.SetInfoSlide;
 import com.github.paolorotolo.appintro.AppIntro;
 
 /**
@@ -21,12 +18,12 @@ public class SetInfoActivity extends AppIntro {
   public void init(Bundle savedInstanceState) {
 
     super.getSupportActionBar().hide();
-    addSlide(SampleSlide.newInstance(R.layout.set_info_access));
-    addSlide(SampleSlide.newInstance(R.layout.set_info_email));
-    addSlide(SampleSlide.newInstance(R.layout.set_info_gender));
-    addSlide(SampleSlide.newInstance(R.layout.set_info_birth));
-    addSlide(SampleSlide.newInstance(R.layout.set_info_occupation));
-    addSlide(SampleSlide.newInstance(R.layout.set_info_welcome));
+    addSlide(SetInfoSlide.newInstance(R.layout.set_info_access));
+    addSlide(SetInfoSlide.newInstance(R.layout.set_info_email));
+    addSlide(SetInfoSlide.newInstance(R.layout.set_info_gender));
+    addSlide(SetInfoSlide.newInstance(R.layout.set_info_birth));
+    addSlide(SetInfoSlide.newInstance(R.layout.set_info_occupation));
+    addSlide(SetInfoSlide.newInstance(R.layout.set_info_welcome));
 
     // Hide Skip/Done button
     showSkipButton(false);
