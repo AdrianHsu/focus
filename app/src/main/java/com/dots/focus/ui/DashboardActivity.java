@@ -80,16 +80,26 @@ public class DashboardActivity extends BaseActivity {
           userNameView.setText("");
         }
 
-        if (userProfile.has("gender")) {
-          userGenderView.setText(userProfile.getString("gender"));
-        } else {
-          userGenderView.setText("");
-        }
+//        if (userProfile.has("gender")) {
+//          userGenderView.setText(userProfile.getString("gender"));
+//        } else {
+//          userGenderView.setText("");
+//        }
 
         if (userProfile.has("email")) {
           userEmailView.setText(userProfile.getString("email"));
         } else {
           userEmailView.setText("");
+        }
+//        if (userProfile.has("friend")) {
+//          Log.v(TAG, userProfile.getString("friend"));
+//        } else {
+//          Log.v(TAG, "friend not found");
+//        }
+        if (userProfile.has("locale")) {
+          Log.v(TAG, userProfile.getString("locale"));
+        } else {
+          Log.v(TAG, "locale not found");
         }
 
       } catch (JSONException e) {
