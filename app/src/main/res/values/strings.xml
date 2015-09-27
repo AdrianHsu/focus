@@ -11,6 +11,8 @@
     <!--LoginActivity calls IntroActivity-->
     <string name="pref_previously_started">false</string>
     <!--SetInfo-->
-    <string name="set_gender">Male</string>
+    <string name="user_gender">Male</string>
+    <string name="user_birth">1995</string>
+    <string name="user_occupation">Undergraduate</string>
 
 </resources>

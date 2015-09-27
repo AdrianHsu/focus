@@ -34,6 +34,17 @@
             android:paddingRight="16dp"
             android:src="@drawable/ic_slide1"/>
     </LinearLayout>
+    <com.gc.materialdesign.views.ButtonFlat
+        android:id="@+id/button_occupation"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingLeft="64dp"
+        android:paddingRight="64dp"
+        android:background="@color/white"
+        android:text="@string/user_occupation"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="0dp"

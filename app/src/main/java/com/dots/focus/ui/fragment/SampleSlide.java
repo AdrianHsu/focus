@@ -22,6 +22,8 @@ public class SampleSlide extends Fragment {
   private static final String ARG_LAYOUT_RES_ID = "layoutResId";
   private Button accessBtn;
   private Button genderBtn;
+  private Button birthBtn;
+  private Button occupationBtn;
 
   public static SampleSlide newInstance(int layoutResId) {
     SampleSlide sampleSlide = new SampleSlide();
@@ -73,8 +75,22 @@ public class SampleSlide extends Fragment {
 
     } else if (layoutResId == R.layout.set_info_birth) {
 
+      birthBtn = (Button) view.findViewById(R.id.button_birth);
+      birthBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          createBirthDialog();
+        }
+      });
     } else if (layoutResId == R.layout.set_info_occupation) {
 
+      occupationBtn = (Button) view.findViewById(R.id.button_occupation);
+      occupationBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          createOccupationDialog();
+        }
+      });
     } else if (layoutResId == R.layout.set_info_welcome) {
       // do nothing
     }
@@ -94,6 +110,42 @@ public class SampleSlide extends Fragment {
            **/
           if (genderBtn != null) {
             genderBtn.setText(text.toString());
+          }
+          return true;
+        }
+      })
+      .positiveText("Done")
+      .show();
+  }
+  private void createBirthDialog() {
+    new MaterialDialog.Builder(getActivity())
+      .title("Year Of Birth")
+      .items(R.array.birth)
+      .itemsCallback(new MaterialDialog.ListCallback() {
+        @Override
+        public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+
+          if (birthBtn != null) {
+            birthBtn.setText(text.toString());
+          }
+        }
+      })
+      .positiveText("Done")
+      .show();
+  }
+  private void createOccupationDialog() {
+    new MaterialDialog.Builder(getActivity())
+      .title("Occupation")
+      .items(R.array.occupation)
+      .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+        @Override
+        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+          /**
+           * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+           * returning false here won't allow the newly selected radio button to actually be selected.
+           **/
+          if (occupationBtn != null) {
+            occupationBtn.setText(text.toString());
           }
           return true;
         }
