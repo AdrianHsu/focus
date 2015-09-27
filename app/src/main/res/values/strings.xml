@@ -7,5 +7,10 @@
     <string name="gender">Gender</string>
     <string name="email">Email</string>
     <string name="dashboard">Dashboard</string>
+
+    <!--LoginActivity calls IntroActivity-->
     <string name="pref_previously_started">false</string>
+    <!--SetInfo-->
+    <string name="set_gender">Male</string>
+
 </resources>

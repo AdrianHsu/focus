@@ -25,9 +25,9 @@ android {
     }
 }
 // material dialog
-//repositories {
-//    maven { url "https://jitpack.io" }
-//}
+repositories {
+    maven { url "https://jitpack.io" }
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.0'
@@ -43,7 +43,7 @@ dependencies {
 //    material edittext for set info
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
 //    material dialog
-//    compile('com.afollestad.material-dialogs:core:0.8.1.0@aar') {
-//        transitive = true
-//    }
+    compile('com.afollestad.material-dialogs:core:0.8.1.0@aar') {
+        transitive = true
+    }
 }

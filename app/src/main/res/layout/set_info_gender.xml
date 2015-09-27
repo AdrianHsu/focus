@@ -43,9 +43,8 @@
         android:gravity="center"
         android:paddingLeft="64dp"
         android:paddingRight="64dp"
-        android:textSize="12sp"
-        android:background="#1E88E5"
-        android:text="Male"/>
+gi        android:background="@color/white"
+        android:text="@string/set_gender"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="0dp"

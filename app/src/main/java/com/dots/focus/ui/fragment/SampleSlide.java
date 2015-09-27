@@ -11,7 +11,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DialerFilter;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.gc.materialdesign.views.Button;
 
@@ -40,7 +42,7 @@ public class SampleSlide extends Fragment {
 
     if(getArguments() != null && getArguments().containsKey(ARG_LAYOUT_RES_ID))
       layoutResId = getArguments().getInt(ARG_LAYOUT_RES_ID);
-  }g
+  }
 
   @Nullable
   @Override
@@ -61,27 +63,13 @@ public class SampleSlide extends Fragment {
 
     } else if (layoutResId == R.layout.set_info_gender) {
 
-//      genderBtn = (Button) view.findViewById(R.id.button_gender).setOnClickListener(new View
-//        .OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//          new MaterialDialog.Builder(this)
-//            .title(R.string.title)
-//            .items(R.array.items)
-//            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-//              @Override
-//              public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-//                /**
-//                 * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
-//                 * returning false here won't allow the newly selected radio button to actually be selected.
-//                 **/
-//                return true;
-//              }
-//            })
-//            .positiveText(R.string.choose)
-//            .show();
-//        }
-//      });
+      genderBtn = (Button) view.findViewById(R.id.button_gender);
+      genderBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          createGenderDialog();
+        }
+      });
 
     } else if (layoutResId == R.layout.set_info_birth) {
 
@@ -93,5 +81,24 @@ public class SampleSlide extends Fragment {
 
     return view;
   }
-
+  private void createGenderDialog() {
+    new MaterialDialog.Builder(getActivity())
+      .title("Gender")
+      .items(R.array.gender)
+      .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+        @Override
+        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+          /**
+           * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+           * returning false here won't allow the newly selected radio button to actually be selected.
+           **/
+          if (genderBtn != null) {
+            genderBtn.setText(text.toString());
+          }
+          return true;
+        }
+      })
+      .positiveText("Done")
+      .show();
+  }
 }
