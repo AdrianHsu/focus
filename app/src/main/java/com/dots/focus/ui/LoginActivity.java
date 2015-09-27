@@ -2,11 +2,14 @@ package com.dots.focus.ui;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
 import com.dots.focus.R;
+import com.dots.focus.config.Config;
 import com.dots.focus.controller.LoginController;
 
 import com.dots.focus.service.GetAppsService;
@@ -48,13 +51,28 @@ public class LoginActivity extends BaseActivity {
     setContentView(R.layout.activity_login);
     if( mLoginController.hasLoggedIn() ) {
       showDashboardActivity();
-      Parse.enableLocalDatastore(this);
+//      Parse.enableLocalDatastore(this); //Exception not yet resolved
     }
   }
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+  }
+
+  @Override
+  protected void onResume() {
+
+    super.onResume();
+
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+    boolean previouslyStarted = prefs.getBoolean(getString(R.string.pref_previously_started), false);
+    if(!previouslyStarted) {
+      SharedPreferences.Editor edit = prefs.edit();
+      edit.putBoolean(getString(R.string.pref_previously_started), Boolean.TRUE);
+      edit.commit();
+      showIntroActivity();
+    }
   }
 
   public void onLoginClick(View v) {
@@ -145,6 +163,10 @@ public class LoginActivity extends BaseActivity {
     } finally {
       httpClient.getConnectionManager().shutdown();
     }
+  }
+  private void showIntroActivity() {
+    Intent intent = new Intent(this, IntroActivity.class);
+    startActivity(intent);
   }
 
   private void showDashboardActivity() {
