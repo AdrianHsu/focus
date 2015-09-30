@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by AdrianHsu on 15/9/23.
@@ -93,7 +94,6 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
-        Log.d(TAG, "Service starts...");
         Intent intent = new Intent(this, GetAppsService.class);
         startService(intent);
     }
