@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/libs/commons-codec-1.9.jar" charset="x-windows-950" />
-    <file url="file://$PROJECT_DIR$/app/libs/fluent-hc-4.5.1.jar" charset="x-windows-950" />
-    <file url="file://$PROJECT_DIR$/app/libs/httpclient-4.5.1.jar" charset="x-windows-950" />
-    <file url="file://$PROJECT_DIR$/app/libs/httpclient-cache-4.5.1.jar" charset="x-windows-950" />
-    <file url="file://$PROJECT_DIR$/app/libs/httpclient-win-4.5.1.jar" charset="x-windows-950" />
-    <file url="file://$PROJECT_DIR$/app/libs/httpcore-4.4.3.jar" charset="x-windows-950" />
-    <file url="file://$PROJECT_DIR$/app/libs/httpmime-4.5.1.jar" charset="x-windows-950" />
-    <file url="file://$PROJECT_DIR$/app/libs/jna-4.1.0.jar" charset="x-windows-950" />
-    <file url="file://$PROJECT_DIR$/app/libs/jna-platform-4.1.0.jar" charset="x-windows-950" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
