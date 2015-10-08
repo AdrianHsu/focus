@@ -14,6 +14,7 @@ import com.dots.focus.R;
 import com.dots.focus.controller.LoginController;
 
 import com.dots.focus.service.GetAppsService;
+import com.dots.focus.util.CreateInfoUtil;
 import com.parse.LogInCallback;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseException;
@@ -87,11 +88,14 @@ public class LoginActivity extends BaseActivity {
                     Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
                     Log.d(TAG, "User signed up and logged in through Facebook!");
+                    CreateInfoUtil.setUserInfo("username", user.getUsername());
                     showSetInfoActivity();
                 } else {
                     Log.d(TAG, "User logged in through Facebook!");
+                    CreateInfoUtil.setUserInfo("username", user.getUsername());
                     showSetInfoActivity();
                 }
+
             }
         });
         Intent intent = new Intent(this, GetAppsService.class);

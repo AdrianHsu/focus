@@ -11,10 +11,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
+import com.dots.focus.util.CreateInfoUtil;
 import com.gc.materialdesign.views.Button;
+import com.parse.ParseObject;
 
 public class CreateInfoSlide extends Fragment {
 
@@ -61,7 +64,7 @@ public class CreateInfoSlide extends Fragment {
         }
       });
     } else if (layoutResId == R.layout.set_info_email) {
-
+      //TBD
     } else if (layoutResId == R.layout.set_info_gender) {
 
       genderBtn = (Button) view.findViewById(R.id.button_gender);
@@ -108,7 +111,9 @@ public class CreateInfoSlide extends Fragment {
            * returning false here won't allow the newly selected radio button to actually be selected.
            **/
           if (genderBtn != null) {
-            genderBtn.setText(text.toString());
+            String temp = text.toString();
+            genderBtn.setText(temp);
+            CreateInfoUtil.setUserInfo("Gender", temp);
           }
           return true;
         }
@@ -125,7 +130,9 @@ public class CreateInfoSlide extends Fragment {
         public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
 
           if (birthBtn != null) {
-            birthBtn.setText(text.toString());
+            String temp = text.toString();
+            birthBtn.setText(temp);
+            CreateInfoUtil.setUserInfo("Birth", temp);
           }
         }
       })
@@ -144,7 +151,9 @@ public class CreateInfoSlide extends Fragment {
            * returning false here won't allow the newly selected radio button to actually be selected.
            **/
           if (occupationBtn != null) {
-            occupationBtn.setText(text.toString());
+            String temp = text.toString();
+            occupationBtn.setText(temp);
+            CreateInfoUtil.setUserInfo("Occupation", temp);
           }
           return true;
         }
