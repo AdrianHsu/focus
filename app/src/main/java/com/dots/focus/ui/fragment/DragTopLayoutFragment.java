@@ -1,8 +1,11 @@
 package com.dots.focus.ui.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +13,11 @@ import android.view.ViewGroup;
 import com.astuetz.PagerSlidingTabStrip;
 import com.dots.focus.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import github.chenupt.dragtoplayout.DragTopLayout;
+
 
 /**
  * Created by AdrianHsu on 2015/10/9.
@@ -20,6 +27,7 @@ public class DragTopLayoutFragment extends Fragment {
   private DragTopLayout dragLayout;
   private ViewPager viewPager;
   private PagerSlidingTabStrip pagerSlidingTabStrip;
+  private MyPagerAdapter adapter;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -36,11 +44,41 @@ public class DragTopLayoutFragment extends Fragment {
     pagerSlidingTabStrip = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
 
     // init pager
-//    PagerModelManager factory = new PagerModelManager();
-//    factory.addCommonFragment(getFragments(), getTitles());
-//    adapter = new ModelPagerAdapter(getSupportFragmentManager(), factory);
-//    viewPager.setAdapter(adapter);
-//    pagerSlidingTabStrip.setViewPager(viewPager);
+    adapter = new MyPagerAdapter(getFragmentManager());
+    viewPager.setAdapter(adapter);
+
+    final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
+      getResources()
+      .getDisplayMetrics());
+    viewPager.setPageMargin(pageMargin);
+
+    pagerSlidingTabStrip.setViewPager(viewPager);
+
     return view;
+  }
+
+  public class MyPagerAdapter extends FragmentPagerAdapter {
+
+    private final String[] TITLES = { "USAGE", "KICK" };
+
+    public MyPagerAdapter(FragmentManager fm) {
+      super(fm);
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+      return TITLES[position];
+    }
+
+    @Override
+    public int getCount() {
+      return TITLES.length;
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+      return DashboardChartFragment.newInstance(position);
+    }
+
   }
 }

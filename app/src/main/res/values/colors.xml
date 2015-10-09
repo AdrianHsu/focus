@@ -22,11 +22,13 @@
     <color name="slate_grey">#F0F1F2</color>
     <!--TAG-->
     <color name="white">#FFFFFF</color>
+    <color name="white_semi">#80FFFFFF</color>
     <color name="red">#CF5C60</color>
     <color name="pink">#D96383</color>
     <color name="yellow">#F3AE4E</color>
     <color name="green">#4AB471</color>
     <color name="blue">#4EB1CB</color>
+    <color name="blue_tab_indicator">#4F98B0</color>
     <color name="purple">#717ECD</color>
     <color name="purple_dark">#5A64A4</color>
 

@@ -1,9 +1,10 @@
 package com.dots.focus.ui;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 
@@ -52,7 +53,7 @@ public class DashboardActivity extends BaseActivity {
   }
   private void createToolbarFrag() {
 
-    FragmentManager fm = getFragmentManager();
+    FragmentManager fm = getSupportFragmentManager();
     Fragment fragment = fm.findFragmentById(R.id.frameToolbar);
 
     if(fragment == null) {
@@ -65,7 +66,7 @@ public class DashboardActivity extends BaseActivity {
 
   private void createDragTopLayoutFrag() {
 
-    FragmentManager fm = getFragmentManager();
+    FragmentManager fm = getSupportFragmentManager();
     Fragment fragment = fm.findFragmentById(R.id.frameDragTopLayout);
 
     if(fragment == null) {
