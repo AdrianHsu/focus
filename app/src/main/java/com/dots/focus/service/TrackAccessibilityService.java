@@ -38,7 +38,6 @@ public class TrackAccessibilityService extends AccessibilityService {
             temp.put("startTime", startTime);
             temp.put("endTime", now);
             temp.pinInBackground();
-            JSONObject a = new JSONObject();
 
             startTime = now;
             currentPackageName = tempPackageName;
