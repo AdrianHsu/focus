@@ -2,79 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@drawable/bg">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <android.support.v7.widget.Toolbar
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="5dp"
-        android:background="@color/purple"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-        android:minHeight="56dp">
-        <com.dots.focus.util.AvenirNextTextView
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dashboard"
-            android:textSize="22dp"
-            android:layout_gravity="center"
-            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
-            android:id="@+id/tool_bar_id" />
-    </android.support.v7.widget.Toolbar>
-
-
-    <github.chenupt.dragtoplayout.DragTopLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:dtlOverDrag="false"
-        app:dtlCaptureTop="true">
-
-        <!--top view-->
-        <LinearLayout
+            android:id="@+id/frameToolbar"/>
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="208dp"
-            android:background="#7884CF"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:id="@+id/frameDragTopLayout"/>
 
-            <com.dots.focus.util.AvenirNextULTextView
-                android:id="@+id/text"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="40dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Top View"
-                android:textSize="22dp"
-                app:AvenirNext_UltraLight="AvenirNext_UltraLight.ttf"/>
-        </LinearLayout>
-
-        <!--content view-->
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <com.astuetz.PagerSlidingTabStrip
-                android:id="@+id/tabs"
-                app:pstsShouldExpand="false"
-                app:pstsIndicatorColor="@color/white"
-                android:textColor="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:background="#10FFFFFF" />
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </android.support.v4.view.ViewPager>
-        </LinearLayout>
-
-    </github.chenupt.dragtoplayout.DragTopLayout>
     </LinearLayout>
 </RelativeLayout>

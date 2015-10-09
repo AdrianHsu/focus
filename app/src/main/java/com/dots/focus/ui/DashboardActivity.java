@@ -1,5 +1,7 @@
 package com.dots.focus.ui;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 import com.astuetz.PagerSlidingTabStrip;
 import com.dots.focus.R;
 import com.dots.focus.controller.DashboardController;
+import com.dots.focus.ui.fragment.DragTopLayoutFragment;
+import com.dots.focus.ui.fragment.ToolbarFragment;
 import com.facebook.login.widget.ProfilePictureView;
 import com.parse.ParseUser;
 
@@ -30,12 +34,6 @@ public class DashboardActivity extends BaseActivity {
 //  private TextView userGenderView;
 //  private TextView userEmailView;
 
-  private Toolbar toolbar;
-  private DragTopLayout dragLayout;
-  private ViewPager viewPager;
-  private PagerSlidingTabStrip pagerSlidingTabStrip;
-
-//  private ImageView topImageView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +53,8 @@ public class DashboardActivity extends BaseActivity {
       // Show the user info
 //      updateViewsWithProfileInfo();
     }
-    createView();
+    createToolbarFrag();
+    createDragTopLayoutFrag();
 
   }
 
@@ -74,21 +73,31 @@ public class DashboardActivity extends BaseActivity {
       startLoginActivity();
     }
   }
+  private void createToolbarFrag() {
 
-  private void createView() {
+    FragmentManager fm = getFragmentManager();
+    Fragment fragment = fm.findFragmentById(R.id.frameToolbar);
 
-    toolbar = (Toolbar) findViewById(R.id.tool_bar);
-    viewPager = (ViewPager) findViewById(R.id.view_pager);
-//    topImageView = (ImageView) findViewById(R.id.image_view);
-    pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+    if(fragment == null) {
+      fragment = new ToolbarFragment();
+      fm.beginTransaction()
+        .add(R.id.frameToolbar, fragment)
+        .commit();
+    }
+  }
 
-//    setSupportActionBar(toolbar);
-//    // init pager
-//    PagerModelManager factory = new PagerModelManager();
-//    factory.addCommonFragment(getFragments(), getTitles());
-//    adapter = new ModelPagerAdapter(getSupportFragmentManager(), factory);
-//    viewPager.setAdapter(adapter);
-//    pagerSlidingTabStrip.setViewPager(viewPager);
+  private void createDragTopLayoutFrag() {
+
+    FragmentManager fm = getFragmentManager();
+    Fragment fragment = fm.findFragmentById(R.id.frameDragTopLayout);
+
+    if(fragment == null) {
+      fragment = new DragTopLayoutFragment();
+      fm.beginTransaction()
+        .add(R.id.frameDragTopLayout, fragment)
+        .commit();
+    }
+
   }
 
   public void updateViewsWithProfileInfo() {
