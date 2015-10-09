@@ -20,9 +20,11 @@
     <color name="anchor_navy">#344A5F</color>
     <color name="primary_blue">#2A94D6</color>
     <color name="slate_grey">#F0F1F2</color>
+    <color name="status_bar_color">#3D3748</color>
     <!--TAG-->
     <color name="white">#FFFFFF</color>
-    <color name="white_semi">#80FFFFFF</color>
+    <color name="semi_white">#80FFFFFF</color>
+    <color name="semi_transparent">#10FFFFFF</color>
     <color name="red">#CF5C60</color>
     <color name="pink">#D96383</color>
     <color name="yellow">#F3AE4E</color>

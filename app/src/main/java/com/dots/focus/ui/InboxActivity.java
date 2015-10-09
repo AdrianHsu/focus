@@ -4,25 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.dots.focus.R;
 import com.dots.focus.application.MainApplication;
 import com.dots.focus.controller.DashboardController;
-import com.dots.focus.ui.fragment.DragTopLayoutFragment;
 import com.dots.focus.ui.fragment.ToolbarFragment;
 import com.parse.ParseUser;
-
 
 /**
  * Created by AdrianHsu on 2015/10/9.
  */
+public class InboxActivity extends BaseActivity {
 
-public class DashboardActivity extends BaseActivity {
-
-  static final String TAG = "DashboardActivity";
+  static final String TAG = "InboxActivity";
   DashboardController mDashboardController = new DashboardController();
 
   @Override
@@ -37,7 +31,6 @@ public class DashboardActivity extends BaseActivity {
     }
 
     createToolbarFrag();
-    createDragTopLayoutFrag();
 
   }
 
@@ -65,40 +58,5 @@ public class DashboardActivity extends BaseActivity {
         .add(R.id.frameToolbar, fragment)
         .commit();
     }
-  }
-  private void createDragTopLayoutFrag() {
-
-    FragmentManager fm = getSupportFragmentManager();
-    Fragment fragment = fm.findFragmentById(R.id.frameDragTopLayout);
-
-    if(fragment == null) {
-      fragment = new DragTopLayoutFragment();
-      fm.beginTransaction()
-        .add(R.id.frameDragTopLayout, fragment)
-        .commit();
-    }
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-
-    ParseUser currentUser = ParseUser.getCurrentUser();
-    if (currentUser != null) {
-      // Check if the user is currently logged
-      // and show any cached content
-//      updateViewsWithProfileInfo();
-    } else {
-      // If the user is not logged in, go to the
-      // activity showing the login view.
-      startLoginActivity();
-    }
-  }
-
-  private void startLoginActivity() {
-    Intent intent = new Intent(this, LoginActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    startActivity(intent);
   }
 }

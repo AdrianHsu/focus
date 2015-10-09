@@ -9,10 +9,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/frameToolbar"/>
-    <FrameLayout
-        android:layout_below="@id/frameToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/frameDragTopLayout"/>
 
 </LinearLayout>

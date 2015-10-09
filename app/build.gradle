@@ -50,5 +50,12 @@ dependencies {
     compile 'com.github.chenupt.android:dragtoplayout:1.2.1@aar'
 //    https://github.com/astuetz/PagerSlidingTabStrip
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-
+    //     https://github.com/mikepenz/MaterialDrawer
+    compile('com.mikepenz:materialdrawer:3.1.2@aar') {
+        transitive = true
+    }
+    compile('com.mikepenz:aboutlibraries:5.0.7@aar') {
+        transitive = true
+    }
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

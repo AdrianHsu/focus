@@ -1,10 +1,12 @@
 package com.dots.focus.ui.fragment;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.ViewDragHelper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +14,6 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.dots.focus.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import github.chenupt.dragtoplayout.DragTopLayout;
 
@@ -53,12 +52,14 @@ public class DragTopLayoutFragment extends Fragment {
     viewPager.setPageMargin(pageMargin);
 
     pagerSlidingTabStrip.setViewPager(viewPager);
+    Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(),
+      "fonts/"+"AvenirNext_Regular.ttf");
+    pagerSlidingTabStrip.setTypeface(myTypeface, 0);
 
     return view;
   }
 
   public class MyPagerAdapter extends FragmentPagerAdapter {
-
     private final String[] TITLES = { "USAGE", "KICK" };
 
     public MyPagerAdapter(FragmentManager fm) {
@@ -79,6 +80,5 @@ public class DragTopLayoutFragment extends Fragment {
     public Fragment getItem(int position) {
       return DashboardChartFragment.newInstance(position);
     }
-
   }
 }

@@ -1,11 +1,10 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme">
+    <style name="FocusAppTheme" parent="MaterialDrawerTheme.TranslucentStatus">
         <!-- Customize your theme here. -->
-        <item name="android:colorPrimary">@color/purple</item>
-        <item name="android:colorPrimaryDark">@color/purple_dark</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--<item name="colorPrimary">@color/purple</item>-->
+        <item name="colorPrimaryDark">@color/status_bar_color</item>
     </style>
 
 </resources>

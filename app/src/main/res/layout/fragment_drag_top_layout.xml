@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="208dp"
-        android:background="@color/purple"
+        android:background="@color/semi_transparent"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -36,7 +36,7 @@
             android:id="@+id/tabs"
             app:pstsShouldExpand="true"
             app:pstsIndicatorColor="@color/blue_tab_indicator"
-            android:textColor="@color/white_semi"
+            android:textColor="@color/semi_white"
             android:layout_width="match_parent"
             android:layout_height="43dp"
             android:background="#10FFFFFF" />
