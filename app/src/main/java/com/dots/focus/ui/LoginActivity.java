@@ -88,11 +88,9 @@ public class LoginActivity extends BaseActivity {
                     Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
                     Log.d(TAG, "User signed up and logged in through Facebook!");
-                    CreateInfoUtil.setUserInfo("username", user.getUsername());
                     showSetInfoActivity();
                 } else {
                     Log.d(TAG, "User logged in through Facebook!");
-                    CreateInfoUtil.setUserInfo("username", user.getUsername());
                     showSetInfoActivity();
                 }
 
