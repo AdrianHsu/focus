@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dots.focus.R;
+import com.dots.focus.ui.DashboardActivity;
 
 
 /**
@@ -16,7 +17,6 @@ import com.dots.focus.R;
 public class ToolbarFragment extends Fragment {
 
   private Toolbar toolbar;
-
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class ToolbarFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_toolbar, parent, false);
 
     toolbar = (Toolbar) view.findViewById(R.id.tool_bar);
-
+//    getActivity().setSupportActionBar(toolbar); //ActionBarActivity required
     return view;
   }
 }

@@ -1,10 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="android:colorPrimary">@color/purple</item>
         <item name="android:colorPrimaryDark">@color/purple_dark</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 </resources>

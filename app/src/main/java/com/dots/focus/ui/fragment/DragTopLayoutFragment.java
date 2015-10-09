@@ -35,8 +35,7 @@ public class DragTopLayoutFragment extends Fragment {
     viewPager = (ViewPager) view.findViewById(R.id.view_pager);
     pagerSlidingTabStrip = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
 
-//    setSupportActionBar(toolbar);
-//    // init pager
+    // init pager
 //    PagerModelManager factory = new PagerModelManager();
 //    factory.addCommonFragment(getFragments(), getTitles());
 //    adapter = new ModelPagerAdapter(getSupportFragmentManager(), factory);

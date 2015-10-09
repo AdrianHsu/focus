@@ -4,25 +4,17 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.dots.focus.R;
 import com.dots.focus.controller.DashboardController;
 import com.dots.focus.ui.fragment.DragTopLayoutFragment;
 import com.dots.focus.ui.fragment.ToolbarFragment;
-import com.facebook.login.widget.ProfilePictureView;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import github.chenupt.dragtoplayout.DragTopLayout;
 
 public class DashboardActivity extends BaseActivity {
 
@@ -53,25 +45,10 @@ public class DashboardActivity extends BaseActivity {
       // Show the user info
 //      updateViewsWithProfileInfo();
     }
+
     createToolbarFrag();
     createDragTopLayoutFrag();
 
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-
-    ParseUser currentUser = ParseUser.getCurrentUser();
-    if (currentUser != null) {
-      // Check if the user is currently logged
-      // and show any cached content
-      updateViewsWithProfileInfo();
-    } else {
-      // If the user is not logged in, go to the
-      // activity showing the login view.
-      startLoginActivity();
-    }
   }
   private void createToolbarFrag() {
 
@@ -100,6 +77,21 @@ public class DashboardActivity extends BaseActivity {
 
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+
+    ParseUser currentUser = ParseUser.getCurrentUser();
+    if (currentUser != null) {
+      // Check if the user is currently logged
+      // and show any cached content
+      updateViewsWithProfileInfo();
+    } else {
+      // If the user is not logged in, go to the
+      // activity showing the login view.
+      startLoginActivity();
+    }
+  }
   public void updateViewsWithProfileInfo() {
     ParseUser currentUser = ParseUser.getCurrentUser();
     if (currentUser.has("profile")) {
