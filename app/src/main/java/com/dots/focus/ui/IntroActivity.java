@@ -18,7 +18,6 @@ public class IntroActivity extends AppIntro2 {
   @Override
   public void init(Bundle savedInstanceState) {
 
-    super.getSupportActionBar().hide();
     int image = R.drawable.ic_slide1;
 
     // Instead of fragments, you can also use our default slide

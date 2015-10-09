@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.dots.focus"
-        minSdkVersion 15
+        minSdkVersion 21 // appcompat in styles.xml
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -46,4 +46,9 @@ dependencies {
     compile('com.afollestad.material-dialogs:core:0.8.1.0@aar') {
         transitive = true
     }
+//    https://github.com/focus-forked-open-source-license/DragTopLayout
+    compile 'com.github.chenupt.android:dragtoplayout:1.2.1@aar'
+//    https://github.com/astuetz/PagerSlidingTabStrip
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+
 }

@@ -1,104 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:facebook="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical" >
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:background="@drawable/bg">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
-        <com.facebook.login.widget.ProfilePictureView
-            android:id="@+id/userProfilePicture"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            facebook:com_facebook_preset_size="small" />
-        <TextView
-            android:id="@+id/userName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center"
-            android:textColor="#333"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <TableLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:gravity="center_horizontal">
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="right"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="@string/gender" />
-            <TextView
-                android:id="@+id/userGender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="left"
-                android:textSize="16sp" />
-        </TableRow>
-        <TableRow>
-            <View
-                android:layout_span="2"
-                android:layout_width="wrap_content"
-                android:layout_height="0.5dp"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="#999" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="right"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="@string/email" />
-            <TextView
-                android:id="@+id/userEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="left"
-                android:textSize="16sp" />
-        </TableRow>
-    </TableLayout>
+        android:elevation="5dp"
+        android:background="@color/purple"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+        android:minHeight="56dp">
+        <com.dots.focus.util.AvenirNextTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dashboard"
+            android:textSize="22dp"
+            android:layout_gravity="center"
+            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+            android:id="@+id/tool_bar_id" />
+    </android.support.v7.widget.Toolbar>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
 
-        android:text="@string/com_facebook_loginview_log_out_button"
-        android:textColor="@color/com_facebook_share_button_text_color"
-        android:textSize="@dimen/com_facebook_share_button_text_size"
-        android:textStyle="bold"
+    <github.chenupt.dragtoplayout.DragTopLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:dtlOverDrag="false"
+        app:dtlCaptureTop="true">
 
-        android:background="@drawable/com_facebook_button_background"
-        android:drawableLeft="@drawable/com_facebook_button_icon"
-        android:drawablePadding="@dimen/com_facebook_share_button_compound_drawable_padding"
-        android:paddingLeft="@dimen/com_facebook_share_button_padding_left"
-        android:paddingTop="@dimen/com_facebook_share_button_padding_top"
-        android:paddingRight="@dimen/com_facebook_share_button_padding_right"
-        android:paddingBottom="@dimen/com_facebook_share_button_padding_bottom"
-        android:onClick="onLogoutClick"/>
+        <!--top view-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="208dp"
+            android:background="#7884CF"
+            android:gravity="center"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <com.dots.focus.util.AvenirNextULTextView
+                android:id="@+id/text"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Top View"
+                android:textSize="22dp"
+                app:AvenirNext_UltraLight="AvenirNext_UltraLight.ttf"/>
+        </LinearLayout>
+
+        <!--content view-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.astuetz.PagerSlidingTabStrip
+                android:id="@+id/tabs"
+                app:pstsShouldExpand="false"
+                app:pstsIndicatorColor="@color/white"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="#10FFFFFF" />
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v4.view.ViewPager>
+        </LinearLayout>
+
+    </github.chenupt.dragtoplayout.DragTopLayout>
+    </LinearLayout>
+</RelativeLayout>

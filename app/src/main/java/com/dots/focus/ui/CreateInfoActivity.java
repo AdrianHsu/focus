@@ -17,7 +17,6 @@ public class CreateInfoActivity extends AppIntro2 {
   @Override
   public void init(Bundle savedInstanceState) {
 
-    super.getSupportActionBar().hide();
     addSlide(CreateInfoSlide.newInstance(R.layout.set_info_access));
     addSlide(CreateInfoSlide.newInstance(R.layout.set_info_email));
     addSlide(CreateInfoSlide.newInstance(R.layout.set_info_gender));

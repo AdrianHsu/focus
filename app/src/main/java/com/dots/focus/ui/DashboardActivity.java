@@ -2,10 +2,14 @@ package com.dots.focus.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.dots.focus.R;
 import com.dots.focus.controller.DashboardController;
 import com.facebook.login.widget.ProfilePictureView;
@@ -14,15 +18,24 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import github.chenupt.dragtoplayout.DragTopLayout;
+
 public class DashboardActivity extends BaseActivity {
 
   static final String TAG = "DashboardActivity";
   DashboardController mDashboardController = new DashboardController();
 
-  private ProfilePictureView userProfilePictureView;
-  private TextView userNameView;
-  private TextView userGenderView;
-  private TextView userEmailView;
+//  private ProfilePictureView userProfilePictureView;
+//  private TextView userNameView;
+//  private TextView userGenderView;
+//  private TextView userEmailView;
+
+  private Toolbar toolbar;
+  private DragTopLayout dragLayout;
+  private ViewPager viewPager;
+  private PagerSlidingTabStrip pagerSlidingTabStrip;
+
+//  private ImageView topImageView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +43,20 @@ public class DashboardActivity extends BaseActivity {
 
     setContentView(R.layout.activity_dashboard);
 
-    userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
-    userNameView = (TextView) findViewById(R.id.userName);
-    userGenderView = (TextView) findViewById(R.id.userGender);
-    userEmailView = (TextView) findViewById(R.id.userEmail);
-
+//    userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
+//    userNameView = (TextView) findViewById(R.id.userName);
+//    userGenderView = (TextView) findViewById(R.id.userGender);
+//    userEmailView = (TextView) findViewById(R.id.userEmail);
 
     //Fetch Facebook user info if it is logged
     ParseUser currentUser = ParseUser.getCurrentUser();
     if ((currentUser != null) && currentUser.isAuthenticated()) {
       mDashboardController.makeMeRequest();
       // Show the user info
-      updateViewsWithProfileInfo();
+//      updateViewsWithProfileInfo();
     }
+    createView();
+
   }
 
   @Override
@@ -61,6 +75,22 @@ public class DashboardActivity extends BaseActivity {
     }
   }
 
+  private void createView() {
+
+    toolbar = (Toolbar) findViewById(R.id.tool_bar);
+    viewPager = (ViewPager) findViewById(R.id.view_pager);
+//    topImageView = (ImageView) findViewById(R.id.image_view);
+    pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+
+//    setSupportActionBar(toolbar);
+//    // init pager
+//    PagerModelManager factory = new PagerModelManager();
+//    factory.addCommonFragment(getFragments(), getTitles());
+//    adapter = new ModelPagerAdapter(getSupportFragmentManager(), factory);
+//    viewPager.setAdapter(adapter);
+//    pagerSlidingTabStrip.setViewPager(viewPager);
+  }
+
   public void updateViewsWithProfileInfo() {
     ParseUser currentUser = ParseUser.getCurrentUser();
     if (currentUser.has("profile")) {
@@ -68,16 +98,16 @@ public class DashboardActivity extends BaseActivity {
       try {
 
         if (userProfile.has("facebookId")) {
-          userProfilePictureView.setProfileId(userProfile.getString("facebookId"));
+//          userProfilePictureView.setProfileId(userProfile.getString("facebookId"));
         } else {
           // Show the default, blank user profile picture
-          userProfilePictureView.setProfileId(null);
+//          userProfilePictureView.setProfileId(null);
         }
 
         if (userProfile.has("name")) {
-          userNameView.setText(userProfile.getString("name"));
+//          userNameView.setText(userProfile.getString("name"));
         } else {
-          userNameView.setText("");
+//          userNameView.setText("");
         }
 
 //        if (userProfile.has("gender")) {
@@ -87,9 +117,9 @@ public class DashboardActivity extends BaseActivity {
 //        }
 
         if (userProfile.has("email")) {
-          userEmailView.setText(userProfile.getString("email"));
+//          userEmailView.setText(userProfile.getString("email"));
         } else {
-          userEmailView.setText("");
+//          userEmailView.setText("");
         }
 //        if (userProfile.has("friend")) {
 //          Log.v(TAG, userProfile.getString("friend"));
