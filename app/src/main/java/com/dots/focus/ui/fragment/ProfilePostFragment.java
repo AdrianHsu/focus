@@ -4,20 +4,25 @@ package com.dots.focus.ui.fragment;
  * Created by AdrianHsu on 2015/10/9.
  */
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
-import android.widget.TextView;
 
+import com.dots.focus.R;
 import com.dots.focus.controller.ProfileController;
+import com.gc.materialdesign.views.ScrollView;
+
+import de.greenrobot.event.EventBus;
+import github.chenupt.dragtoplayout.AttachUtil;
 
 
 public class ProfilePostFragment extends Fragment {
@@ -57,10 +62,9 @@ public class ProfilePostFragment extends Fragment {
 
       // use java code to dynamically create recyclerview fragment_profile_post
 //    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.timeline_recyclerview);
-      RecyclerView v = new RecyclerView(getActivity());
+      RecyclerView v = (RecyclerView) inflater.inflate(R.layout.fragment_profile_recyclerview, null);
 
       params.setMargins(margin, margin, margin, margin);
-      v.setLayoutParams(params);
       v.setLayoutParams(params);
       v.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
@@ -87,12 +91,22 @@ public class ProfilePostFragment extends Fragment {
       fl.addView(v);
     }
     else if (position == 1){
-      TextView v = new TextView(getActivity());
       params.setMargins(margin, margin, margin, margin);
+
+      final ScrollView v = (ScrollView) inflater.inflate(R.layout.fragment_about_me, null);
       v.setLayoutParams(params);
-      v.setLayoutParams(params);
-      v.setGravity(Gravity.CENTER);
-      v.setText("CARD " + (position + 1));
+
+//      // this method solved the dragLayout scrolling issue
+//      // attach top listener
+//      // Scroll view does not have scroll listener
+//        v.setOnTouchListener(new View.OnTouchListener() {
+//          @Override
+//          public boolean onTouch(View view, MotionEvent event) {
+//            EventBus.getDefault().post(AttachUtil.isScrollViewAttach(v));
+//            return false;
+//          }
+//        });
+
       fl.addView(v);
     }
 

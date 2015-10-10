@@ -12,7 +12,7 @@
         android:id="@+id/frameToolbar"
         android:background="@color/transparent"/>
 
-    <ScrollView
+    <com.gc.materialdesign.views.ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -314,6 +314,6 @@
                 android:background="@color/semi_transparent"/>
         </LinearLayout>
 
-    </ScrollView>
+    </com.gc.materialdesign.views.ScrollView>
 
 </LinearLayout>
