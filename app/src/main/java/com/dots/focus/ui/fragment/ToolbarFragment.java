@@ -20,8 +20,6 @@ import com.dots.focus.ui.LoginActivity;
 import com.dots.focus.ui.ProfileActivity;
 import com.dots.focus.ui.SettingsActivity;
 import com.dots.focus.ui.TimelineActivity;
-import com.mikepenz.aboutlibraries.Libs;
-import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.iconics.typeface.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;

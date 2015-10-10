@@ -20,8 +20,8 @@ public class Config {
   }
 
   public enum DrawerItem {
-    DASHBOARD, INBOX, TIMELINE, OVERVIEW, PROFILE, LOGOUT, SETTINGS
+    DASHBOARD, INBOX, TIMELINE, OVERVIEW, PROFILE, ADD_FRIEND, LOGOUT, SETTINGS
   }
   public static String[] Title = {"Dashboard", "Inbox", "Timeline", "Overview",
-                           "Profile", "Log Out", "Settings"};
+                           "Profile", "Add Friend","Log Out", "Settings"};
 }
