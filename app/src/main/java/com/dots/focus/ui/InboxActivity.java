@@ -2,11 +2,11 @@ package com.dots.focus.ui;
 
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.dots.focus.R;
 import com.dots.focus.controller.InboxController;
-import com.dots.focus.model.InboxModel;
-import java.util.ArrayList;
 
 
 /**
@@ -15,16 +15,20 @@ import java.util.ArrayList;
 public class InboxActivity extends BaseActivity {
 
   static final String TAG = "InboxActivity";
-  InboxController mInboxController = new InboxController();
-  HorizontalListView mHorizontalListView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_inbox);
 
-    mHorizontalListView = (HorizontalListView) findViewById(R.id.horizontalListView);
 
     super.createToolbarFragment();
+
+    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+    InboxController.convertAdapter(this);
+    recyclerView.setAdapter(InboxController.mQuickAdapter);
+    InboxController.initData();
   }
 }

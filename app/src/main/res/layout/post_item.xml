@@ -38,39 +38,46 @@
             android:layout_toRightOf="@+id/iv_avatar"
             android:layout_toEndOf="@+id/iv_avatar"
             android:layout_marginTop="3dp"/>
-        <com.dots.focus.util.AvenirNextTextView
-            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="time"
-            android:textColor="@color/semi_black"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/iv_avatar"
-            android:layout_toEndOf="@+id/iv_avatar"
-            android:layout_marginTop="28dp"/>
-        <com.dots.focus.util.AvenirNextTextView
-            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
-            android:id="@+id/tv_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" near Neihu, Taipei"
-            android:textColor="@color/semi_black"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/tv_time"
-            android:layout_toEndOf="@+id/tv_time"
-            android:layout_marginTop="28dp"/>
-
         <ImageButton
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:id="@+id/imageButton"
-            android:background="@drawable/post_arrow"
+            android:background="@drawable/post_arrow_icon"
             android:alpha="0.2"
             android:layout_alignParentRight="true"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignLeft="@+id/tv_username"
+            android:layout_below="@+id/tv_username">
+
+            <com.dots.focus.util.AvenirNextTextView
+                app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="time"
+                android:textColor="@color/semi_black"/>
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/post_location_icon"
+                android:alpha="0.5"
+                android:layout_alignBottom="@+id/tv_location"
+                android:layout_toStartOf="@+id/tv_location"
+                android:layout_marginLeft="3dp"/>
+
+            <com.dots.focus.util.AvenirNextTextView
+                app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Neihu, Taipei"
+                android:textColor="@color/semi_black"/>
+        </LinearLayout>
+
     </RelativeLayout>
 
     <com.dots.focus.util.AvenirNextTextView
