@@ -17,6 +17,7 @@ import com.dots.focus.config.Config;
 import com.dots.focus.ui.DashboardActivity;
 import com.dots.focus.ui.InboxActivity;
 import com.dots.focus.ui.LoginActivity;
+import com.dots.focus.ui.ProfileActivity;
 import com.dots.focus.ui.TimelineActivity;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
@@ -133,7 +134,7 @@ public class ToolbarFragment extends Fragment {
             } else if (drawerItem.getIdentifier() == 3) {
 //              intent = new Intent(DashboardActivity.this, OverviewActivity.class);
             } else if (drawerItem.getIdentifier() == 4) {
-//              intent = new Intent(DashboardActivity.this, ProfileActivity.class);
+              intent = new Intent(getActivity(), ProfileActivity.class);
             } else if (drawerItem.getIdentifier() == 5) {
               logOut();
               intent = new Intent(getActivity(), LoginActivity.class);

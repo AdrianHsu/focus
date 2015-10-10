@@ -24,7 +24,7 @@ public class InboxActivity extends BaseActivity {
 
     super.createToolbarFragment();
 
-    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.inbox_recyclerview);
     recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
     InboxController.convertAdapter(this);

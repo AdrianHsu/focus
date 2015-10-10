@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.dots.focus.R;
 import com.dots.focus.model.PostModel;
-import com.dots.focus.ui.TimelineActivity;
 import com.hhl.adapter.BaseAdapterHelper;
 import com.hhl.adapter.QuickAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -15,9 +14,9 @@ import java.util.List;
 /**
  * Created by AdrianHsu on 2015/10/10.
  */
-public class TimelineController {
+public class ProfileController {
 
-  static final String TAG = "TimelineController";
+  static final String TAG = "ProfileController";
 
   public static QuickAdapter<PostModel> mQuickAdapter;
 

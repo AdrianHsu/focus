@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.dots.focus.R;
 import com.dots.focus.controller.DashboardController;
-import com.dots.focus.ui.fragment.DragTopLayoutFragment;
+import com.dots.focus.ui.fragment.DashboardDragFragment;
 import com.parse.ParseUser;
 
 
@@ -32,18 +32,18 @@ public class DashboardActivity extends BaseActivity {
     }
 
     super.createToolbarFragment();
-    createDragTopLayoutFragment();
+    initDashboardDragTopLayoutFragment();
 
   }
-  private void createDragTopLayoutFragment() {
+  private void initDashboardDragTopLayoutFragment() {
 
     FragmentManager fm = getSupportFragmentManager();
-    Fragment fragment = fm.findFragmentById(R.id.frameDragTopLayout);
+    Fragment fragment = fm.findFragmentById(R.id.dFrameDragTopLayout);
 
     if(fragment == null) {
-      fragment = new DragTopLayoutFragment();
+      fragment = new DashboardDragFragment();
       fm.beginTransaction()
-        .add(R.id.frameDragTopLayout, fragment)
+        .add(R.id.dFrameDragTopLayout, fragment)
         .commit();
     }
   }

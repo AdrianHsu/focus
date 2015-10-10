@@ -42,6 +42,10 @@
             android:name=".ui.TimelineActivity"
             android:label="@string/drawer_item_timeline"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.ProfileActivity"
+            android:label="@string/drawer_item_profile"
+            android:screenOrientation="portrait"/>
     <!--<activity-->
             <!--android:name=".ui.TimelineActivity"-->
             <!--android:label="@string/drawer_item_timeline"-->
@@ -50,10 +54,7 @@
             <!--android:name=".ui.OverviewActivity"-->
             <!--android:label="@string/drawer_item_overview"-->
             <!--android:theme="@style/MaterialDrawerTheme.TranslucentStatus"/>-->
-        <!--<activity-->
-            <!--android:name=".ui.ProfileActivity"-->
-            <!--android:label="@string/drawer_item_profile"-->
-            <!--android:theme="@style/MaterialDrawerTheme.TranslucentStatus"/>-->
+
 
         <!--<activity android:name=".ui.SettingsActivity"-->
                   <!--android:label="@string/drawer_item_profile"-->

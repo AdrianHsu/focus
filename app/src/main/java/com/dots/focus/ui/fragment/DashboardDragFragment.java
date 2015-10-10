@@ -19,7 +19,7 @@ import github.chenupt.dragtoplayout.DragTopLayout;
 /**
  * Created by AdrianHsu on 2015/10/9.
  */
-public class DragTopLayoutFragment extends Fragment {
+public class DashboardDragFragment extends Fragment {
 
   private DragTopLayout dragLayout;
   private ViewPager viewPager;
@@ -34,7 +34,7 @@ public class DragTopLayoutFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                            Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_drag_top_layout, parent, false);
+    View view = inflater.inflate(R.layout.fragment_dashboard_drag_layout, parent, false);
 
     dragLayout = (DragTopLayout) view.findViewById(R.id.drag_layout);
     viewPager = (ViewPager) view.findViewById(R.id.view_pager);
