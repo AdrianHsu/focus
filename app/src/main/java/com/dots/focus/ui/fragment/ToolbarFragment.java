@@ -18,6 +18,7 @@ import com.dots.focus.ui.DashboardActivity;
 import com.dots.focus.ui.InboxActivity;
 import com.dots.focus.ui.LoginActivity;
 import com.dots.focus.ui.ProfileActivity;
+import com.dots.focus.ui.SettingsActivity;
 import com.dots.focus.ui.TimelineActivity;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
@@ -141,10 +142,7 @@ public class ToolbarFragment extends Fragment {
               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             } else if (drawerItem.getIdentifier() == 6) {
-              intent = new LibsBuilder()
-                .withFields(R.string.class.getFields())
-                .withActivityStyle(Libs.ActivityStyle.DARK)
-                .intent(getActivity());
+                intent = new Intent(getActivity(), SettingsActivity.class);
             }
             if (intent != null) {
               if(drawerItem.getIdentifier() == 5) {
