@@ -6,10 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.dots.focus.R;
+import com.dots.focus.adapter.InboxArrayAdapter;
 import com.dots.focus.application.MainApplication;
-import com.dots.focus.controller.DashboardController;
+import com.dots.focus.controller.InboxController;
+import com.dots.focus.model.InboxModel;
 import com.dots.focus.ui.fragment.ToolbarFragment;
-import com.parse.ParseUser;
+
+import java.util.ArrayList;
+
 
 /**
  * Created by AdrianHsu on 2015/10/9.
@@ -17,21 +21,27 @@ import com.parse.ParseUser;
 public class InboxActivity extends BaseActivity {
 
   static final String TAG = "InboxActivity";
-  DashboardController mDashboardController = new DashboardController();
+  InboxController mInboxController = new InboxController();
+  HorizontalListView mHorizontalListView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_dashboard);
+    setContentView(R.layout.activity_inbox);
 
-    //Fetch Facebook user info if it is logged
-    ParseUser currentUser = ParseUser.getCurrentUser();
-    if ((currentUser != null) && currentUser.isAuthenticated()) {
-      mDashboardController.makeMeRequest();
+    mHorizontalListView = (HorizontalListView) findViewById(R.id.horizontalListView);
+
+
+    ArrayList<InboxModel> arr = new ArrayList<>();
+    for(int i = 0; i < 5; i++) {
+      InboxModel tmp = new InboxModel("test" + i);
+      arr.add(tmp);
     }
+//    InboxArrayAdapter mInboxArrayAdapter = new InboxArrayAdapter(this, arr);
+//    mHorizontalListView.setAdapter(mInboxArrayAdapter);
+
 
     createToolbarFrag();
-
   }
 
   @Override

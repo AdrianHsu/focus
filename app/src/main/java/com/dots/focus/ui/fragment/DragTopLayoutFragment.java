@@ -3,10 +3,7 @@ package com.dots.focus.ui.fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.ViewDragHelper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.dots.focus.R;
+import com.dots.focus.adapter.DashboardPagerAdapter;
 
 import github.chenupt.dragtoplayout.DragTopLayout;
 
@@ -26,7 +24,7 @@ public class DragTopLayoutFragment extends Fragment {
   private DragTopLayout dragLayout;
   private ViewPager viewPager;
   private PagerSlidingTabStrip pagerSlidingTabStrip;
-  private MyPagerAdapter adapter;
+  private DashboardPagerAdapter adapter;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +41,7 @@ public class DragTopLayoutFragment extends Fragment {
     pagerSlidingTabStrip = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
 
     // init pager
-    adapter = new MyPagerAdapter(getFragmentManager());
+    adapter = new DashboardPagerAdapter(getFragmentManager());
     viewPager.setAdapter(adapter);
 
     final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
@@ -57,28 +55,5 @@ public class DragTopLayoutFragment extends Fragment {
     pagerSlidingTabStrip.setTypeface(myTypeface, 0);
 
     return view;
-  }
-
-  public class MyPagerAdapter extends FragmentPagerAdapter {
-    private final String[] TITLES = { "USAGE", "KICK" };
-
-    public MyPagerAdapter(FragmentManager fm) {
-      super(fm);
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-      return TITLES[position];
-    }
-
-    @Override
-    public int getCount() {
-      return TITLES.length;
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-      return DashboardChartFragment.newInstance(position);
-    }
   }
 }

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="350dp"
+              android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_marginBottom="15dp"
+              android:layout_marginLeft="5dp"
+              android:layout_marginRight="5dp"
+              android:orientation="vertical"
+              android:padding="10dp"
+              android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/iv_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"
+            app:civ_border_color="#F3AE4E"
+            app:civ_border_width="1dp"/>
+
+        <com.dots.focus.util.AvenirNextTextView
+            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="testdata"
+            android:textColor="#4A90E2"
+            android:textSize="18sp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/iv_avatar"
+            android:layout_toEndOf="@+id/iv_avatar"
+            android:layout_marginTop="3dp"/>
+        <com.dots.focus.util.AvenirNextTextView
+            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="time"
+            android:textColor="@color/semi_black"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/iv_avatar"
+            android:layout_toEndOf="@+id/iv_avatar"
+            android:layout_marginTop="28dp"/>
+        <com.dots.focus.util.AvenirNextTextView
+            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" near Neihu, Taipei"
+            android:textColor="@color/semi_black"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/tv_time"
+            android:layout_toEndOf="@+id/tv_time"
+            android:layout_marginTop="28dp"/>
+    </RelativeLayout>
+
+    <com.dots.focus.util.AvenirNextTextView
+        app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+        android:id="@+id/tv_post"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:textSize="16sp"
+        android:text="this is a post" />
+    <com.dots.focus.util.AvenirNextTextView
+        app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+        android:id="@+id/tv_reason"
+        android:textColor="@color/semi_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textSize="16sp"
+        android:text="this is a reason"
+        android:layout_gravity="right"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <com.dots.focus.util.AvenirNextTextView
+            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+            android:id="@+id/btn_likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/semi_black"
+            android:text="Likes"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/btn_comments"
+            android:layout_toStartOf="@+id/btn_comments"
+            android:layout_marginRight="34dp"
+            android:layout_marginEnd="34dp"/>
+
+        <com.dots.focus.util.AvenirNextTextView
+            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+            android:id="@+id/btn_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/semi_black"
+            android:text="Comments"
+            android:layout_gravity="right"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+</LinearLayout>

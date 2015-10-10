@@ -33,5 +33,7 @@
     <color name="blue_tab_indicator">#4F98B0</color>
     <color name="purple">#717ECD</color>
     <color name="purple_dark">#5A64A4</color>
+    <color name="black">#000000</color>
+    <color name="semi_black">#70000000</color>
 
 </resources>

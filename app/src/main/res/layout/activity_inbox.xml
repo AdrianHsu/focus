@@ -9,5 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/frameToolbar"/>
+    <com.dots.focus.ui.HorizontalListView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:widget="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/horizontalListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="#878787"
+        widget:dividerWidth="2dp" >
+
+    </com.dots.focus.ui.HorizontalListView>
 
 </LinearLayout>

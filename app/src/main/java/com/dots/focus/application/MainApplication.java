@@ -20,6 +20,12 @@ import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.squareup.picasso.Picasso;
 
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+
+
 public class MainApplication extends Application {
 
   static final String TAG = "MainApplication";
@@ -41,6 +47,8 @@ public class MainApplication extends Application {
 
     ParseFacebookUtils.initialize(this);
     initDrawerImageLoader();
+    initImageLoader(getApplicationContext());
+
   }
 
   private void initDrawerImageLoader() {
@@ -62,4 +70,19 @@ public class MainApplication extends Application {
       }
     });
   }
+
+    private void initImageLoader(Context context) {
+      ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
+      config.threadPriority(Thread.NORM_PRIORITY - 2);
+      config.denyCacheImageMultipleSizesInMemory();
+      config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
+      config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
+      config.tasksProcessingOrder(QueueProcessingType.LIFO);
+      config.writeDebugLogs(); // Remove for release app
+
+      // Initialize ImageLoader with configuration.
+      ImageLoader.getInstance().init(config.build());
+    }
+
 }
+
