@@ -91,15 +91,17 @@ public class ToolbarFragment extends Fragment {
         new PrimaryDrawerItem().withName(R.string.drawer_item_dashboard).withIcon(FontAwesome
           .Icon.faw_home).withIdentifier(0),
         new PrimaryDrawerItem().withName(R.string.drawer_item_inbox).withIcon(FontAwesome.Icon
-          .faw_users).withIdentifier(1),
+          .faw_inbox).withIdentifier(1),
         new PrimaryDrawerItem().withName(R.string.drawer_item_timeline).withIcon(FontAwesome.Icon
           .faw_clock_o).withIdentifier(2),
         new PrimaryDrawerItem().withName(R.string.drawer_item_overview).withIcon(FontAwesome.Icon
           .faw_eye).withIdentifier(3),
         new PrimaryDrawerItem().withName(R.string.drawer_item_profile).withIcon(FontAwesome.Icon
           .faw_user).withIdentifier(4),
+        new PrimaryDrawerItem().withName(R.string.drawer_item_add_friend).withIcon(FontAwesome.Icon
+          .faw_users).withIdentifier(5),
         new PrimaryDrawerItem().withName(R.string.drawer_item_logout).withIcon(FontAwesome.Icon
-          .faw_sign_out).withIdentifier(5)
+          .faw_sign_out).withIdentifier(6)
       ) // add the items we want to use with our Drawer
 //      .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
 //        @Override
@@ -113,7 +115,7 @@ public class ToolbarFragment extends Fragment {
 //      })
       .addStickyDrawerItems(
         new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(FontAwesome
-          .Icon.faw_cog).withIdentifier(6)
+          .Icon.faw_cog).withIdentifier(7)
       )
       .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
         @Override
@@ -137,15 +139,17 @@ public class ToolbarFragment extends Fragment {
             } else if (drawerItem.getIdentifier() == 4) {
               intent = new Intent(getActivity(), ProfileActivity.class);
             } else if (drawerItem.getIdentifier() == 5) {
+//              intent = new Intent(getActivity(), AddFriendActivity.class);
+            } else if (drawerItem.getIdentifier() == 6) {
               logOut();
               intent = new Intent(getActivity(), LoginActivity.class);
               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            } else if (drawerItem.getIdentifier() == 6) {
+            } else if (drawerItem.getIdentifier() == 7) {
                 intent = new Intent(getActivity(), SettingsActivity.class);
             }
             if (intent != null) {
-              if(drawerItem.getIdentifier() == 5) {
+              if(drawerItem.getIdentifier() == 6) {
                 updateConfigDrawerItem(Config.DrawerItem.DASHBOARD.ordinal());
               } else {
                 updateConfigDrawerItem(drawerItem.getIdentifier());
