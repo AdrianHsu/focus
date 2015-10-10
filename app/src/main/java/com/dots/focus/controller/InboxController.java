@@ -1,7 +1,6 @@
 package com.dots.focus.controller;
 
 import android.content.Context;
-
 import com.dots.focus.R;
 import com.dots.focus.model.PostModel;
 import com.hhl.adapter.BaseAdapterHelper;
