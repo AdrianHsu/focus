@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="AvenirNextTextView">
-        <attr name="AvenirNext_Regular" format="string" />
+    <attr name="AvenirNext_Regular" format="string" />
+    </declare-styleable>
+    <declare-styleable name="AvenirNextItalicTextView">
+        <attr name="AvenirNext_Italic" format="string" />
     </declare-styleable>
     <declare-styleable name="AvenirNextULTextView">
         <attr name="AvenirNext_UltraLight" format="string" />

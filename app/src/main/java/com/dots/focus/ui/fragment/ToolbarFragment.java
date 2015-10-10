@@ -174,7 +174,7 @@ public class ToolbarFragment extends Fragment {
     // Create the AccountHeader
     MainApplication.headerResult = new AccountHeaderBuilder()
       .withActivity(getActivity())
-      .withHeaderBackground(R.drawable.header) // not yet sync with facebook
+      .withHeaderBackground(R.drawable.cover_photo) // not yet sync with facebook
       .withCompactStyle(compact)
       .addProfiles(
         MainApplication.profile // not yet sync with facebook

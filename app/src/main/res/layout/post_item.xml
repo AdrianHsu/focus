@@ -32,8 +32,8 @@
             android:text="testdata"
             android:textColor="#4A90E2"
             android:textSize="18sp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/iv_avatar"
             android:layout_toEndOf="@+id/iv_avatar"
@@ -52,8 +52,8 @@
             android:layout_alignLeft="@+id/tv_username"
             android:layout_below="@+id/tv_username">
 
-            <com.dots.focus.util.AvenirNextTextView
-                app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+            <com.dots.focus.util.AvenirNextItalicTextView
+                app:AvenirNext_Italic="AvenirNext_Italic.ttf"
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,8 +69,8 @@
                 android:layout_toStartOf="@+id/tv_location"
                 android:layout_marginLeft="3dp"/>
 
-            <com.dots.focus.util.AvenirNextTextView
-                app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+            <com.dots.focus.util.AvenirNextItalicTextView
+                app:AvenirNext_Italic="AvenirNext_Italic.ttf"
                 android:id="@+id/tv_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,16 +88,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
         android:textSize="16sp"
-        android:text="this is a post" />
-    <com.dots.focus.util.AvenirNextTextView
-        app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+        android:text="this is the post" />
+    <com.dots.focus.util.AvenirNextItalicTextView
+        app:AvenirNext_Italic="AvenirNext_Italic.ttf"
         android:id="@+id/tv_reason"
         android:textColor="@color/semi_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:textSize="16sp"
-        android:text="this is a reason"
+        android:text="this is the reason"
         android:layout_gravity="right"/>
 
     <View
@@ -110,8 +110,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp">
 
-        <com.dots.focus.util.AvenirNextTextView
-            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+        <com.dots.focus.util.AvenirNextItalicTextView
+            app:AvenirNext_Italic="AvenirNext_Italic.ttf"
             android:id="@+id/btn_likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,8 +124,8 @@
             android:layout_marginRight="34dp"
             android:layout_marginEnd="34dp"/>
 
-        <com.dots.focus.util.AvenirNextTextView
-            app:AvenirNext_Regular="AvenirNext_Regular.ttf"
+        <com.dots.focus.util.AvenirNextItalicTextView
+            app:AvenirNext_Italic="AvenirNext_Italic.ttf"
             android:id="@+id/btn_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
