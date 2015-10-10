@@ -55,4 +55,5 @@ public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseAdapterHel
         super(context, multiItemTypeSupport, data);
     }
 
+
 }

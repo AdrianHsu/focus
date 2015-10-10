@@ -1,7 +1,7 @@
 package com.dots.focus.model;
 
 /**
- * Created by HanHailong on 15/9/7.
+ * Created by Adrian Hsu on 2015/10/10.
  */
 public class PostModel {
 

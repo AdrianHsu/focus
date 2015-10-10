@@ -146,7 +146,11 @@ public class ToolbarFragment extends Fragment {
                 .intent(getActivity());
             }
             if (intent != null) {
-              updateConfigDrawerItem(drawerItem.getIdentifier());
+              if(drawerItem.getIdentifier() == 5) {
+                updateConfigDrawerItem(Config.DrawerItem.DASHBOARD.ordinal());
+              } else {
+                updateConfigDrawerItem(drawerItem.getIdentifier());
+              }
               getActivity().startActivity(intent);
             }
           }
@@ -187,7 +191,7 @@ public class ToolbarFragment extends Fragment {
       .build();
   }
   private void updateConfigDrawerItem(int i) {
-    Config.setCurrentDrawerItem(i); //bug
+    Config.setCurrentDrawerItem(i);
   }
   @Override
   public void onSaveInstanceState(Bundle outState) {

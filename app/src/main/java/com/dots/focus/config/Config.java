@@ -19,9 +19,9 @@ public class Config {
     return currentDrawerItem;
   }
 
-//  public enum DrawerItem {
-//    DASHBOARD, INBOX, TIMELINE, OVERVIEW, PROFILE, LOGOUT, SETTINGS
-//  }
+  public enum DrawerItem {
+    DASHBOARD, INBOX, TIMELINE, OVERVIEW, PROFILE, LOGOUT, SETTINGS
+  }
   public static String[] Title = {"Dashboard", "Inbox", "Timeline", "Overview",
                            "Profile", "Log Out", "Settings"};
 }

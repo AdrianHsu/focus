@@ -5,6 +5,6 @@ package com.dots.focus.controller;
  */
 public class InboxController {
 
-  static final String TAG = "DashboardController";
+  static final String TAG = "InboxController";
   public InboxController(){}
 }
