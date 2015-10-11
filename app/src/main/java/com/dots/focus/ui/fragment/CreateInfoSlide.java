@@ -8,10 +8,14 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
@@ -21,11 +25,13 @@ import com.parse.ParseObject;
 
 public class CreateInfoSlide extends Fragment {
 
+  private static final String TAG = "CreateInfoSlide";
   private static final String ARG_LAYOUT_RES_ID = "layoutResId";
   private Button accessBtn;
   private Button genderBtn;
   private Button birthBtn;
   private Button occupationBtn;
+  private EditText emailEdt;
 
   public static CreateInfoSlide newInstance(int layoutResId) {
     CreateInfoSlide setInfoSlide = new CreateInfoSlide();
@@ -64,9 +70,21 @@ public class CreateInfoSlide extends Fragment {
         }
       });
     } else if (layoutResId == R.layout.set_info_email) {
-      //TBD
+      emailEdt = (EditText) view.findViewById(R.id.edt_email);
+      emailEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
-      //CreateInfoUtil.setUserInfo("Email", String email);
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+    /* When focus is lost check that the text field
+    * has valid values.
+    */
+          if (!hasFocus) {
+            String email = emailEdt.getText().toString();
+            Log.v(TAG, email);
+            CreateInfoUtil.setUserInfo("Email", email, false);
+          }
+        }
+      });
     } else if (layoutResId == R.layout.set_info_gender) {
       genderBtn = (Button) view.findViewById(R.id.button_gender);
       CreateInfoUtil.setUserInfo("Gender", genderBtn.getText(), false);
