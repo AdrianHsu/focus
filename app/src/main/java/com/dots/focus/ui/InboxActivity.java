@@ -1,9 +1,11 @@
 package com.dots.focus.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.dots.focus.R;
 import com.dots.focus.controller.InboxController;
@@ -31,4 +33,9 @@ public class InboxActivity extends BaseActivity {
     recyclerView.setAdapter(InboxController.mQuickAdapter);
     InboxController.initData();
   }
+  public void onExtendClick(View v) {
+    Intent intent = new Intent(this, InboxEditActivity.class);
+    this.startActivity(intent);
+  }
+
 }

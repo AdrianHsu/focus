@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.dots.focus.R;
 import com.dots.focus.ui.fragment.CreateInfoSlide;
+import com.dots.focus.util.CreateInfoUtil;
 import com.github.paolorotolo.appintro.AppIntro2;
 
 /**
@@ -43,6 +44,7 @@ public class CreateInfoActivity extends AppIntro2 {
   @Override
   public void onDonePressed() {
     // Do something when users tap on Done button.
+    CreateInfoUtil.update();
     showDashboardActivity();
   }
   private void showDashboardActivity() {

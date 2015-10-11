@@ -14,8 +14,10 @@ import android.widget.TextView;
 import com.dots.focus.R;
 import com.dots.focus.application.MainApplication;
 import com.dots.focus.config.Config;
+import com.dots.focus.ui.AddFriendActivity;
 import com.dots.focus.ui.DashboardActivity;
 import com.dots.focus.ui.InboxActivity;
+import com.dots.focus.ui.InboxEditActivity;
 import com.dots.focus.ui.LoginActivity;
 import com.dots.focus.ui.ProfileActivity;
 import com.dots.focus.ui.SettingsActivity;
@@ -58,7 +60,9 @@ public class ToolbarFragment extends Fragment {
     //use textView instead of Title
 //    ((AppCompatActivity) getActivity()).getSupportActionBar().setElevation(15); //1dp = 3px for xxhdpi
 
-    createDrawer(savedInstanceState);
+    //createDrawer(savedInstanceState);
+
+
     return view;
   }
   // A method to find height of the status bar
@@ -137,7 +141,7 @@ public class ToolbarFragment extends Fragment {
             } else if (drawerItem.getIdentifier() == 4) {
               intent = new Intent(getActivity(), ProfileActivity.class);
             } else if (drawerItem.getIdentifier() == 5) {
-//              intent = new Intent(getActivity(), AddFriendActivity.class);
+              intent = new Intent(getActivity(), AddFriendActivity.class);
             } else if (drawerItem.getIdentifier() == 6) {
               logOut();
               intent = new Intent(getActivity(), LoginActivity.class);

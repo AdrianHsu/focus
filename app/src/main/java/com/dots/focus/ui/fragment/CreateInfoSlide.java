@@ -65,19 +65,20 @@ public class CreateInfoSlide extends Fragment {
       });
     } else if (layoutResId == R.layout.set_info_email) {
       //TBD
-    } else if (layoutResId == R.layout.set_info_gender) {
 
+      //CreateInfoUtil.setUserInfo("Email", String email);
+    } else if (layoutResId == R.layout.set_info_gender) {
       genderBtn = (Button) view.findViewById(R.id.button_gender);
+      CreateInfoUtil.setUserInfo("Gender", genderBtn.getText(), false);
       genderBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
           createGenderDialog();
         }
       });
-
     } else if (layoutResId == R.layout.set_info_birth) {
-
       birthBtn = (Button) view.findViewById(R.id.button_birth);
+      CreateInfoUtil.setUserInfo("Birth", birthBtn.getText(), false);
       birthBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -85,8 +86,8 @@ public class CreateInfoSlide extends Fragment {
         }
       });
     } else if (layoutResId == R.layout.set_info_occupation) {
-
       occupationBtn = (Button) view.findViewById(R.id.button_occupation);
+      CreateInfoUtil.setUserInfo("Occupation", occupationBtn.getText(), false);
       occupationBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -110,10 +111,10 @@ public class CreateInfoSlide extends Fragment {
            * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
            * returning false here won't allow the newly selected radio button to actually be selected.
            **/
-          if (genderBtn != null) {
+          if (genderBtn != null && text != null) {
             String temp = text.toString();
             genderBtn.setText(temp);
-            CreateInfoUtil.setUserInfo("Gender", temp);
+            CreateInfoUtil.setUserInfo("Gender", temp, false);
           }
           return true;
         }
@@ -129,10 +130,10 @@ public class CreateInfoSlide extends Fragment {
         @Override
         public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
 
-          if (birthBtn != null) {
+          if (birthBtn != null && text != null) {
             String temp = text.toString();
             birthBtn.setText(temp);
-            CreateInfoUtil.setUserInfo("Birth", temp);
+            CreateInfoUtil.setUserInfo("Birth", temp, false);
           }
         }
       })
@@ -150,10 +151,10 @@ public class CreateInfoSlide extends Fragment {
            * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
            * returning false here won't allow the newly selected radio button to actually be selected.
            **/
-          if (occupationBtn != null) {
+          if (occupationBtn != null && text != null) {
             String temp = text.toString();
             occupationBtn.setText(temp);
-            CreateInfoUtil.setUserInfo("Occupation", temp);
+            CreateInfoUtil.setUserInfo("Occupation", temp, false);
           }
           return true;
         }
