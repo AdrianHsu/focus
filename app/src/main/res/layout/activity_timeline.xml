@@ -12,7 +12,7 @@
         android:background="@color/transparent"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/timeline_recyclerview"
+        android:id="@+id/timelineRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

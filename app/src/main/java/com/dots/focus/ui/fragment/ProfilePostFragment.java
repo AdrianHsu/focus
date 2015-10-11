@@ -21,9 +21,6 @@ import com.dots.focus.R;
 import com.dots.focus.controller.ProfileController;
 import com.gc.materialdesign.views.ScrollView;
 
-import de.greenrobot.event.EventBus;
-import github.chenupt.dragtoplayout.AttachUtil;
-
 
 public class ProfilePostFragment extends Fragment {
 
@@ -95,17 +92,6 @@ public class ProfilePostFragment extends Fragment {
 
       final ScrollView v = (ScrollView) inflater.inflate(R.layout.fragment_about_me, null);
       v.setLayoutParams(params);
-
-//      // this method solved the dragLayout scrolling issue
-//      // attach top listener
-//      // Scroll view does not have scroll listener
-//        v.setOnTouchListener(new View.OnTouchListener() {
-//          @Override
-//          public boolean onTouch(View view, MotionEvent event) {
-//            EventBus.getDefault().post(AttachUtil.isScrollViewAttach(v));
-//            return false;
-//          }
-//        });
 
       fl.addView(v);
     }

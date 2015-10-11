@@ -123,7 +123,6 @@
     <orderEntry type="library" exported="" name="ParseFacebookUtilsV4-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="materialdrawer-3.1.2" level="project" />
     <orderEntry type="library" exported="" name="pagerslidingtabstrip-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="eventbus-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="bolts-android-1.2.0" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="iconics-1.2.0" level="project" />
@@ -132,8 +131,8 @@
     <orderEntry type="library" exported="" name="jna-platform-4.1.0" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.4.3" level="project" />
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.4.0" level="project" />
-    <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="dragtoplayout-1.2.1" level="project" />
     <orderEntry type="module" module-name="recyclerview-lib" exported="" />
   </component>

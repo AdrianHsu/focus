@@ -61,7 +61,5 @@ dependencies {
     compile project(':recyclerview-lib')
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'de.hdodenhof:circleimageview:2.0.0'
-//    https://github.com/greenrobot/EventBus
-    compile 'de.greenrobot:eventbus:2.4.0'
 
 }

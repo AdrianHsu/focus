@@ -39,6 +39,14 @@
             android:label="@string/drawer_item_inbox"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".ui.InboxEditActivity"
+            android:label="@string/drawer_item_inbox"
+            android:screenOrientation="portrait"/>
+        <!--<activity-->
+            <!--android:name=".ui.InboxSettingsActivity"-->
+            <!--android:label="@string/drawer_item_inbox"-->
+            <!--android:screenOrientation="portrait"/>-->
+        <activity
             android:name=".ui.TimelineActivity"
             android:label="@string/drawer_item_timeline"
             android:screenOrientation="portrait"/>
@@ -50,10 +58,10 @@
             android:name=".ui.SettingsActivity"
             android:label="@string/drawer_item_settings"
             android:screenOrientation="portrait"/>
-        <!--<activity-->
-            <!--android:name=".ui.AddFriendActivity"-->
-            <!--android:label="@string/drawer_item_add_friend"-->
-            <!--android:screenOrientation="portrait"/>-->
+        <activity
+            android:name=".ui.AddFriendActivity"
+            android:label="@string/drawer_item_add_friend"
+            android:screenOrientation="portrait"/>
     <!--<activity-->
             <!--android:name=".ui.TimelineActivity"-->
             <!--android:label="@string/drawer_item_timeline"-->

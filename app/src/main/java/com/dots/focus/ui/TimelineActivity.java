@@ -21,7 +21,7 @@ public class TimelineActivity extends BaseActivity {
 
         super.createToolbarFragment();
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.timeline_recyclerview);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.timelineRecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         TimelineController.convertAdapter(this);
