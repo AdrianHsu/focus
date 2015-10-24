@@ -1,18 +1,17 @@
 package com.dots.focus.service;
 
 import android.app.IntentService;
-import android.app.Service;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+
+import com.dots.focus.model.AppInfo;
+import com.dots.focus.util.OverviewUtil;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -20,18 +19,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-
-/**
- * Created by Harvey Yang on 2015/9/23.
- */
 public class GetAppsService extends IntentService {
     //private List<AppInfo> applicationList = new ArrayList<AppInfo>();
 
@@ -43,80 +36,69 @@ public class GetAppsService extends IntentService {
     public void onHandleIntent(Intent intent){
         String TAG = "GetAppsService";
 
-        Log.d(TAG, "Service onstart now.");
-
         JSONObject obj = new JSONObject(), apps = new JSONObject();
-
         JSONArray list = new JSONArray();
+        boolean needToStore = false;
 
         final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         List<ResolveInfo> ril = getPackageManager().queryIntentActivities(mainIntent, 0);
         for (ResolveInfo ri : ril) {
-            //applicationList.add(new AppInfo(LoginActivity.this, ri));
-            String name = ri.resolvePackageName;
+            if(! OverviewUtil.findApp(ri.activityInfo.packageName)) {
+                needToStore = true;
+                String name = ri.resolvePackageName;
 
-            try {
-                if (ri.activityInfo != null) {
-                    Resources res = getPackageManager().getResourcesForApplication(ri.activityInfo.applicationInfo);
+                try {
+                    if (ri.activityInfo != null) {
+                        Resources res = getPackageManager().getResourcesForApplication(ri.activityInfo.applicationInfo);
 
-                    AssetManager assets = res.getAssets();
-                    DisplayMetrics metrics = res.getDisplayMetrics();
-                    Configuration config = new Configuration(res.getConfiguration());
-                    config.locale = Locale.US;
+                        AssetManager assets = res.getAssets();
+                        DisplayMetrics metrics = res.getDisplayMetrics();
+                        Configuration config = new Configuration(res.getConfiguration());
+                        config.locale = Locale.US;
 
-                    Resources engRes = new Resources(assets, metrics, config);
+                        Resources engRes = new Resources(assets, metrics, config);
 
-                    if (ri.activityInfo.labelRes != 0) {
-                        name = engRes.getString(ri.activityInfo.labelRes);
+                        if (ri.activityInfo.labelRes != 0) {
+                            name = engRes.getString(ri.activityInfo.labelRes);
 
-                        if (name.equals("")) {
-                            name = res.getString(ri.activityInfo.labelRes);
+                            if (name.equals("")) {
+                                name = res.getString(ri.activityInfo.labelRes);
+                            }
+
+                        } else {
+                            name = ri.activityInfo.applicationInfo.loadLabel(getPackageManager()).toString();
                         }
-
-                    } else {
-                        name = ri.activityInfo.applicationInfo.loadLabel(getPackageManager()).toString();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch(Exception e){
-                e.printStackTrace();
+                Log.d(TAG, "Name: " + name);
+                Log.d(TAG, "PackageName: " + ri.activityInfo.packageName);
+                list.put(ri.activityInfo.packageName);
+
+                OverviewUtil.addApp(new AppInfo(name, ri.activityInfo.packageName,
+                        ri.loadIcon(getPackageManager())));
+                Log.d(TAG, "Stored.");
             }
-            Log.d(TAG, "Name: " + name);
-            Log.d(TAG, "PackageName: " + ri.activityInfo.packageName);
-            list.put(ri.activityInfo.packageName);
         }
 
-
-        try {
-            for (int i = 0; i < list.length(); i++) {
-                Log.d(TAG, "The " + i + "st: " + list.getString(i));
-            }
-            obj.put("packages", list);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "Stage 1.");
         HttpClient httpClient = new DefaultHttpClient(); //Deprecated
         try {
+            obj.put("packages", list);
 
-            Log.d(TAG, "Stage 1-1.");
             HttpPost httpPost = new HttpPost("http://getdatafor.appspot.com/data");
             httpPost.setHeader("Content-type", "application/json");
             StringEntity params = new StringEntity(obj.toString());
             httpPost.setEntity(params);
-            Log.d(TAG, "Stage 1-2.");
             HttpResponse lResp = httpClient.execute(httpPost);
 
             ByteArrayOutputStream lBOS = new ByteArrayOutputStream();
-            String lInfoStr = null;
-            JSONObject categoryResponse = null;
-            Log.d(TAG, "Stage 1-3.");
             lResp.getEntity().writeTo(lBOS);
-            lInfoStr = lBOS.toString("UTF-8");
-            categoryResponse = new JSONObject(lInfoStr);
+            String lInfoStr = lBOS.toString("UTF-8");
+            JSONObject categoryResponse = new JSONObject(lInfoStr);
             JSONArray appArr = categoryResponse.getJSONArray("apps");
 
-            Log.d(TAG, "Stage 2.");
             for (int i = 0; i < appArr.length(); i++) {
                 JSONObject appObj = appArr.getJSONObject(i);
                 String packageVal = appObj.optString("package", null);
@@ -133,19 +115,19 @@ public class GetAppsService extends IntentService {
                 }
                 */
             }
-            Log.d(TAG, "Stage 3.");
             Log.d(TAG, apps.toString());
             JSONArray all = apps.names();
             for (int i = 0; i < all.length(); i++) {
                 Log.d("GetAppsService", all.getString(i) + ": " + apps.getString(all.getString(i)));
+                AppInfo temp = OverviewUtil.getApp(all.getString(i));
+                if(temp != null)    temp.setCategory(apps.getString(all.getString(i)));
             }
-            Log.d(TAG, "Stage 4.");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             httpClient.getConnectionManager().shutdown();
         }
+        OverviewUtil.printApps();
+        if(needToStore) OverviewUtil.loadParseApps();
     }
-
-
 }

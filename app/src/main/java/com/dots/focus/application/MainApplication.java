@@ -39,7 +39,7 @@ public class MainApplication extends Application {
     super.onCreate();
     FacebookSdk.sdkInitialize(getApplicationContext());
 
-//    Parse.enableLocalDatastore(this);
+    Parse.enableLocalDatastore(this);
     Parse.initialize(this,
       Config.FOCUS_APPLICATION_ID,
       Config.FOCUS_CLIENT_ID
@@ -48,6 +48,7 @@ public class MainApplication extends Application {
     ParseFacebookUtils.initialize(this);
     initDrawerImageLoader();
     initImageLoader(getApplicationContext());
+
 
   }
 

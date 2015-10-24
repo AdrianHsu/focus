@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import com.dots.focus.R;
 import com.dots.focus.controller.DashboardController;
 import com.dots.focus.ui.fragment.DashboardDragFragment;
+import com.dots.focus.util.OverviewUtil;
+import com.parse.Parse;
 import com.parse.ParseUser;
 
 
@@ -33,7 +35,6 @@ public class DashboardActivity extends BaseActivity {
 
     super.createToolbarFragment();
     initDashboardDragTopLayoutFragment();
-
   }
   private void initDashboardDragTopLayoutFragment() {
 
@@ -65,6 +66,7 @@ public class DashboardActivity extends BaseActivity {
   }
 
   private void startLoginActivity() {
+    OverviewUtil.loadParseApps();
     Intent intent = new Intent(this, LoginActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

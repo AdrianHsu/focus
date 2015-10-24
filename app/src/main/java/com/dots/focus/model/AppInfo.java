@@ -2,14 +2,23 @@ package com.dots.focus.model;
 
 import android.graphics.drawable.Drawable;
 
-/**
- * Created by Harvey Yang on 2015/9/30.
- */
-public class AppInfo {
+public class AppInfo extends Object {
     private String Name = "";
     private String packageName = "";
-    private String Category = "";
+    private String Category = "Others";
     private Drawable icon = null;
+
+    public AppInfo(String n, String p, Drawable i){
+        Name = n;
+        packageName = p;
+        icon = i;
+    }
+
+    public AppInfo(String n, String p, String c){
+        Name = n;
+        packageName = p;
+        Category = c;
+    }
 
     public AppInfo(String n, String p, String c, Drawable i) {
         Name = n;
@@ -39,7 +48,8 @@ public class AppInfo {
     }
 
     public void setCategory(String category) {
-        Category = category;
+        if(category != null && !category.equals("unknown"))
+            Category = category;
     }
 
     public Drawable getIcon() {

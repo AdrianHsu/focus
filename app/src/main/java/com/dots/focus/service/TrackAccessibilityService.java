@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.ParseObject;
 
 import org.json.JSONObject;
@@ -25,7 +26,7 @@ public class TrackAccessibilityService extends AccessibilityService {
             Log.v(TAG, "***** onAccessibilityEvent");
 
             String tempPackageName = event.getPackageName().toString();
-            long now = System.currentTimeMillis(); // + 時區!!!
+            long now = TrackAccessibilityUtil.getTimeInMilli();
 
             if(startTime == 0 || currentPackageName.contentEquals("")){
                 startTime = now;
@@ -38,6 +39,7 @@ public class TrackAccessibilityService extends AccessibilityService {
             temp.put("startTime", startTime);
             temp.put("endTime", now);
             temp.pinInBackground();
+
 
             startTime = now;
             currentPackageName = tempPackageName;

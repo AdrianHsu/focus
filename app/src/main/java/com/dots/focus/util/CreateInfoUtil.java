@@ -17,8 +17,8 @@ public class CreateInfoUtil {
     static boolean logIn;
     static String TAG = "CreateInfoUtil";
     static {
-        ParseUser.getCurrentUser().put("installationId",
-                ParseInstallation.getCurrentInstallation().get("installationId")
+            ParseUser.getCurrentUser().put("installationId",
+            ParseInstallation.getCurrentInstallation().get("installationId")
         );
     }
 
@@ -44,7 +44,7 @@ public class CreateInfoUtil {
                 break;
         }
 
-        if(store)   userInfo.saveEventually();
+        if(store)   update();
     }
 
     public static void logInByFb(String username) {
@@ -73,7 +73,7 @@ public class CreateInfoUtil {
                 }
             }
         });
-        userInfo.saveEventually();
+        update();
     }
 
     public static void update(){

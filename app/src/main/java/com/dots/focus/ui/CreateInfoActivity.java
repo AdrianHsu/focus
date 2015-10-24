@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.dots.focus.R;
+import com.dots.focus.service.GetAppsService;
 import com.dots.focus.ui.fragment.CreateInfoSlide;
 import com.dots.focus.util.CreateInfoUtil;
+import com.dots.focus.util.OverviewUtil;
 import com.github.paolorotolo.appintro.AppIntro2;
 
-/**
- * Created by AdrianHsu on 15/9/27.
- */
 public class CreateInfoActivity extends AppIntro2 {
 
   static final String TAG = "CreateInfoActivity";
@@ -44,7 +43,12 @@ public class CreateInfoActivity extends AppIntro2 {
   @Override
   public void onDonePressed() {
     // Do something when users tap on Done button.
+
     CreateInfoUtil.update();
+    OverviewUtil.printApps();
+    //Intent intent = new Intent(this, GetAppsService.class);
+    //startService(intent);
+
     showDashboardActivity();
   }
   private void showDashboardActivity() {

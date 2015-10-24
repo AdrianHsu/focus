@@ -60,60 +60,68 @@ public class CreateInfoSlide extends Fragment {
 
     View view = inflater.inflate(layoutResId, container, false);
 
-    if(layoutResId == R.layout.set_info_access) {
-      accessBtn = (Button) view.findViewById(R.id.button_setting);
-      accessBtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-          startActivity(intent);
-        }
-      });
-    } else if (layoutResId == R.layout.set_info_email) {
-      emailEdt = (EditText) view.findViewById(R.id.edt_email);
-      emailEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-    /* When focus is lost check that the text field
-    * has valid values.
-    */
-          if (!hasFocus) {
-            String email = emailEdt.getText().toString();
-            Log.v(TAG, email);
-            CreateInfoUtil.setUserInfo("Email", email, false);
+    switch(layoutResId){
+      case R.layout.set_info_access:
+        accessBtn = (Button) view.findViewById(R.id.button_setting);
+        accessBtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            startActivity(intent);
           }
-        }
-      });
-    } else if (layoutResId == R.layout.set_info_gender) {
-      genderBtn = (Button) view.findViewById(R.id.button_gender);
-      CreateInfoUtil.setUserInfo("Gender", genderBtn.getText(), false);
-      genderBtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          createGenderDialog();
-        }
-      });
-    } else if (layoutResId == R.layout.set_info_birth) {
-      birthBtn = (Button) view.findViewById(R.id.button_birth);
-      CreateInfoUtil.setUserInfo("Birth", birthBtn.getText(), false);
-      birthBtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          createBirthDialog();
-        }
-      });
-    } else if (layoutResId == R.layout.set_info_occupation) {
-      occupationBtn = (Button) view.findViewById(R.id.button_occupation);
-      CreateInfoUtil.setUserInfo("Occupation", occupationBtn.getText(), false);
-      occupationBtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          createOccupationDialog();
-        }
-      });
-    } else if (layoutResId == R.layout.set_info_welcome) {
-      // do nothing
+        });
+        break;
+
+      case R.layout.set_info_email:
+        emailEdt = (EditText) view.findViewById(R.id.edt_email);
+        emailEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+          @Override
+          public void onFocusChange(View v, boolean hasFocus) {
+        /* When focus is lost check that the text field
+        * has valid values.
+        */
+            if (!hasFocus && emailEdt != null) {
+              String email = emailEdt.getText().toString();
+              Log.v(TAG, email);
+              CreateInfoUtil.setUserInfo("Email", email, false);
+            }
+          }
+        });
+        break;
+
+      case R.layout.set_info_gender:
+        genderBtn = (Button) view.findViewById(R.id.button_gender);
+        CreateInfoUtil.setUserInfo("Gender", genderBtn.getText(), false);
+        genderBtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            createGenderDialog();
+          }
+        });
+        break;
+
+      case R.layout.set_info_birth:
+        birthBtn = (Button) view.findViewById(R.id.button_birth);
+        CreateInfoUtil.setUserInfo("Birth", birthBtn.getText(), false);
+        birthBtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            createBirthDialog();
+          }
+        });
+        break;
+
+      case R.layout.set_info_occupation:
+        occupationBtn = (Button) view.findViewById(R.id.button_occupation);
+        CreateInfoUtil.setUserInfo("Occupation", occupationBtn.getText(), false);
+        occupationBtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            createOccupationDialog();
+          }
+        });
+        break;
+      //case R.layout.set_info_welcome:
     }
 
     return view;
