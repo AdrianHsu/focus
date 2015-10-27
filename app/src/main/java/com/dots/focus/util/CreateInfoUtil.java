@@ -79,7 +79,7 @@ public class CreateInfoUtil {
     public static void update(){
         Log.d(TAG, "update");
         ParseUser.getCurrentUser().saveEventually();
-        Log.d(TAG, ParseUser.getCurrentUser().getString("Email"));
+        Log.d(TAG, ParseUser.getCurrentUser().getEmail());
         Log.d(TAG, ParseUser.getCurrentUser().getString("Occupation"));
 
     }

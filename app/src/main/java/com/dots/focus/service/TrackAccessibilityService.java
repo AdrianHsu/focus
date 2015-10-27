@@ -7,48 +7,61 @@ import android.view.accessibility.AccessibilityEvent;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.ParseObject;
 
-import org.json.JSONObject;
-
-/**
- * Created by Harvey Yang on 2015/9/22.
- */
 public class TrackAccessibilityService extends AccessibilityService {
 
     public static String currentPackageName = "";
     //public static String tempPackageName = "";
     public static long startTime = 0;
+    public static long startHour = 0;
     public static final String TAG = "MyService";
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-
             Log.v(TAG, "***** onAccessibilityEvent");
+            final String tempPackageName = event.getPackageName().toString();
 
-            String tempPackageName = event.getPackageName().toString();
-            long now = TrackAccessibilityUtil.getTimeInMilli();
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    checkWindowState(tempPackageName);
+                }
+            };
 
-            if(startTime == 0 || currentPackageName.contentEquals("")){
-                startTime = now;
-                currentPackageName = tempPackageName;
-                return;
-            }
-
-            ParseObject temp = new ParseObject("appUsage");
-            temp.put("appName", currentPackageName);
-            temp.put("startTime", startTime);
-            temp.put("endTime", now);
-            temp.pinInBackground();
+            thread.start();
 
 
-            startTime = now;
-            currentPackageName = tempPackageName;
+
+
         }
     }
 
     @Override
     public void onInterrupt() {
         Log.v(TAG, "***** onInterrupt");
+    }
+
+    private void checkWindowState(String tempPackageName){
+
+        long now = TrackAccessibilityUtil.getTimeInMilli();
+
+        if(startTime == 0 || currentPackageName.contentEquals("")){
+            startTime = now;
+            startHour = TrackAccessibilityUtil.anHour * (now / TrackAccessibilityUtil.anHour);
+            currentPackageName = tempPackageName;
+            return;
+        }
+
+        ParseObject temp = new ParseObject("appUsage");
+        temp.put("appName", currentPackageName);
+        temp.put("startTime", startTime);
+        temp.put("endTime", now);
+        temp.pinInBackground();
+        temp.saveEventually();
+        TrackAccessibilityUtil.getCurrentHour().getList("appUsages").add(temp.getObjectId());
+
+        startTime = now;
+        currentPackageName = tempPackageName;
     }
 }
 

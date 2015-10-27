@@ -8,6 +8,7 @@ import com.parse.GetCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
 
 import java.util.ArrayList;
@@ -21,6 +22,10 @@ public class OverviewUtil {
 
     public static List<AppInfo> getApps() {
         return new ArrayList<>(apps);
+    }
+
+    public static int getSize(){
+        return apps.size();
     }
 
     public static boolean setApps() {
@@ -104,6 +109,7 @@ public class OverviewUtil {
                     if (object == null || e != null) {
                         Log.d("GetAppsService", "database is empty.");
                         ParseApps = new ParseObject("Apps");
+                        ParseApps.put("User", ParseUser.getCurrentUser());
                         List<String> name = new ArrayList<>(), packageName = new ArrayList<>(), category = new ArrayList<>();
                         for(int i = 0; i < apps.size(); ++i) {
                             name.add(apps.get(i).getName());
@@ -123,6 +129,7 @@ public class OverviewUtil {
                     } else {
                         Log.d("GetAppsService", "loading");
                         ParseApps = object;
+                        ParseApps.put("User", ParseUser.getCurrentUser());
                         List<String> name, packageName, category;
 
                         name = ParseApps.getList("name");

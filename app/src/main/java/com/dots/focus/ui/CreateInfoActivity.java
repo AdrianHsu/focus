@@ -46,6 +46,7 @@ public class CreateInfoActivity extends AppIntro2 {
 
     CreateInfoUtil.update();
     OverviewUtil.printApps();
+    OverviewUtil.setApps();
     //Intent intent = new Intent(this, GetAppsService.class);
     //startService(intent);
 
