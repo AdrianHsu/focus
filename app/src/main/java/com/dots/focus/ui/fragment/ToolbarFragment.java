@@ -60,7 +60,7 @@ public class ToolbarFragment extends Fragment {
     //use textView instead of Title
 //    ((AppCompatActivity) getActivity()).getSupportActionBar().setElevation(15); //1dp = 3px for xxhdpi
 
-//    createDrawer(savedInstanceState);
+    createDrawer(savedInstanceState);
 
 
     return view;

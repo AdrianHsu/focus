@@ -27,12 +27,7 @@ public class TrackAccessibilityService extends AccessibilityService {
                     checkWindowState(tempPackageName);
                 }
             };
-
             thread.start();
-
-
-
-
         }
     }
 
@@ -58,12 +53,9 @@ public class TrackAccessibilityService extends AccessibilityService {
         temp.put("endTime", now);
         temp.pinInBackground();
         temp.saveEventually();
-        TrackAccessibilityUtil.getCurrentHour().getList("appUsages").add(temp.getObjectId());
+        TrackAccessibilityUtil.getCurrentHour(startTime).getList("appUsages").add(temp.getObjectId());
 
         startTime = now;
         currentPackageName = tempPackageName;
     }
 }
-
-
-

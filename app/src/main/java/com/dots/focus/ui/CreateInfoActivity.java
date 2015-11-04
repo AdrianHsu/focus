@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.dots.focus.R;
-import com.dots.focus.service.GetAppsService;
 import com.dots.focus.ui.fragment.CreateInfoSlide;
 import com.dots.focus.util.CreateInfoUtil;
 import com.dots.focus.util.OverviewUtil;
@@ -12,7 +11,7 @@ import com.github.paolorotolo.appintro.AppIntro2;
 
 public class CreateInfoActivity extends AppIntro2 {
 
-  static final String TAG = "CreateInfoActivity";
+  //static final String TAG = "CreateInfoActivity";
   // Please DO NOT override onCreate. Use init
   @Override
   public void init(Bundle savedInstanceState) {
