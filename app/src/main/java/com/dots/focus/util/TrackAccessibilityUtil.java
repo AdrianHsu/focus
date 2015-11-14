@@ -1,11 +1,8 @@
 package com.dots.focus.util;
 
-import android.content.Intent;
+
 import android.util.Log;
 
-import com.dots.focus.model.AppInfo;
-import com.dots.focus.service.GetAppsService;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -13,21 +10,19 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 import java.util.TimeZone;
 
-/**
- * Created by Harvey Yang on 2015/9/30.
- */
+
 public class TrackAccessibilityUtil {
     public static int anHour = 3600000;
     private static ParseObject currentDay = null;
     private static ParseObject currentHour = null;
     private static List<ParseObject> dayList = new ArrayList<>();
     private static List<ParseObject> hourList = new ArrayList<>();
+    private static String TAG = "TrackAccessibilityUtil";
 
-    public static long getTimeInMilli(){
+    public static long getTimeInMilli() {
         return TimeZone.getDefault().getOffset(System.currentTimeMillis());
     }
     public static ParseObject getCurrentDay(long time){
@@ -41,29 +36,46 @@ public class TrackAccessibilityUtil {
             query.fromLocalDatastore();
             try{
                 currentDay = query.getFirst();
-            }catch(ParseException e){}
+            }catch(ParseException e){
+                Log.d(TAG, "getCurrentDay in local database went wrong.");
+            }
             if (currentDay == null)
                 newDay(rightNow.getTimeInMillis());
         }
-        else if(rightNow.getTimeInMillis() != currentDay.getLong("time"))
+        else if (rightNow.getTimeInMillis() != currentDay.getLong("time")) {
+            dayList.add(currentDay);
             newDay(rightNow.getTimeInMillis());
+        }
+
 
         return currentDay;
     }
     public static ParseObject getCurrentHour(long time){
+        Calendar rightNow = Calendar.getInstance();
+        rightNow.setTimeInMillis(1000 * (time / 1000));
+        Log.d(TAG, "Year: " + rightNow.get(Calendar.YEAR) + " Month: " + rightNow.get(Calendar.MONTH)
+            + " Day: " + rightNow.get(Calendar.DAY_OF_MONTH) + " Hour: " + rightNow.get(Calendar.HOUR_OF_DAY)
+            + " Minute: "+ rightNow.get(Calendar.MINUTE) + " OFFSET: " + rightNow.get(Calendar.DST_OFFSET)
+        );
+
         time = anHour * (time / anHour);
-        if(currentHour == null){
+        if (currentHour == null) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery("HourBlock");
             query.whereEqualTo("time", time);
             query.fromLocalDatastore();
             try{
                 currentHour = query.getFirst();
-            }catch(ParseException e){}
+            }catch(ParseException e){
+                Log.d(TAG, "getCurrentHour in local database went wrong.");
+            }
             if (currentHour == null)
                 newHour(time);
         }
-        else if(time != currentHour.getLong("time"))
+        else if (time != currentHour.getLong("time")){
+            hourList.add(currentHour);
             newHour(time);
+        }
+
 
         return currentHour;
     }
@@ -90,6 +102,7 @@ public class TrackAccessibilityUtil {
         currentHour.put("time", hourInLong);
         currentHour.put("end", false);
         currentHour.put("prev", getCurrentDay(hourInLong));
+        currentHour.put("appUsage", new ArrayList<ParseObject>());
     }
 
 }

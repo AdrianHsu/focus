@@ -20,9 +20,7 @@ public class OverviewUtil {
     private static boolean searching = false;
     private static String TAG = "OverviewUtil";
 
-    public static List<AppInfo> getApps() {
-        return new ArrayList<>(apps);
-    }
+    // public static List<AppInfo> getApps() { return new ArrayList<>(apps); }
 
     public static int getSize(){
         return apps.size();
@@ -30,7 +28,11 @@ public class OverviewUtil {
 
     public static boolean setApps() {
         if (ParseApps == null) {
-            if (!searching) loadParseApps();
+            if (!searching) {
+                Log.d(TAG, "ParseApps is null, loadParseApps...");
+                loadParseApps();
+            }
+            Log.d(TAG, "setApps: return false");
             return false;
         }
         List<String> name = new ArrayList<>(), packageName = new ArrayList<>(), category = new ArrayList<>();
@@ -44,6 +46,7 @@ public class OverviewUtil {
         ParseApps.put("category", category);
 
         ParseApps.saveEventually();
+        Log.d(TAG, "setApps: return true");
         return true;
     }
 
@@ -65,7 +68,23 @@ public class OverviewUtil {
     }
 
     public static void loadParseApps() {
-        Log.d("GetAppsService", "start loading");
+        Log.d(TAG, "checking currentUser...");
+        try {
+            boolean shouldWait = false;
+            while (!CreateInfoUtil.logIn) {
+                if (ParseUser.getCurrentUser() != null)
+                    Log.d(TAG, "currentUser exists while logIn is false");
+                if (shouldWait) Thread.sleep(5000);
+                shouldWait = true;
+                while (!CreateInfoUtil.logIn && CreateInfoUtil.loggingIn)
+                    Thread.sleep(500);
+            }
+        } catch(Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+
+        Log.d(TAG, "start loading");
         if (ParseApps == null) {
             searching = true;
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Apps");
