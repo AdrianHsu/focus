@@ -5,13 +5,11 @@
     android:orientation="vertical"
     android:background="@drawable/bg"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/base_toolbar"
+        android:id="@+id/tool_bar">
+    </include>
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/frameToolbar"
-        android:background="@color/transparent"/>
-    <FrameLayout
-        android:layout_below="@id/frameToolbar"
+        android:layout_below="@id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dFrameDragTopLayout"/>

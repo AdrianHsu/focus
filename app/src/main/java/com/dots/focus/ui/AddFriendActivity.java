@@ -20,7 +20,7 @@ public class AddFriendActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
 
-        super.createToolbarFragment();
+        super.createToolbarFragment(savedInstanceState);
 
 
 //        RecyclerView respondRecyclerView = (RecyclerView) findViewById(R.id

@@ -6,6 +6,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -41,7 +42,7 @@ import java.util.TimeZone;
 /**
  * Created by AdrianHsu on 15/9/23.
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends AppCompatActivity {
 
     static final String TAG = "LoginActivity";
     private Dialog progressDialog;

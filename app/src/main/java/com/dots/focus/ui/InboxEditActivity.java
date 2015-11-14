@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import com.dots.focus.R;
 import com.dots.focus.application.MainApplication;
 import com.dots.focus.config.Config;
-import com.dots.focus.ui.fragment.ToolbarBackArrowFragment;
 
 /**
  * Created by AdrianHsu on 2015/10/11.
@@ -21,21 +20,9 @@ public class InboxEditActivity extends BaseActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_inbox_edit);
-     createToolbarFragment();
+     createToolbarFragment(savedInstanceState);
   }
 
-  @Override
-  public void createToolbarFragment() {
-    FragmentManager fm = getSupportFragmentManager();
-    Fragment fragment = fm.findFragmentById(R.id.frameToolbar);
-
-    if(fragment == null) {
-      fragment = new ToolbarBackArrowFragment();
-      fm.beginTransaction()
-        .add(R.id.frameToolbar, fragment)
-        .commit();
-    }
-  }
   @Override
   public void onBackPressed() {
 //    //handle the back press, close the drawer first and if the drawer is closed close the activity
