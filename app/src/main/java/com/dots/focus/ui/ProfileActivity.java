@@ -21,7 +21,7 @@ public class ProfileActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_profile);
 
-    super.createToolbarFragment();
+    super.createToolbarFragment(savedInstanceState);
     initProfileDragTopLayoutFragment();
   }
   private void initProfileDragTopLayoutFragment() {

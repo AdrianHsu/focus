@@ -33,7 +33,7 @@ public class DashboardActivity extends BaseActivity {
       mDashboardController.makeMeRequest();
     }
 
-    super.createToolbarFragment();
+    super.createToolbarFragment(savedInstanceState);
     initDashboardDragTopLayoutFragment();
   }
   private void initDashboardDragTopLayoutFragment() {

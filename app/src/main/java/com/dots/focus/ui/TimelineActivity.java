@@ -19,7 +19,7 @@ public class TimelineActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        super.createToolbarFragment();
+        super.createToolbarFragment(savedInstanceState);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.timelineRecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));

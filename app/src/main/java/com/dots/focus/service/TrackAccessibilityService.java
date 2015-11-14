@@ -53,6 +53,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         temp.put("endTime", now);
         temp.pinInBackground();
         temp.saveEventually();
+
         TrackAccessibilityUtil.getCurrentHour(startTime).getList("appUsages").add(temp.getObjectId());
 
         startTime = now;
