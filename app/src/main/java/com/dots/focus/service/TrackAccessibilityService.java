@@ -38,7 +38,7 @@ public class TrackAccessibilityService extends AccessibilityService {
 
     private void checkWindowState(String tempPackageName){
 
-        long now = TrackAccessibilityUtil.getTimeInMilli();
+        long now = System.currentTimeMillis();
 
         if(startTime == 0 || currentPackageName.contentEquals("")){
             startTime = now;

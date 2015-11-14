@@ -22,8 +22,8 @@ public class TrackAccessibilityUtil {
     private static List<ParseObject> hourList = new ArrayList<>();
     private static String TAG = "TrackAccessibilityUtil";
 
-    public static long getTimeInMilli() {
-        return TimeZone.getDefault().getOffset(System.currentTimeMillis());
+    public static int getTimeInMilli() {
+        return TimeZone.getDefault().getOffset(System.currentTimeMillis()) / anHour;
     }
     public static ParseObject getCurrentDay(long time){
         Calendar rightNow = Calendar.getInstance();
@@ -69,13 +69,12 @@ public class TrackAccessibilityUtil {
                 Log.d(TAG, "getCurrentHour in local database went wrong.");
             }
             if (currentHour == null)
-                newHour(time);
+                newHour(time, rightNow.get(Calendar.HOUR_OF_DAY));
         }
         else if (time != currentHour.getLong("time")){
             hourList.add(currentHour);
-            newHour(time);
+            newHour(time, rightNow.get(Calendar.HOUR_OF_DAY));
         }
-
 
         return currentHour;
     }
@@ -88,10 +87,14 @@ public class TrackAccessibilityUtil {
             appLength.add(0);
         currentDay.put("appLength", appLength);
         currentDay.put("time", dayInLong);
+        currentDay.put("offset", getTimeInMilli());
         currentDay.put("end", false);
-        currentDay.put("hourBlocks", new ArrayList<ParseObject>());
+        currentDay.put("hourBlocks", new ArrayList<String>(12));
+
+        currentDay.pinInBackground();
+        currentDay.saveEventually();
     }
-    private static void newHour(long hourInLong){
+    private static void newHour(long hourInLong, int h){
         currentHour = new ParseObject("DayBlock");
         currentHour.put("User", ParseUser.getCurrentUser());
         List<Integer> appLength = new ArrayList<>();
@@ -100,9 +103,17 @@ public class TrackAccessibilityUtil {
             appLength.add(0);
         currentHour.put("appLength", appLength);
         currentHour.put("time", hourInLong);
+        currentHour.put("offset", getTimeInMilli());
         currentHour.put("end", false);
-        currentHour.put("prev", getCurrentDay(hourInLong));
-        currentHour.put("appUsage", new ArrayList<ParseObject>());
+        currentHour.put("prev", getCurrentDay(hourInLong).getObjectId());
+        currentHour.put("appUsage", new ArrayList<String>());
+
+        currentHour.pinInBackground();
+        currentHour.saveEventually();
+
+        getCurrentDay(hourInLong).put("hourBlocks",
+                getCurrentDay(hourInLong).getList("hourBlocks").set(h, currentHour.getObjectId())
+            );
     }
 
 }
