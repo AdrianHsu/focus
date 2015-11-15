@@ -92,7 +92,6 @@ public class TrackAccessibilityUtil {
         currentDay.put("hourBlocks", new ArrayList<String>(12));
 
         currentDay.pinInBackground();
-        currentDay.saveEventually();
     }
     private static void newHour(long hourInLong, int h){
         currentHour = new ParseObject("DayBlock");
@@ -109,7 +108,6 @@ public class TrackAccessibilityUtil {
         currentHour.put("appUsage", new ArrayList<String>());
 
         currentHour.pinInBackground();
-        currentHour.saveEventually();
 
         getCurrentDay(hourInLong).put("hourBlocks",
                 getCurrentDay(hourInLong).getList("hourBlocks").set(h, currentHour.getObjectId())

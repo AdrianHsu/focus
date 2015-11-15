@@ -22,7 +22,7 @@ public class CreateInfoUtil {
         if(text1 == null || text2 == null)  return;
         ParseUser userInfo = ParseUser.getCurrentUser();
 
-        switch(text1){
+        switch (text1) {
             case "Gender":
                 if(text2.equals("Male"))    userInfo.put("Gender", true);
                 else if(text2.equals("Female")) userInfo.put("Gender", false);
@@ -105,9 +105,5 @@ public class CreateInfoUtil {
             Log.d(TAG, "succeed update");
         }
         else Log.d(TAG, "fail update");
-
-        //Log.d(TAG, ParseUser.getCurrentUser().getEmail());
-        //Log.d(TAG, ParseUser.getCurrentUser().getString("Occupation"));
-
     }
 }
