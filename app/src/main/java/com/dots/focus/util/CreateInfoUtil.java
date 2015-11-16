@@ -13,7 +13,7 @@ import com.parse.SignUpCallback;
 // Occupation: String, ex: Student
 
 public class CreateInfoUtil {
-    public static boolean logIn = false, loggingIn = false;
+    public static boolean loggingIn = false;
     static String TAG = "CreateInfoUtil";
 
     public static void setUserInfo(String text1, String text2, boolean store){
@@ -46,55 +46,24 @@ public class CreateInfoUtil {
         ParseUser user = ParseUser.getCurrentUser();
         Log.d(TAG, "start log in by fb.");
         if (user != null){
-            logIn = true;
             Log.d(TAG, "user != null.");
             if (user.getUsername().equals(username)) {
                 if (user.has("installationId")) {
                     Log.d(TAG, "already logged in.");
+                    loggingIn = false;
                     return;
                 }
             }
             Log.d(TAG, "logging out.");
             ParseUser.logOutInBackground();
-            logIn = false;
-        }
-        else {
-            Log.d(TAG, "user == null.");
-            logIn = false;
         }
 
-        try {
-            Log.d(TAG, "restart log in.");
-            ParseUser.logIn(username, "focus");
-            if (ParseUser.getCurrentUser() != null) logIn = true;
-        } catch(ParseException e) {
-            Log.d(TAG, e.getMessage());
-        }
-
-        if (logIn) {
+        if (ParseUser.getCurrentUser() != null) {
             loggingIn = false;
             return;
         }
         Log.d(TAG, "signing up.");
-        ParseUser userInfo = new ParseUser();
-        userInfo.setUsername(username);
-        userInfo.setPassword("focus");
-        if (userInfo.getEmail() == null)    userInfo.setEmail("");
-        userInfo.put("installationId",
-                ParseInstallation.getCurrentInstallation().get("installationId"));
-        userInfo.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    logIn = true;
-                    loggingIn = false;
-                    Log.d(TAG, "succeed signing up.");
-                    update();
-                } else {
-                    Log.d(TAG, "fail signing up.");
-                    loggingIn = false;
-                }
-            }
-        });
+        signUp(username);
     }
 
     public static void update() {
@@ -105,5 +74,27 @@ public class CreateInfoUtil {
             Log.d(TAG, "succeed update");
         }
         else Log.d(TAG, "fail update");
+    }
+
+    static void signUp(String username) {
+        ParseUser userInfo = new ParseUser();
+        userInfo.setUsername(username);
+        userInfo.setPassword("focus");
+        if (userInfo.getEmail() == null)    userInfo.setEmail("");
+        userInfo.put("installationId",
+                ParseInstallation.getCurrentInstallation().get("installationId"));
+        userInfo.signUpInBackground(new SignUpCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    loggingIn = false;
+                    Log.d(TAG, "succeed signing up.");
+                    update();
+                } else {
+                    Log.d(TAG, "fail signing up.");
+                    loggingIn = false;
+                    // TBD
+                }
+            }
+        });
     }
 }

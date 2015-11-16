@@ -4,7 +4,6 @@ package com.dots.focus.util;
 import android.util.Log;
 
 import com.dots.focus.model.AppInfo;
-import com.parse.GetCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseException;
@@ -52,7 +51,7 @@ public class OverviewUtil {
 
     public static void addApp(AppInfo app) {
         apps.add(app);
-        Log.d(TAG, "apps.size(): " + apps.size());
+        Log.d(TAG, "app: " + app.getPackageName() + ", apps.size(): " + apps.size());
     }
 
     public static boolean findApp(String _packageName) {
@@ -86,13 +85,15 @@ public class OverviewUtil {
         Log.d(TAG, "checking currentUser...");
         try {
             boolean shouldWait = false;
-            while (!CreateInfoUtil.logIn) {
-                if (ParseUser.getCurrentUser() != null)
-                    Log.d(TAG, "currentUser exists while logIn is false");
+            while (ParseUser.getCurrentUser() == null) {
+                Log.d(TAG, "currentUser == null");
                 if (shouldWait) Thread.sleep(5000);
                 shouldWait = true;
-                while (!CreateInfoUtil.logIn && CreateInfoUtil.loggingIn)
+                //if (CreateInfoUtil.loggingIn) // TBD
+                while (CreateInfoUtil.loggingIn) {
                     Thread.sleep(500);
+                    Log.d(TAG, "loggingIn");
+                }
             }
         } catch(Exception e) {
             Log.d(TAG, e.getMessage());
@@ -151,16 +152,17 @@ public class OverviewUtil {
         Log.d("GetAppsService", "new database done.");
     }
     private static void mergeApps() {
+        String localTAG = "mergeApps";
         List<String> name, packageName, category;
 
         name = ParseApps.getList("name");
         packageName = ParseApps.getList("packageName");
         category = ParseApps.getList("category");
-        List<AppInfo> extras = apps;
+        List<AppInfo> extras = new ArrayList<>();
 
         int i = 0;
         for (; i < apps.size(); ++i) {
-            if (i < packageName.size()){
+            if (i < packageName.size()) {
                 if(! packageName.get(i).equals(apps.get(i).getPackageName())) {
                     boolean flag = false;
                     int j = i + 1;
@@ -183,10 +185,14 @@ public class OverviewUtil {
                 }
             }
         }
+        Log.d(localTAG, "i: " + i + ", packageName.size(): " + packageName.size());
         for(; i < packageName.size(); ++i){
+            Log.d(localTAG, "packageName: " + packageName.get(i));
             addApp(new AppInfo(name.get(i), packageName.get(i), category.get(i)));
         }
-        for(i = 0; i < extras.size(); ++i)
+        for (i = 0; i < extras.size(); ++i) {
+            Log.d(localTAG, "packageName: " + extras.get(i).getPackageName());
             addApp(extras.get(i));
+        }
     }
 }
