@@ -1,6 +1,7 @@
 var dataset;
 var color = ["#CF5C60", "#F3AE4E", "#4AB471", "#4EB1CB"];
-// loadRectChart([30, 35, 25, 10]);
+var name = ["Youtube", "Snapchat", "Line", "Facebook"]
+loadRectChart([30, 35, 25, 10]);
 
 function createRect() {
     var svg_height = screen.height * 0.75;
@@ -32,18 +33,25 @@ function createRect() {
         .attr("fill", function(d, i) {
             return color[i];
         })
+        .on("click", function(d, i) {
+            
+            var pink = i;
+            d3.selectAll("rect").transition().duration(500)
+            .attr("fill", function(d, i) {
+                if(i != pink) {
+                    return color[i];
+                } else {
+                    return "pink";
+                }
+            })
+        })
         .transition().delay(500).duration(1000).attr("height", function(d) {
             return d * a;
             // return svg_height;
         }).attr("y", function(d) {
             return svg_height - d * a;
-        });
-    // .on("click", function(d) {
-    //      rectClick(this, d);
-    // })             
-    // .on("mouseout", function(d) {
-    //          rectMouseOut(this, d);
-    // })
+        });             
+
     svg.selectAll("text")
         .data(dataset)
         .enter()
@@ -87,19 +95,13 @@ function loadRectChart(array) {
     dataset = array;
     createRect();
 }
-// function rectClick(_svg, d) {
-//     d3.select(_svg).transition().duration(500)
-//         .attr("fill", "pink");
-//         // .attr("fill", color);
-// };
+function rectClick(_svg, d, i) {
+    d3.select(_svg).transition().duration(500)
+        .attr("fill", "pink");
 
-// function rectMouseOut(_svg, d) {
+};
+
+// function rectMouseOut(_svg, d, i) {
 //     d3.select(_svg).transition().duration(500)
-//         .attr("y", function(d) {
-//             return svg_height - (d * 4);
-//         })
-//         .attr("height", function(d) {
-//             return d * 4;
-//         })
-//         .attr("fill", "rgba(0, 100, " + d * 5 + ", 0.75)");
+//         .attr("fill", color[i]);
 // };
