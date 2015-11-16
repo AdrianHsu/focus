@@ -4,7 +4,7 @@ import android.accessibilityservice.AccessibilityService;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
-import com.dots.focus.util.OverviewUtil;
+import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.ParseObject;
 
@@ -57,7 +57,7 @@ public class TrackAccessibilityService extends AccessibilityService {
                 return;
             }
         }
-        int index = OverviewUtil.getAppIndex(currentPackageName);
+        int index = FetchAppUtil.getAppIndex(currentPackageName);
         if (index == 0)
             if (newPackageName())   return;
 

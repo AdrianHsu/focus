@@ -25,6 +25,30 @@ public class TrackAccessibilityUtil {
     public static int getTimeInMilli() {
         return TimeZone.getDefault().getOffset(System.currentTimeMillis()) / anHour;
     }
+    public static List<Integer> getCategory() {
+        List<Integer> category = new ArrayList<>(),
+            appLength = getCurrentHour(System.currentTimeMillis()).getList("appLength");
+        for (int i = 0; i < 4; ++i) category.add(0); // Social, Productivity, Communication, Others
+        for (int i = 0; i < appLength.size(); ++i) {
+            String temp = FetchAppUtil.getApp(i).getCategory();
+            switch (temp) {
+                case "Social":
+                    category.set(0, category.get(0) + appLength.get(i));
+                    break;
+                case "Productivity":
+                    category.set(1, category.get(1) + appLength.get(i));
+                    break;
+                case "Communication":
+                    category.set(2, category.get(2) + appLength.get(i));
+                    break;
+                default:
+                    category.set(3, category.get(3) + appLength.get(i));
+                    break;
+            }
+        }
+        return category;
+    }
+
     public static ParseObject getCurrentDay(long time){
         Calendar rightNow = Calendar.getInstance();
         rightNow.setTimeInMillis(1000 * (time / 1000));
@@ -82,7 +106,7 @@ public class TrackAccessibilityUtil {
         currentDay = new ParseObject("DayBlock");
         currentDay.put("User", ParseUser.getCurrentUser());
         List<Integer> appLength = new ArrayList<>();
-        int size = OverviewUtil.getSize();
+        int size = FetchAppUtil.getSize();
         for(int i = 0; i < size; ++i)
             appLength.add(0);
         currentDay.put("appLength", appLength);
@@ -97,7 +121,7 @@ public class TrackAccessibilityUtil {
         currentHour = new ParseObject("DayBlock");
         currentHour.put("User", ParseUser.getCurrentUser());
         List<Integer> appLength = new ArrayList<>();
-        int size = OverviewUtil.getSize();
+        int size = FetchAppUtil.getSize();
         for(int i = 0; i < size; ++i)
             appLength.add(0);
         currentHour.put("appLength", appLength);
@@ -113,5 +137,6 @@ public class TrackAccessibilityUtil {
                 getCurrentDay(hourInLong).getList("hourBlocks").set(h, currentHour.getObjectId())
             );
     }
+
 
 }
