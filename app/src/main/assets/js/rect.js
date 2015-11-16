@@ -55,22 +55,22 @@ svg.selectAll("rect")
 //         })
 //         .attr("fill", "rgba(0, 100, " + d * 5 + ", 0.75)");
 // };
-svg.selectAll("text")
-	.data(dataset)
-	.enter()
-	.append("text")
-	.text(function(d) {
-		return d;
-	})
-	.attr("text-anchor", "right")
-	.attr("x", function(d, i) {
-		return i * (svg_width / dataset.length) + 
-			((svg_width / dataset.length - bar_padding) / 2);
-	})
-	.attr("y", function(d) {
-		return svg_height - (d * 4) + 20;
-	})
-	.attr("fill", "#FFFFFF")
-	.attr("font-family", "sans-serif")
-	.attr("font-size", "12px");
-	.attr("fill", "#FFFFFF");
+// svg.selectAll("text")
+// 	.data(dataset)
+// 	.enter()
+// 	.append("text")
+// 	.text(function(d) {
+// 		return d;
+// 	})
+// 	.attr("text-anchor", "right")
+// 	.attr("x", function(d, i) {
+// 		return i * (svg_width / dataset.length) + 
+// 			((svg_width / dataset.length - bar_padding) / 2);
+// 	})
+// 	.attr("y", function(d) {
+// 		return svg_height - (d * 4) + 20;
+// 	})
+// 	.attr("fill", "#FFFFFF")
+// 	.attr("font-family", "sans-serif")
+// 	.attr("font-size", "12px");
+	// .attr("fill", "#FFFFFF");
