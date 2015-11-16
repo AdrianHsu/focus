@@ -11,7 +11,7 @@ import android.util.Log;
 
 
 import com.dots.focus.model.AppInfo;
-import com.dots.focus.util.OverviewUtil;
+import com.dots.focus.util.FetchAppUtil;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -44,7 +44,7 @@ public class GetAppsService extends IntentService {
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         List<ResolveInfo> ril = getPackageManager().queryIntentActivities(mainIntent, 0);
         for (ResolveInfo ri : ril) {
-            if(! OverviewUtil.findApp(ri.activityInfo.packageName)) {
+            if(! FetchAppUtil.findApp(ri.activityInfo.packageName)) {
                 needToStore = true;
                 String name = ri.resolvePackageName;
 
@@ -77,7 +77,7 @@ public class GetAppsService extends IntentService {
                 Log.d(TAG, "PackageName: " + ri.activityInfo.packageName);
                 list.put(ri.activityInfo.packageName);
 
-                OverviewUtil.addApp(new AppInfo(name, ri.activityInfo.packageName,
+                FetchAppUtil.addApp(new AppInfo(name, ri.activityInfo.packageName,
                         ri.loadIcon(getPackageManager())));
                 Log.d(TAG, "Stored.");
             }
@@ -119,7 +119,7 @@ public class GetAppsService extends IntentService {
             JSONArray all = apps.names();
             for (int i = 0; i < all.length(); i++) {
                 Log.d("GetAppsService", all.getString(i) + ": " + apps.getString(all.getString(i)));
-                AppInfo temp = OverviewUtil.getApp(all.getString(i));
+                AppInfo temp = FetchAppUtil.getApp(all.getString(i));
                 if(temp != null)    temp.setCategory(apps.getString(all.getString(i)));
             }
         } catch (Exception e) {
@@ -127,7 +127,7 @@ public class GetAppsService extends IntentService {
         } finally {
             httpClient.getConnectionManager().shutdown();
         }
-        OverviewUtil.printApps();
-        if(needToStore) OverviewUtil.loadParseApps();
+        FetchAppUtil.printApps();
+        if(needToStore) FetchAppUtil.loadParseApps();
     }
 }

@@ -8,14 +8,8 @@ import android.support.v4.app.FragmentManager;
 import com.dots.focus.R;
 import com.dots.focus.controller.DashboardController;
 import com.dots.focus.ui.fragment.DashboardDragFragment;
-import com.dots.focus.util.OverviewUtil;
-import com.parse.Parse;
+import com.dots.focus.util.FetchAppUtil;
 import com.parse.ParseUser;
-
-
-/**
- * Created by AdrianHsu on 2015/10/9.
- */
 
 public class DashboardActivity extends BaseActivity {
 
@@ -30,7 +24,7 @@ public class DashboardActivity extends BaseActivity {
     //Fetch Facebook user info if it is logged
     ParseUser currentUser = ParseUser.getCurrentUser();
     if ((currentUser != null) && currentUser.isAuthenticated()) {
-      mDashboardController.makeMeRequest();
+      DashboardController.makeMeRequest();
     }
 
     super.createToolbarFragment(savedInstanceState);
@@ -66,7 +60,7 @@ public class DashboardActivity extends BaseActivity {
   }
 
   private void startLoginActivity() {
-    OverviewUtil.loadParseApps();
+    FetchAppUtil.loadParseApps();
     Intent intent = new Intent(this, LoginActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -3,7 +3,7 @@ var svg_width = screen.width * 0.95;
 var a = svg_height / 60;
 var bar_padding = 1;
 
-var dataset = [30, 35, 25, 10];
+var dataset;
 
 var svg = d3.select("body")
     .append("svg")
@@ -33,7 +33,9 @@ svg.selectAll("rect")
 	// .on("mouseout", function(d) {
  //          rectMouseOut(this, d);
 	// })
-
+function loadRectChart(array) {
+    dataset = array;
+}
 // function rectClick(_svg, d) {
 //     d3.select(_svg).transition().duration(500)
 //         .attr("y", function(d) {

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.dots.focus.R;
 import com.dots.focus.ui.fragment.CreateInfoSlide;
 import com.dots.focus.util.CreateInfoUtil;
-import com.dots.focus.util.OverviewUtil;
+import com.dots.focus.util.FetchAppUtil;
 import com.github.paolorotolo.appintro.AppIntro2;
 
 public class CreateInfoActivity extends AppIntro2 {
@@ -44,8 +44,8 @@ public class CreateInfoActivity extends AppIntro2 {
     // Do something when users tap on Done button.
 
     CreateInfoUtil.update();
-    OverviewUtil.printApps();
-    OverviewUtil.setApps();
+    FetchAppUtil.printApps();
+    FetchAppUtil.setApps();
     //Intent intent = new Intent(this, GetAppsService.class);
     //startService(intent);
 

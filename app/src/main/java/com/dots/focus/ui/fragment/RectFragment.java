@@ -12,6 +12,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.dots.focus.R;
+import com.dots.focus.util.TrackAccessibilityUtil;
+
+import java.util.Arrays;
 
 /**
  * Created by AdrianHsu on 2015/11/16.
@@ -49,10 +52,8 @@ public class RectFragment extends Fragment {
 
     webview.setWebViewClient(new WebViewClient() {
       @Override
-      public void onPageFinished(
-        WebView view,
-        String url) {
-
+      public void onPageFinished(WebView view, String url) {
+        loadRectChart();
       }
     });
 
@@ -66,5 +67,9 @@ public class RectFragment extends Fragment {
     webview.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
 
     return topLevelView;
+  }
+  void loadRectChart() {
+    int data[] = TrackAccessibilityUtil.getCategory();
+    webview.loadUrl("javascript:loadRectChart(" + Arrays.toString(data) + ")");
   }
 }
