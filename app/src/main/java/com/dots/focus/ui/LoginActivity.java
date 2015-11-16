@@ -16,6 +16,10 @@ import com.dots.focus.controller.LoginController;
 
 import com.dots.focus.service.GetAppsService;
 import com.dots.focus.util.CreateInfoUtil;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.parse.LogInCallback;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseException;
@@ -93,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     showSetInfoActivity();
                 } else {
                     Log.d(TAG, "User logged in through Facebook!");
+
                     CreateInfoUtil.logInByFb(user.getUsername());
                     showSetInfoActivity();
                 }

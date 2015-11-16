@@ -117,7 +117,7 @@ public class BaseActivity extends AppCompatActivity {
             } else if (drawerItem.getIdentifier() == 2) {
               intent = new Intent(BaseActivity.this, TimelineActivity.class);
             } else if (drawerItem.getIdentifier() == 3) {
-//              intent = new Intent(BaseActivity.this, OverviewActivity.class);
+              intent = new Intent(BaseActivity.this, OverviewActivity.class);
             } else if (drawerItem.getIdentifier() == 4) {
               intent = new Intent(BaseActivity.this, ProfileActivity.class);
             } else if (drawerItem.getIdentifier() == 5) {
@@ -158,8 +158,8 @@ public class BaseActivity extends AppCompatActivity {
   private void buildHeader(boolean compact, Bundle savedInstanceState) {
     // Create the AccountHeader
     MainApplication.headerResult = new AccountHeaderBuilder()
-      .withActivity(this)
-      .withHeaderBackground(R.drawable.cover_photo) // not yet sync with facebook
+      .withActivity(this) // not yet make compression on cover_photo (31KB <- 400KB)
+      .withHeaderBackground(R.drawable.cover_photo) // cannot get permission from facebook
       .withCompactStyle(compact)
       .addProfiles(
         MainApplication.profile // not yet sync with facebook
