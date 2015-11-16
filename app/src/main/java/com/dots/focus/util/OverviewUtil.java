@@ -190,9 +190,8 @@ public class OverviewUtil {
             Log.d(localTAG, "packageName: " + packageName.get(i));
             addApp(new AppInfo(name.get(i), packageName.get(i), category.get(i)));
         }
-        for (i = 0; i < extras.size(); ++i) {
-            Log.d(localTAG, "packageName: " + extras.get(i).getPackageName());
+        for (i = 0; i < extras.size(); ++i)
             addApp(extras.get(i));
-        }
+
     }
 }
