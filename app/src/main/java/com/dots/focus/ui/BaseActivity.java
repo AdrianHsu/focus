@@ -159,7 +159,7 @@ public class BaseActivity extends AppCompatActivity {
     // Create the AccountHeader
     MainApplication.headerResult = new AccountHeaderBuilder()
       .withActivity(this) // not yet make compression on cover_photo (31KB <- 400KB)
-      .withHeaderBackground(R.drawable.cover_photo) // cannot get permission from facebook
+//      .withHeaderBackground(R.drawable.cover_photo) // cannot get permission from facebook
       .withCompactStyle(compact)
       .addProfiles(
         MainApplication.profile // not yet sync with facebook
