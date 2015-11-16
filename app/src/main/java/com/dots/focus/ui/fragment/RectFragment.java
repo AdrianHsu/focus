@@ -69,7 +69,8 @@ public class RectFragment extends Fragment {
     return topLevelView;
   }
   void loadRectChart() {
-    int data[] = TrackAccessibilityUtil.getCategory();
+//    int data[] = TrackAccessibilityUtil.getCategory();
+    int data[] = {30, 35, 25, 10};
     webview.loadUrl("javascript:loadRectChart(" + Arrays.toString(data) + ")");
   }
 }
