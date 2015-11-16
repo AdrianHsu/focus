@@ -25,28 +25,27 @@ public class TrackAccessibilityUtil {
     public static int getTimeInMilli() {
         return TimeZone.getDefault().getOffset(System.currentTimeMillis()) / anHour;
     }
-    public static List<Integer> getCategory() {
-        List<Integer> category = new ArrayList<>(),
-            appLength = getCurrentHour(System.currentTimeMillis()).getList("appLength");
-        for (int i = 0; i < 4; ++i) category.add(0); // Social, Productivity, Communication, Others
+    public static int[] getCategory() {
+        int[] data = new int[] {0, 0, 0, 0};
+        List<Integer> appLength = getCurrentHour(System.currentTimeMillis()).getList("appLength");
         for (int i = 0; i < appLength.size(); ++i) {
             String temp = FetchAppUtil.getApp(i).getCategory();
             switch (temp) {
                 case "Social":
-                    category.set(0, category.get(0) + appLength.get(i));
+                    data[0] += appLength.get(i);
                     break;
                 case "Productivity":
-                    category.set(1, category.get(1) + appLength.get(i));
+                    data[1] += appLength.get(i);
                     break;
                 case "Communication":
-                    category.set(2, category.get(2) + appLength.get(i));
+                    data[2] += appLength.get(i);
                     break;
                 default:
-                    category.set(3, category.get(3) + appLength.get(i));
+                    data[3] += appLength.get(i);
                     break;
             }
         }
-        return category;
+        return data;
     }
 
     public static ParseObject getCurrentDay(long time){
