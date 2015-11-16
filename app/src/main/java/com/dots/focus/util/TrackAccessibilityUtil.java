@@ -29,6 +29,7 @@ public class TrackAccessibilityUtil {
         int[] data = new int[] {0, 0, 0, 0};
         List<Integer> appLength = getCurrentHour(System.currentTimeMillis()).getList("appLength");
         for (int i = 0; i < appLength.size(); ++i) {
+            Log.d(TAG, "FetchAppUtil.getApp: ");
             String temp = FetchAppUtil.getApp(i).getCategory();
             switch (temp) {
                 case "Social":
@@ -69,8 +70,6 @@ public class TrackAccessibilityUtil {
             dayList.add(currentDay);
             newDay(rightNow.getTimeInMillis());
         }
-
-
         return currentDay;
     }
     public static ParseObject getCurrentHour(long time){
