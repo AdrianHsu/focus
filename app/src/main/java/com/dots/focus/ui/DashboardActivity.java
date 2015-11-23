@@ -2,19 +2,15 @@ package com.dots.focus.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
 import com.dots.focus.R;
 import com.dots.focus.controller.DashboardController;
-import com.dots.focus.ui.fragment.DashboardDragFragment;
 import com.dots.focus.util.FetchAppUtil;
 import com.parse.ParseUser;
 
 public class DashboardActivity extends BaseActivity {
 
   static final String TAG = "DashboardActivity";
-  DashboardController mDashboardController = new DashboardController();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -25,21 +21,6 @@ public class DashboardActivity extends BaseActivity {
     ParseUser currentUser = ParseUser.getCurrentUser();
     if ((currentUser != null) && currentUser.isAuthenticated()) {
       DashboardController.makeMeRequest();
-    }
-
-    super.createToolbarFragment(savedInstanceState);
-    initDashboardDragTopLayoutFragment();
-  }
-  private void initDashboardDragTopLayoutFragment() {
-
-    FragmentManager fm = getSupportFragmentManager();
-    Fragment fragment = fm.findFragmentById(R.id.dFrameDragTopLayout);
-
-    if(fragment == null) {
-      fragment = new DashboardDragFragment();
-      fm.beginTransaction()
-        .add(R.id.dFrameDragTopLayout, fragment)
-        .commit();
     }
   }
 
