@@ -6,14 +6,10 @@ import android.util.Log;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.parse.GetCallback;
-import com.parse.ParseClassName;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -28,6 +24,7 @@ public class TrackAccessibilityUtil {
     public static int getTimeOffset() {
         return TimeZone.getDefault().getOffset(System.currentTimeMillis()) / anHour;
     }
+/*
     public static int[] getCategory() {
         int[] data = new int[] {0, 0, 0, 0};
         List<Integer> appLength = getCurrentHour(System.currentTimeMillis()).getList("appLength");
@@ -51,8 +48,8 @@ public class TrackAccessibilityUtil {
         }
         return data;
     }
-
-    public static ParseObject getCurrentDay(long time){
+*/
+    public static DayBlock getCurrentDay(long time){
         long localDay = getLocalDay(time);
         if (currentDay == null) {
             ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
@@ -73,7 +70,7 @@ public class TrackAccessibilityUtil {
         else Log.d(TAG, "day id: " + currentDay.getObjectId());
         return currentDay;
     }
-    public static ParseObject getCurrentHour(long time){
+    public static HourBlock getCurrentHour(long time){
         Calendar rightNow = Calendar.getInstance();
         rightNow.setTimeInMillis(time);
 
@@ -108,12 +105,23 @@ public class TrackAccessibilityUtil {
         return rightNow.getTimeInMillis();
     }
 
-    private static void newDay(long dayInLong){
+    private static void newDay(final long dayInLong){
         currentDay = new DayBlock(dayInLong);
-        currentDay.pinInBackground(new SaveCallback() {
+        currentDay.saveEventually(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                List<String> hourBlocks = currentDay.getHourBlocks();
+                if (e != null)  {
+                    Log.d(TAG, "currentDay pin error: " + e.getMessage());
+                }
+                List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
+                if (hourBlocks == null) {
+                    Log.d(TAG, "hourBlocks is null.");
+                    return;
+                }
+                if (hourBlocks.size() < 24) {
+                    Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
+                    return;
+                }
                 for (int i = 0; i < 24; ++i) {
                     if (!hourBlocks.get(i).equals("")) {
                         ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
@@ -121,7 +129,7 @@ public class TrackAccessibilityUtil {
                             @Override
                             public void done(HourBlock hourBlock, ParseException e) {
                                 if (hourBlock != null && e == null)
-                                    hourBlock.setDayBlock(currentDay.getObjectId());
+                                    hourBlock.setDayBlock(getCurrentDay(dayInLong).getObjectId());
                             }
                         });
                     }
@@ -132,27 +140,20 @@ public class TrackAccessibilityUtil {
     }
     private static void newHour(final long hourInLong, final int h){
         currentHour = new HourBlock(hourInLong, h);
-        currentHour.put("User", ParseUser.getCurrentUser());
-        List<Integer> appLength = new ArrayList<>();
-        int size = FetchAppUtil.getSize();
-        for(int i = 0; i < size; ++i)
-            appLength.add(0);
-        currentHour.put("appLength", appLength);
-        currentHour.put("time", hourInLong);
-        currentHour.put("offset", getTimeOffset());
-        currentHour.put("end", false);
-        String id = getCurrentDay(hourInLong).getObjectId();
-        Log.d(TAG, "id: " + id);
-        if (id != null)
-            currentHour.put("prev", id);
-        currentHour.put("appUsage", new ArrayList<String>());
 
-        currentHour.pinInBackground(new SaveCallback() {
+        currentHour.saveEventually(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                getCurrentDay(hourInLong).put("hourBlocks",
-                    getCurrentDay(hourInLong).getList("hourBlocks").set(h,
-                        currentHour.getObjectId()));
+                // if (getCurrentDay(hourInLong) != null)  Log.d(TAG, );
+                if (e != null)  {
+                    Log.d(TAG, "currentHour pin error: " + e.getMessage());
+                }
+                if (getCurrentDay(hourInLong).getHourBlocks() != null) {
+                    Log.d(TAG, "hour: " + h + ", List.size(): " + getCurrentDay(hourInLong).getHourBlocks().size());
+                    List<String> temp = getCurrentDay(hourInLong).getHourBlocks();
+                    temp.set(h, currentHour.getObjectId());
+                    getCurrentDay(hourInLong).setHourBlocks(temp);
+                } else Log.d(TAG, "DayBlock.getList(\"hourBlocks\") is null...!");
             }
         });
 

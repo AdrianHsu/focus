@@ -55,15 +55,6 @@ public class HourBlock extends ParseObject {
             setDayBlock(id);
 
         setAppUsage(new ArrayList<String>());
-
-        pinInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                TrackAccessibilityUtil.getCurrentDay(hourInLong).put("hourBlocks",
-                    TrackAccessibilityUtil.getCurrentDay(hourInLong).getList("hourBlocks").set(h,
-                        getObjectId()));
-            }
-        });
     }
 
     public ParseUser getUser() {

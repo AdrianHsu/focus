@@ -11,9 +11,6 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Harvey on 2015/11/16.
- */
 public class FetchAppUtil {
     private static List<AppInfo> apps = new ArrayList<>();
     private static ParseObject ParseApps = null;

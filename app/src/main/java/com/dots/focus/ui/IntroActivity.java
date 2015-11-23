@@ -8,9 +8,6 @@ import com.dots.focus.R;
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
-/**
- * Created by AdrianHsu on 15/9/27.
- */
 public class IntroActivity extends AppIntro2 {
 
   static final String TAG = "IntroActivity";

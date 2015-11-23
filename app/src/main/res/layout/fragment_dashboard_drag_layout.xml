@@ -40,10 +40,27 @@
             android:layout_width="match_parent"
             android:layout_height="43dp"
             android:background="#10FFFFFF" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test1_button"
+            android:id="@+id/test1_button"
+            android:layout_gravity="end" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test2_button"
+            android:id="@+id/test2_button"
+            android:layout_gravity="end" />
+
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+
 
         </android.support.v4.view.ViewPager>
     </LinearLayout>
