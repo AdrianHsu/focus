@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.dots.focus.config.Config;
+import com.dots.focus.model.DayBlock;
+import com.dots.focus.model.HourBlock;
 import com.facebook.FacebookSdk;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
@@ -18,6 +20,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseObject;
 import com.squareup.picasso.Picasso;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -40,6 +43,8 @@ public class MainApplication extends Application {
     FacebookSdk.sdkInitialize(getApplicationContext());
 
     Parse.enableLocalDatastore(this);
+    ParseObject.registerSubclass(DayBlock.class);
+    ParseObject.registerSubclass(HourBlock.class);
     Parse.initialize(this,
       Config.FOCUS_APPLICATION_ID,
       Config.FOCUS_CLIENT_ID
