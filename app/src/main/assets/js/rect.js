@@ -41,6 +41,7 @@ function createRect() {
                 if(i != pink) {
                     return color[i];
                 } else {
+                    
                     return "pink";
                 }
             })
@@ -67,7 +68,7 @@ function createRect() {
         .attr("y", function(d) {
             return svg_height - (d * a);
         })
-        .attr("fill", "rgba(255, 255, 255, 1)")
+        .attr("fill", "rgba(0, 0, 0, 1)")
         .attr("font-size", "30")
         .transition().delay(500).duration(1000).attr("y", function(d) {
             return svg_height - (d * a) - 30;
@@ -86,7 +87,7 @@ function createRect() {
         .style("font-size", "16px")
         .style("text-decoration", "underline")
         .text("Bar Chart, FOCUS")
-        .attr("fill", "#FFFFFF");
+        .attr("fill", "#000000");
 
 
 }
