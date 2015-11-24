@@ -34,38 +34,38 @@
             android:screenOrientation="portrait"
             >
         </activity>
-        <activity
-            android:name=".ui.InboxActivity"
-            android:label="@string/drawer_item_inbox"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.InboxEditActivity"
-            android:label="@string/drawer_item_inbox"
-            android:screenOrientation="portrait"/>
         <!--<activity-->
-            <!--android:name=".ui.InboxSettingsActivity"-->
+            <!--android:name=".ui.InboxActivity"-->
             <!--android:label="@string/drawer_item_inbox"-->
             <!--android:screenOrientation="portrait"/>-->
-        <activity
-            android:name=".ui.TimelineActivity"
-            android:label="@string/drawer_item_timeline"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.ProfileActivity"
-            android:label="@string/drawer_item_profile"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.SettingsActivity"
-            android:label="@string/drawer_item_settings"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.AddFriendActivity"
-            android:label="@string/drawer_item_add_friend"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.OverviewActivity"
-            android:label="@string/drawer_item_overview"
-            android:screenOrientation="portrait"/>
+        <!--<activity-->
+            <!--android:name=".ui.InboxEditActivity"-->
+            <!--android:label="@string/drawer_item_inbox"-->
+            <!--android:screenOrientation="portrait"/>-->
+        <!--&lt;!&ndash;<activity&ndash;&gt;-->
+            <!--&lt;!&ndash;android:name=".ui.InboxSettingsActivity"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:label="@string/drawer_item_inbox"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:screenOrientation="portrait"/>&ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name=".ui.TimelineActivity"-->
+            <!--android:label="@string/drawer_item_timeline"-->
+            <!--android:screenOrientation="portrait"/>-->
+        <!--<activity-->
+            <!--android:name=".ui.ProfileActivity"-->
+            <!--android:label="@string/drawer_item_profile"-->
+            <!--android:screenOrientation="portrait"/>-->
+        <!--<activity-->
+            <!--android:name=".ui.SettingsActivity"-->
+            <!--android:label="@string/drawer_item_settings"-->
+            <!--android:screenOrientation="portrait"/>-->
+        <!--<activity-->
+            <!--android:name=".ui.AddFriendActivity"-->
+            <!--android:label="@string/drawer_item_add_friend"-->
+            <!--android:screenOrientation="portrait"/>-->
+        <!--<activity-->
+            <!--android:name=".ui.OverviewActivity"-->
+            <!--android:label="@string/drawer_item_overview"-->
+            <!--android:screenOrientation="portrait"/>-->
 
         <activity android:name="com.facebook.FacebookActivity"
                   android:configChanges=

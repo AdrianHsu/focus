@@ -46,20 +46,4 @@ dependencies {
     compile('com.afollestad.material-dialogs:core:0.8.1.0@aar') {
         transitive = true
     }
-//    https://github.com/focus-forked-open-source-license/DragTopLayout
-    compile 'com.github.chenupt.android:dragtoplayout:1.2.1@aar'
-//    https://github.com/astuetz/PagerSlidingTabStrip
-    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    //     https://github.com/mikepenz/MaterialDrawer
-    compile('com.mikepenz:materialdrawer:3.1.2@aar') {
-        transitive = true
-    }
-    compile('com.mikepenz:aboutlibraries:5.0.7@aar') {
-        transitive = true
-    }
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile project(':recyclerview-lib')
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
-    compile 'de.hdodenhof:circleimageview:2.0.0'
-
 }

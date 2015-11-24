@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="FocusAppTheme" parent="MaterialDrawerTheme.TranslucentStatus">
+    <style name="FocusAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <!--<item name="colorPrimary">@color/purple</item>-->
         <item name="colorPrimaryDark">@color/status_bar_color</item>
