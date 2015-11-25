@@ -18,7 +18,9 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class DashboardActivity extends BaseActivity {
@@ -33,39 +35,79 @@ public class DashboardActivity extends BaseActivity {
         test1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TrackAccessibilityUtil.getCurrentDay(System.currentTimeMillis()).saveEventually();
-                TrackAccessibilityUtil.getCurrentHour(System.currentTimeMillis()).saveEventually();
+                Log.d(TAG, "test1_button clicked.");
+                TrackAccessibilityUtil.getCurrentDay(System.currentTimeMillis()).saveEventually(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null)  Log.d(TAG, "Day succeeded saving.");
+                        else            Log.d(TAG, "Day failed saving.");
+                    }
+                });
+                TrackAccessibilityUtil.getCurrentHour(System.currentTimeMillis()).saveEventually(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null)  Log.d(TAG, "Hour succeeded saving.");
+                        else            Log.d(TAG, "Hour failed saving.");
+                    }
+                });
+                Log.d(TAG, "test1_button finished.");
             }
         });
         Button test2 = (Button) findViewById(R.id.test2_button);
         test2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "test2_button clicked.");
                 ParseQuery<DayBlock> query = ParseQuery.getQuery("DayBlock");
-                query.fromLocalDatastore();
+                // query.fromLocalDatastore();
                 query.findInBackground(new FindCallback<DayBlock>() {
                     @Override
                     public void done(List<DayBlock> list, ParseException e) {
-                        if (list != null && e == null) {
-                            for (int i = 0; i < list.size(); ++i)
-                                Log.d(TAG, "DayBlock" + i + ": " + list.get(i).toString());
+                        Log.d(TAG, "query done.");
+                        if (e != null)
+                            Log.d(TAG, "DayBlock error: " + e.getMessage());
+
+
+                        else if (list == null)
+                            Log.d(TAG, "DayBlock list is null");
+
+                        else {
+                            for (int i = 0; i < list.size(); ++i){
+                                Calendar rightNow = Calendar.getInstance();
+                                rightNow.setTimeInMillis(list.get(i).getTime());
+
+                                Log.d(TAG, "DayBlock" + i + ", Year: " + rightNow.get(Calendar.YEAR)
+                                    + ", Month: " + rightNow.get(Calendar.MONTH) +
+                                    ", Day: " + rightNow.get(Calendar.DAY_OF_MONTH) +
+                                    ", Hour: " + rightNow.get(Calendar.HOUR_OF_DAY)
+                                );
+                            }
+
                         }
 
                     }
                 });
 
                 ParseQuery<HourBlock> query2 = ParseQuery.getQuery("HourBlock");
-                query2.fromLocalDatastore();
+                // query2.fromLocalDatastore();
                 query2.findInBackground(new FindCallback<HourBlock>() {
                     @Override
                     public void done(List<HourBlock> list, ParseException e) {
-                        if (list != null && e == null) {
+                        Log.d(TAG, "query2 done.");
+                        if (e != null)
+                            Log.d(TAG, "HourBlock error: " + e.getMessage());
+
+                        else if (list == null)
+                            Log.d(TAG, "HourBlock list is null");
+
+                        else {
                             for (int i = 0; i < list.size(); ++i)
                                 Log.d(TAG, "HourBlock" + i + ": " + list.get(i).toString());
                         }
 
                     }
                 });
+                Log.d(TAG, "test2_button finished.");
             }
         });
 

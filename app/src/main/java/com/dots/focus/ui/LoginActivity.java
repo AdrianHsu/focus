@@ -86,7 +86,11 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("FBUser", "objectId: " + user.getObjectId());
 
                     getFriendsInfo();
-                    CreateInfoUtil.logInByFb(user.getUsername());
+
+                    CreateInfoUtil.setUserInfo("AppIndex", "0", false);
+
+                    user.saveEventually();
+
                     showSetInfoActivity();
                 } else {
                     user.saveEventually();
@@ -98,7 +102,8 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("FBUser", "objectId: " + user.getObjectId());
 
                     getFriendsInfo();
-                    CreateInfoUtil.logInByFb(user.getUsername());
+                    user.saveEventually();
+
                     showSetInfoActivity();
                 }
 

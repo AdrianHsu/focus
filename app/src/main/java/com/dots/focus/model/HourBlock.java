@@ -5,38 +5,20 @@ import android.util.Log;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Harvey on 2015/11/16.
- */
+
 @ParseClassName("HourBlock")
 public class HourBlock extends ParseObject {
 
-    public HourBlock() {
-        List<Integer> appLength = new ArrayList<>();
-        int size = FetchAppUtil.getSize();
-        for(int i = 0; i < size; ++i)
-            appLength.add(0);
+    public HourBlock() {}
 
-        if (ParseUser.getCurrentUser() != null)
-            setUser(ParseUser.getCurrentUser());
-        setAppLength(appLength);
-        setTime(0);
-        setOffset(TrackAccessibilityUtil.getTimeOffset());
-        setEnd(false);
-        setDayBlock("");
-        setAppUsage(new ArrayList<String>());
-    }
-
-    public HourBlock(final long hourInLong, final int h) {
+    public HourBlock(final long hourInLong, final int h, final int index) {
 
         List<Integer> appLength = new ArrayList<>();
         int size = FetchAppUtil.getSize();
@@ -53,8 +35,8 @@ public class HourBlock extends ParseObject {
         String id = TrackAccessibilityUtil.getCurrentDay(hourInLong).getObjectId();
         if (id != null)
             setDayBlock(id);
-
-        setAppUsage(new ArrayList<String>());
+        setStartIndex(index);
+        setEndIndex(index);
     }
 
     public ParseUser getUser() {
@@ -93,12 +75,19 @@ public class HourBlock extends ParseObject {
     public void setDayBlock(String dayId) {
         put("prev", dayId);
     }
-    public List<String> getAppUsage() {
-        return getList("appUsage");
+    public int getStartIndex() {
+        return getInt("startIndex");
     }
-    public void setAppUsage(List<String> appUsage) {
-        put("appUsage", appUsage);
+    public void setStartIndex(int index) {
+        put("startIndex", index);
     }
+    public int getEndIndex() {
+        return getInt("endIndex");
+    }
+    public void setEndIndex(int index) {
+        put("endIndex", index);
+    }
+
     public static ParseQuery<HourBlock> getQuery() {
         return ParseQuery.getQuery(HourBlock.class);
     }

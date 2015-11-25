@@ -8,6 +8,7 @@ import com.dots.focus.model.HourBlock;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.Calendar;
@@ -51,6 +52,7 @@ public class TrackAccessibilityUtil {
 */
     public static DayBlock getCurrentDay(long time){
         long localDay = getLocalDay(time);
+
         if (currentDay == null) {
             ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
             query.whereEqualTo("time", localDay);
@@ -98,10 +100,16 @@ public class TrackAccessibilityUtil {
     //helper functions
     private static long getLocalDay(long time) {
         Calendar rightNow = Calendar.getInstance();
-        rightNow.setTimeInMillis(1000 * ((time + anHour * getTimeOffset()) / 1000)); // shift to local time
-        rightNow.set(rightNow.get(Calendar.YEAR), rightNow.get(Calendar.MONTH),
-                rightNow.get(Calendar.DAY_OF_MONTH), 0, 0); // discard hours
+        rightNow.setTimeInMillis(24*anHour * ((time + anHour * getTimeOffset()) / (24*anHour))); // shift to local time
+        //rightNow.set(rightNow.get(Calendar.YEAR), rightNow.get(Calendar.MONTH),
+        //        rightNow.get(Calendar.DAY_OF_MONTH), 0, 0); // discard hours
         rightNow.setTimeInMillis(rightNow.getTimeInMillis() - anHour * getTimeOffset()); // local day in  standard time
+        Log.d(TAG, "localDay, Year: " + rightNow.get(Calendar.YEAR)
+                        + ", Month: " + rightNow.get(Calendar.MONTH) +
+                        ", Day: " + rightNow.get(Calendar.DAY_OF_MONTH) +
+                        ", Hour: " + rightNow.get(Calendar.HOUR_OF_DAY)
+        );
+
         return rightNow.getTimeInMillis();
     }
 
@@ -139,7 +147,7 @@ public class TrackAccessibilityUtil {
 
     }
     private static void newHour(final long hourInLong, final int h){
-        currentHour = new HourBlock(hourInLong, h);
+        currentHour = new HourBlock(hourInLong, h, ParseUser.getCurrentUser().getInt("AppIndex"));
 
         currentHour.saveEventually(new SaveCallback() {
             @Override

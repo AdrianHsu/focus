@@ -61,7 +61,8 @@ public class FetchAppUtil {
     public static int getAppIndex(String _packageName) {
         for (int i = 0; i < apps.size(); i++)
             if (apps.get(i).getPackageName().equals(_packageName)) return i;
-        return 0;
+
+        return -1;
     }
 
     public static AppInfo getApp(String _packageName) {

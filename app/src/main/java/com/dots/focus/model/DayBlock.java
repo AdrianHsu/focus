@@ -10,29 +10,12 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Harvey on 2015/11/16.
- */
+
 @ParseClassName("DayBlock")
 public class DayBlock extends ParseObject {
     public List<HourBlock> waiting = new ArrayList<>();
 
-    public DayBlock() {
-        int size = FetchAppUtil.getSize();
-        List<Integer> appLength = new ArrayList<>(size);
-        for (int i = 0; i < size; ++i)
-            appLength.add(0);
-        List<String> hours = new ArrayList<>(24);
-        for (int i = 0; i < 24; ++i)
-            hours.add("");
-
-        setUser(ParseUser.getCurrentUser());
-        setAppLength(appLength);
-        setTime(0);
-        setOffset(TrackAccessibilityUtil.getTimeOffset());
-        setEnd(false);
-        setHourBlocks(hours);
-    }
+    public DayBlock() {}
 
     public DayBlock(long dayInLong) {
         int size = FetchAppUtil.getSize();

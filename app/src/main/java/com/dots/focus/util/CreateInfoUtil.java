@@ -33,6 +33,9 @@ public class CreateInfoUtil {
             case "Email":
                 userInfo.setEmail(text2);
                 break;
+            case "AppIndex":
+                userInfo.put("AppIndex", Integer.valueOf(text2));
+                break;
             default:
                 userInfo.put(text1, text2);
                 break;
@@ -45,7 +48,7 @@ public class CreateInfoUtil {
         loggingIn = true;
         ParseUser user = ParseUser.getCurrentUser();
         Log.d(TAG, "start log in by fb.");
-        if (user != null){
+        if (user != null) {
             Log.d(TAG, "user != null.");
             if (user.getUsername().equals(username)) {
                 if (user.has("installationId")) {

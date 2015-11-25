@@ -6,10 +6,13 @@ import android.os.Build;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.dots.focus.model.DayBlock;
+import com.dots.focus.model.HourBlock;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
@@ -48,7 +51,6 @@ public class TrackAccessibilityService extends AccessibilityService {
     private void checkWindowState(String tempPackageName){
 
         long now = System.currentTimeMillis();
-
         if (startTime == 0 || currentPackageName.contentEquals("")) {
             startTime = now;
             startHour = TrackAccessibilityUtil.anHour * (now / TrackAccessibilityUtil.anHour);
@@ -56,58 +58,76 @@ public class TrackAccessibilityService extends AccessibilityService {
             return;
         }
         for (int i = 0; i < ignore.size(); ++i) {
+            Log.d(TAG, "ignore " + i + "st: " + ignore.get(i));
             if (currentPackageName.equals(ignore.get(i))) {
+                Log.d(TAG, "hit");
                 startTime = now;
                 return;
             }
         }
         int index = FetchAppUtil.getAppIndex(currentPackageName);
-        if (index == 0)
-            if (newPackageName())   return;
-
+        Log.d(TAG, "index: " + index);
+        if (index == -1) {
+            FetchAppUtil.printApps();
+            if (newPackageName()) {
+                startTime = now;
+                currentPackageName = tempPackageName;
+                return;
+            }
+        }
         while (now > startHour + TrackAccessibilityUtil.anHour) {
-            storeInDatabase(startHour + TrackAccessibilityUtil.anHour, index);
+            storeInDatabase((int)((startHour + TrackAccessibilityUtil.anHour - startTime) / 1000), index);
             startTime = startHour = startHour + TrackAccessibilityUtil.anHour;
         }
-        storeInDatabase(now, index);
+        storeInDatabase((int)((now - startTime) / 1000), index);
 
         startTime = now;
         currentPackageName = tempPackageName;
     }
     // helper functions
-    void storeInDatabase(final long endTime, final int index){
-        ParseObject temp = new ParseObject("AppUsage");
+    void storeInDatabase(final int duration, final int index){
+        int endIndex = TrackAccessibilityUtil.getCurrentHour(startTime).getInt("endIndex"),
+            AppIndex = ParseUser.getCurrentUser().getInt("AppIndex");
+        if (endIndex != AppIndex)
+            Log.d("TAG", "Different index, endIndex: " + endIndex + ", AppIndex: " + AppIndex);
+
+        final ParseObject temp = new ParseObject("AppUsage");
+        temp.put("User", ParseUser.getCurrentUser());
         temp.put("appName", currentPackageName);
         temp.put("startTime", startTime);
-        temp.put("endTime", endTime);
-        temp.saveEventually(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                ParseObject hour = TrackAccessibilityUtil.getCurrentHour(startTime);
-                ParseObject day = TrackAccessibilityUtil.getCurrentDay(startTime);
+        temp.put("duration", duration);
+        temp.put("index", AppIndex);
 
-                // List<String> appUsages = hour.getList("appUsages");
-                // appUsages.add(temp.getObjectId());
-                // hour.put("appUsages", appUsages);
+        temp.pinInBackground();
 
-                List<Integer> appLength;
-                appLength = hour.getList("appLength");
-                appLength.set(index, appLength.get(index) + (int)((endTime - startTime) / 1000));
-                hour.put("appLength", appLength);
+        HourBlock hour = TrackAccessibilityUtil.getCurrentHour(startTime);
+        DayBlock day = TrackAccessibilityUtil.getCurrentDay(startTime);
 
-                appLength = day.getList("appLength");
-                appLength.set(index, appLength.get(index) + (int)((endTime - startTime) / 1000));
-                day.put("appLength", appLength);
-            }
-        });
+        if (endIndex > AppIndex)    AppIndex = endIndex;
+        ++AppIndex;
+        hour.put("endIndex", AppIndex);
+        if (AppIndex > ParseUser.getCurrentUser().getInt("AppIndex"))
+            ParseUser.getCurrentUser().put("AppIndex", AppIndex);
 
-        Log.d(TAG, "appName: " + currentPackageName + ", startTime: " + startTime + ", endTime: " + endTime);
+        List<Integer> appLength = hour.getList("appLength");
+        Log.d(TAG, "hour appLength.get: " + appLength.get(index) + ", duration: " + duration);
+        appLength.set(index, appLength.get(index) + duration);
+        hour.put("appLength", appLength);
+        Log.d(TAG, "Hour appLength.get: " + hour.getList("appLength").get(index));
+
+        appLength = day.getList("appLength");
+        Log.d(TAG, "day appLength.get: " + appLength.get(index) + ", duration: " + duration);
+        appLength.set(index, appLength.get(index) + duration);
+        day.put("appLength", appLength);
+        Log.d(TAG, "Hour appLength.get: " + hour.getList("appLength").get(index));
+
+        Log.d(TAG, "appName: " + currentPackageName + ", startTime: " + startTime + ", duration: " + duration);
 
 
     }
 
     boolean newPackageName() {
-        return false;
+        return true;
     }
 
     @Override
