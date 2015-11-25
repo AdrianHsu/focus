@@ -40,46 +40,15 @@ public class GetAppsService extends IntentService {
         JSONArray list = new JSONArray();
         boolean needToStore = false;
 
-        final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        List<ResolveInfo> ril = getPackageManager().queryIntentActivities(mainIntent, 0);
+        List<ResolveInfo> ril = getAllAppsInDevice();
         for (ResolveInfo ri : ril) {
-            if(! FetchAppUtil.findApp(ri.activityInfo.packageName)) {
+            if (!FetchAppUtil.findApp(ri.activityInfo.packageName)) {
                 needToStore = true;
-                String name = ri.resolvePackageName;
-
                 try {
-                    if (ri.activityInfo != null) {
-                        Resources res = getPackageManager().getResourcesForApplication(ri.activityInfo.applicationInfo);
-
-                        AssetManager assets = res.getAssets();
-                        DisplayMetrics metrics = res.getDisplayMetrics();
-                        Configuration config = new Configuration(res.getConfiguration());
-                        config.locale = Locale.US;
-
-                        Resources engRes = new Resources(assets, metrics, config);
-
-                        if (ri.activityInfo.labelRes != 0) {
-                            name = engRes.getString(ri.activityInfo.labelRes);
-
-                            if (name.equals("")) {
-                                name = res.getString(ri.activityInfo.labelRes);
-                            }
-
-                        } else {
-                            name = ri.activityInfo.applicationInfo.loadLabel(getPackageManager()).toString();
-                        }
-                    }
+                    getAppNameAndStoreIt(ri, list);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.d(TAG, e.getMessage());
                 }
-                Log.d(TAG, "Name: " + name);
-                Log.d(TAG, "PackageName: " + ri.activityInfo.packageName);
-                list.put(ri.activityInfo.packageName);
-
-                FetchAppUtil.addApp(new AppInfo(name, ri.activityInfo.packageName,
-                        ri.loadIcon(getPackageManager())));
-                Log.d(TAG, "Stored.");
             }
         }
 
@@ -107,13 +76,6 @@ public class GetAppsService extends IntentService {
                 if (packageVal == null || categoryVal == null)
                     continue;
                 apps.put(packageVal, categoryVal);
-                /*
-                for(int n = 0; n < appNames.size(); n++) {
-                    if (packageVal.equalsIgnoreCase(appNames.get(i))) {
-
-                    }
-                }
-                */
             }
             Log.d(TAG, apps.toString());
             JSONArray all = apps.names();
@@ -129,5 +91,35 @@ public class GetAppsService extends IntentService {
         }
         FetchAppUtil.printApps();
         if(needToStore) FetchAppUtil.loadParseApps();
+    }
+
+    public List<ResolveInfo> getAllAppsInDevice() {
+        final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        return getPackageManager().queryIntentActivities(mainIntent, 0);
+    }
+
+    public void getAppNameAndStoreIt(ResolveInfo ri, JSONArray list) throws Exception{
+        String name;
+        if (ri.activityInfo == null)    return;
+
+        Resources res = getPackageManager().getResourcesForApplication(ri.activityInfo.applicationInfo);
+        AssetManager assets = res.getAssets();
+        DisplayMetrics metrics = res.getDisplayMetrics();
+        Configuration config = new Configuration(res.getConfiguration());
+        config.locale = Locale.US;
+
+        Resources engRes = new Resources(assets, metrics, config);
+        if (ri.activityInfo.labelRes != 0) {
+            name = engRes.getString(ri.activityInfo.labelRes);
+            if (name.equals("")) {
+                name = res.getString(ri.activityInfo.labelRes);
+            }
+        } else {
+            name = ri.activityInfo.applicationInfo.loadLabel(getPackageManager()).toString();
+        }
+        list.put(ri.activityInfo.packageName);
+        FetchAppUtil.addApp(new AppInfo(name, ri.activityInfo.packageName, ri.loadIcon(getPackageManager())));
+
     }
 }

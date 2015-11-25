@@ -10,10 +10,8 @@ import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,6 @@ import java.util.List;
 public class TrackAccessibilityService extends AccessibilityService {
 
     public static String currentPackageName = "";
-    //public static String tempPackageName = "";
     public static long startTime = 0;
     public static long startHour = 0;
     public static final String TAG = "TrackService";
