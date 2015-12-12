@@ -12,16 +12,14 @@ import android.widget.TextView;
  * Created by AdrianHsu on 2015/12/12.
  */
 public class MainTabFragment extends Fragment {
-  private static final String TAB_POSITION = "tab_position";
+  public static final String ARG_PAGE = "ARG_PAGE";
 
-  public MainTabFragment() {
+  public MainTabFragment() {}
 
-  }
-
-  public static MainTabFragment newInstance(int tabPosition) {
+  public static MainTabFragment newInstance(int argPage) {
     MainTabFragment fragment = new MainTabFragment();
     Bundle args = new Bundle();
-    args.putInt(TAB_POSITION, tabPosition);
+    args.putInt(ARG_PAGE, argPage);
     fragment.setArguments(args);
     return fragment;
   }
@@ -29,7 +27,7 @@ public class MainTabFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     Bundle args = getArguments();
-    int tabPosition = args.getInt(TAB_POSITION);
+    int tabPosition = args.getInt(ARG_PAGE);
     TextView tv = new TextView(getActivity());
     tv.setGravity(Gravity.CENTER);
     tv.setText("Text in Tab #" + tabPosition);

@@ -1,15 +1,17 @@
 package com.dots.focus.adapter;
 
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-
 import com.dots.focus.ui.fragment.MainTabFragment;
 
 /**
  * Created by AdrianHsu on 2015/12/12.
  */
 public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
+
+  final int PAGE_COUNT = 5;
 
   public MainTabPagerAdapter(FragmentManager fm) {
     super(fm);
@@ -22,12 +24,6 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
 
   @Override
   public int getCount() {
-    return 5;
+    return PAGE_COUNT;
   }
-
-  @Override
-  public CharSequence getPageTitle(int position) {
-    return "Tab " + position;
-  }
-
 }
