@@ -34,7 +34,7 @@
             android:paddingRight="16dp"
             android:src="@drawable/ic_slide1"/>
     </LinearLayout>
-    <com.gc.materialdesign.views.ButtonFlat
+    <Button
         android:id="@+id/button_gender"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

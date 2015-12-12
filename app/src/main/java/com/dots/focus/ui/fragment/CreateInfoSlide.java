@@ -14,13 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.dots.focus.util.CreateInfoUtil;
-import com.gc.materialdesign.views.Button;
 import com.parse.ParseObject;
 
 public class CreateInfoSlide extends Fragment {
@@ -91,7 +91,7 @@ public class CreateInfoSlide extends Fragment {
 
       case R.layout.set_info_gender:
         genderBtn = (Button) view.findViewById(R.id.button_gender);
-        CreateInfoUtil.setUserInfo("Gender", genderBtn.getText(), false);
+        CreateInfoUtil.setUserInfo("Gender", (String)genderBtn.getText(), false);
         genderBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
@@ -102,7 +102,7 @@ public class CreateInfoSlide extends Fragment {
 
       case R.layout.set_info_birth:
         birthBtn = (Button) view.findViewById(R.id.button_birth);
-        CreateInfoUtil.setUserInfo("Birth", birthBtn.getText(), false);
+        CreateInfoUtil.setUserInfo("Birth", (String)birthBtn.getText(), false);
         birthBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
@@ -113,7 +113,7 @@ public class CreateInfoSlide extends Fragment {
 
       case R.layout.set_info_occupation:
         occupationBtn = (Button) view.findViewById(R.id.button_occupation);
-        CreateInfoUtil.setUserInfo("Occupation", occupationBtn.getText(), false);
+        CreateInfoUtil.setUserInfo("Occupation", (String)occupationBtn.getText(), false);
         occupationBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
