@@ -4,15 +4,12 @@ package com.dots.focus.adapter;
  * Created by AdrianHsu on 2015/12/12.
  */
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +20,11 @@ import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import java.util.List;
 
 
-public class SimpleAdapter extends UltimateViewAdapter<SimpleAdapter.SimpleAdapterViewHolder> {
+public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
   private List<String> stringList;
 
-  public SimpleAdapter(List<String> stringList) {
+  public MoreRecyclerViewAdapter(List<String> stringList) {
     this.stringList = stringList;
   }
 
@@ -36,20 +33,11 @@ public class SimpleAdapter extends UltimateViewAdapter<SimpleAdapter.SimpleAdapt
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
     if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
-      ((SimpleAdapterViewHolder) holder).textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
-      // ((ViewHolder) holder).itemView.setActivated(selectedItems.get(position, false));
-      if (mDragStartListener != null) {
-//                ((ViewHolder) holder).imageViewSample.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-//                            mDragStartListener.onStartDrag(holder);
-//                        }
-//                        return false;
-//                    }
-//                });
+      holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
 
-        ((SimpleAdapterViewHolder) holder).item_view.setOnTouchListener(new View.OnTouchListener() {
+      if (mDragStartListener != null) {
+
+        holder.item_view.setOnTouchListener(new View.OnTouchListener() {
           @Override
           public boolean onTouch(View v, MotionEvent event) {
             return false;
@@ -73,7 +61,7 @@ public class SimpleAdapter extends UltimateViewAdapter<SimpleAdapter.SimpleAdapt
   @Override
   public SimpleAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
     View v = LayoutInflater.from(parent.getContext())
-      .inflate(R.layout.recycler_view_adapter, parent, false);
+      .inflate(R.layout.more_recycler_view_adapter, parent, false);
     final SimpleAdapterViewHolder vh = new SimpleAdapterViewHolder(v, true);
 
     v.setOnClickListener(new View.OnClickListener() {
@@ -134,33 +122,12 @@ public class SimpleAdapter extends UltimateViewAdapter<SimpleAdapter.SimpleAdapt
   @Override
   public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
 
-    View view = LayoutInflater.from(viewGroup.getContext())
-      .inflate(R.layout.sticky_header_item, viewGroup, false);
-
-    return new RecyclerView.ViewHolder(view){};
+    return null;
   }
 
   @Override
   public void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
 
-    TextView textView = (TextView) viewHolder.itemView.findViewById(R.id.stick_text);
-    textView.setText("許秉鈞");
-    viewHolder.itemView.setBackgroundColor(Color.parseColor("#ffffff"));
-    ImageView imageView = (ImageView) viewHolder.itemView.findViewById(R.id.profile);
-    imageView.setImageResource(R.drawable.adrian);
-
-//    SecureRandom imgGen = new SecureRandom();
-//    switch (imgGen.nextInt(3)) {
-//      case 0:
-//        imageView.setImageResource(R.drawable.bg0);
-//        break;
-//      case 1:
-//        imageView.setImageResource(R.drawable.bg1);
-//        break;
-//      case 2:
-//        imageView.setImageResource(R.drawable.bg2);
-//        break;
-//    }
   }
 
   @Override
@@ -198,37 +165,22 @@ public class SimpleAdapter extends UltimateViewAdapter<SimpleAdapter.SimpleAdapt
 
     public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
-//            itemView.setOnTouchListener(new SwipeDismissTouchListener(itemView, null, new SwipeDismissTouchListener.DismissCallbacks() {
-//                @Override
-//                public boolean canDismiss(Object token) {
-//                    Logs.d("can dismiss");
-//                    return true;
-//                }
-//
-//                @Override
-//                public void onDismiss(View view, Object token) {
-//                   // Logs.d("dismiss");
-//                    remove(getPosition());
-//
-//                }
-//            }));
       if (isItem) {
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         item_view = itemView.findViewById(R.id.itemview);
       }
-
     }
 
     @Override
     public void onItemSelected() {
-      itemView.setBackgroundColor(Color.DKGRAY);
+//      itemView.setBackgroundColor(Color.DKGRAY);
     }
 
     @Override
     public void onItemClear() {
-      itemView.setBackgroundColor(0);
+//      itemView.setBackgroundColor(0);
     }
   }
 
