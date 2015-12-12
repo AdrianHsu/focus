@@ -6,13 +6,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.dots.focus.ui.fragment.DashboardFragment;
+import com.dots.focus.ui.fragment.MoreFragment;
 
 /**
  * Created by AdrianHsu on 2015/12/12.
  */
 public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
 
-  final int PAGE_COUNT = 5;
+  private final int PAGE_COUNT = 5;
   public int ARG_PAGE = 0;
 
   public MainTabPagerAdapter(FragmentManager fm) {
@@ -24,19 +25,19 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
     switch (position) {
       case 0:
         ARG_PAGE = 0;
-        return new DashboardFragment();
+        return new MoreFragment();
       case 1:
         ARG_PAGE = 1;
-        return new DashboardFragment();
+        return new MoreFragment();
       case 2:
         ARG_PAGE = 2;
-        return new DashboardFragment();
+        return new MoreFragment();
       case 3:
         ARG_PAGE = 3;
-        return new DashboardFragment();
+        return new MoreFragment();
       case 4:
         ARG_PAGE = 4;
-        return new DashboardFragment();
+        return new MoreFragment();
     }
     return null;
   }
