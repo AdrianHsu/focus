@@ -6,25 +6,20 @@ package com.dots.focus.ui;
  * Created by AdrianHsu on 2015/12/13.
  */
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.dots.focus.R;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
+
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -33,8 +28,6 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.filter.Approximator;
-import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
 import com.github.mikephil.charting.formatter.FillFormatter;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 
@@ -43,17 +36,41 @@ import java.util.ArrayList;
 public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity implements OnSeekBarChangeListener {
 
   private LineChart mChart;
+  private Spinner spinner;
+  private ArrayAdapter<String> timeInterval;
+  private String[] timeIntervalArray = {"小時", "分鐘"};
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-//    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//      WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    setContentView(R.layout.activity_linechart);
+
+    setContentView(R.layout.activity_total_app_usage_weekly_chart);
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    getSupportActionBar().setTitle("每週總時數趨勢");
+
+    spinner = (Spinner)findViewById(R.id.spinner);
+    timeInterval = new ArrayAdapter<String>(this, android.R.layout
+      .simple_spinner_dropdown_item, timeIntervalArray);
+    spinner.setAdapter(timeInterval);
+    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if (i == 0) { // hour by default
+
+        } else {
+
+        }
+      }
+
+      @Override
+      public void onNothingSelected(AdapterView<?> adapterView) {
+
+
+      }
+    });
 
     mChart = (LineChart) findViewById(R.id.chart1);
 //    mChart.setViewPortOffsets(80, 40, 80, 40);
@@ -91,6 +108,7 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
 
     x.setAxisLineColor(Color.parseColor("#F3AE4E"));
 
+
     YAxis y = mChart.getAxisLeft();
     y.setEnabled(false);
     y.setLabelCount(6, false);
@@ -100,7 +118,7 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
     y.setDrawGridLines(false);
     y.setAxisLineWidth(3.0f);
 //    y.setAxisLineColor(Color.parseColor("#F3AE4E"));
-    y.setAxisLineColor(Color.TRANSPARENTg);
+    y.setAxisLineColor(Color.TRANSPARENT);
 
     mChart.getAxisRight().setEnabled(false);
 
@@ -118,129 +136,6 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
     mChart.invalidate();
   }
 
-//  @Override
-//  public boolean onCreateOptionsMenu(Menu menu) {
-//    getMenuInflater().inflate(R.menu.line, menu);
-//    return true;
-//  }
-//
-//  @Override
-//  public boolean onOptionsItemSelected(MenuItem item) {
-//
-//    switch (item.getItemId()) {
-//      case R.id.actionToggleValues: {
-//        for (DataSet<?> set : mChart.getData().getDataSets())
-//          set.setDrawValues(!set.isDrawValuesEnabled());
-//
-//        mChart.invalidate();
-//        break;
-//      }
-//      case R.id.actionToggleHighlight: {
-//        if(mChart.getData() != null) {
-//          mChart.getData().setHighlightEnabled(!mChart.getData().isHighlightEnabled());
-//          mChart.invalidate();
-//        }
-//        break;
-//      }
-//      case R.id.actionToggleFilled: {
-//
-//        ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
-//          .getDataSets();
-//
-//        for (LineDataSet set : sets) {
-//          if (set.isDrawFilledEnabled())
-//            set.setDrawFilled(false);
-//          else
-//            set.setDrawFilled(true);
-//        }
-//        mChart.invalidate();
-//        break;
-//      }
-//      case R.id.actionToggleCircles: {
-//        ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
-//          .getDataSets();
-//
-//        for (LineDataSet set : sets) {
-//          if (set.isDrawCirclesEnabled())
-//            set.setDrawCircles(false);
-//          else
-//            set.setDrawCircles(true);
-//        }
-//        mChart.invalidate();
-//        break;
-//      }
-//      case R.id.actionToggleCubic: {
-//        ArrayList<LineDataSet> sets = (ArrayList<LineDataSet>) mChart.getData()
-//          .getDataSets();
-//
-//        for (LineDataSet set : sets) {
-//          if (set.isDrawCubicEnabled())
-//            set.setDrawCubic(false);
-//          else
-//            set.setDrawCubic(true);
-//        }
-//        mChart.invalidate();
-//        break;
-//      }
-//      case R.id.actionToggleStartzero: {
-//        mChart.getAxisLeft().setStartAtZero(!mChart.getAxisLeft().isStartAtZeroEnabled());
-//        mChart.getAxisRight().setStartAtZero(!mChart.getAxisRight().isStartAtZeroEnabled());
-//        mChart.invalidate();
-//        break;
-//      }
-//      case R.id.actionTogglePinch: {
-//        if (mChart.isPinchZoomEnabled())
-//          mChart.setPinchZoom(false);
-//        else
-//          mChart.setPinchZoom(true);
-//
-//        mChart.invalidate();
-//        break;
-//      }
-//      case R.id.actionToggleAutoScaleMinMax: {
-//        mChart.setAutoScaleMinMaxEnabled(!mChart.isAutoScaleMinMaxEnabled());
-//        mChart.notifyDataSetChanged();
-//        break;
-//      }
-//      case R.id.animateX: {
-//        mChart.animateX(3000);
-//        break;
-//      }
-//      case R.id.animateY: {
-//        mChart.animateY(3000);
-//        break;
-//      }
-//      case R.id.animateXY: {
-//        mChart.animateXY(3000, 3000);
-//        break;
-//      }
-//      case R.id.actionToggleFilter: {
-//
-//        // the angle of filtering is 35°
-//        Approximator a = new Approximator(ApproximatorType.DOUGLAS_PEUCKER, 35);
-//
-//        if (!mChart.isFilteringEnabled()) {
-//          mChart.enableFiltering(a);
-//        } else {
-//          mChart.disableFiltering();
-//        }
-//        mChart.invalidate();
-//        break;
-//      }
-//      case R.id.actionSave: {
-//        if (mChart.saveToPath("title" + System.currentTimeMillis(), "")) {
-//          Toast.makeText(getApplicationContext(), "Saving SUCCESSFUL!",
-//            Toast.LENGTH_SHORT).show();
-//        } else
-//          Toast.makeText(getApplicationContext(), "Saving FAILED!", Toast.LENGTH_SHORT)
-//            .show();
-//
-//        // mChart.saveToGallery("title"+System.currentTimeMillis())
-//        break;
-//      }
-//    }
-//    return true;
-//  }
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     onBackPressed();
@@ -304,7 +199,7 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
 
     // create a data object with the datasets
     LineData data = new LineData(xVals, set1);
-    data.setValueTextSize(3f);
+    data.setValueTextSize(9f);
     data.setDrawValues(true);
 
     // set data

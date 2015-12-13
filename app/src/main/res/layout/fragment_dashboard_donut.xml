@@ -135,6 +135,6 @@
 
     </RelativeLayout>
 
-    <include layout="@layout/layout_replay"/>
+    <include layout="@layout/layout_service_off"/>
 
 </RelativeLayout>

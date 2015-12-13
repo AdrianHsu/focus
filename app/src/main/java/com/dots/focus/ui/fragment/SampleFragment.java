@@ -142,10 +142,10 @@ abstract public class SampleFragment extends Fragment {
         }
 
         mInitialized = true;
-        final View replay = getView().findViewById(R.id.imageReplay);
+        final View serviceOff = getView().findViewById(R.id.imageServiceOff);
         final View swipe = getView().findViewById(R.id.imageSwipe);
-        if (replay != null) {
-            replay.setOnClickListener(new View.OnClickListener() {
+        if (serviceOff != null) {
+            serviceOff.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Animation animation = AnimationUtils.loadAnimation(getActivity(),
@@ -155,14 +155,14 @@ abstract public class SampleFragment extends Fragment {
                         @Override
                         public void onAnimationStart(Animation animation) {
                             swipe.setVisibility(View.INVISIBLE);
-                            replay.setEnabled(false);
+                            serviceOff.setEnabled(false);
                         }
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
                             setDemoFinished(false);
                             createAnimation();
-                            replay.setEnabled(true);
+                            serviceOff.setEnabled(true);
                         }
 
                         @Override
@@ -170,7 +170,7 @@ abstract public class SampleFragment extends Fragment {
 
                         }
                     });
-                    replay.startAnimation(animation);
+                    serviceOff.startAnimation(animation);
                 }
             });
         }
