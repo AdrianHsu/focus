@@ -4,6 +4,7 @@ package com.dots.focus.adapter;
  * Created by AdrianHsu on 2015/12/12.
  */
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.ui.DashboardActivity;
+import com.dots.focus.ui.TotalAppUsageWeeklyChartActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 
@@ -70,6 +73,8 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
         Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
           .LENGTH_SHORT)
           .show();
+        Intent intent = new Intent(v.getContext(), TotalAppUsageWeeklyChartActivity.class);
+        v.getContext().startActivity(intent);
       }
     });
     return vh;

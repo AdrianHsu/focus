@@ -18,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -51,10 +50,14 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle("每週總時數趨勢");
 
+
+//    DEBUG: W/System.err: java.lang.RuntimeException: Can't create handler inside thread that has
+// not called Looper.prepare()
     spinner = (Spinner)findViewById(R.id.spinner);
     timeInterval = new ArrayAdapter<String>(this, android.R.layout
       .simple_spinner_dropdown_item, timeIntervalArray);
     spinner.setAdapter(timeInterval);
+
     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
