@@ -126,14 +126,14 @@ public class DashboardDonutFragment extends SampleFragment {
 
     final TextView textActivity1 = (TextView) getView().findViewById(R.id.textActivity1);
 //    addProgressListener(seriesItem1, textActivity1, "%.0f Km");
-    textActivity1.setText("Facebook: 00:00:00");
+    textActivity1.setText("");
 
     final TextView textActivity2 = (TextView) getView().findViewById(R.id.textActivity2);
-    textActivity2.setText("Line: 00:00:00");
+    textActivity2.setText("");
 //    addProgressListener(seriesItem2, textActivity2, "%.0f Km");
 
     final TextView textActivity3 = (TextView) getView().findViewById(R.id.textActivity3);
-    textActivity3.setText("Instagram: 00:00:00");
+    textActivity3.setText("");
 //    addProgressListener(seriesItem3, textActivity3, "%.0f Km");
 
   }

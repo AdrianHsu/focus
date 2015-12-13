@@ -9,50 +9,49 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/layoutActivities">
 
+        <com.hookedonplay.decoviewlib.DecoView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/dynamicArcView"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
+
+        </com.hookedonplay.decoviewlib.DecoView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="今日使用時間"
-            android:textSize="20sp"
+            android:text="已使用時間"
+            android:textSize="14sp"
             android:textColor="@color/semi_black"
             android:id="@+id/textTodayUsage"
+            android:layout_above="@+id/textPercentage"
             android:layout_centerHorizontal="true"
             />
-
-        <com.hookedonplay.decoviewlib.DecoView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/dynamicArcView"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_below="@id/textTodayUsage">
-
-        </com.hookedonplay.decoviewlib.DecoView>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=""
             android:textSize="52sp"
-            android:layout_marginTop="4dp"
+            android:textColor="@color/semi_black"
             android:id="@+id/textPercentage"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text=""
-            android:id="@+id/textRemaining"
-            android:layout_marginTop="4dp"
-            android:layout_below="@+id/textPercentage"
-            android:layout_centerHorizontal="true"
-            android:maxWidth="200dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=""
+        android:id="@+id/textRemaining"
+        android:layout_below="@+id/textPercentage"
+        android:textSize="12dp"
+        android:layout_centerHorizontal="true"
+        android:maxWidth="200dp" />
+
         <!--<TextView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
@@ -76,6 +75,18 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="16gdp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="您有點太沈迷於手機囉！去外面走走吧！"
+            android:gravity="center_horizontal"
+            android:textColor="@color/semi_black"
+            android:id="@+id/textReminder"
+            android:textSize="16dp"
+            android:layout_centerHorizontal="true"
+            android:maxWidth="200dp" />
         <!--<ImageView-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->

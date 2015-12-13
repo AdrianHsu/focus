@@ -32,8 +32,6 @@ public class DashboardFragment extends Fragment {
         .add(R.id.frameDashboardDonut, mSampleFitFragment, "tag")
         .commit();
     }
-
     return v;
   }
-
 }
