@@ -47,7 +47,7 @@ public class OverviewFragment extends Fragment {
     stringList.add("應用程式排行榜");
     stringList.add("今日報表");
     stringList.add("雷達圖");
-    stringList.add("我的存錢筒h");
+    stringList.add("我的存錢筒");
     mOverviewCardViewAdapter = new OverviewCardViewAdapter(stringList);
     layoutManager = new GridLayoutManager(mContext, GRID_COLUMN);
 
