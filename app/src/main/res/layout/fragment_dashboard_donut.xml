@@ -1,52 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/layoutActivities">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="今日使用時間"
+            android:textSize="20sp"
+            android:textColor="@color/semi_black"
+            android:id="@+id/textTodayUsage"
+            android:layout_centerHorizontal="true"
+            />
 
         <com.hookedonplay.decoviewlib.DecoView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/dynamicArcView"
-            android:layout_margin="24dp">
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_below="@id/textTodayUsage">
 
         </com.hookedonplay.decoviewlib.DecoView>
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:text=""-->
-            <!--android:textSize="40sp"-->
-            <!--android:id="@+id/textPercentage"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--/>-->
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:text=""-->
-            <!--android:textSize="40sp"-->
-            <!--android:id="@+id/textTotalUsageToday"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--/>-->
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-            <!--android:text=""-->
-            <!--android:id="@+id/textRemaining"-->
-            <!--android:layout_below="@+id/textPercentage"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:maxWidth="200dp" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text=""
+            android:textSize="52sp"
+            android:layout_marginTop="4dp"
+            android:id="@+id/textPercentage"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/textRemaining"
+            android:layout_marginTop="4dp"
+            android:layout_below="@+id/textPercentage"
+            android:layout_centerHorizontal="true"
+            android:maxWidth="200dp" />
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+        <!--android:text=""-->
+        <!--android:textSize="40sp"-->
+        <!--android:id="@+id/textTotalUsageToday"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--/>-->
     </RelativeLayout>
 
     <RelativeLayout
@@ -80,24 +96,31 @@
             <!--android:layout_alignParentTop="true"-->
             <!--android:layout_alignParentRight="true"-->
             <!--android:layout_alignParentEnd="true" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textActivity3"
+            android:layout_centerVertical="true"
+            android:paddingRight="4dp"
+            android:paddingBottom="90dp"/>
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:id="@+id/textActivity2"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_below="@+id/textActivity1"-->
-            <!--android:paddingRight="4dp"-->
-            <!--android:paddingBottom="40dp"/>-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textActivity2"
+            android:layout_centerVertical="true"
+            android:paddingRight="4dp"
+            android:paddingBottom="40dp"/>
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:id="@+id/textActivity1"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:paddingRight="4dp" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textActivity1"
+            android:layout_centerVertical="true"
+            android:paddingRight="4dp" />
 
     </RelativeLayout>
 
