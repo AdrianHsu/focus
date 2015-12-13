@@ -5,6 +5,10 @@
     <color name="primary_dark">#455A64</color>
     <color name="accent">#F3AE4E</color>
 
+    <!-- secondary -->
+    <color name="secondary">#263238</color>
+    <color name="secondary_dark">#263238</color>
+
     <color name="anchor_navy">#344A5F</color>
     <color name="primary_blue">#2A94D6</color>
     <color name="slate_grey">#F0F1F2</color>

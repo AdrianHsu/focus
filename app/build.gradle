@@ -36,6 +36,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile fileTree(dir: 'libs', include: 'ParseFacebookUtilsV4-*.jar')
+
 //    intro
     compile 'com.github.paolorotolo:appintro:3.2.0'
 //    material button for set info
@@ -52,5 +53,7 @@ dependencies {
     compile 'com.marshalchen.ultimaterecyclerview:library:0.3.18'
 //    https://github.com/bmarrdev/android-DecoView-charting
     compile 'com.github.bmarrdev:android-DecoView-charting:v0.9.4'
+//    https://github.com/PhilJay/MPAndroidChart
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
 
 }
