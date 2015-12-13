@@ -24,8 +24,8 @@ public class MoreFragment extends Fragment {
   private UltimateRecyclerView mRecyclerView;
   private View mStickyView;
   private Context context;
-  MoreRecyclerViewAdapter simpleRecyclerViewAdapter = null;
-  LinearLayoutManager linearLayoutManager;
+  private MoreRecyclerViewAdapter simpleRecyclerViewAdapter = null;
+  private LinearLayoutManager linearLayoutManager;
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

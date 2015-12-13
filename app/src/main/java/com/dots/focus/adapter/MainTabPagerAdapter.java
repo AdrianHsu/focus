@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.dots.focus.ui.fragment.DashboardFragment;
 import com.dots.focus.ui.fragment.MoreFragment;
+import com.dots.focus.ui.fragment.OverviewFragment;
 
 /**
  * Created by AdrianHsu on 2015/12/12.
@@ -25,7 +26,7 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
     switch (position) {
       case 0:
         ARG_PAGE = 0;
-        return new MoreFragment();
+        return new DashboardFragment();
       case 1:
         ARG_PAGE = 1;
         return new MoreFragment();
@@ -34,7 +35,7 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
         return new MoreFragment();
       case 3:
         ARG_PAGE = 3;
-        return new MoreFragment();
+        return new OverviewFragment();
       case 4:
         ARG_PAGE = 4;
         return new MoreFragment();

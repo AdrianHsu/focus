@@ -3,7 +3,6 @@ package com.dots.focus.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,12 @@ import com.dots.focus.R;
  */
 public class DashboardFragment extends Fragment {
 
-  private Context context;
+  private Context mContext;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-    context = getActivity();
+    mContext = getActivity();
     View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
     return v;
