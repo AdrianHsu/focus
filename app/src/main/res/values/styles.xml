@@ -1,10 +1,31 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="FocusAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <!--<item name="colorPrimary">@color/purple</item>-->
-        <item name="colorPrimaryDark">@color/status_bar_color</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+    <style name="SelectableItemTheme">
+        <item name="android:colorControlHighlight">@color/yellow</item>
+    </style>
+    <style name="SelectableItemBackground">
+        <item name="android:theme">@style/SelectableItemTheme</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+
+    </style>
+
+    <style name="SecondaryAppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <style name="FocusCardView.Dark" parent="CardView.Dark">
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="cardBackgroundColor">#ff424242</item>
     </style>
 
 </resources>

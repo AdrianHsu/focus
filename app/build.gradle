@@ -36,14 +36,24 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile fileTree(dir: 'libs', include: 'ParseFacebookUtilsV4-*.jar')
+
 //    intro
     compile 'com.github.paolorotolo:appintro:3.2.0'
 //    material button for set info
-    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
+//    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
 //    material edittext for set info
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
 //    material dialog
     compile('com.afollestad.material-dialogs:core:0.8.1.0@aar') {
         transitive = true
     }
+    compile 'com.android.support:design:23.1.0'
+    compile 'com.android.support:cardview-v7:23.1.0'
+//    https://github.com/cymcsg/UltimateRecyclerView
+    compile 'com.marshalchen.ultimaterecyclerview:library:0.3.18'
+//    https://github.com/bmarrdev/android-DecoView-charting
+    compile 'com.github.bmarrdev:android-DecoView-charting:v0.9.4'
+//    https://github.com/PhilJay/MPAndroidChart
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+
 }

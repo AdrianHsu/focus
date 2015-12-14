@@ -36,7 +36,7 @@
 
     </LinearLayout>
 
-    <com.gc.materialdesign.views.ButtonRectangle
+    <Button
         android:id="@+id/button_setting"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

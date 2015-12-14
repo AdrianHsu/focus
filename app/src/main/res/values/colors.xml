@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!--google I/O 2014-->
-    <color name="body_text">#60000000</color>
-    <color name="body_text_disabled">#44000000</color>
-
-    <color name="body_text_inverse">#8affffff</color>
-
-    <color name="theme_primary">#3f51b5</color>
-    <color name="theme_primary_dark">#303f9f</color>
-    <color name="theme_primary_light">#7986cb</color>
-
-    <color name="theme_accent">#00b0ff</color>
-    <color name="theme_accent_light">#8ad4fa</color>
-
     <!-- primary-->
+    <color name="primary">#607D8B</color>
+    <color name="primary_dark">#455A64</color>
+    <color name="accent">#F3AE4E</color>
+
+    <!-- secondary -->
+    <color name="secondary">#263238</color>
+    <color name="secondary_dark">#263238</color>
+
     <color name="anchor_navy">#344A5F</color>
     <color name="primary_blue">#2A94D6</color>
     <color name="slate_grey">#F0F1F2</color>
