@@ -18,6 +18,11 @@
         <activity android:name=".ui.IntroActivity">
         </activity>
         <activity
+            android:name=".ui.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".ui.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>

@@ -29,6 +29,8 @@ import com.hookedonplay.decoviewlib.charts.DecoDrawEffect;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 
+import org.w3c.dom.Text;
+
 public class DashboardDonutFragment extends SampleFragment {
 
   final private float mTrackBackWidth = 20f;
@@ -115,11 +117,15 @@ public class DashboardDonutFragment extends SampleFragment {
     if (textPercent != null) {
       textPercent.setText("02:25:53");
 //      addProgressListener(seriesItem1, textPercent, "%.0f%%");
+
     }
 
     final TextView textToGo = (TextView) view.findViewById(R.id.textRemaining);
     textToGo.setText("剩餘00:34:07");
 //    addProgressRemainingListener(seriesItem1, textToGo, "%.0f min to goal", seriesMax);
+
+    final TextView textTodayUsage = (TextView)view.findViewById(R.id.textTodayUsage);
+
 
     View layout = getView().findViewById(R.id.layoutActivities);
     layout.setVisibility(View.INVISIBLE);
@@ -149,8 +155,9 @@ public class DashboardDonutFragment extends SampleFragment {
     mUpdateListeners = true;
     final TextView textPercent = (TextView) view.findViewById(R.id.textPercentage);
     final TextView textToGo = (TextView) view.findViewById(R.id.textRemaining);
+    final TextView textTodayUsage = (TextView) view.findViewById(R.id.textTodayUsage);
     final View layout = view.findViewById(R.id.layoutActivities);
-    final View[] linkedViews = {textPercent, textToGo, layout};
+    final View[] linkedViews = {textPercent, textToGo, textTodayUsage, layout};
     final int fadeDuration = 2000;
 
     if (mPie) {

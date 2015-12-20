@@ -43,7 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         if (LoginController.hasLoggedIn()) {
-            showSetInfoActivity();
+//            showSetInfoActivity();
+          showMainActivity();
 //      Parse.enableLocalDatastore(this); //Exception not yet resolved
         }
     }
@@ -82,14 +83,16 @@ public class LoginActivity extends AppCompatActivity {
                         DashboardController.makeMeRequest();
                     //user.saveEventually();
 
-                    showSetInfoActivity();
+//                    showSetInfoActivity();
+                    showMainActivity();
                 } else {
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     if ((currentUser != null) && currentUser.isAuthenticated())
                         DashboardController.makeMeRequest();
                     //user.saveEventually();
 
-                    showSetInfoActivity();
+//                    showSetInfoActivity();
+                    showMainActivity();
                 }
 
             }
@@ -103,35 +106,39 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, IntroActivity.class);
         startActivity(intent);
     }
-
-    private void showSetInfoActivity() {
-        Intent intent = new Intent(this, CreateInfoActivity.class);
-        startActivity(intent);
+//
+//    private void showSetInfoActivity() {
+//        Intent intent = new Intent(this, CreateInfoActivity.class);
+//        startActivity(intent);
+//    }
+//
+//    private void showDashboardActivity() {
+//        Intent intent = new Intent(this, DashboardActivity.class);
+//        startActivity(intent);
+//    }
+    private void showMainActivity() {
+      Intent intent = new Intent(this, MainActivity.class);
+      startActivity(intent);
     }
-
-    private void showDashboardActivity() {
-        Intent intent = new Intent(this, DashboardActivity.class);
-        startActivity(intent);
-    }
-
-
-    private void setProfile() {
-        ParseUser user = ParseUser.getCurrentUser();
-        if (!user.has("profile"))   return;
-        if (user.has("id")) Log.d("FBUser", user.getString("id"));
-        if (user.has("name"))   Log.d("FBUser", user.getString("name"));
-
-        JSONObject profile = user.getJSONObject("profile");
-        try {
-            CreateInfoUtil.setUserInfo("id", profile.getString("facebookId"), false);
-            CreateInfoUtil.setUserInfo("name", profile.getString("name"), false);
-        } catch (JSONException e) { e.getMessage(); }
-        user.remove("profile");
-        Log.d("FBUser", user.toString());
-        Log.d("FBUser", user.getString("id"));
-        Log.d("FBUser", user.getString("name"));
-
-        user.saveEventually();
-
-    }
+//
+//
+//    private void setProfile() {
+//        ParseUser user = ParseUser.getCurrentUser();
+//        if (!user.has("profile"))   return;
+//        if (user.has("id")) Log.d("FBUser", user.getString("id"));
+//        if (user.has("name"))   Log.d("FBUser", user.getString("name"));
+//
+//        JSONObject profile = user.getJSONObject("profile");
+//        try {
+//            CreateInfoUtil.setUserInfo("id", profile.getString("facebookId"), false);
+//            CreateInfoUtil.setUserInfo("name", profile.getString("name"), false);
+//        } catch (JSONException e) { e.getMessage(); }
+//        user.remove("profile");
+//        Log.d("FBUser", user.toString());
+//        Log.d("FBUser", user.getString("id"));
+//        Log.d("FBUser", user.getString("name"));
+//
+//        user.saveEventually();
+//
+//    }
 }
