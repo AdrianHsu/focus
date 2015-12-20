@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -21,6 +22,7 @@ public class GetFriendInviteService extends Service {
     private final String TAG = "GetFriendInviteService";
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "GetFriendInviteService start...");
         Timer timer = new Timer();
         timer.schedule(new CheckFriendInvitation(), 0, 60000);
         return 0;
@@ -41,12 +43,18 @@ public class GetFriendInviteService extends Service {
     class CheckFriendInvitation extends TimerTask {
 
         public void run() {
+            Log.d(TAG, "start GetFriendInviteService run...");
             ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
             query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getString("id"));
+            query.whereEqualTo("downloaded", false);
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> inviteList, ParseException e) {
                     if (e == null && inviteList != null) {
                         for (int i = 0, size = inviteList.size(); i < size; ++i) {
+                            Log.d(TAG, inviteList.get(i).getString("user_id_inviting"));
+                            Log.d(TAG, inviteList.get(i).getString("time"));
+                            inviteList.get(i).put("downloaded", true);
+                            inviteList.get(i).saveEventually();
                             // showFriendInvite(inviteList.get(i).getString("user_id_inviting"),
                             //                  inviteList.get(i).getString("time"));
                         }
@@ -54,9 +62,4 @@ public class GetFriendInviteService extends Service {
                 }
             });}
     }
-
-
-
-
-
 }
