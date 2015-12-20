@@ -10,9 +10,7 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by AdrianHsu on 15/9/23.
- */
+
 public class DashboardController {
 
   static final String TAG = "DashboardController";
@@ -26,11 +24,9 @@ public class DashboardController {
         @Override
         public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
           if (jsonObject != null) {
-            JSONObject userProfile = new JSONObject();
-
             try {
-              userProfile.put("facebookId", jsonObject.getLong("id"));
-              userProfile.put("name", jsonObject.getString("name"));
+              //userProfile.put("facebookId", jsonObject.getLong("id"));
+              //userProfile.put("name", jsonObject.getString("name"));
 
 //              if (jsonObject.getString("gender") != null)
 //                userProfile.put("gender", jsonObject.getString("gender"));
@@ -40,8 +36,9 @@ public class DashboardController {
 
               // Save the user profile info in a user property
               ParseUser currentUser = ParseUser.getCurrentUser();
-              currentUser.put("profile", userProfile);
-              currentUser.saveInBackground();
+              currentUser.put("facebookId", jsonObject.getLong("id"));
+              currentUser.put("name", jsonObject.getString("name"));
+              currentUser.saveEventually();
 
             } catch (JSONException e) {
               Log.d(TAG,

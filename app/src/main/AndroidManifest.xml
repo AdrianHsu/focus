@@ -18,26 +18,13 @@
         <activity android:name=".ui.IntroActivity">
         </activity>
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.TotalAppUsageWeeklyChartActivity"
-            android:theme="@style/SecondaryAppTheme"
-            android:label="@string/app_name"
-            android:parentActivityName="com.dots.focus.ui.MainActivity" >
-
-        </activity>
-
-        <activity
-            android:name=".ui.LoginActivity"
-            android:label="@string/app_name" >
         </activity>
         <activity android:name=".ui.CreateInfoActivity"></activity>
 
@@ -47,38 +34,12 @@
             android:screenOrientation="portrait"
             >
         </activity>
+
         <!--<activity-->
-            <!--android:name=".ui.InboxActivity"-->
-            <!--android:label="@string/drawer_item_inbox"-->
-            <!--android:screenOrientation="portrait"/>-->
-        <!--<activity-->
-            <!--android:name=".ui.InboxEditActivity"-->
-            <!--android:label="@string/drawer_item_inbox"-->
-            <!--android:screenOrientation="portrait"/>-->
-        <!--&lt;!&ndash;<activity&ndash;&gt;-->
-            <!--&lt;!&ndash;android:name=".ui.InboxSettingsActivity"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:label="@string/drawer_item_inbox"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:screenOrientation="portrait"/>&ndash;&gt;-->
-        <!--<activity-->
-            <!--android:name=".ui.TimelineActivity"-->
-            <!--android:label="@string/drawer_item_timeline"-->
-            <!--android:screenOrientation="portrait"/>-->
-        <!--<activity-->
-            <!--android:name=".ui.ProfileActivity"-->
-            <!--android:label="@string/drawer_item_profile"-->
-            <!--android:screenOrientation="portrait"/>-->
-        <!--<activity-->
-            <!--android:name=".ui.SettingsActivity"-->
-            <!--android:label="@string/drawer_item_settings"-->
-            <!--android:screenOrientation="portrait"/>-->
-        <!--<activity-->
-            <!--android:name=".ui.AddFriendActivity"-->
-            <!--android:label="@string/drawer_item_add_friend"-->
-            <!--android:screenOrientation="portrait"/>-->
-        <!--<activity-->
-            <!--android:name=".ui.OverviewActivity"-->
-            <!--android:label="@string/drawer_item_overview"-->
-            <!--android:screenOrientation="portrait"/>-->
+        <!--android:name=".ui.InboxSettingsActivity"-->
+        <!--android:label="@string/drawer_item_inbox"-->
+        <!--android:screenOrientation="portrait"/>-->
+
 
         <activity android:name="com.facebook.FacebookActivity"
                   android:configChanges=
