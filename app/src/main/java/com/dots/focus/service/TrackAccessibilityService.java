@@ -156,7 +156,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         if (currentApp != null) return currentApp;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CurrentApp");
-        query.
+
         currentApp = query.getFirst();
 
         if (currentApp == null) {

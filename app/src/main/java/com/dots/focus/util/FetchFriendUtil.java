@@ -50,7 +50,6 @@ public class FetchFriendUtil {
                                         Long id = jsonArray.getJSONObject(i).getLong("id");
 
                                         if (checkFriend(id) == -1) {
-
                                             mFriendList.add(jsonArray.getJSONObject(i));
                                             // showFriend(id ,jsonArray.getJSONObject(i)
                                             // .getString("name"), getProfile(id));
@@ -60,17 +59,6 @@ public class FetchFriendUtil {
                                     } catch (JSONException e) { e.getMessage(); }
 
                                 }
-                                /*
-                                Log.d("FBUser", "getFriendsData onCompleted : response " + response);
-                                try {
-                                    JSONObject jsonObject = response.getJSONObject();
-                                    Log.d("FBUser", "getFriendsData onCompleted : jsonObject " + jsonObject);
-                                    JSONObject summary = jsonObject.getJSONObject("summary");
-                                    Log.d("FBUser", "getFriendsData onCompleted : summary total_count - " + summary.getString("total_count"));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                */
                             }
                         })
         );
@@ -82,11 +70,13 @@ public class FetchFriendUtil {
         });
         batch.executeAsync();
     }
-    public static void friendInvite(Long id) {
+    public static void friendInvite(Long id, String name) {
         final ParseObject invite = new ParseObject("FriendInvitation");
 
         invite.put("user_id_invited", id);
+        invite.put("user_name_invited", name);
         invite.put("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
+        invite.put("user_name_inviting", ParseUser.getCurrentUser().getString("name"));
         invite.put("time", System.currentTimeMillis());
         invite.put("downloaded", false);
         invite.saveEventually(new SaveCallback() {
