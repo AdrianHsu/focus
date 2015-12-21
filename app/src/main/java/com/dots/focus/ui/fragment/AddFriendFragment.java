@@ -34,14 +34,9 @@ public class AddFriendFragment extends Fragment {
 
     final List<String> stringList = new ArrayList<>();
 
-    stringList.add("目標設定");
-    stringList.add("耍廢條件設定");
-    stringList.add("鎖屏功能設定");
-    stringList.add("通知設定");
-    stringList.add("FOCUS發燒友");
-    stringList.add("家長監護（PREMIUM）");
-    stringList.add("進階設定");
-    stringList.add("登出");
+    
+    stringList.add("某某id");
+
     simpleRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(stringList);
     linearLayoutManager = new LinearLayoutManager(context);
 
