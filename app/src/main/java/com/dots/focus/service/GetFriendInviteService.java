@@ -66,7 +66,7 @@ public class GetFriendInviteService extends Service {
                             inviteList.get(i).pinInBackground();
                             JSONObject jsonObject = new JSONObject();
                           try {
-                            jsonObject.put("user_id_inviting", inviteList.get(i).getString
+                            jsonObject.put("id", inviteList.get(i).getString
                                ("user_id_inviting"));
                             jsonObject.put("time", inviteList.get(i).getString("time"));
                             friendWaitingReplyList.add(jsonObject);
@@ -84,7 +84,7 @@ public class GetFriendInviteService extends Service {
                   for (int i = 0, size = inviteList.size(); i < size; ++i) {
                     JSONObject jsonObject = new JSONObject();
                     try {
-                      jsonObject.put("user_id_inviting", inviteList.get(i).getString
+                      jsonObject.put("id", inviteList.get(i).getString
                         ("user_id_inviting"));
                       jsonObject.put("time", inviteList.get(i).getString("time"));
                       friendWaitingReplyList.add(jsonObject);

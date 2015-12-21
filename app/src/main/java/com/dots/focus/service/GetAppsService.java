@@ -25,7 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Locale;
 
-public class gGetAppsService extends IntentService {
+public class GetAppsService extends IntentService {
     //private List<AppInfo> applicationList = new ArrayList<AppInfo>();
 
     public GetAppsService(){

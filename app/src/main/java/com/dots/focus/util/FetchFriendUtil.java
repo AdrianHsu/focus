@@ -48,15 +48,11 @@ public class FetchFriendUtil {
                                 for (int i = 0, length = jsonArray.length(); i < length; ++i) {
                                     try {
                                         Long id = jsonArray.getJSONObject(i).getLong("id");
-
                                         if (checkFriend(id) == -1) {
-
                                             mFriendList.add(jsonArray.getJSONObject(i));
                                             // showFriend(id ,jsonArray.getJSONObject(i)
                                             // .getString("name"), getProfile(id));
                                         }
-
-
                                     } catch (JSONException e) { e.getMessage(); }
 
                                 }
