@@ -43,7 +43,8 @@ public class AddFriendFragment extends Fragment {
     FetchFriendUtil.getFriendsInfo(context);
     FetchFriendUtil.waitFriendConfirm();
 
-    ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
+//    ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
+    ArrayList<JSONObject> friendProfileList = GetFriendInviteService.friendWaitingReplyList;
     simpleRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
