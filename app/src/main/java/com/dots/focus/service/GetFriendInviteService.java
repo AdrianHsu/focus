@@ -20,6 +20,7 @@ public class GetFriendInviteService extends Service {
     //private List<AppInfo> applicationList = new ArrayList<AppInfo>();
     private final IBinder mBinder = new GetFriendInviteBinder();
     private final String TAG = "GetFriendInviteService";
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetFriendInviteService start...");

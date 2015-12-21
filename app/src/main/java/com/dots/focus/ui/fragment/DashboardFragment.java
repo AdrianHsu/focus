@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 
 import com.dots.focus.R;
 
-/**
- * Created by AdrianHsu on 2015/12/12.
- */
 public class DashboardFragment extends Fragment {
 
   private Context mContext;

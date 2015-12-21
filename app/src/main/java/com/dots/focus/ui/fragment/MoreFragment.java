@@ -16,9 +16,6 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by AdrianHsu on 2015/12/12.
- */
 public class MoreFragment extends Fragment {
 
   private UltimateRecyclerView mRecyclerView;
@@ -28,7 +25,7 @@ public class MoreFragment extends Fragment {
   private LinearLayoutManager linearLayoutManager;
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+    super.onCreateView(inflater, container, savedInstanceState);
     context = getActivity();
     View v = inflater.inflate(R.layout.fragment_more, container, false);
 
