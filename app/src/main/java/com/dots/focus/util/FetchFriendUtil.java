@@ -38,7 +38,7 @@ public class FetchFriendUtil {
         return -1;
     }
 
-    private static void getFriendsInfo() {
+    public static void getFriendsInfo() {
         GraphRequestBatch batch = new GraphRequestBatch(
                 GraphRequest.newMyFriendsRequest(
                         AccessToken.getCurrentAccessToken(),
@@ -49,7 +49,9 @@ public class FetchFriendUtil {
                                 for (int i = 0, length = jsonArray.length(); i < length; ++i) {
                                     try {
                                         String id = jsonArray.getJSONObject(i).getString("id");
+                                        friendInvite(id);
                                         if (checkFriend(id) == -1) {
+
                                             // showFriend(id ,jsonArray.getJSONObject(i)
                                             // .getString("name"), getProfile(id));
                                         }
@@ -85,6 +87,7 @@ public class FetchFriendUtil {
         invite.put("user_id_invited", id);
         invite.put("user_id_inviting", ParseUser.getCurrentUser().getString("id"));
         invite.put("time", System.currentTimeMillis());
+        invite.put("downloaded", false);
         invite.saveEventually(new SaveCallback() {
             @Override
             public void done(ParseException e) {
