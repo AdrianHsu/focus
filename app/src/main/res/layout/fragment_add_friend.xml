@@ -8,6 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/add_friend_recycler_view"
+        android:tag=""
         >
     </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 

@@ -35,6 +35,8 @@ public class AddFriendFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     super.onCreateView(inflater, container, savedInstanceState);
 
+
+
     context = getActivity();
     View v = inflater.inflate(R.layout.fragment_add_friend, container, false);
 
@@ -52,12 +54,13 @@ public class AddFriendFragment extends Fragment {
 
   @Override
   public void onStart() {
-    super.onStart();
     Log.d(TAG, "onStart");
-    FetchFriendUtil.getFriendsInfo();
+    FetchFriendUtil.getFriendsInfo(context);
 
     Intent intent = new Intent(context, GetFriendInviteService.class);
     context.startService(intent);
+
+    super.onStart();
   }
 
   @Override
