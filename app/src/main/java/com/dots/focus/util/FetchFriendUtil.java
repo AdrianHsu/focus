@@ -25,15 +25,15 @@ import java.net.URL;
 public class FetchFriendUtil {
     private static String TAG = "FetchFriendUtil";
 
-    public static Bitmap getProfile(String id) throws MalformedURLException, IOException{
+    public static Bitmap getProfile(Long id) throws MalformedURLException, IOException{
         URL image_value = new URL("http://graph.facebook.com/"+id+"/picture" );
         return BitmapFactory.decodeStream(image_value.openConnection().getInputStream());
     }
-    public static int checkFriend(String id) throws JSONException {
+    public static int checkFriend(Long id) throws JSONException {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
         if (friends == null)    return -1;
         for (int i = 0, length = friends.length(); i < length; ++i)
-            if (id.equals(friends.getJSONObject(i).getString("id")))
+            if (id.equals(friends.getJSONObject(i).getLong("id")))
                 return i;
         return -1;
     }
@@ -48,7 +48,7 @@ public class FetchFriendUtil {
                                 // Application code for users friends
                                 for (int i = 0, length = jsonArray.length(); i < length; ++i) {
                                     try {
-                                        String id = jsonArray.getJSONObject(i).getString("id");
+                                        Long id = jsonArray.getJSONObject(i).getLong("id");
                                         friendInvite(id);
                                         if (checkFriend(id) == -1) {
 
@@ -82,10 +82,11 @@ public class FetchFriendUtil {
         });
         batch.executeAsync();
     }
-    public static void friendInvite(String id) {
+    public static void friendInvite(Long id) {
         final ParseObject invite = new ParseObject("FriendInvitation");
+
         invite.put("user_id_invited", id);
-        invite.put("user_id_inviting", ParseUser.getCurrentUser().getString("id"));
+        invite.put("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
         invite.put("time", System.currentTimeMillis());
         invite.put("downloaded", false);
         invite.saveEventually(new SaveCallback() {

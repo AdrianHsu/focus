@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     if ((currentUser != null) && currentUser.isAuthenticated())
                         DashboardController.makeMeRequest();
-                    //user.saveEventually();
+                    user.saveEventually();
 
 //                    showSetInfoActivity();
                     showMainActivity();
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     if ((currentUser != null) && currentUser.isAuthenticated())
                         DashboardController.makeMeRequest();
-                    //user.saveEventually();
+                    user.saveEventually();
 
 //                    showSetInfoActivity();
                     showMainActivity();

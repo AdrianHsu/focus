@@ -18,25 +18,19 @@ public class DashboardController {
   public DashboardController(){}
 
   public static void makeMeRequest() {
-
+    Log.d(TAG, "makeMeRequest");
     GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
       new GraphRequest.GraphJSONObjectCallback() {
         @Override
         public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
           if (jsonObject != null) {
             try {
-              //userProfile.put("facebookId", jsonObject.getLong("id"));
-              //userProfile.put("name", jsonObject.getString("name"));
-
-//              if (jsonObject.getString("gender") != null)
-//                userProfile.put("gender", jsonObject.getString("gender"));
-
-//              if (jsonObject.getString("email") != null)
-//                userProfile.put("email", jsonObject.getString("email"));
-
+              Log.d(TAG, jsonObject.toString());
+              Log.d(TAG, "id: " + jsonObject.getLong("id"));
+              Log.d(TAG, "name: " + jsonObject.getString("name"));
               // Save the user profile info in a user property
               ParseUser currentUser = ParseUser.getCurrentUser();
-              currentUser.put("facebookId", jsonObject.getLong("id"));
+              currentUser.put("id", jsonObject.getLong("id"));
               currentUser.put("name", jsonObject.getString("name"));
               currentUser.saveEventually();
 

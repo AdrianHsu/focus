@@ -41,7 +41,7 @@ public class GetFriendConfirmService extends Service {
     class CheckFriendConfirmation extends TimerTask {
         public void run() {
             ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendConfirmation");
-            query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getString("id"));
+            query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> inviteList, ParseException e) {
                     if (e == null && inviteList != null) {
