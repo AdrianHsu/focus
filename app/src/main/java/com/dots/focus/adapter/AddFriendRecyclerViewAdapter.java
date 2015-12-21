@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.util.FetchFriendUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -41,7 +42,7 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
 
 
   @Override
-  public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
+  public void onBindViewHolder(final SimpleAdapterViewHolder holder, final int position) {
     if (position < getItemCount() && (customHeaderView != null ? position <= friendProfileList.size() : position
       < friendProfileList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
@@ -50,14 +51,22 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
       try {
         holder.textViewSample.setText(jsonObject.getString("name"));
 
-        String url ="https://graph.facebook.com/" + String.valueOf( jsonObject.getLong
-          ("id") )+
+        final long id = jsonObject.getLong("id");
+        String url ="https://graph.facebook.com/" + String.valueOf(id) +
           "/picture?type=large";
         Picasso.with(mContext).load(url).into(holder.imageViewSample);
+        holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            FetchFriendUtil.friendInvite(id);
+            remove(position);
+          }
+        });
 
       } catch (JSONException e) {
         e.printStackTrace();
       }
+
 
       if (mDragStartListener != null) {
 

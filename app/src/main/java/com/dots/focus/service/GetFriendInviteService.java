@@ -59,6 +59,7 @@ public class GetFriendInviteService extends Service {
                             inviteList.get(i).saveEventually();
                             // showFriendInvite(inviteList.get(i).getString("user_id_inviting"),
                             //                  inviteList.get(i).getString("time"));
+
                         }
                     }
                 }

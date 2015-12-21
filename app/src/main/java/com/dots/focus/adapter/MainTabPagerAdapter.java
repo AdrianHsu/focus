@@ -9,6 +9,7 @@ import com.dots.focus.ui.fragment.AddFriendFragment;
 import com.dots.focus.ui.fragment.DashboardFragment;
 import com.dots.focus.ui.fragment.MoreFragment;
 import com.dots.focus.ui.fragment.OverviewFragment;
+import com.dots.focus.util.FetchFriendUtil;
 
 /**
  * Created by AdrianHsu on 2015/12/12.

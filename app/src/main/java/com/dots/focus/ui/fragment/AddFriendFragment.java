@@ -40,8 +40,8 @@ public class AddFriendFragment extends Fragment {
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.add_friend_recycler_view);
 
+    FetchFriendUtil.getFriendsInfo();
     ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
-
     simpleRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
@@ -52,12 +52,11 @@ public class AddFriendFragment extends Fragment {
 
   @Override
   public void onStart() {
-    super.onStart();
     Log.d(TAG, "onStart");
-    FetchFriendUtil.getFriendsInfo();
 
     Intent intent = new Intent(context, GetFriendInviteService.class);
     context.startService(intent);
+    super.onStart();
   }
 
   @Override

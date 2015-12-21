@@ -19,20 +19,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FetchFriendUtil {
     private static String TAG = "FetchFriendUtil";
     public static ArrayList<JSONObject> mFriendList = new ArrayList<JSONObject>();
 
-//    public static Bitmap getProfile(Long id) throws MalformedURLException, IOException{
-//        URL image_value = new URL("http://graph.facebook.com/"+id+"/picture" );
-//        return BitmapFactory.decodeStream(image_value.openConnection().getInputStream());
-//    }
     public static int checkFriend(Long id) throws JSONException {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
         if (friends == null)    return -1;
@@ -50,11 +42,14 @@ public class FetchFriendUtil {
                             @Override
                             public void onCompleted(JSONArray jsonArray, GraphResponse response) {
                                 // Application code for users friends
+                                if(!mFriendList.isEmpty())
+                                  mFriendList.clear();
                                 for (int i = 0, length = jsonArray.length(); i < length; ++i) {
                                     try {
                                         Long id = jsonArray.getJSONObject(i).getLong("id");
 
                                         if (checkFriend(id) == -1) {
+
                                             mFriendList.add(jsonArray.getJSONObject(i));
                                             // showFriend(id ,jsonArray.getJSONObject(i)
                                             // .getString("name"), getProfile(id));
