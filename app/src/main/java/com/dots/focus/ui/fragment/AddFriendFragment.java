@@ -15,6 +15,9 @@ import com.dots.focus.service.GetFriendInviteService;
 import com.dots.focus.util.FetchFriendUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,22 +32,20 @@ public class AddFriendFragment extends Fragment {
   private LinearLayoutManager linearLayoutManager;
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+    super.onCreateView(inflater, container, savedInstanceState);
     context = getActivity();
     View v = inflater.inflate(R.layout.fragment_add_friend, container, false);
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.add_friend_recycler_view);
 
-//    FetchFriendUtil.getFriendsInfo();
+    FetchFriendUtil.getFriendsInfo();
 
 //    Intent intent = new Intent(context, GetFriendInviteService.class);
 //    context.startService(intent);
 
-    final List<String> stringList = new ArrayList<>();
-    
-    stringList.add("某某id");
+    ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
 
-    simpleRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(stringList);
+    simpleRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
     mRecyclerView.setLayoutManager(linearLayoutManager);

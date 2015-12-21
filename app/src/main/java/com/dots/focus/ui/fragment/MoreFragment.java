@@ -8,12 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.MoreRecyclerViewAdapter;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +41,17 @@ public class MoreFragment extends Fragment {
     View v = inflater.inflate(R.layout.fragment_more, container, false);
 
     mStickyView = v.findViewById(R.id.sticky_view);
+
+    ImageView profileImageView = (ImageView) mStickyView.findViewById(R.id.profile_image);
+    TextView profileTextView = (TextView) mStickyView.findViewById(R.id.profile_name);
+
+    ParseUser user = ParseUser.getCurrentUser();
+    String name = user.getString("name");
+    profileTextView.setText(name);
+    String url ="https://graph.facebook.com/" + String.valueOf( user.getLong
+      ("id") )+
+      "/picture?type=large";
+    Picasso.with(context).load(url).into(profileImageView);
 
     mStickyView.setOnClickListener(new View.OnClickListener() {
       @Override

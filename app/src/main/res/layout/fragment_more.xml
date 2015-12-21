@@ -12,7 +12,7 @@
                     style="@style/SelectableItemBackground">
 
         <ImageView
-            android:id="@+id/profile"
+            android:id="@+id/profile_image"
             android:src="@drawable/adrian"
             android:layout_width="48dp"
             android:layout_marginLeft="20dp"
@@ -22,12 +22,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_toRightOf="@id/profile"
+            android:layout_toRightOf="@id/profile_image"
             android:layout_alignParentEnd="true">
 
             <TextView
                 android:layout_marginLeft="20dp"
-                android:id="@+id/stick_text"
+                android:id="@+id/profile_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
