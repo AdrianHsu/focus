@@ -35,15 +35,15 @@ public class AddFriendFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     super.onCreateView(inflater, container, savedInstanceState);
 
-
-
     context = getActivity();
     View v = inflater.inflate(R.layout.fragment_add_friend, container, false);
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.add_friend_recycler_view);
 
-    ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
+    FetchFriendUtil.getFriendsInfo(context);
+    FetchFriendUtil.waitFriendConfirm();
 
+    ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
     simpleRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
@@ -53,10 +53,19 @@ public class AddFriendFragment extends Fragment {
   }
 
   @Override
+  public void onDestroy() {
+
+    Log.d(TAG, "called onDestroy()");
+    Intent intent = new Intent(context, GetFriendInviteService.class);
+    context.stopService(intent);
+    super.onDestroy();
+
+  }
+
+  @Override
   public void onStart() {
     Log.d(TAG, "onStart");
-    FetchFriendUtil.getFriendsInfo(context);
-    FetchFriendUtil.waitFriendConfirm();
+
 
     Intent intent = new Intent(context, GetFriendInviteService.class);
     context.startService(intent);
@@ -67,8 +76,6 @@ public class AddFriendFragment extends Fragment {
   @Override
   public void onStop() {
     Log.d(TAG, "onStop");
-    Intent intent = new Intent(context, GetFriendInviteService.class);
-    context.stopService(intent);
 
     super.onStop();
   }

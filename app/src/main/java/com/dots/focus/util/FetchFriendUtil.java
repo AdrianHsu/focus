@@ -26,10 +26,6 @@ public class FetchFriendUtil {
     private static String TAG = "FetchFriendUtil";
     public static ArrayList<JSONObject> mFriendList = new ArrayList<JSONObject>();
 
-//    public static Bitmap getProfile(Long id) throws MalformedURLException, IOException{
-//        URL image_value = new URL("http://graph.facebook.com/"+id+"/picture" );
-//        return BitmapFactory.decodeStream(image_value.openConnection().getInputStream());
-//    }
     public static int checkFriend(Long id) throws JSONException {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
         if (friends == null)    return -1;
@@ -40,7 +36,6 @@ public class FetchFriendUtil {
     }
 
     public static void getFriendsInfo(final Context context) {
-        mFriendList.clear();
         GraphRequestBatch batch = new GraphRequestBatch(
                 GraphRequest.newMyFriendsRequest(
                         AccessToken.getCurrentAccessToken(),
@@ -48,12 +43,15 @@ public class FetchFriendUtil {
                             @Override
                             public void onCompleted(JSONArray jsonArray, GraphResponse response) {
                                 // Application code for users friends
+                                if(!mFriendList.isEmpty())
+                                  mFriendList.clear();
                                 for (int i = 0, length = jsonArray.length(); i < length; ++i) {
                                     try {
                                         Long id = jsonArray.getJSONObject(i).getLong("id");
 
                                         if (checkFriend(id) == -1) {
 
+                                            mFriendList.add(jsonArray.getJSONObject(i));
                                             // showFriend(id ,jsonArray.getJSONObject(i)
                                             // .getString("name"), getProfile(id));
                                         }
@@ -109,7 +107,7 @@ public class FetchFriendUtil {
                 });
             }
         });
-
+        invite.pinInBackground();
     }
     public static void friendConfirm(Long id, String name) throws JSONException {
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -151,7 +149,7 @@ public class FetchFriendUtil {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null && list != null) {
                     for (int i = 0, size = list.size(); i < size; ++i) {
-                        Log.d(TAG, "invited: " + list.get(i).getLong("id"));
+                        Log.d(TAG, "invited: " + list.get(i).getLong("user_id_invited"));
                     }
                 }
             }
