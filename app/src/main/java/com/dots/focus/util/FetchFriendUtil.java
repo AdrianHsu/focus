@@ -1,19 +1,13 @@
 package com.dots.focus.util;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.dots.focus.R;
-import com.dots.focus.ui.MainActivity;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphRequestBatch;
 import com.facebook.GraphResponse;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -25,9 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,5 +124,37 @@ public class FetchFriendUtil {
 
         friends.put(newFriend);
         currentUser.saveEventually();
+
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("FriendInvitation"),
+                                query2 = ParseQuery.getQuery("FriendInvitation");
+        query1.whereEqualTo("user_id_invited", id);
+        query2.whereEqualTo("user_id_inviting", id);
+        List<ParseQuery<ParseObject>> queries = new ArrayList<>();
+        queries.add(query1);    queries.add(query2);
+
+        ParseQuery<ParseObject> query = ParseQuery.or(queries);
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> inviteList, ParseException e) {
+                if (e == null && inviteList != null)
+                    ParseObject.deleteAllInBackground(inviteList);
+
+            }
+        });
+    }
+    public static void waitFriendConfirm() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
+        query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null && list != null) {
+                    for (int i = 0, size = list.size(); i < size; ++i) {
+                        Log.d(TAG, "invited: " + list.get(i).getLong("id"));
+                    }
+                }
+            }
+        });
     }
 }

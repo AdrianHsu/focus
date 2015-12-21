@@ -56,6 +56,7 @@ public class AddFriendFragment extends Fragment {
   public void onStart() {
     Log.d(TAG, "onStart");
     FetchFriendUtil.getFriendsInfo(context);
+    FetchFriendUtil.waitFriendConfirm();
 
     Intent intent = new Intent(context, GetFriendInviteService.class);
     context.startService(intent);
