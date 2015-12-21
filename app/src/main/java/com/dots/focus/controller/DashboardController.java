@@ -36,7 +36,7 @@ public class DashboardController {
 
               // Save the user profile info in a user property
               ParseUser currentUser = ParseUser.getCurrentUser();
-              currentUser.put("facebookId", jsonObject.getLong("id"));
+              currentUser.put("id", jsonObject.getLong("id"));
               currentUser.put("name", jsonObject.getString("name"));
               currentUser.saveEventually();
 

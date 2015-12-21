@@ -35,13 +35,12 @@ public class AddFriendFragment extends Fragment {
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.add_friend_recycler_view);
 
-    FetchFriendUtil.getFriendsInfo();
+//    FetchFriendUtil.getFriendsInfo();
 
-    Intent intent = new Intent(context, GetFriendInviteService.class);
-    context.startService(intent);
+//    Intent intent = new Intent(context, GetFriendInviteService.class);
+//    context.startService(intent);
 
     final List<String> stringList = new ArrayList<>();
-
     
     stringList.add("某某id");
 

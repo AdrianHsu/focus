@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,10 @@ import android.widget.Toast;
 import com.dots.focus.R;
 import com.dots.focus.adapter.MoreRecyclerViewAdapter;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.parse.ParseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,7 @@ public class MoreFragment extends Fragment {
     View v = inflater.inflate(R.layout.fragment_more, container, false);
 
     mStickyView = v.findViewById(R.id.sticky_view);
+
     mStickyView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -62,5 +68,4 @@ public class MoreFragment extends Fragment {
     mRecyclerView.setAdapter(simpleRecyclerViewAdapter);
     return v;
   }
-
 }

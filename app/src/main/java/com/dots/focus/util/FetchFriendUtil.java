@@ -25,10 +25,10 @@ import java.net.URL;
 public class FetchFriendUtil {
     private static String TAG = "FetchFriendUtil";
 
-    public static Bitmap getProfile(String id) throws MalformedURLException, IOException{
-        URL image_value = new URL("http://graph.facebook.com/"+id+"/picture" );
-        return BitmapFactory.decodeStream(image_value.openConnection().getInputStream());
-    }
+//    public static Bitmap getProfile(String id) throws MalformedURLException, IOException{
+//        URL image_value = new URL("http://graph.facebook.com/"+id+"/picture" );
+//        return BitmapFactory.decodeStream(image_value.openConnection().getInputStream());
+//    }
     public static int checkFriend(String id) throws JSONException {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
         if (friends == null)    return -1;

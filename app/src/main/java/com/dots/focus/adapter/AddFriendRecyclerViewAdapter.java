@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -161,6 +162,7 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
 
     TextView textViewSample;
     ImageView imageViewSample;
+    Button buttonSample;
     View item_view;
 
     public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
@@ -169,6 +171,15 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
+        buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
+
+        buttonSample.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            // call function
+          }
+        });
+
         item_view = itemView.findViewById(R.id.itemview);
       }
     }
