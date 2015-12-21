@@ -1,9 +1,15 @@
 package com.dots.focus.util;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.dots.focus.R;
+import com.dots.focus.ui.MainActivity;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphRequestBatch;
@@ -34,7 +40,8 @@ public class FetchFriendUtil {
         return -1;
     }
 
-    public static void getFriendsInfo() {
+    public static void getFriendsInfo(final Context context) {
+        mFriendList.clear();
         GraphRequestBatch batch = new GraphRequestBatch(
                 GraphRequest.newMyFriendsRequest(
                         AccessToken.getCurrentAccessToken(),
@@ -107,5 +114,19 @@ public class FetchFriendUtil {
             }
         });
 
+    }
+    public static void friendConfirm(Long id, String name) throws JSONException {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        JSONArray friends = currentUser.getJSONArray("Friends");
+        JSONObject newFriend = new JSONObject();
+        newFriend.put("id", id);
+        newFriend.put("name", name);
+        newFriend.put("pop-up", false);
+        newFriend.put("timeLock", false);
+        newFriend.put("timeLocked", false);
+        newFriend.put("numKick", 0);
+
+        friends.put(newFriend);
+        currentUser.saveEventually();
     }
 }

@@ -40,7 +40,7 @@ public class AddFriendFragment extends Fragment {
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.add_friend_recycler_view);
 
-    FetchFriendUtil.getFriendsInfo();
+    FetchFriendUtil.getFriendsInfo(context);
     ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
     simpleRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
     linearLayoutManager = new LinearLayoutManager(context);
@@ -51,19 +51,28 @@ public class AddFriendFragment extends Fragment {
   }
 
   @Override
+  public void onDestroy() {
+
+    Log.d(TAG, "called onDestroy()");
+    Intent intent = new Intent(context, GetFriendInviteService.class);
+    context.stopService(intent);
+    super.onDestroy();
+
+  }
+
+  @Override
   public void onStart() {
     Log.d(TAG, "onStart");
 
     Intent intent = new Intent(context, GetFriendInviteService.class);
     context.startService(intent);
+
     super.onStart();
   }
 
   @Override
   public void onStop() {
     Log.d(TAG, "onStop");
-    Intent intent = new Intent(context, GetFriendInviteService.class);
-    context.stopService(intent);
 
     super.onStop();
   }

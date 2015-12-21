@@ -154,6 +154,7 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
   }
 
   @Override
+
   public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
 
     return null;
