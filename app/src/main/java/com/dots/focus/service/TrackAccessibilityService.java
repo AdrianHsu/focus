@@ -6,13 +6,16 @@ import android.os.Build;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.dots.focus.model.AppInfo;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,7 @@ public class TrackAccessibilityService extends AccessibilityService {
     public static long startHour = 0;
     public static final String TAG = "TrackService";
     public static List<String> ignore = new ArrayList<>();
+    private ParseObject currentApp;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -80,6 +84,13 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         startTime = now;
         currentPackageName = tempPackageName;
+        try {
+            AppInfo appInfo = FetchAppUtil.getApp(currentPackageName);
+            if (appInfo != null) {
+                getCurrentApp().put("App", appInfo.getName());
+                getCurrentApp().saveEventually();
+            }
+        } catch (com.parse.ParseException e) { e.getMessage(); }
     }
     // helper functions
     void storeInDatabase(final int duration, final int index){
@@ -140,5 +151,19 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         setServiceInfo(config);
     }
-}
 
+    ParseObject getCurrentApp() throws com.parse.ParseException {
+        if (currentApp != null) return currentApp;
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("CurrentApp");
+        query.
+        currentApp = query.getFirst();
+
+        if (currentApp == null) {
+            currentApp = new ParseObject("CurrentApp");
+            currentApp.put("id", ParseUser.getCurrentUser().getLong("id"));
+        }
+
+        return currentApp;
+    }
+}
