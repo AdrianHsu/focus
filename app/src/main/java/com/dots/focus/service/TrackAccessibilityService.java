@@ -90,7 +90,7 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         final ParseObject temp = new ParseObject("AppUsage");
         temp.put("User", ParseUser.getCurrentUser());
-        temp.put("appName", currentPackageName);
+        temp.put("appIndex", index);
         temp.put("startTime", startTime);
         temp.put("duration", duration);
         temp.put("index", AppIndex);

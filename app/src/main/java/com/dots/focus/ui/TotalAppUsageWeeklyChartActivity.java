@@ -165,12 +165,12 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
 
   private void setData(int count, float range) {
 
-    ArrayList<String> xVals = new ArrayList<String>();
+    ArrayList<String> xVals = new ArrayList<>();
     for (int i = 0; i < count; i++) {
       xVals.add((i) + "");
     }
 
-    ArrayList<Entry> vals1 = new ArrayList<Entry>();
+    ArrayList<Entry> vals1 = new ArrayList<>();
 
     for (int i = 0; i < count; i++) {
       float mult = (range + 1);
