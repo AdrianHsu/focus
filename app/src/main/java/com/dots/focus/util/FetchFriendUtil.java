@@ -38,7 +38,7 @@ public class FetchFriendUtil {
         return -1;
     }
 
-    private static void getFriendsInfo() {
+    public static void getFriendsInfo() {
         GraphRequestBatch batch = new GraphRequestBatch(
                 GraphRequest.newMyFriendsRequest(
                         AccessToken.getCurrentAccessToken(),

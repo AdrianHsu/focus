@@ -1,6 +1,7 @@
 package com.dots.focus.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.AddFriendRecyclerViewAdapter;
+import com.dots.focus.service.GetFriendInviteService;
+import com.dots.focus.util.FetchFriendUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
 import java.util.ArrayList;
@@ -31,6 +34,11 @@ public class AddFriendFragment extends Fragment {
     View v = inflater.inflate(R.layout.fragment_add_friend, container, false);
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.add_friend_recycler_view);
+
+    FetchFriendUtil.getFriendsInfo();
+
+    Intent intent = new Intent(context, GetFriendInviteService.class);
+    context.startService(intent);
 
     final List<String> stringList = new ArrayList<>();
 
