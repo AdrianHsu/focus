@@ -4,11 +4,13 @@ package com.dots.focus.adapter;
  * Created by AdrianHsu on 2015/12/12.
  */
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,24 +18,46 @@ import android.widget.Toast;
 import com.dots.focus.R;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
-  private List<String> stringList;
+  private ArrayList<JSONObject> friendProfileList;
+  private Context mContext;
 
-  public AddFriendRecyclerViewAdapter(List<String> stringList) {
-    this.stringList = stringList;
+  public AddFriendRecyclerViewAdapter(ArrayList<JSONObject> friendProfileList, Context context) {
+    this.friendProfileList = friendProfileList;
+    mContext = context;
   }
 
 
   @Override
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
-    if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
+    if (position < getItemCount() && (customHeaderView != null ? position <= friendProfileList.size() : position
+      < friendProfileList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
-      holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
+      JSONObject jsonObject = friendProfileList.get(customHeaderView != null ? position - 1 :
+        position);
+      try {
+        holder.textViewSample.setText(jsonObject.getString("name"));
+
+        String url ="https://graph.facebook.com/" + String.valueOf( jsonObject.getLong
+          ("id") )+
+          "/picture?type=large";
+        Picasso.with(mContext).load(url).into(holder.imageViewSample);
+
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
 
       if (mDragStartListener != null) {
 
@@ -45,12 +69,13 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
         });
       }
     }
-
   }
 
   @Override
   public int getAdapterItemCount() {
-    return stringList.size();
+    if(friendProfileList.isEmpty())
+      return 0;
+    return friendProfileList.size();
   }
 
   @Override
@@ -76,16 +101,16 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
   }
 
 
-  public void insert(String string, int position) {
-    insert(stringList, string, position);
+  public void insert(JSONObject jsonObject, int position) {
+    insert(friendProfileList, jsonObject, position);
   }
 
   public void remove(int position) {
-    remove(stringList, position);
+    remove(friendProfileList, position);
   }
 
   public void clear() {
-    clear(stringList);
+    clear(friendProfileList);
   }
 
   @Override
@@ -105,7 +130,7 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
 
 
   public void swapPositions(int from, int to) {
-    swapPositions(stringList, from, to);
+    swapPositions(friendProfileList, from, to);
   }
 
 
@@ -161,6 +186,7 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
 
     TextView textViewSample;
     ImageView imageViewSample;
+    Button buttonSample;
     View item_view;
 
     public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
@@ -169,6 +195,15 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
+        buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
+
+        buttonSample.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            // call function
+          }
+        });
+
         item_view = itemView.findViewById(R.id.itemview);
       }
     }
@@ -184,12 +219,12 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
     }
   }
 
-  public String getItem(int position) {
+  public JSONObject getItem(int position) {
     if (customHeaderView != null)
       position--;
-    if (position < stringList.size())
-      return stringList.get(position);
-    else return "";
+    if (position < friendProfileList.size())
+      return friendProfileList.get(position);
+    else return null;
   }
 
 }

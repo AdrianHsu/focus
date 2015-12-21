@@ -22,6 +22,10 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".ui.TotalAppUsageWeeklyChartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/app_name" >

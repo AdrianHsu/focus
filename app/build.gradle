@@ -55,5 +55,6 @@ dependencies {
     compile 'com.github.bmarrdev:android-DecoView-charting:v0.9.4'
 //    https://github.com/PhilJay/MPAndroidChart
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
-
+//    https://github.com/square/picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

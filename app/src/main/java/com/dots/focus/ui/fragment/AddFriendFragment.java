@@ -16,6 +16,9 @@ import com.dots.focus.service.GetFriendInviteService;
 import com.dots.focus.util.FetchFriendUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,14 +40,9 @@ public class AddFriendFragment extends Fragment {
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.add_friend_recycler_view);
 
+    ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
 
-
-    final List<String> stringList = new ArrayList<>();
-
-    
-    stringList.add("某某id");
-
-    simpleRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(stringList);
+    simpleRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
     mRecyclerView.setLayoutManager(linearLayoutManager);
