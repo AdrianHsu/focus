@@ -113,8 +113,30 @@ public class FetchFriendUtil {
         friends.put(newFriend);
         currentUser.saveEventually();
 
+        ParseObject friendConfirm = new ParseObject("FriendConfirmation");
+        friendConfirm.put("user_id_inviting", id);
+        friendConfirm.put("user_name_inviting", name);
+        friendConfirm.put("user_id_invited", currentUser.getLong("id"));
+        friendConfirm.put("user_name_invited", currentUser.getString("name"));
+
+        friendConfirm.saveEventually();
+    }
+    public void getFriendConfirm(Long id, String name) throws JSONException {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        JSONArray friends = currentUser.getJSONArray("Friends");
+        JSONObject newFriend = new JSONObject();
+        newFriend.put("id", id);
+        newFriend.put("name", name);
+        newFriend.put("pop-up", false);
+        newFriend.put("timeLock", false);
+        newFriend.put("timeLocked", false);
+        newFriend.put("numKick", 0);
+
+        friends.put(newFriend);
+        currentUser.saveEventually();
+
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery("FriendInvitation"),
-                                query2 = ParseQuery.getQuery("FriendInvitation");
+                query2 = ParseQuery.getQuery("FriendInvitation");
         query1.whereEqualTo("user_id_invited", id);
         query2.whereEqualTo("user_id_inviting", id);
         List<ParseQuery<ParseObject>> queries = new ArrayList<>();
@@ -130,7 +152,7 @@ public class FetchFriendUtil {
             }
         });
     }
-    public static void waitFriendConfirm() {
+    public static void waitFriendConfirm(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
         query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
         query.fromLocalDatastore();
