@@ -76,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException err) {
                 progressDialog.dismiss();
                 if (user == null) {
+                    Log.d("FBUser", err.toString());
                     Log.d("FBUser", "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
                     ParseUser currentUser = ParseUser.getCurrentUser();
