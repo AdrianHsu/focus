@@ -27,7 +27,7 @@ public class AddFriendFragment extends Fragment {
 
   private UltimateRecyclerView mRecyclerView;
   private Context context;
-  private AddFriendRecyclerViewAdapter simpleRecyclerViewAdapter = null;
+  private AddFriendRecyclerViewAdapter addFriendRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
   private static String TAG = "AddFriendFragment";
 
@@ -43,13 +43,13 @@ public class AddFriendFragment extends Fragment {
     FetchFriendUtil.getFriendsInfo(context);
     FetchFriendUtil.waitFriendConfirm();
 
-//    ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
-    ArrayList<JSONObject> friendProfileList = GetFriendInviteService.friendWaitingReplyList;
-    simpleRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
+    ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
+//    friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
+    addFriendRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
     mRecyclerView.setLayoutManager(linearLayoutManager);
-    mRecyclerView.setAdapter(simpleRecyclerViewAdapter);
+    mRecyclerView.setAdapter(addFriendRecyclerViewAdapter);
     return v;
   }
 

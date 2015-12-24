@@ -69,8 +69,9 @@ public class GetFriendInviteService extends Service {
                             jsonObject.put("id", inviteList.get(i).getLong
                                     ("user_id_inviting"));
                             jsonObject.put("name", inviteList.get(i).getString
-                                ("user_name_inviting"));
+                              ("user_name_inviting"));
                             jsonObject.put("time", inviteList.get(i).getLong("time"));
+                            jsonObject.put("invite", false);
                             friendWaitingReplyList.add(jsonObject);
 
                           } catch (JSONException e1) {
@@ -92,6 +93,8 @@ public class GetFriendInviteService extends Service {
                         jsonObject.put("name", inviteList.get(i).getString
                                 ("user_name_inviting"));
                         jsonObject.put("time", inviteList.get(i).getLong("time"));
+                        jsonObject.put("invite", false);
+
                       friendWaitingReplyList.add(jsonObject);
 
                     } catch (JSONException e1) {
