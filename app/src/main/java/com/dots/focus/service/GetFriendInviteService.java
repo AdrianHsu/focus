@@ -60,6 +60,8 @@ public class GetFriendInviteService extends Service {
             query1.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> inviteList, ParseException e) {
                     if (e == null && inviteList != null) {
+                        if(!friendWaitingReplyList.isEmpty())
+                          friendWaitingReplyList.clear();
                         for (int i = 0, size = inviteList.size(); i < size; ++i) {
                             inviteList.get(i).put("downloaded", true);
                             inviteList.get(i).saveEventually();
