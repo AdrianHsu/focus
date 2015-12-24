@@ -1,9 +1,5 @@
 package com.dots.focus.adapter;
 
-/**
- * Created by AdrianHsu on 2015/12/12.
- */
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,11 +20,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
@@ -44,7 +36,7 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
   @Override
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, final int position) {
     if (position < getItemCount() && (customHeaderView != null ? position <= friendProfileList.size() : position
-      < friendProfileList.size()) && (customHeaderView != null ? position > 0 : true)) {
+      < friendProfileList.size()) && (customHeaderView == null || position > 0)) {
 
       JSONObject jsonObject = friendProfileList.get(customHeaderView != null ? position - 1 :
         position);

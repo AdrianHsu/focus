@@ -1,6 +1,5 @@
 package com.dots.focus.util;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.facebook.AccessToken;
@@ -24,7 +23,7 @@ import java.util.List;
 
 public class FetchFriendUtil {
     private static String TAG = "FetchFriendUtil";
-    public static ArrayList<JSONObject> mFriendList = new ArrayList<JSONObject>();
+    public static ArrayList<JSONObject> mFriendList = new ArrayList<>();
 
     public static int checkFriend(Long id) throws JSONException {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
@@ -35,7 +34,7 @@ public class FetchFriendUtil {
         return -1;
     }
 
-    public static void getFriendsInfo(final Context context) {
+    public static void getFriendsInfo() {
         GraphRequestBatch batch = new GraphRequestBatch(
                 GraphRequest.newMyFriendsRequest(
                         AccessToken.getCurrentAccessToken(),

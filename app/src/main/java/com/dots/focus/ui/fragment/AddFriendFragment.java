@@ -40,7 +40,7 @@ public class AddFriendFragment extends Fragment {
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.add_friend_recycler_view);
 
-    FetchFriendUtil.getFriendsInfo(context);
+    FetchFriendUtil.getFriendsInfo();
     FetchFriendUtil.waitFriendConfirm();
 
     ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
