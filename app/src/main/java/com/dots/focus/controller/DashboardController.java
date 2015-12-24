@@ -6,6 +6,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,9 +31,15 @@ public class DashboardController {
               Log.d(TAG, "name: " + jsonObject.getString("name"));
               // Save the user profile info in a user property
               ParseUser currentUser = ParseUser.getCurrentUser();
+              ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
+
+              currentUser.put("installationId", currentInstallation.getInstallationId());
               currentUser.put("id", jsonObject.getLong("id"));
               currentUser.put("name", jsonObject.getString("name"));
+              currentInstallation.put("fbId", jsonObject.getLong("id"));
+
               currentUser.saveEventually();
+              currentInstallation.saveEventually();
 
             } catch (JSONException e) {
               Log.d(TAG,
