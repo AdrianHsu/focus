@@ -49,6 +49,9 @@
         <!--android:name=".ui.InboxSettingsActivity"-->
         <!--android:label="@string/drawer_item_inbox"-->
         <!--android:screenOrientation="portrait"/>-->
+        <activity android:name=".ui.testRecyclerViewActivity"
+                  android:label="@string/app_name">
+        </activity>
 
 
         <activity android:name="com.facebook.FacebookActivity"

@@ -59,7 +59,12 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
         holder.buttonSample.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            FetchFriendUtil.friendInvite(id, name);
+//            FetchFriendUtil.friendInvite(id, name);
+            try {
+              FetchFriendUtil.friendConfirm(id, name);
+            } catch (JSONException e) {
+              e.printStackTrace();
+            }
             remove(position);
           }
         });
@@ -95,8 +100,12 @@ public class AddFriendRecyclerViewAdapter extends UltimateViewAdapter<AddFriendR
 
   @Override
   public SimpleAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
+
+
     View v = LayoutInflater.from(parent.getContext())
       .inflate(R.layout.add_friend_recycler_view_adapter, parent, false);
+    
+
     final SimpleAdapterViewHolder vh = new SimpleAdapterViewHolder(v, true);
 
     v.setOnClickListener(new View.OnClickListener() {
