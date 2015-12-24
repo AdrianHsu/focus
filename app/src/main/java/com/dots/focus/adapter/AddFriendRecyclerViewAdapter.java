@@ -51,7 +51,7 @@ public class AddFriendRecyclerViewAdapter extends
 
       if(holder instanceof FriendInviteAdapterViewHolder) {
         friendInviteBindItem( jsonObject,(FriendInviteAdapterViewHolder) holder, position);
-      } else {
+      } else if (holder instanceof FriendConfirmAdapterViewHolder){
         friendConfirmBindItem( jsonObject,(FriendInviteAdapterViewHolder) holder, position);
       }
     }
@@ -88,14 +88,14 @@ public class AddFriendRecyclerViewAdapter extends
   public void friendConfirmBindItem(JSONObject jsonObject, FriendInviteAdapterViewHolder holder,
                                    final int position) {
     try {
-//      holder.textViewSample.setText(jsonObject.getString("name"));
-      holder.textViewSample.setText("太狂了吧！");
+      holder.textViewSample.setText(jsonObject.getString("name"));
 
       final long id = jsonObject.getLong("id");
       final String name = jsonObject.getString("name");
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
+      holder.buttonSample.setText("接受");
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -176,7 +176,7 @@ public class AddFriendRecyclerViewAdapter extends
     if (v != null) {
       v.setOnClickListener(new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClgick(View v) {
           Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
             .LENGTH_SHORT)
             .show();
