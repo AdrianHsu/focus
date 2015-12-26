@@ -49,6 +49,7 @@ public class GetFriendConfirmService extends Service {
                             // showFriendConfirm(inviteList.get(i).getString("user_id_invited"),
                             //                  inviteList.get(i).getString("time"));
                         }
+                        ParseObject.deleteAllInBackground(inviteList);
                     }
                 }
             });

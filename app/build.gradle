@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.dots.focus"
@@ -30,15 +30,14 @@ repositories {
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.0.0'
-    compile 'com.parse.bolts:bolts-android:1.2.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.facebook.android:facebook-android-sdk:4.4.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile fileTree(dir: 'libs', include: 'ParseFacebookUtilsV4-*.jar')
 
-//    compile 'com.parse.bolts:bolts-android:1.9.2'
-//    compile 'com.parse:parse-android:1.9.2'
+    compile 'com.parse.bolts:bolts-android:1.2.0'
+    compile 'com.parse:parse-android:1.11.0'
 
 //    intro
     compile 'com.github.paolorotolo:appintro:3.2.0'
@@ -51,8 +50,8 @@ dependencies {
         transitive = true
     }
 
-    compile 'com.android.support:design:23.1.0'
-    compile 'com.android.support:cardview-v7:23.1.0'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
 
 //    https://github.com/cymcsg/UltimateRecyclerView
     compile 'com.marshalchen.ultimaterecyclerview:library:0.3.18'

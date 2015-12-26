@@ -124,7 +124,10 @@ public class FetchFriendUtil {
         friendConfirm.put("user_name_invited", currentUser.getString("name"));
 
         friendConfirm.saveEventually();
+
+        clearInvitation(id);
     }
+
     public void getFriendConfirm(Long id, String name) throws JSONException {
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");
@@ -139,22 +142,7 @@ public class FetchFriendUtil {
         friends.put(newFriend);
         currentUser.saveEventually();
 
-        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("FriendInvitation"),
-                query2 = ParseQuery.getQuery("FriendInvitation");
-        query1.whereEqualTo("user_id_invited", id);
-        query2.whereEqualTo("user_id_inviting", id);
-        List<ParseQuery<ParseObject>> queries = new ArrayList<>();
-        queries.add(query1);    queries.add(query2);
-
-        ParseQuery<ParseObject> query = ParseQuery.or(queries);
-        query.fromLocalDatastore();
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> inviteList, ParseException e) {
-                if (e == null && inviteList != null)
-                    ParseObject.deleteAllInBackground(inviteList);
-
-            }
-        });
+        clearInvitation(id);
     }
     public static void waitFriendConfirm(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
@@ -168,6 +156,28 @@ public class FetchFriendUtil {
                         Log.d(TAG, "invited: " + list.get(i).getLong("user_id_invited"));
                     }
                 }
+            }
+        });
+    }
+    public static void clearInvitation(Long id) {
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("FriendInvitation"),
+                                query2 = ParseQuery.getQuery("FriendInvitation");
+        query1.whereEqualTo("user_id_invited", id);
+        query1.fromLocalDatastore();
+        query2.whereEqualTo("user_id_inviting", id);
+        query2.fromLocalDatastore();
+        List<ParseQuery<ParseObject>> queries = new ArrayList<>();
+        queries.add(query1);    queries.add(query2);
+
+        ParseQuery<ParseObject> query = ParseQuery.or(queries);
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> inviteList, ParseException e) {
+                if (e == null && inviteList != null) {
+                    Log.d(TAG, "Delete FriendInvitation, size: " + inviteList.size());
+                    ParseObject.deleteAllInBackground(inviteList);
+                }
+
             }
         });
     }
