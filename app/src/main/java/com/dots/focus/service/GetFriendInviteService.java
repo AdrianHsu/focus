@@ -21,91 +21,105 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GetFriendInviteService extends Service {
-    //private List<AppInfo> applicationList = new ArrayList<AppInfo>();
-    private final IBinder mBinder = new GetFriendInviteBinder();
-    private final String TAG = "GetFriendInviteService";
-    public static ArrayList<JSONObject> friendWaitingReplyList = new ArrayList<>();
+  private final IBinder mBinder = new GetFriendInviteBinder();
+  private final String TAG = "GetFriendInviteService";
+  public static ArrayList<JSONObject> friendWaitingReplyList = new ArrayList<>();
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "GetFriendInviteService start...");
-        Timer timer = new Timer();
-        timer.schedule(new CheckFriendInvitation(), 0, 60000);
-        return 0;
+  @Override
+  public int onStartCommand(Intent intent, int flags, int startId) {
+    Log.d(TAG, "GetFriendInviteService start...");
+    //updateList();
+    Timer timer = new Timer();
+    timer.schedule(new CheckFriendInvitation(), 0, 60000);
+    return 0;
+  }
+
+  public class GetFriendInviteBinder extends Binder {
+    GetFriendInviteService getService() {
+      return GetFriendInviteService.this;
     }
+  }
 
-    public class GetFriendInviteBinder extends Binder {
-        GetFriendInviteService getService() {
-            return GetFriendInviteService.this;
-        }
-    }
+  @Override
+  public IBinder onBind(Intent intent) {
+    return mBinder;
+  }
 
-    @Override
-    public IBinder onBind(Intent intent) {
+  class CheckFriendInvitation extends TimerTask {
 
-        return mBinder;
-    }
+    public void run() {
+      Log.d(TAG, "start GetFriendInviteService run...");
+      ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
+      query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
+      //query.whereEqualTo("downloaded", false);
 
-    class CheckFriendInvitation extends TimerTask {
 
-        public void run() {
-            Log.d(TAG, "start GetFriendInviteService run...");
-            ParseQuery<ParseObject> query1 = ParseQuery.getQuery("FriendInvitation"),
-                                    query2 = ParseQuery.getQuery("FriendInvitation");
-            query1.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
-            query1.whereEqualTo("downloaded", false);
-            query2.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
-            query2.fromLocalDatastore();
+      query.findInBackground(new FindCallback<ParseObject>() {
+        public void done(List<ParseObject> inviteList, ParseException e) {
+          if (e == null && inviteList != null && !inviteList.isEmpty()) {
+            friendWaitingReplyList.clear();
 
-            query1.findInBackground(new FindCallback<ParseObject>() {
-                public void done(List<ParseObject> inviteList, ParseException e) {
-                    if (e == null && inviteList != null) {
-                        if(!friendWaitingReplyList.isEmpty())
-                          friendWaitingReplyList.clear();
-                        for (int i = 0, size = inviteList.size(); i < size; ++i) {
-                            inviteList.get(i).put("downloaded", true);
-                            inviteList.get(i).saveEventually();
-                            inviteList.get(i).pinInBackground();
-                            JSONObject jsonObject = new JSONObject();
-                          try {
-                            jsonObject.put("id", inviteList.get(i).getLong
-                                    ("user_id_inviting"));
-                            jsonObject.put("name", inviteList.get(i).getString
-                              ("user_name_inviting"));
-                            jsonObject.put("time", inviteList.get(i).getLong("time"));
-                            jsonObject.put("invite", false);
-                            friendWaitingReplyList.add(jsonObject);
+            for (int i = 0, size = inviteList.size(); i < size; ++i) {
+              Log.d(TAG, "download = false: inviteList.size() == " + inviteList.size());
+              inviteList.get(i).put("downloaded", true);
+              JSONObject jsonObject = new JSONObject();
+              try {
+                jsonObject.put("id", inviteList.get(i).getLong
+                  ("user_id_inviting"));
+                jsonObject.put("name", inviteList.get(i).getString
+                  ("user_name_inviting"));
+                Log.d(TAG, "user_name_inviting == " + jsonObject.getString("name"));
+                jsonObject.put("time", inviteList.get(i).getLong("time"));
+                jsonObject.put("invite", false);
+                friendWaitingReplyList.add(jsonObject);
 
-                          } catch (JSONException e1) {
-                            e1.printStackTrace();
-                          }
-                        }
-                    }
-                }
-            });
-            query2.findInBackground(new FindCallback<ParseObject>() {
-              public void done(List<ParseObject> inviteList, ParseException e) {
-                if (e == null && inviteList != null) {
-                  for (int i = 0, size = inviteList.size(); i < size; ++i) {
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-
-                        jsonObject.put("id", inviteList.get(i).getLong
-                                ("user_id_inviting"));
-                        jsonObject.put("name", inviteList.get(i).getString
-                                ("user_name_inviting"));
-                        jsonObject.put("time", inviteList.get(i).getLong("time"));
-                        jsonObject.put("invite", false);
-
-                      friendWaitingReplyList.add(jsonObject);
-
-                    } catch (JSONException e1) {
-                      e1.printStackTrace();
-                    }
-                  }
-                }
+              } catch (JSONException e1) {
+                e1.printStackTrace();
               }
-            });
+            }
+            try {
+              ParseObject.saveAll(inviteList);
+              ParseObject.pinAll(inviteList);
+            } catch (ParseException e1) {
+              Log.d(TAG, e1.getMessage());
+            }
+          }
         }
+      });
+
     }
+  }
+  public static void updateList() {
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
+    query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
+    query.fromLocalDatastore();
+    query.findInBackground(new FindCallback<ParseObject>() {
+      public void done(List<ParseObject> inviteList, ParseException e) {
+        Log.d("GetFriendInviteService", "download = true: inviteList.size() == " + inviteList
+          .size());
+        if (e == null && inviteList != null) {
+          if (!inviteList.isEmpty())
+            friendWaitingReplyList.clear();
+          for (int i = 0, size = inviteList.size(); i < size; ++i) {
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+              jsonObject.put("id", inviteList.get(i).getLong
+                ("user_id_inviting"));
+              jsonObject.put("name", inviteList.get(i).getString
+                ("user_name_inviting"));
+              Log.d("GetFriendInviteService", "user_name_inviting == " + jsonObject.getString("name"));
+              jsonObject.put("time", inviteList.get(i).getLong("time"));
+              jsonObject.put("invite", false);
+
+              friendWaitingReplyList.add(jsonObject);
+
+            } catch (JSONException e1) {
+              e1.printStackTrace();
+            }
+          }
+        }
+      }
+    });
+  }
 }
