@@ -334,7 +334,6 @@ public class AddFriendRecyclerViewAdapter extends
     ImageView imageViewSample;
     Button buttonSample;
     View item_view;
-g
 
     public FriendConfirmAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
