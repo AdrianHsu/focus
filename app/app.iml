@@ -98,7 +98,7 @@
     <orderEntry type="library" exported="" name="design-23.1.0" level="project" />
     <orderEntry type="library" exported="" name="httpclient-win-4.5.1" level="project" />
     <orderEntry type="library" exported="" name="fluent-hc-4.5.1" level="project" />
-    <orderEntry type="library" exported="" name="Parse-1.9.2" level="project" />
+    <orderEntry type="library" exported="" name="ParseFacebookUtilsV4-1.10.3" level="project" />
     <orderEntry type="library" exported="" name="library-2.1.4" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="httpclient-4.5.1" level="project" />
@@ -107,9 +107,9 @@
     <orderEntry type="library" exported="" name="appcompat-v7-23.1.0" level="project" />
     <orderEntry type="library" exported="" name="commons-codec-1.9" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="Parse-1.11.0" level="project" />
     <orderEntry type="library" exported="" name="jna-4.1.0" level="project" />
     <orderEntry type="library" exported="" name="core-0.8.1.0" level="project" />
-    <orderEntry type="library" exported="" name="ParseFacebookUtilsV4-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.1.0" level="project" />
     <orderEntry type="library" exported="" name="glide-3.6.0" level="project" />
     <orderEntry type="library" exported="" name="MPAndroidChart-v2.1.6" level="project" />

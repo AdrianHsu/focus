@@ -52,9 +52,10 @@ public class AddFriendRecyclerViewAdapter extends
         position);
 
       if(holder instanceof FriendInviteAdapterViewHolder) {
-        friendInviteBindItem( jsonObject,(FriendInviteAdapterViewHolder) holder, position);
+        friendInviteBindItem(jsonObject, (FriendInviteAdapterViewHolder) holder, position);
       } else if (holder instanceof FriendConfirmAdapterViewHolder){
-        friendConfirmBindItem( jsonObject,(FriendConfirmAdapterViewHolder) holder, position);
+        friendConfirmBindItem(jsonObject, (FriendConfirmAdapterViewHolder) holder, position);
+
       }
     }
   }
@@ -73,7 +74,8 @@ public class AddFriendRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
 
-            FetchFriendUtil.friendInvite(id, name);
+          FetchFriendUtil.friendInvite(id, name);
+
           remove(position);
         }
       });
@@ -332,7 +334,7 @@ public class AddFriendRecyclerViewAdapter extends
     ImageView imageViewSample;
     Button buttonSample;
     View item_view;
-
+g
 
     public FriendConfirmAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);

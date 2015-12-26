@@ -28,7 +28,7 @@ public class GetFriendInviteService extends Service {
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     Log.d(TAG, "GetFriendInviteService start...");
-    //updateList();
+//    updateList();
     Timer timer = new Timer();
     timer.schedule(new CheckFriendInvitation(), 0, 60000);
     return 0;
