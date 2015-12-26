@@ -86,7 +86,7 @@ public class AddFriendRecyclerViewAdapter extends
   }
 
   public void friendConfirmBindItem(JSONObject jsonObject, FriendConfirmAdapterViewHolder holder,
-                                   final int position) {
+                                    final int position) {
     try {
       holder.textViewSample.setText(jsonObject.getString("name"));
 
@@ -334,6 +334,7 @@ public class AddFriendRecyclerViewAdapter extends
     ImageView imageViewSample;
     Button buttonSample;
     View item_view;
+
 
     public FriendConfirmAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
