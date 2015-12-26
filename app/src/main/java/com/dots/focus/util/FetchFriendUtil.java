@@ -42,20 +42,24 @@ public class FetchFriendUtil {
                             @Override
                             public void onCompleted(JSONArray jsonArray, GraphResponse response) {
                                 // Application code for users friends
-                                if(!mFriendList.isEmpty())
-                                  mFriendList.clear();
-                                for (int i = 0, length = jsonArray.length(); i < length; ++i) {
-                                    try {
-                                        Long id = jsonArray.getJSONObject(i).getLong("id");
-                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                        jsonObject.put("invite", true);
-                                        if (checkFriend(id) == -1) {
-                                            mFriendList.add(jsonObject);
-                                            // showFriend(id ,jsonArray.getJSONObject(i)
-                                            // .getString("name"), getProfile(id));
+                                if (jsonArray != null && response != null) {
+                                    if (!mFriendList.isEmpty())
+                                        mFriendList.clear();
+                                    for (int i = 0, length = jsonArray.length(); i < length; ++i) {
+                                        try {
+                                            Long id = jsonArray.getJSONObject(i).getLong("id");
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                            jsonObject.put("invite", true);
+                                            if (checkFriend(id) == -1) {
+                                                mFriendList.add(jsonObject);
+                                                // showFriend(id ,jsonArray.getJSONObject(i)
+                                                // .getString("name"), getProfile(id));
+                                            }
+                                        } catch (JSONException e) {
+                                            e.getMessage();
                                         }
-                                    } catch (JSONException e) { e.getMessage(); }
 
+                                    }
                                 }
                             }
                         })
@@ -78,22 +82,22 @@ public class FetchFriendUtil {
         invite.put("time", System.currentTimeMillis());
         invite.put("downloaded", false);
         invite.saveEventually(new SaveCallback() {
-          @Override
-          public void done(ParseException e) {
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
-            query.getInBackground(invite.getObjectId(), new GetCallback<ParseObject>() {
-              public void done(ParseObject object, ParseException e) {
-                if (e == null && object != null)
-                  Log.d(TAG, "Succeed update FriendInvitation: " + object.toString());
-                else {
-                  if (e != null)
-                    Log.d(TAG, "Fail update FriendInvitation: " + e.getMessage());
-                  if (object == null)
-                    Log.d(TAG, "Fail update FriendInvitation: object == null");
-                }
-              }
-            });
-          }
+            @Override
+            public void done(ParseException e) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
+                query.getInBackground(invite.getObjectId(), new GetCallback<ParseObject>() {
+                    public void done(ParseObject object, ParseException e) {
+                        if (e == null && object != null)
+                            Log.d(TAG, "Succeed update FriendInvitation: " + object.toString());
+                        else {
+                            if (e != null)
+                                Log.d(TAG, "Fail update FriendInvitation: " + e.getMessage());
+                            if (object == null)
+                                Log.d(TAG, "Fail update FriendInvitation: object == null");
+                        }
+                    }
+                });
+            }
         });
         invite.pinInBackground();
     }

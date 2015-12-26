@@ -50,9 +50,9 @@ public class AddFriendRecyclerViewAdapter extends
         position);
 
       if(holder instanceof FriendInviteAdapterViewHolder) {
-        friendInviteBindItem( jsonObject,(FriendInviteAdapterViewHolder) holder, position);
+        friendInviteBindItem(jsonObject, (FriendInviteAdapterViewHolder) holder, position);
       } else if (holder instanceof FriendConfirmAdapterViewHolder){
-        friendConfirmBindItem( jsonObject,(FriendInviteAdapterViewHolder) holder, position);
+        friendConfirmBindItem(jsonObject, (FriendInviteAdapterViewHolder) holder, position);
       }
     }
   }
@@ -71,11 +71,9 @@ public class AddFriendRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
 //            FetchFriendUtil.friendInvite(id, name);
-          try {
-            FetchFriendUtil.friendConfirm(id, name);
-          } catch (JSONException e) {
-            e.printStackTrace();
-          }
+
+          FetchFriendUtil.friendInvite(id, name);
+
           remove(position);
         }
       });
@@ -176,7 +174,7 @@ public class AddFriendRecyclerViewAdapter extends
     if (v != null) {
       v.setOnClickListener(new View.OnClickListener() {
         @Override
-        public void onClgick(View v) {
+        public void onClick(View v) {
           Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
             .LENGTH_SHORT)
             .show();

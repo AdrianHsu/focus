@@ -21,7 +21,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GetFriendInviteService extends Service {
-    //private List<AppInfo> applicationList = new ArrayList<AppInfo>();
     private final IBinder mBinder = new GetFriendInviteBinder();
     private final String TAG = "GetFriendInviteService";
     public static ArrayList<JSONObject> friendWaitingReplyList = new ArrayList<>();
@@ -29,6 +28,7 @@ public class GetFriendInviteService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetFriendInviteService start...");
+        updateList();
         Timer timer = new Timer();
         timer.schedule(new CheckFriendInvitation(), 0, 60000);
         return 0;
@@ -42,7 +42,6 @@ public class GetFriendInviteService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-
         return mBinder;
     }
 
@@ -50,62 +49,69 @@ public class GetFriendInviteService extends Service {
 
         public void run() {
             Log.d(TAG, "start GetFriendInviteService run...");
-            ParseQuery<ParseObject> query1 = ParseQuery.getQuery("FriendInvitation"),
-                                    query2 = ParseQuery.getQuery("FriendInvitation");
-            query1.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
-            query1.whereEqualTo("downloaded", false);
-            query2.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
-            query2.fromLocalDatastore();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
+            query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
+            query.whereEqualTo("downloaded", false);
 
-            query1.findInBackground(new FindCallback<ParseObject>() {
+
+            query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> inviteList, ParseException e) {
-                    if (e == null && inviteList != null) {
-                        if(!friendWaitingReplyList.isEmpty())
-                          friendWaitingReplyList.clear();
+                    if (e == null && inviteList != null && !inviteList.isEmpty()) {
                         for (int i = 0, size = inviteList.size(); i < size; ++i) {
                             inviteList.get(i).put("downloaded", true);
-                            inviteList.get(i).saveEventually();
-                            inviteList.get(i).pinInBackground();
                             JSONObject jsonObject = new JSONObject();
-                          try {
-                            jsonObject.put("id", inviteList.get(i).getLong
-                                    ("user_id_inviting"));
-                            jsonObject.put("name", inviteList.get(i).getString
-                              ("user_name_inviting"));
-                            jsonObject.put("time", inviteList.get(i).getLong("time"));
-                            jsonObject.put("invite", false);
-                            friendWaitingReplyList.add(jsonObject);
+                            try {
+                                jsonObject.put("id", inviteList.get(i).getLong
+                                        ("user_id_inviting"));
+                                jsonObject.put("name", inviteList.get(i).getString
+                                        ("user_name_inviting"));
+                                jsonObject.put("time", inviteList.get(i).getLong("time"));
+                                jsonObject.put("invite", false);
+                                friendWaitingReplyList.add(jsonObject);
 
-                          } catch (JSONException e1) {
-                            e1.printStackTrace();
-                          }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                        try {
+                            ParseObject.saveAll(inviteList);
+                            ParseObject.pinAll(inviteList);
+                        } catch (ParseException e1) {
+                            Log.d(TAG, e1.getMessage());
                         }
                     }
                 }
             });
-            query2.findInBackground(new FindCallback<ParseObject>() {
-              public void done(List<ParseObject> inviteList, ParseException e) {
-                if (e == null && inviteList != null) {
-                  for (int i = 0, size = inviteList.size(); i < size; ++i) {
-                    JSONObject jsonObject = new JSONObject();
-                    try {
 
-                        jsonObject.put("id", inviteList.get(i).getLong
-                                ("user_id_inviting"));
-                        jsonObject.put("name", inviteList.get(i).getString
-                                ("user_name_inviting"));
-                        jsonObject.put("time", inviteList.get(i).getLong("time"));
-                        jsonObject.put("invite", false);
-
-                      friendWaitingReplyList.add(jsonObject);
-
-                    } catch (JSONException e1) {
-                      e1.printStackTrace();
-                    }
-                  }
-                }
-              }
-            });
         }
+    }
+    public static void updateList() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
+        query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> inviteList, ParseException e) {
+                if (e == null && inviteList != null) {
+                    if (!inviteList.isEmpty())
+                        friendWaitingReplyList.clear();
+                    for (int i = 0, size = inviteList.size(); i < size; ++i) {
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("id", inviteList.get(i).getLong
+                                    ("user_id_inviting"));
+                            jsonObject.put("name", inviteList.get(i).getString
+                                    ("user_name_inviting"));
+                            jsonObject.put("time", inviteList.get(i).getLong("time"));
+                            jsonObject.put("invite", false);
+
+                            friendWaitingReplyList.add(jsonObject);
+
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
     }
 }

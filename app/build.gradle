@@ -37,6 +37,9 @@ dependencies {
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile fileTree(dir: 'libs', include: 'ParseFacebookUtilsV4-*.jar')
 
+    compile 'com.parse.bolts:bolts-android:1.9.2'
+    compile 'com.parse:parse-android:1.9.2'
+
 //    intro
     compile 'com.github.paolorotolo:appintro:3.2.0'
 //    material button for set info
@@ -58,3 +61,5 @@ dependencies {
 //    https://github.com/square/picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
 }
+
+
