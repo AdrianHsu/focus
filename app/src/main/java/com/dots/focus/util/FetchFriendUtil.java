@@ -27,7 +27,7 @@ public class FetchFriendUtil {
 
     public static int checkFriend(Long id) throws JSONException {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
-        if (friends == null)    return -1;
+        if (friends == null) return -1;
         for (int i = 0, length = friends.length(); i < length; ++i)
             if (id.equals(friends.getJSONObject(i).getLong("id")))
                 return i;
@@ -72,6 +72,7 @@ public class FetchFriendUtil {
         });
         batch.executeAsync();
     }
+
     public static void friendInvite(Long id, String name) {
         final ParseObject invite = new ParseObject("FriendInvitation");
 
@@ -99,12 +100,12 @@ public class FetchFriendUtil {
                 });
             }
         });
-        invite.pinInBackground();
     }
+
     public static void friendConfirm(Long id, String name) throws JSONException {
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");
-        if (friends == null)  friends = new JSONArray();
+        if (friends == null) friends = new JSONArray();
         JSONObject newFriend = new JSONObject();
         newFriend.put("id", id);
         newFriend.put("name", name);
@@ -144,7 +145,33 @@ public class FetchFriendUtil {
 
         clearInvitation(id);
     }
-    public static void waitFriendConfirm(){
+
+
+    public static void clearInvitation(Long id) {
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("FriendInvitation"),
+                query2 = ParseQuery.getQuery("FriendInvitation");
+        query1.whereEqualTo("user_id_invited", id);
+        query1.fromLocalDatastore();
+        query2.whereEqualTo("user_id_inviting", id);
+        query2.fromLocalDatastore();
+        List<ParseQuery<ParseObject>> queries = new ArrayList<>();
+        queries.add(query1);
+        queries.add(query2);
+
+        ParseQuery<ParseObject> query = ParseQuery.or(queries);
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> inviteList, ParseException e) {
+                if (e == null && inviteList != null) {
+                    Log.d(TAG, "Delete FriendInvitation, size: " + inviteList.size());
+                    ParseObject.deleteAllInBackground(inviteList);
+                }
+
+            }
+        });
+    }
+
+    public static void waitFriendConfirm() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
         query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
         query.fromLocalDatastore();
@@ -159,26 +186,5 @@ public class FetchFriendUtil {
             }
         });
     }
-    public static void clearInvitation(Long id) {
-        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("FriendInvitation"),
-                                query2 = ParseQuery.getQuery("FriendInvitation");
-        query1.whereEqualTo("user_id_invited", id);
-        query1.fromLocalDatastore();
-        query2.whereEqualTo("user_id_inviting", id);
-        query2.fromLocalDatastore();
-        List<ParseQuery<ParseObject>> queries = new ArrayList<>();
-        queries.add(query1);    queries.add(query2);
-
-        ParseQuery<ParseObject> query = ParseQuery.or(queries);
-        query.fromLocalDatastore();
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> inviteList, ParseException e) {
-                if (e == null && inviteList != null) {
-                    Log.d(TAG, "Delete FriendInvitation, size: " + inviteList.size());
-                    ParseObject.deleteAllInBackground(inviteList);
-                }
-
-            }
-        });
-    }
 }
+

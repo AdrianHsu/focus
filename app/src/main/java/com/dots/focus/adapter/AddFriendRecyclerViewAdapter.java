@@ -2,6 +2,7 @@ package com.dots.focus.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,6 +30,7 @@ public class AddFriendRecyclerViewAdapter extends
   private Context mContext;
   private static final int FRIEND_INVITE_ITEM = 0;
   private static final int FRIEND_CONFIRM_ITEM = 1;
+  private static final String TAG = "AddFriend";
 
   public AddFriendRecyclerViewAdapter(ArrayList<JSONObject> friendProfileList, Context context) {
     this.friendProfileList = friendProfileList;
@@ -52,7 +54,8 @@ public class AddFriendRecyclerViewAdapter extends
       if(holder instanceof FriendInviteAdapterViewHolder) {
         friendInviteBindItem(jsonObject, (FriendInviteAdapterViewHolder) holder, position);
       } else if (holder instanceof FriendConfirmAdapterViewHolder){
-        friendConfirmBindItem(jsonObject, (FriendInviteAdapterViewHolder) holder, position);
+        friendConfirmBindItem(jsonObject, (FriendConfirmAdapterViewHolder) holder, position);
+
       }
     }
   }
@@ -70,7 +73,6 @@ public class AddFriendRecyclerViewAdapter extends
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-//            FetchFriendUtil.friendInvite(id, name);
 
           FetchFriendUtil.friendInvite(id, name);
 
@@ -83,7 +85,7 @@ public class AddFriendRecyclerViewAdapter extends
     }
   }
 
-  public void friendConfirmBindItem(JSONObject jsonObject, FriendInviteAdapterViewHolder holder,
+  public void friendConfirmBindItem(JSONObject jsonObject, FriendConfirmAdapterViewHolder holder,
                                    final int position) {
     try {
       holder.textViewSample.setText(jsonObject.getString("name"));
@@ -93,7 +95,6 @@ public class AddFriendRecyclerViewAdapter extends
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
-      holder.buttonSample.setText("接受");
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -146,8 +147,9 @@ public class AddFriendRecyclerViewAdapter extends
     } catch (JSONException e) {
       e.printStackTrace();
     }
+    Log.v(TAG, "isInvite = " + isInvite);
 
-    return isInvite ? FRIEND_CONFIRM_ITEM : FRIEND_INVITE_ITEM;
+    return isInvite ? FRIEND_INVITE_ITEM : FRIEND_CONFIRM_ITEM;
   }
 
 
@@ -157,31 +159,46 @@ public class AddFriendRecyclerViewAdapter extends
   }
 
   @Override
-  public FriendInviteAdapterViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+  public UltimateRecyclerviewViewHolder onCreateViewHolder(ViewGroup parent, int i) {
 
     View v = null;
+    Log.v(TAG, "onCreateViewHolder(): isInvite = " + i);
+
 
     if (i == FRIEND_INVITE_ITEM) {
       v = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.friend_invite_recycler_view_adapter, parent, false);
+      final FriendInviteAdapterViewHolder vh = new FriendInviteAdapterViewHolder(v, true);
+
+      if (v != null) {
+        v.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+              .LENGTH_SHORT)
+              .show();
+          }
+        });
+      }
+      return vh;
+
     } else if (i == FRIEND_CONFIRM_ITEM) {
       v = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.friend_confirm_recycler_view_adapter, parent, false);
+      final FriendConfirmAdapterViewHolder vh = new FriendConfirmAdapterViewHolder(v, true);
+      if (v != null) {
+        v.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+              .LENGTH_SHORT)
+              .show();
+          }
+        });
+      }
+      return vh;
     }
-
-    final FriendInviteAdapterViewHolder vh = new FriendInviteAdapterViewHolder(v, true);
-
-    if (v != null) {
-      v.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-            .LENGTH_SHORT)
-            .show();
-        }
-      });
-    }
-    return vh;
+    return null;
   }
 
   public void insert(JSONObject jsonObject, int position) {
@@ -304,8 +321,7 @@ public class AddFriendRecyclerViewAdapter extends
   }
 
   public JSONObject getItem(int position) {
-    if (customHeaderView != null)
-      position--;
+    if (customHeaderView != null) position--;
     if (position < friendProfileList.size())
       return friendProfileList.get(position);
     else return null;
@@ -323,11 +339,13 @@ public class AddFriendRecyclerViewAdapter extends
     public FriendConfirmAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
       if (isItem) {
+        Log.v(TAG, "ConfirmViewHolder Created");
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
 
+        buttonSample.setText("接受");
         buttonSample.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
