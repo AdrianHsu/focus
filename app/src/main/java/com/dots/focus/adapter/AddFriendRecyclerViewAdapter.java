@@ -225,7 +225,7 @@ public class AddFriendRecyclerViewAdapter extends
   }
 
   @Override
-  public FriendInviteAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
+  public UltimateRecyclerviewViewHolder onCreateViewHolder(ViewGroup parent) {
     return null;
   }
 

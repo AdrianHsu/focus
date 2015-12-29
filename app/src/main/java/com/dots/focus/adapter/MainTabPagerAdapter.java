@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.dots.focus.ui.fragment.AddFriendFragment;
 import com.dots.focus.ui.fragment.DashboardFragment;
+import com.dots.focus.ui.fragment.MessagesFragment;
 import com.dots.focus.ui.fragment.MoreFragment;
 import com.dots.focus.ui.fragment.OverviewFragment;
 import com.dots.focus.util.FetchFriendUtil;
@@ -34,7 +35,7 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
         return new AddFriendFragment();
       case 2:
         ARG_PAGE = 2;
-        return new MoreFragment();
+        return new MessagesFragment();
       case 3:
         ARG_PAGE = 3;
         return new OverviewFragment();
