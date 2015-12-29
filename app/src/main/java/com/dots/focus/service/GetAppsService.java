@@ -91,6 +91,8 @@ public class GetAppsService extends IntentService {
         }
         FetchAppUtil.printApps();
         if(needToStore) FetchAppUtil.loadParseApps();
+
+        TrackAccessibilityService.updateAppIndex();
     }
 
     public List<ResolveInfo> getAllAppsInDevice() {
