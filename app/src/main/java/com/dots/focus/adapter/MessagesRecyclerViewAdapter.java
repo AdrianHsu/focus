@@ -263,6 +263,7 @@ public class MessagesRecyclerViewAdapter extends
   public class KickRequestAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
     TextView textViewSample;
+    TextView currentAppTextViewSample;
     ImageView imageViewSample;
     Button buttonSample;
     View item_view;
@@ -273,6 +274,7 @@ public class MessagesRecyclerViewAdapter extends
       if (isItem) {
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
+        currentAppTextViewSample = (TextView) itemView.findViewById(R.id.current_app_textview);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         buttonSample = (Button) itemView.findViewById(R.id.button_kick);
 

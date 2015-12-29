@@ -26,6 +26,18 @@
         android:paddingTop="5dip"
         android:text="Header Item"
         android:textSize="16sp" />
+    <TextView
+        android:layout_toRightOf="@id/imageview"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/current_app_textview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:paddingLeft="10dip"
+        android:paddingTop="5dip"
+        android:text="App 名稱：facebook; 使用時間：0:00:33"
+        android:textSize="10sp" />
 
     <Button
         android:layout_width="wrap_content"
