@@ -43,8 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         if (LoginController.hasLoggedIn()) {
-//            showSetInfoActivity();
-          showMainActivity();
+            showSetInfoActivity();
+//          showMainActivity();
 //      Parse.enableLocalDatastore(this); //Exception not yet resolved
         }
     }
@@ -83,15 +83,15 @@ public class LoginActivity extends AppCompatActivity {
                     if ((currentUser != null) && currentUser.isAuthenticated())
                         DashboardController.makeMeRequest();
 
-//                    showSetInfoActivity();
-                    showMainActivity();
+                    showSetInfoActivity();
+//                    showMainActivity();
                 } else {
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     if ((currentUser != null) && currentUser.isAuthenticated())
                         DashboardController.makeMeRequest();
 
-//                    showSetInfoActivity();
-                    showMainActivity();
+                    showSetInfoActivity();
+//                    showMainActivity();
                 }
 
             }
@@ -106,10 +106,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 //
-//    private void showSetInfoActivity() {
-//        Intent intent = new Intent(this, CreateInfoActivity.class);
-//        startActivity(intent);
-//    }
+    private void showSetInfoActivity() {
+        Intent intent = new Intent(this, CreateInfoActivity.class);
+        startActivity(intent);
+    }
 //
 //    private void showDashboardActivity() {
 //        Intent intent = new Intent(this, DashboardActivity.class);

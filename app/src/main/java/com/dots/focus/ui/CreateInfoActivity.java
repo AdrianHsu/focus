@@ -55,7 +55,7 @@ public class CreateInfoActivity extends AppIntro2 {
     showDashboardActivity();
   }
   private void showDashboardActivity() {
-    Intent intent = new Intent(this, DashboardActivity.class);
+    Intent intent = new Intent(this, MainActivity.class);
     startActivity(intent);
   }
   private void startTrackService() {
