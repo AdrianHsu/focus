@@ -45,50 +45,54 @@ public class GetFriendInviteService extends Service {
     return mBinder;
   }
 
+  public static void refresh() {
+//    Log.d(TAG, "start GetFriendInviteService run...");
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
+    query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
+    //query.whereEqualTo("downloaded", false);
+
+
+    query.findInBackground(new FindCallback<ParseObject>() {
+      public void done(List<ParseObject> inviteList, ParseException e) {
+        if (e == null && inviteList != null && !inviteList.isEmpty()) {
+            friendWaitingReplyList.clear();
+
+          for (int i = 0, size = inviteList.size(); i < size; ++i) {
+//            Log.d(TAG, "download = false: inviteList.size() == " + inviteList.size());
+            inviteList.get(i).put("downloaded", true);
+            JSONObject jsonObject = new JSONObject();
+            try {
+              jsonObject.put("id", inviteList.get(i).getLong
+                ("user_id_inviting"));
+              jsonObject.put("name", inviteList.get(i).getString
+                ("user_name_inviting"));
+//              Log.d(TAG, "user_name_inviting == " + jsonObject.getString("name"));
+              jsonObject.put("time", inviteList.get(i).getLong("time"));
+              jsonObject.put("state", 1);
+              friendWaitingReplyList.add(jsonObject);
+
+            } catch (JSONException e1) {
+              e1.printStackTrace();
+            }
+          }
+          try {
+            ParseObject.saveAll(inviteList);
+            ParseObject.pinAll(inviteList);
+          } catch (ParseException e1) {
+//            Log.d(TAG, e1.getMessage());
+          }
+        }
+      }
+    });
+  }
+
   class CheckFriendInvitation extends TimerTask {
 
     public void run() {
-      Log.d(TAG, "start GetFriendInviteService run...");
-      ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
-      query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
-      //query.whereEqualTo("downloaded", false);
-
-
-      query.findInBackground(new FindCallback<ParseObject>() {
-        public void done(List<ParseObject> inviteList, ParseException e) {
-          if (e == null && inviteList != null && !inviteList.isEmpty()) {
-            friendWaitingReplyList.clear();
-
-            for (int i = 0, size = inviteList.size(); i < size; ++i) {
-              Log.d(TAG, "download = false: inviteList.size() == " + inviteList.size());
-              inviteList.get(i).put("downloaded", true);
-              JSONObject jsonObject = new JSONObject();
-              try {
-                jsonObject.put("id", inviteList.get(i).getLong
-                  ("user_id_inviting"));
-                jsonObject.put("name", inviteList.get(i).getString
-                  ("user_name_inviting"));
-                Log.d(TAG, "user_name_inviting == " + jsonObject.getString("name"));
-                jsonObject.put("time", inviteList.get(i).getLong("time"));
-                jsonObject.put("invite", false);
-                friendWaitingReplyList.add(jsonObject);
-
-              } catch (JSONException e1) {
-                e1.printStackTrace();
-              }
-            }
-            try {
-              ParseObject.saveAll(inviteList);
-              ParseObject.pinAll(inviteList);
-            } catch (ParseException e1) {
-              Log.d(TAG, e1.getMessage());
-            }
-          }
-        }
-      });
-
+      refresh();
     }
   }
+
   public static void updateList() {
     ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
     query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
@@ -98,8 +102,8 @@ public class GetFriendInviteService extends Service {
         Log.d("GetFriendInviteService", "download = true: inviteList.size() == " + inviteList
           .size());
         if (e == null && inviteList != null) {
-          if (!inviteList.isEmpty())
-            friendWaitingReplyList.clear();
+//          if (!inviteList.isEmpty())
+//            friendWaitingReplyList.clear();
           for (int i = 0, size = inviteList.size(); i < size; ++i) {
             JSONObject jsonObject = new JSONObject();
 

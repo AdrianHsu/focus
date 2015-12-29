@@ -30,6 +30,9 @@ public class AddFriendRecyclerViewAdapter extends
   private Context mContext;
   private static final int FRIEND_INVITE_ITEM = 0;
   private static final int FRIEND_CONFIRM_ITEM = 1;
+  private static final int FRIEND_CONFIRMED_ITEM = 2;
+  private static final int FRIEND_ITEM = 3;
+
   private static final String TAG = "AddFriend";
 
   public AddFriendRecyclerViewAdapter(ArrayList<JSONObject> friendProfileList, Context context) {
@@ -55,7 +58,10 @@ public class AddFriendRecyclerViewAdapter extends
         friendInviteBindItem(jsonObject, (FriendInviteAdapterViewHolder) holder, position);
       } else if (holder instanceof FriendConfirmAdapterViewHolder){
         friendConfirmBindItem(jsonObject, (FriendConfirmAdapterViewHolder) holder, position);
-
+      } else if (holder instanceof FriendConfirmedAdapterViewHolder){
+        friendConfirmedBindItem(jsonObject, (FriendConfirmedAdapterViewHolder) holder, position);
+      } else if (holder instanceof FriendAdapterViewHolder){
+        friendBindItem(jsonObject, (FriendAdapterViewHolder) holder, position);
       }
     }
   }
@@ -75,7 +81,6 @@ public class AddFriendRecyclerViewAdapter extends
         public void onClick(View view) {
 
           FetchFriendUtil.friendInvite(id, name);
-
           remove(position);
         }
       });
@@ -122,7 +127,75 @@ public class AddFriendRecyclerViewAdapter extends
       });
     }
   }
+  public void friendConfirmedBindItem(JSONObject jsonObject, FriendConfirmedAdapterViewHolder
+    holder, final int position) {
+    try {
+      holder.textViewSample.setText(jsonObject.getString("name"));
 
+      final long id = jsonObject.getLong("id");
+      final String name = jsonObject.getString("name");
+      String url = "https://graph.facebook.com/" + String.valueOf(id) +
+        "/picture?type=large";
+      Picasso.with(mContext).load(url).into(holder.imageViewSample);
+      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+          try {
+            FetchFriendUtil.getFriendConfirm(id, name);
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+          remove(position);
+        }
+      });
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+
+    if (mDragStartListener != null) {
+
+      holder.item_view.setOnTouchListener(new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+          return false;
+        }
+      });
+    }
+  }
+
+  public void friendBindItem(JSONObject jsonObject, FriendAdapterViewHolder
+    holder, final int position) {
+    try {
+      holder.textViewSample.setText(jsonObject.getString("name"));
+
+      final long id = jsonObject.getLong("id");
+      final String name = jsonObject.getString("name");
+      String url = "https://graph.facebook.com/" + String.valueOf(id) +
+        "/picture?type=large";
+      Picasso.with(mContext).load(url).into(holder.imageViewSample);
+      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+      });
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+
+    if (mDragStartListener != null) {
+
+      holder.item_view.setOnTouchListener(new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+          return false;
+        }
+      });
+    }
+  }
   @Override
   public int getAdapterItemCount() {
     if (friendProfileList.isEmpty())
@@ -141,17 +214,15 @@ public class AddFriendRecyclerViewAdapter extends
   @Override
   public int getItemViewType(int position) {
 
-    Boolean isInvite = null;
+    int type = -1;
     try {
-      isInvite = friendProfileList.get(position).getBoolean("invite");
+      type = friendProfileList.get(position).getInt("state");
     } catch (JSONException e) {
       e.printStackTrace();
     }
-    Log.v(TAG, "isInvite = " + isInvite);
 
-    return isInvite ? FRIEND_INVITE_ITEM : FRIEND_CONFIRM_ITEM;
+    return type;
   }
-
 
   @Override
   public FriendInviteAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
@@ -162,8 +233,6 @@ public class AddFriendRecyclerViewAdapter extends
   public UltimateRecyclerviewViewHolder onCreateViewHolder(ViewGroup parent, int i) {
 
     View v = null;
-    Log.v(TAG, "onCreateViewHolder(): isInvite = " + i);
-
 
     if (i == FRIEND_INVITE_ITEM) {
       v = LayoutInflater.from(parent.getContext())
@@ -186,6 +255,36 @@ public class AddFriendRecyclerViewAdapter extends
       v = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.friend_confirm_recycler_view_adapter, parent, false);
       final FriendConfirmAdapterViewHolder vh = new FriendConfirmAdapterViewHolder(v, true);
+      if (v != null) {
+        v.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+              .LENGTH_SHORT)
+              .show();
+          }
+        });
+      }
+      return vh;
+    } else if (i == FRIEND_CONFIRMED_ITEM) {
+      v = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.friend_confirmed_recycler_view_adapter, parent, false);
+      final FriendConfirmedAdapterViewHolder vh = new FriendConfirmedAdapterViewHolder(v, true);
+      if (v != null) {
+        v.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+              .LENGTH_SHORT)
+              .show();
+          }
+        });
+      }
+      return vh;
+    } else if (i == FRIEND_ITEM) {
+      v = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.friend_recycler_view_adapter, parent, false);
+      final FriendAdapterViewHolder vh = new FriendAdapterViewHolder(v, true);
       if (v != null) {
         v.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -298,13 +397,6 @@ public class AddFriendRecyclerViewAdapter extends
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
 
-        buttonSample.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            // call function
-          }
-        });
-
         item_view = itemView.findViewById(R.id.itemview);
       }
     }
@@ -346,12 +438,70 @@ public class AddFriendRecyclerViewAdapter extends
         buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
 
         buttonSample.setText("接受");
-        buttonSample.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            // call function
-          }
-        });
+        item_view = itemView.findViewById(R.id.itemview);
+      }
+    }
+
+    @Override
+    public void onItemSelected() {
+//      itemView.setBackgroundColor(Color.DKGRAY);
+    }
+
+    @Override
+    public void onItemClear() {
+//      itemView.setBackgroundColor(0);
+    }
+  }
+  public class FriendConfirmedAdapterViewHolder extends UltimateRecyclerviewViewHolder {
+
+    TextView textViewSample;
+    ImageView imageViewSample;
+    Button buttonSample;
+    View item_view;
+
+
+    public FriendConfirmedAdapterViewHolder(View itemView, boolean isItem) {
+      super(itemView);
+      if (isItem) {
+        Log.v(TAG, "ConfirmedViewHolder Created");
+        textViewSample = (TextView) itemView.findViewById(
+          R.id.textview);
+        imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
+        buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
+
+        buttonSample.setText("知道了");
+
+        item_view = itemView.findViewById(R.id.itemview);
+      }
+    }
+
+    @Override
+    public void onItemSelected() {
+//      itemView.setBackgroundColor(Color.DKGRAY);
+    }
+
+    @Override
+    public void onItemClear() {
+//      itemView.setBackgroundColor(0);
+    }
+  }
+  public class FriendAdapterViewHolder extends UltimateRecyclerviewViewHolder {
+
+    TextView textViewSample;
+    ImageView imageViewSample;
+    Button buttonSample;
+    View item_view;
+
+
+    public FriendAdapterViewHolder(View itemView, boolean isItem) {
+      super(itemView);
+      if (isItem) {
+        textViewSample = (TextView) itemView.findViewById(
+          R.id.textview);
+        imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
+        buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
+
+        buttonSample.setText("好友");
 
         item_view = itemView.findViewById(R.id.itemview);
       }

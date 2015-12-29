@@ -3,7 +3,9 @@ package com.dots.focus.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.AddFriendRecyclerViewAdapter;
+import com.dots.focus.service.GetFriendConfirmService;
 import com.dots.focus.service.GetFriendInviteService;
 import com.dots.focus.util.FetchFriendUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
@@ -40,19 +43,56 @@ public class AddFriendFragment extends Fragment {
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.add_friend_recycler_view);
 
-    FetchFriendUtil.getFriendsInfo();
-    FetchFriendUtil.waitFriendConfirm();
+    FetchFriendUtil.refresh();
+    GetFriendInviteService.refresh();
+    GetFriendConfirmService.refresh();
+//    FetchFriendUtil.waitFriendConfirm();
 
+    final ArrayList<JSONObject> friendProfileList = new ArrayList<>();
 
-    ArrayList<JSONObject> friendProfileList = FetchFriendUtil.mFriendList;
+    friendProfileList.addAll(FetchFriendUtil.mFriendList);
+    friendProfileList.addAll(FetchFriendUtil.mConfirmedFriendList);
     friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
-    Log.v("AddFriend", "size +  " + GetFriendInviteService.friendWaitingReplyList.size());
+    friendProfileList.addAll(GetFriendConfirmService.friendRepliedList);
+
 
     addFriendRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
     mRecyclerView.setLayoutManager(linearLayoutManager);
     mRecyclerView.setAdapter(addFriendRecyclerViewAdapter);
+
+    mRecyclerView.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+          @Override
+          public void run() {
+
+            FetchFriendUtil.refresh();
+            GetFriendInviteService.refresh();
+            GetFriendConfirmService.refresh();
+
+            friendProfileList.clear();
+
+            friendProfileList.addAll(FetchFriendUtil.mFriendList);
+            Log.v(TAG, "mFriendList.size() ==" + FetchFriendUtil.mFriendList.size());
+            friendProfileList.addAll(FetchFriendUtil.mConfirmedFriendList);
+            Log.v(TAG, "mConfirmedFriendList.size() ==" + FetchFriendUtil.mConfirmedFriendList.size
+              ());
+            friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
+            Log.v(TAG, "friendWaitingReplyList.size() ==" + GetFriendInviteService
+              .friendWaitingReplyList.size());
+
+            friendProfileList.addAll(GetFriendConfirmService.friendRepliedList);
+            Log.v(TAG, "friendRepliedList.size() ==" + GetFriendConfirmService.friendRepliedList
+              .size());
+
+            mRecyclerView.setRefreshing(false);
+          }
+        }, 1000);
+      }
+    });
     return v;
   }
 

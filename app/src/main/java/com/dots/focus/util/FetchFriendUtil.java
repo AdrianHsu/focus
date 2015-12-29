@@ -24,6 +24,7 @@ import java.util.List;
 public class FetchFriendUtil {
     private static String TAG = "FetchFriendUtil";
     public static ArrayList<JSONObject> mFriendList = new ArrayList<>();
+    public static ArrayList<JSONObject> mConfirmedFriendList = new ArrayList<>();
 
     public static int checkFriend(Long id) throws JSONException {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
@@ -34,7 +35,7 @@ public class FetchFriendUtil {
         return -1;
     }
 
-    public static void getFriendsInfo() {
+    public static void refresh() {
         GraphRequestBatch batch = new GraphRequestBatch(
                 GraphRequest.newMyFriendsRequest(
                         AccessToken.getCurrentAccessToken(),
@@ -43,17 +44,22 @@ public class FetchFriendUtil {
                             public void onCompleted(JSONArray jsonArray, GraphResponse response) {
                                 // Application code for users friends
                                 if (jsonArray != null && response != null) {
-                                    if (!mFriendList.isEmpty())
-                                        mFriendList.clear();
+
+                                    mFriendList.clear();
+                                    mConfirmedFriendList.clear();
                                     for (int i = 0, length = jsonArray.length(); i < length; ++i) {
                                         try {
                                             Long id = jsonArray.getJSONObject(i).getLong("id");
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                            jsonObject.put("invite", true);
                                             if (checkFriend(id) == -1) {
-                                                mFriendList.add(jsonObject);
+                                              jsonObject.put("state", 0);
+                                              mFriendList.add(jsonObject);
                                                 // showFriend(id ,jsonArray.getJSONObject(i)
                                                 // .getString("name"), getProfile(id));
+                                            } else {
+                                                jsonObject.put("state", 3);
+                                                mConfirmedFriendList.add(jsonObject);
+
                                             }
                                         } catch (JSONException e) {
                                             e.getMessage();
@@ -129,7 +135,7 @@ public class FetchFriendUtil {
         clearInvitation(id);
     }
 
-    public void getFriendConfirm(Long id, String name) throws JSONException {
+    public static void getFriendConfirm(Long id, String name) throws JSONException {
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");
         JSONObject newFriend = new JSONObject();
@@ -171,20 +177,20 @@ public class FetchFriendUtil {
         });
     }
 
-    public static void waitFriendConfirm() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
-        query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
-        query.fromLocalDatastore();
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null && list != null) {
-                    for (int i = 0, size = list.size(); i < size; ++i) {
-                        Log.d(TAG, "invited: " + list.get(i).getLong("user_id_invited"));
-                    }
-                }
-            }
-        });
-    }
+//    public static void waitFriendConfirm() {
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
+//        query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
+//        query.fromLocalDatastore();
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            @Override
+//            public void done(List<ParseObject> list, ParseException e) {
+//                if (e == null && list != null) {
+//                    for (int i = 0, size = list.size(); i < size; ++i) {
+//                        Log.d(TAG, "invited: " + list.get(i).getLong("user_id_invited"));
+//                    }
+//                }
+//            }
+//        });
+//    }
 }
 
