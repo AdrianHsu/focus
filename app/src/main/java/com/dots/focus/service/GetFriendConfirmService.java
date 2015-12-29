@@ -23,7 +23,7 @@ import java.util.TimerTask;
 
 public class GetFriendConfirmService extends Service {
     private final IBinder mBinder = new GetFriendConfirmBinder();
-    private final String TAG = "GetFriendInviteService";
+    //private final String TAG = "GetFriendInviteService";
     public static ArrayList<JSONObject> friendRepliedList = new ArrayList<>();
 
     @Override

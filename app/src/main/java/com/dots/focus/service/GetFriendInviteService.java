@@ -99,9 +99,10 @@ public class GetFriendInviteService extends Service {
     query.fromLocalDatastore();
     query.findInBackground(new FindCallback<ParseObject>() {
       public void done(List<ParseObject> inviteList, ParseException e) {
-        Log.d("GetFriendInviteService", "download = true: inviteList.size() == " + inviteList
-          .size());
+
         if (e == null && inviteList != null) {
+          Log.d("GetFriendInviteService", "download = true: inviteList.size() == " + inviteList
+                  .size());
 //          if (!inviteList.isEmpty())
 //            friendWaitingReplyList.clear();
           for (int i = 0, size = inviteList.size(); i < size; ++i) {

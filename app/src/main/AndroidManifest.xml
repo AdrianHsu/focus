@@ -80,6 +80,10 @@
             android:label="@string/app_name"
             />
         <service
+            android:name=".service.GetCurrentAppsService"
+            android:label="@string/app_name"
+            />
+        <service
             android:name=".service.GetAppsService"
             android:exported="false"/>
         <service
