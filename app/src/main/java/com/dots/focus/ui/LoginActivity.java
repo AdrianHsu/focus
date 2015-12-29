@@ -110,7 +110,6 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CreateInfoActivity.class);
         startActivity(intent);
     }
-
 //    private void showDashboardActivity() {
 //        Intent intent = new Intent(this, DashboardActivity.class);
 //        startActivity(intent);

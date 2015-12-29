@@ -133,19 +133,13 @@ public class AddFriendRecyclerViewAdapter extends
       holder.textViewSample.setText(jsonObject.getString("name"));
 
       final long id = jsonObject.getLong("id");
-      final String name = jsonObject.getString("name");
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
-          try {
-            FetchFriendUtil.getFriendConfirm(id, name);
-          } catch (JSONException e) {
-            e.printStackTrace();
-          }
+          Log.d(TAG, "I've known clicked.");
           remove(position);
         }
       });

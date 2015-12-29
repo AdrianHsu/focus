@@ -77,6 +77,7 @@ public class FetchFriendUtil {
             }
         });
         batch.executeAsync();
+
     }
 
     public static void friendInvite(Long id, String name) {
@@ -151,7 +152,6 @@ public class FetchFriendUtil {
 
         clearInvitation(id);
     }
-
 
     public static void clearInvitation(Long id) {
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery("FriendInvitation"),

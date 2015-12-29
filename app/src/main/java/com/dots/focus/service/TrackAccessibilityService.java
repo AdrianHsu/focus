@@ -15,25 +15,25 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TrackAccessibilityService extends AccessibilityService {
 
-    public static String currentPackageName = "";
+    public static String previousPackageName = "";
     public static long startTime = 0;
     public static long startHour = 0;
     public static final String TAG = "TrackService";
     public static List<String> ignore = new ArrayList<>();
     private ParseObject currentApp;
+    private int appIndex;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             Log.v(TAG, "***** onAccessibilityEvent");
             final String tempPackageName = event.getPackageName().toString();
-
+            Log.d(TAG, "getPackageName: " + tempPackageName);
             Thread thread = new Thread() {
                 @Override
                 public void run() {
@@ -52,45 +52,32 @@ public class TrackAccessibilityService extends AccessibilityService {
     private void checkWindowState(String tempPackageName){
 
         long now = System.currentTimeMillis();
-        if (startTime == 0 || currentPackageName.contentEquals("")) {
+
+        if (startTime == 0 || previousPackageName.contentEquals("")) {
             startTime = now;
             startHour = TrackAccessibilityUtil.anHour * (now / TrackAccessibilityUtil.anHour);
-            currentPackageName = tempPackageName;
+            previousPackageName = tempPackageName;
+            checkIndex(tempPackageName);
             return;
         }
-        for (int i = 0; i < ignore.size(); ++i) {
-            Log.d(TAG, "ignore " + i + "st: " + ignore.get(i));
-            if (currentPackageName.equals(ignore.get(i))) {
-                Log.d(TAG, "hit");
-                startTime = now;
-                return;
-            }
+        if (!checkIndex(tempPackageName)) {
+            previousPackageName = "";
+            startTime = now;
+            return;
         }
-        int index = FetchAppUtil.getAppIndex(currentPackageName);
-        Log.d(TAG, "index: " + index);
-        if (index == -1) {
-            FetchAppUtil.printApps();
-            if (newPackageName()) {
-                startTime = now;
-                currentPackageName = tempPackageName;
-                return;
-            }
-        }
+
+        Log.d(TAG, "appIndex: " + appIndex);
+
         while (now > startHour + TrackAccessibilityUtil.anHour) {
-            storeInDatabase((int)((startHour + TrackAccessibilityUtil.anHour - startTime) / 1000), index);
+            //storeInDatabase((int)((startHour + TrackAccessibilityUtil.anHour - startTime) /
+            //        1000), index);
             startTime = startHour = startHour + TrackAccessibilityUtil.anHour;
         }
-        storeInDatabase((int)((now - startTime) / 1000), index);
-
+        //storeInDatabase((int) ((now - startTime) / 1000), index);
         startTime = now;
-        currentPackageName = tempPackageName;
-        try {
-            AppInfo appInfo = FetchAppUtil.getApp(currentPackageName);
-            if (appInfo != null) {
-                getCurrentApp().put("App", appInfo.getName());
-                getCurrentApp().saveEventually();
-            }
-        } catch (com.parse.ParseException e) { e.getMessage(); }
+        previousPackageName = tempPackageName;
+
+        updateApp(true);
     }
     // helper functions
     void storeInDatabase(final int duration, final int index){
@@ -129,13 +116,24 @@ public class TrackAccessibilityService extends AccessibilityService {
         day.put("appLength", appLength);
         Log.d(TAG, "Hour appLength.get: " + hour.getList("appLength").get(index));
 
-        Log.d(TAG, "appName: " + currentPackageName + ", startTime: " + startTime + ", duration: " + duration);
-
-
+        Log.d(TAG, "appName: " + previousPackageName + ", startTime: " + startTime + ", duration: " + duration);
     }
 
     boolean newPackageName() {
-        return true;
+        return false;
+    }
+
+    private boolean checkIndex(String currentPackageName) {
+        for (int i = 0; i < ignore.size(); ++i) {
+            Log.d(TAG, "ignore " + i + "st: " + ignore.get(i));
+            if (currentPackageName.equals(ignore.get(i))) {
+                Log.d(TAG, "hit");
+                appIndex = -2;
+                return false;
+            }
+        }
+        appIndex = FetchAppUtil.getAppIndex(currentPackageName);
+        return appIndex != -1;
     }
 
     @Override
@@ -152,7 +150,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         setServiceInfo(config);
     }
 
-    ParseObject getCurrentApp() throws com.parse.ParseException {
+    private ParseObject getCurrentApp() throws com.parse.ParseException {
         if (currentApp != null) return currentApp;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CurrentApp");
@@ -161,8 +159,27 @@ public class TrackAccessibilityService extends AccessibilityService {
         if (currentApp == null) {
             currentApp = new ParseObject("CurrentApp");
             currentApp.put("id", ParseUser.getCurrentUser().getLong("id"));
+            currentApp.put("name", ParseUser.getCurrentUser().getString("name"));
         }
 
         return currentApp;
+    }
+
+    private void updateApp(boolean valid) {
+        try {
+            if (valid) {
+                AppInfo appInfo = FetchAppUtil.getApp(previousPackageName);
+                if (appInfo != null) {
+                    Log.d(TAG, "updateApp: " + appInfo.getName());
+                    getCurrentApp().put("App", appInfo.getName());
+                    getCurrentApp().put("time", startTime);
+                    getCurrentApp().saveEventually();
+                    return;
+                }
+            }
+            Log.d(TAG, "updateApp: Empty...");
+                    getCurrentApp().put("App", "");
+            getCurrentApp().saveEventually();
+        } catch (com.parse.ParseException e) { e.getMessage(); }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.dots.focus.util.FetchFriendUtil;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -57,13 +58,15 @@ public class GetFriendConfirmService extends Service {
               //                  inviteList.get(i).getString("time"));
               JSONObject jsonObject = new JSONObject();
               try {
-                jsonObject.put("id", inviteList.get(i).getString
-                  ("user_id_invited"));
-                jsonObject.put("name", inviteList.get(i).getString
-                  ("user_name_invited"));
+                Long id = inviteList.get(i).getLong("user_id_invited");
+                String name = inviteList.get(i).getString("user_name_invited");
+                jsonObject.put("id", id);
+                jsonObject.put("name", name);
                 jsonObject.put("time", inviteList.get(i).getLong("time"));
                 jsonObject.put("state", 2);
                 friendRepliedList.add(jsonObject);
+
+                FetchFriendUtil.getFriendConfirm(id, name);
               } catch (JSONException e1) {
                 e1.printStackTrace();
               }
