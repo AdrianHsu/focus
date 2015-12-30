@@ -55,6 +55,7 @@ public class GetKickedService extends Service {
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         objects.get(i).put("state", 1);
                         // add to kickedList
+
                     }
                     try {
                         ParseObject.saveAll(objects);

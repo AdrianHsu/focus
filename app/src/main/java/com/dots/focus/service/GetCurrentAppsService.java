@@ -45,7 +45,7 @@ public class GetCurrentAppsService extends Service {
 
     public static void checkCurrentApps() {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        JSONArray friends = currentUser.getJSONArray("Friends");
+        final JSONArray friends = currentUser.getJSONArray("Friends");
         if (friends == null) return;
 
         if (friendCurrentAppList.size() != friends.length()) {
@@ -85,9 +85,10 @@ public class GetCurrentAppsService extends Service {
                             friendCurrentAppList.get(index).put("AppName", objects.get(i).getString
                                     ("AppName"));
                             friendCurrentAppList.get(index).put("AppPackageName", objects.get(i)
-                                    .getString("AppPackageNmae"));
+                                    .getString("AppPackageName"));
                             friendCurrentAppList.get(index).put("time", objects.get(i)
                                     .getLong("time"));
+                            friendCurrentAppList.get(index).put("state", -1);
                         } catch (JSONException e1) { Log.d(TAG, e1.getMessage()); }
                     }
                     // refresh the apps and time(s)

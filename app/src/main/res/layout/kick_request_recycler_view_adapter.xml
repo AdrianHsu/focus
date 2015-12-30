@@ -24,7 +24,7 @@
         android:gravity="start"
         android:paddingLeft="10dip"
         android:paddingTop="5dip"
-        android:text="Header Item"
+        android:text="fake name"
         android:textSize="16sp" />
     <TextView
         android:layout_toRightOf="@id/imageview"
@@ -36,7 +36,7 @@
         android:gravity="start"
         android:paddingLeft="10dip"
         android:paddingTop="5dip"
-        android:text="App 名稱：facebook; 使用時間：0:00:33"
+        android:text="App Name: fake app, 共使用: 0 秒"
         android:textSize="10sp" />
 
     <Button

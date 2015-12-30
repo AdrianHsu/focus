@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.service.GetCurrentAppsService;
+import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -26,7 +28,7 @@ public class MessagesRecyclerViewAdapter extends
 
   private ArrayList<JSONObject> messagesList;
   private Context mContext;
-  private static final int KICK_REQUEST_ITEM = 0;
+  private static final int KICK_REQUEST_ITEM = -1;
   private static final int KICK_HISTORY_ITEM = 1;
 
   private static final String TAG = "Messages";
@@ -62,6 +64,12 @@ public class MessagesRecyclerViewAdapter extends
                                    final int position) {
     try {
       holder.textViewSample.setText(jsonObject.getString("name"));
+      final long time =  (System.currentTimeMillis() - jsonObject.getLong("time")) / 1000;
+      final String appName = jsonObject.getString("AppName");
+      final String appPackageName = jsonObject.getString("AppPackageName");
+      String currentAppInfo = "App Name: "+ appName + " ," +
+        "" + " 共使用: " + time + "秒";
+      holder.currentAppTextViewSample.setText(currentAppInfo);
 
       final long id = jsonObject.getLong("id");
       final String name = jsonObject.getString("name");
@@ -72,6 +80,7 @@ public class MessagesRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
 
+          KickUtil.kick(id, name, "test Content", time, appName, appPackageName);
           remove(position);
         }
       });
@@ -121,7 +130,7 @@ public class MessagesRecyclerViewAdapter extends
   @Override
   public int getItemViewType(int position) {
 
-    int type = -1;
+    int type = -2;
     try {
       type = messagesList.get(position).getInt("state");
     } catch (JSONException e) {

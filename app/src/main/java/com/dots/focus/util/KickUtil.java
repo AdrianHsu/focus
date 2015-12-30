@@ -17,9 +17,13 @@ public class KickUtil {
 
         kickRequest.saveEventually();
     }
-    public static void kick(long id, String name, String content) {
+    public static void kick(long id, String name, String content, long period, String AppName,
+                            String AppPackageName) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseObject kickHistory = new ParseObject("KickHistory");
+        kickHistory.put("period", period);
+        kickHistory.put("AppName", AppName);
+        kickHistory.put("AppPackageName", AppPackageName);
         kickHistory.put("user_id_kicked", id);
         kickHistory.put("user_name_kicked", name);
         kickHistory.put("user_id_kicking", currentUser.getLong("id"));

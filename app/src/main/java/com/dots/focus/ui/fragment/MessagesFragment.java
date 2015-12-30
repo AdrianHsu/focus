@@ -62,6 +62,7 @@ public class MessagesFragment extends Fragment {
           public void run() {
 
             messages.clear();
+            mRecyclerView.getAdapter().notifyDataSetChanged();
             GetCurrentAppsService.checkCurrentApps();
             messages.addAll(GetCurrentAppsService.friendCurrentAppList);
             mRecyclerView.setRefreshing(false);
