@@ -18,6 +18,7 @@ import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
 import com.dots.focus.service.GetCurrentAppsService;
 import com.dots.focus.service.GetFriendConfirmService;
 import com.dots.focus.service.GetFriendInviteService;
+import com.dots.focus.service.GetKickedService;
 import com.dots.focus.util.FetchFriendUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
@@ -46,7 +47,9 @@ public class MessagesFragment extends Fragment {
     final ArrayList<JSONObject> messages = new ArrayList<>();
 
     GetCurrentAppsService.checkCurrentApps();
+      GetKickedService.queryKicked();
     messages.addAll(GetCurrentAppsService.friendCurrentAppList);
+      messages.addAll(GetKickedService.kickedList);
     Log.v(TAG, "friendCurrentAppList.size() == " + GetCurrentAppsService.friendCurrentAppList
       .size());
     messagesRecyclerViewAdapter = new MessagesRecyclerViewAdapter( messages, context);
@@ -66,7 +69,9 @@ public class MessagesFragment extends Fragment {
             mRecyclerView.getAdapter().notifyDataSetChanged();
 
             GetCurrentAppsService.checkCurrentApps();
+              GetKickedService.queryKicked();
             messages.addAll(GetCurrentAppsService.friendCurrentAppList);
+              messages.addAll(GetKickedService.kickedList);
 
             mRecyclerView.getAdapter().notifyDataSetChanged();
 

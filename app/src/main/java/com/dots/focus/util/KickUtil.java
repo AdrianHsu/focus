@@ -1,6 +1,11 @@
 package com.dots.focus.util;
 
+import android.util.Log;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -34,11 +39,23 @@ public class KickUtil {
 
         kickHistory.saveEventually();
     }
-    public static void kickResponse(ParseObject kickHistory, String content) {
-        kickHistory.put("time3", System.currentTimeMillis());
-        kickHistory.put("content3", content);
-        kickHistory.put("state", 2);
+    public static void kickResponse(String objectId,final String content) {
+      ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
+      query.fromLocalDatastore();
+      query.getInBackground(objectId, new GetCallback<ParseObject>() {
+        @Override
+        public void done(ParseObject kickHistory, ParseException e) {
+          if (e == null && kickHistory != null) {
+            kickHistory.put("time3", System.currentTimeMillis());
+            kickHistory.put("content3", content);
+            kickHistory.put("state", 2);
+            Log.d("KickUtil", "kickResponse done");
+            kickHistory.saveEventually();
+          } else {
+            Log.d("KickUtil", e.getMessage());
 
-        kickHistory.saveEventually();
+          }
+        }
+      });
     }
 }

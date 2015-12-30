@@ -57,6 +57,7 @@ public class GetCurrentAppsService extends Service {
                     tempFriend.put("id", friends.getJSONObject(i).getLong("id"));
                     tempFriend.put("name", friends.getJSONObject(i).getString("name"));
                     tempFriend.put("numKick", friends.getJSONObject(i).getInt("numKick"));
+                    tempFriend.put("state", -1);
 
                     friendCurrentAppList.add(tempFriend);
                     Log.d(TAG, "User Name: " + friendCurrentAppList.get(i).getString
@@ -104,7 +105,6 @@ public class GetCurrentAppsService extends Service {
                                 .getString("AppPackageName"));
                               friendCurrentAppList.get(index).put("time", objects.get(i)
                                 .getLong("time"));
-                              friendCurrentAppList.get(index).put("state", -1);
                               Log.d(TAG, "App Name: " + friendCurrentAppList.get(index).getString
                                 ("AppName"));
                               Log.d(TAG, "User Name: " + friendCurrentAppList.get(index).getString
@@ -116,6 +116,9 @@ public class GetCurrentAppsService extends Service {
                 }
                 else if (e != null)
                     Log.d(TAG, e.getMessage());
+                else if (objects == null) {
+                  Log.d(TAG, "objects == null");
+                }
             }
         });
 
