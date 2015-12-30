@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.dots.focus.util.FetchFriendUtil;
 import com.parse.FindCallback;
@@ -23,8 +24,9 @@ import java.util.TimerTask;
 
 public class GetFriendConfirmService extends Service {
     private final IBinder mBinder = new GetFriendConfirmBinder();
-    //private final String TAG = "GetFriendInviteService";
+    private static final String TAG = "GetFriendConfirmService";
     public static ArrayList<JSONObject> friendRepliedList = new ArrayList<>();
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -68,7 +70,7 @@ public class GetFriendConfirmService extends Service {
 
                 FetchFriendUtil.getFriendConfirm(id, name);
               } catch (JSONException e1) {
-                e1.printStackTrace();
+                Log.d(TAG, e1.getMessage());
               }
 
 
