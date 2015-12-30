@@ -18,6 +18,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 

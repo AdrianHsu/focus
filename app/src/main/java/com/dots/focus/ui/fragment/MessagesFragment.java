@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.dots.focus.R;
 import com.dots.focus.adapter.AddFriendRecyclerViewAdapter;
 import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
+import com.dots.focus.service.GetCurrentAppsService;
 import com.dots.focus.service.GetFriendConfirmService;
 import com.dots.focus.service.GetFriendInviteService;
 import com.dots.focus.util.FetchFriendUtil;
@@ -42,7 +43,11 @@ public class MessagesFragment extends Fragment {
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.messages_recycler_view);
 
-    ArrayList<JSONObject> messages = new ArrayList<>();
+    final ArrayList<JSONObject> messages = new ArrayList<>();
+
+    GetCurrentAppsService.checkCurrentApps();
+    messages.addAll(GetCurrentAppsService.friendCurrentAppList);
+
     messagesRecyclerViewAdapter = new MessagesRecyclerViewAdapter( messages, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
@@ -56,6 +61,9 @@ public class MessagesFragment extends Fragment {
           @Override
           public void run() {
 
+            messages.clear();
+            GetCurrentAppsService.checkCurrentApps();
+            messages.addAll(GetCurrentAppsService.friendCurrentAppList);
             mRecyclerView.setRefreshing(false);
           }
         }, 1000);

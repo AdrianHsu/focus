@@ -19,7 +19,8 @@ public class GetCurrentAppsService extends Service {
     private final IBinder mBinder = new GetCurrentAppsBinder();
     private static String TAG = "getCurrentAppsService";
     public static ArrayList<JSONObject> friendCurrentAppList = new ArrayList<>();
-    @Override
+
+  @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetCurrentAppsService start...");
         checkCurrentApps();
@@ -38,12 +39,14 @@ public class GetCurrentAppsService extends Service {
         return mBinder;
     }
 
-    private void checkCurrentApps() {
+    public static void checkCurrentApps() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");
         if (friends == null) return;
 
         if (friendCurrentAppList.size() != friends.length()) {
+
+            friendCurrentAppList.clear();
             for (int i = 0, length = friends.length(); i < length; ++i) {
                 try {
                     JSONObject tempFriend = new JSONObject();
