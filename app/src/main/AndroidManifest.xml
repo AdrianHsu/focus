@@ -59,9 +59,9 @@
         <!--android:name=".ui.InboxSettingsActivity"-->
         <!--android:label="@string/drawer_item_inbox"-->
         <!--android:screenOrientation="portrait"/>-->
-        <activity android:name=".ui.testRecyclerViewActivity"
+        <!--activity android:name=".ui.testRecyclerViewActivity"
                   android:label="@string/app_name">
-        </activity>
+        </activity-->
 
 
         <activity android:name="com.facebook.FacebookActivity"
@@ -86,6 +86,14 @@
         <service
             android:name=".service.GetAppsService"
             android:exported="false"/>
+        <service
+            android:name=".service.GetKickedService"
+            android:label="@string/app_name"
+            />
+        <service
+            android:name=".service.GetKickResponseService"
+            android:label="@string/app_name"
+            />
         <service
             android:name=".service.TrackAccessibilityService"
             android:label="@string/app_name"

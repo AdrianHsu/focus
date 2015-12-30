@@ -21,7 +21,7 @@ import java.util.List;
 
 public class GetCurrentAppsService extends Service {
     private final IBinder mBinder = new GetCurrentAppsBinder();
-    private static String TAG = "getCurrentAppsService";
+    private static String TAG = "GetCurrentAppsService";
     public static ArrayList<JSONObject> friendCurrentAppList = new ArrayList<>();
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -73,6 +73,7 @@ public class GetCurrentAppsService extends Service {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CurrentApp");
         query.whereContainedIn("id", ids);
         query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null && objects != null) {
                     for (int i = 0, size = objects.size(); i < size; ++i) {
