@@ -139,9 +139,9 @@ public class FetchFriendUtil {
 
     public static void getFriendConfirm(Long id, String name) throws JSONException {
         Log.d(TAG, "getFriendConfirm...");
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");
+        if (friends == null)    friends = new JSONArray();
         JSONObject newFriend = new JSONObject();
         newFriend.put("id", id);
         newFriend.put("name", name);
@@ -151,6 +151,7 @@ public class FetchFriendUtil {
         newFriend.put("numKick", 0);
 
         friends.put(newFriend);
+        currentUser.put("Friends", friends);
         currentUser.saveEventually();
 
         clearInvitation(id);
