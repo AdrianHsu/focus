@@ -16,6 +16,7 @@ import com.dots.focus.service.GetCurrentAppsService;
 import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
+import com.parse.ParseObject;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -80,7 +81,7 @@ public class MessagesRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
 
-          KickUtil.kick(id, name, "test Content", time, appName, appPackageName);
+          KickUtil.kick(id, name, "你被踢了！這是測試訊息。", time, appName, appPackageName);
           remove(position);
         }
       });
@@ -90,26 +91,37 @@ public class MessagesRecyclerViewAdapter extends
     }
   }
 
-  public void KickHistoryBindItem(JSONObject jsonObject, KickHistoryAdapterViewHolder holder,
+  public void KickHistoryBindItem(final JSONObject jsonObject, KickHistoryAdapterViewHolder holder,
                                   final int position) {
     try {
       holder.textViewSample.setText(jsonObject.getString("name"));
 
       final long id = jsonObject.getLong("id");
       final String name = jsonObject.getString("name");
+      String content = jsonObject.getString("content");
+      final String mContent = "謝謝你踢我！";
+
+      holder.textViewSample.setText(name);
+      holder.kickHistoryContentTextView.setText(content);
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
+
+      final String objectId = jsonObject.getString("objectId");
+      Log.v(TAG, "ready to setOnClickListener, with objectId: " + objectId );
+
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
+          KickUtil.kickResponse(objectId, mContent);
+          Log.v(TAG, "called kickResponse with objectId:" + objectId );
           remove(position);
         }
       });
 
     } catch (JSONException e) {
-      e.printStackTrace();
+      Log.v(TAG, e.getMessage());
     }
   }
   @Override
@@ -134,10 +146,12 @@ public class MessagesRecyclerViewAdapter extends
     try {
       type = messagesList.get(position).getInt("state");
     } catch (JSONException e) {
-      e.printStackTrace();
+      Log.v(TAG, e.getMessage());
     }
 
-    return -1;
+    Log.v(TAG, "itemViewType = " + type);
+//    return type;
+    return type;
   }
 
   @Override
@@ -305,6 +319,7 @@ public class MessagesRecyclerViewAdapter extends
   public class KickHistoryAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
     TextView textViewSample;
+    TextView kickHistoryContentTextView;
     ImageView imageViewSample;
     Button buttonSample;
     View item_view;
@@ -315,8 +330,11 @@ public class MessagesRecyclerViewAdapter extends
       if (isItem) {
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
+        kickHistoryContentTextView = (TextView) itemView.findViewById(R.id
+                                .kick_history_content_textview);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
-        buttonSample = (Button) itemView.findViewById(R.id.button_kick);
+        buttonSample = (Button) itemView.findViewById(R.id.button_reply);
+        buttonSample.setText("回覆");
 
         item_view = itemView.findViewById(R.id.itemview);
       }

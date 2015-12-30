@@ -12,6 +12,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class GetKickedService extends Service {
         return mBinder;
     }
 
-    private void queryKicked() {
+    public static void queryKicked() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicked", currentUser.getLong("id"));
@@ -52,9 +53,22 @@ public class GetKickedService extends Service {
                 if (e == null && objects != null) {
                     if (objects.isEmpty())  return;
 
+                    kickedList.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         objects.get(i).put("state", 1);
+                        JSONObject kickMessage = new JSONObject();
                         // add to kickedList
+                        try {
+                            kickMessage.put("id", objects.get(i).getLong("user_id_kicking"));
+                            kickMessage.put("name", objects.get(i).getString("user_name_kicking"));
+                            kickMessage.put("state", objects.get(i).getLong("state"));
+                            kickMessage.put("content", objects.get(i).getString("content2"));
+                            kickMessage.put("objectId", objects.get(i).getObjectId());
+                            kickedList.add(kickMessage);
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+
 
                     }
                     try {
@@ -62,6 +76,7 @@ public class GetKickedService extends Service {
                         ParseObject.pinAll(objects);
                     } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
                     // refresh the content
+
                 }
             }
         });

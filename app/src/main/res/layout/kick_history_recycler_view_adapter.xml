@@ -24,14 +24,26 @@
         android:gravity="start"
         android:paddingLeft="10dip"
         android:paddingTop="5dip"
-        android:text="Header Item"
+        android:text="fake name"
         android:textSize="16sp" />
+    <TextView
+        android:layout_toRightOf="@id/imageview"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/kick_history_content_textview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:paddingLeft="10dip"
+        android:paddingTop="5dip"
+        android:text="test kick history content"
+        android:textSize="10sp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="知道了"
-        android:id="@+id/button_kick"
+        android:text="btn"
+        android:id="@+id/button_reply"
         android:layout_alignTop="@+id/textview"
         android:layout_alignParentEnd="true"/>
 
