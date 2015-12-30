@@ -75,10 +75,17 @@ public class GetCurrentAppsService extends Service {
                 ids.add(friendCurrentAppList.get(i).getLong("id"));
             } catch (JSONException e) { Log.d (TAG, e.getMessage()); }
         }
+        final List<String> names = new ArrayList<>();
+        for (int i = 0, size = friendCurrentAppList.size(); i < size; ++i) {
+            try {
+                names.add(friendCurrentAppList.get(i).getString("name"));
+            } catch (JSONException e) { Log.d (TAG, e.getMessage()); }
+        }
 
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CurrentApp");
-        query.whereContainedIn("id", ids);
+        //query.whereContainedIn("id", ids);
+        query.whereContainedIn("name", names);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -87,7 +94,8 @@ public class GetCurrentAppsService extends Service {
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         Log.d(TAG, "AppName: " + objects.get(i).getString("AppName"));
                         try {
-                            int index = ids.indexOf(objects.get(i).getLong("id"));
+                            //int index = ids.indexOf(objects.get(i).getLong("id"));
+                            int index = names.indexOf(objects.get(i).getString("name"));
                             if (index >= 0) {
                               friendCurrentAppList.get(index).put("AppName", objects.get(i).getString
                                 ("AppName"));

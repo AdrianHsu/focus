@@ -72,8 +72,6 @@ public class GetFriendConfirmService extends Service {
               } catch (JSONException e1) {
                 Log.d(TAG, e1.getMessage());
               }
-
-
             }
             ParseObject.deleteAllInBackground(inviteList);
           }
