@@ -84,6 +84,14 @@
             android:name=".service.GetAppsService"
             android:exported="false"/>
         <service
+            android:name=".service.GetKickedService"
+            android:label="@string/app_name"
+            />
+        <service
+            android:name=".service.GetKickResponseService"
+            android:label="@string/app_name"
+            />
+        <service
             android:name=".service.TrackAccessibilityService"
             android:label="@string/app_name"
             android:enabled="true"
