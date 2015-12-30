@@ -137,7 +137,7 @@ public class MessagesRecyclerViewAdapter extends
       e.printStackTrace();
     }
 
-    return type;
+    return -1;
   }
 
   @Override

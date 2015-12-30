@@ -47,7 +47,8 @@ public class MessagesFragment extends Fragment {
 
     GetCurrentAppsService.checkCurrentApps();
     messages.addAll(GetCurrentAppsService.friendCurrentAppList);
-
+    Log.v(TAG, "friendCurrentAppList.size() == " + GetCurrentAppsService.friendCurrentAppList
+      .size());
     messagesRecyclerViewAdapter = new MessagesRecyclerViewAdapter( messages, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
@@ -63,8 +64,12 @@ public class MessagesFragment extends Fragment {
 
             messages.clear();
             mRecyclerView.getAdapter().notifyDataSetChanged();
+
             GetCurrentAppsService.checkCurrentApps();
             messages.addAll(GetCurrentAppsService.friendCurrentAppList);
+
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+
             mRecyclerView.setRefreshing(false);
           }
         }, 1000);
