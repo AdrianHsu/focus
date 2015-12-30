@@ -93,6 +93,8 @@ public class GetCurrentAppsService extends Service {
                     }
                     // refresh the apps and time(s)
                 }
+                else if (e != null)
+                    Log.d(TAG, e.getMessage());
             }
         });
 

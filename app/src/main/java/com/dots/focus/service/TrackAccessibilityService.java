@@ -17,6 +17,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONObject;
 
@@ -190,8 +191,6 @@ public class TrackAccessibilityService extends AccessibilityService {
             currentApp.put("id", ParseUser.getCurrentUser().getLong("id"));
             currentApp.put("name", ParseUser.getCurrentUser().getString("name"));
             currentApp.saveEventually();
-        } else {
-            Log.d(TAG, "currentApp is not null...");
         }
 
         return currentApp;
@@ -200,20 +199,34 @@ public class TrackAccessibilityService extends AccessibilityService {
     private static void updateApp(boolean valid) {
         try {
             if (valid) {
-                AppInfo appInfo = FetchAppUtil.getApp(previousPackageName);
+                final AppInfo appInfo = FetchAppUtil.getApp(previousPackageName);
                 if (appInfo != null) {
-                    Log.d(TAG, "updateApp: " + appInfo.getName());
                     getCurrentApp().put("AppName", appInfo.getName());
                     getCurrentApp().put("AppPackageName", appInfo.getPackageName());
                     getCurrentApp().put("time", startTime);
-                    getCurrentApp().saveEventually();
+                    getCurrentApp().saveEventually(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null)
+                                Log.d(TAG, "updateApp: " + appInfo.getName());
+                            else
+                                Log.d(TAG, e.getMessage());
+                        }
+                    });
                     return;
                 }
             }
-            Log.d(TAG, "updateApp: Empty...");
             getCurrentApp().put("AppName", "");
             getCurrentApp().put("AppPackageName", "");
-            getCurrentApp().saveEventually();
+            getCurrentApp().saveEventually(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null)
+                        Log.d(TAG, "updateApp: Empty...");
+                    else
+                        Log.d(TAG, e.getMessage());
+                }
+            });
         } catch (com.parse.ParseException e) { Log.d(TAG, e.getMessage()); }
     }
 }
