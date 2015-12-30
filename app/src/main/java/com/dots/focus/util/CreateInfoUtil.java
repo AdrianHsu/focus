@@ -5,6 +5,7 @@ import android.util.Log;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 // Username == Email
@@ -30,7 +31,7 @@ public class CreateInfoUtil {
             case "Birth":
                 userInfo.put("Birth", Integer.valueOf(text2));
                 break;
-            case "Email":
+            case "Email": // invalid email address, results in update failed
                 userInfo.setEmail(text2);
                 break;
             case "AppIndex":
@@ -73,10 +74,18 @@ public class CreateInfoUtil {
         Log.d(TAG, "start update");
         ParseUser temp = ParseUser.getCurrentUser();
         if (temp != null) {
-            temp.saveEventually();
-            Log.d(TAG, "succeed update");
+          temp.saveEventually(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+              if (e == null) {
+                Log.d(TAG, "Succeed updating");
+              } else {
+                Log.d(TAG, e.getMessage());
+              }
+            }
+          });
+
         }
-        else Log.d(TAG, "fail update");
     }
 
     static void signUp(String username) {
