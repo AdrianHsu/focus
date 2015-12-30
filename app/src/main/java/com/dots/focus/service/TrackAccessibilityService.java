@@ -187,12 +187,18 @@ public class TrackAccessibilityService extends AccessibilityService {
     private static ParseObject getCurrentApp() throws com.parse.ParseException {
         if (currentApp == null) {
             Log.d(TAG, "new currentApp...");
+            ParseUser currentUser = ParseUser.getCurrentUser();
             currentApp = new ParseObject("CurrentApp");
-            currentApp.put("id", ParseUser.getCurrentUser().getLong("id"));
-            currentApp.put("name", ParseUser.getCurrentUser().getString("name"));
+            currentApp.put("id", currentUser.getLong("id"));
+            currentApp.put("name", currentUser.getString("name"));
             currentApp.saveEventually();
+            Log.d(TAG, "user id: " + currentUser.getLong("id") + ", " + currentApp.getLong("id"));
         }
-
+        if (!currentApp.has("id")) {
+            Log.d(TAG, "currentApp lacks id...");
+            currentApp.put("id", ParseUser.getCurrentUser().getLong("id"));
+            Log.d(TAG, "user id" + currentApp.getLong("id"));
+        }
         return currentApp;
     }
 
