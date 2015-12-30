@@ -74,6 +74,7 @@ public class AddFriendFragment extends Fragment {
             GetFriendConfirmService.refresh();
 
             friendProfileList.clear();
+            mRecyclerView.getAdapter().notifyDataSetChanged();
 
             friendProfileList.addAll(FetchFriendUtil.mFriendList);
             Log.v(TAG, "mFriendList.size() ==" + FetchFriendUtil.mFriendList.size());
@@ -87,6 +88,7 @@ public class AddFriendFragment extends Fragment {
             friendProfileList.addAll(GetFriendConfirmService.friendRepliedList);
             Log.v(TAG, "friendRepliedList.size() ==" + GetFriendConfirmService.friendRepliedList
               .size());
+            mRecyclerView.getAdapter().notifyDataSetChanged();
 
             mRecyclerView.setRefreshing(false);
           }

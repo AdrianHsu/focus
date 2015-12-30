@@ -142,6 +142,7 @@ public class FetchFriendUtil {
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");
         if (friends == null)    friends = new JSONArray();
+
         JSONObject newFriend = new JSONObject();
         newFriend.put("id", id);
         newFriend.put("name", name);

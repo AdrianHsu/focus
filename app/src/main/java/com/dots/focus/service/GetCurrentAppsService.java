@@ -59,6 +59,10 @@ public class GetCurrentAppsService extends Service {
                     tempFriend.put("numKick", friends.getJSONObject(i).getInt("numKick"));
 
                     friendCurrentAppList.add(tempFriend);
+                    Log.d(TAG, "User Name: " + friendCurrentAppList.get(i).getString
+                      ("name"));
+                    Log.d(TAG, "User Id: " + friendCurrentAppList.get(i).getString
+                      ("id"));
                 } catch (JSONException e) {
                     Log.d(TAG, e.getMessage());
                 }
@@ -79,16 +83,24 @@ public class GetCurrentAppsService extends Service {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null && objects != null) {
+                    Log.d(TAG, "objects.size: " + objects.size());
                     for (int i = 0, size = objects.size(); i < size; ++i) {
+                        Log.d(TAG, "AppName: " + objects.get(i).getString("AppName"));
                         try {
                             int index = ids.indexOf(objects.get(i).getLong("id"));
-                            friendCurrentAppList.get(index).put("AppName", objects.get(i).getString
-                                    ("AppName"));
-                            friendCurrentAppList.get(index).put("AppPackageName", objects.get(i)
-                                    .getString("AppPackageName"));
-                            friendCurrentAppList.get(index).put("time", objects.get(i)
-                                    .getLong("time"));
-                            friendCurrentAppList.get(index).put("state", -1);
+                            if (index >= 0) {
+                              friendCurrentAppList.get(index).put("AppName", objects.get(i).getString
+                                ("AppName"));
+                              friendCurrentAppList.get(index).put("AppPackageName", objects.get(i)
+                                .getString("AppPackageName"));
+                              friendCurrentAppList.get(index).put("time", objects.get(i)
+                                .getLong("time"));
+                              friendCurrentAppList.get(index).put("state", -1);
+                              Log.d(TAG, "App Name: " + friendCurrentAppList.get(index).getString
+                                ("AppName"));
+                              Log.d(TAG, "User Name: " + friendCurrentAppList.get(index).getString
+                                ("name"));
+                            }
                         } catch (JSONException e1) { Log.d(TAG, e1.getMessage()); }
                     }
                     // refresh the apps and time(s)
