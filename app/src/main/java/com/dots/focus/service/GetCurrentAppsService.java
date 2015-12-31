@@ -76,6 +76,7 @@ public class GetCurrentAppsService extends Service {
 //                ids.add(friendCurrentAppList.get(i).getLong("id"));
 //            } catch (JSONException e) { Log.d (TAG, e.getMessage()); }
 //        }
+
         final List<String> names = new ArrayList<>();
         for (int i = 0, size = friendCurrentAppList.size(); i < size; ++i) {
             try {
