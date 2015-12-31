@@ -13,6 +13,7 @@ import com.dots.focus.model.HourBlock;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.GetCallback;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -91,7 +92,6 @@ public class TrackAccessibilityService extends AccessibilityService {
         }
         storeInDatabase((int) ((now - startTime) / 1000));
         Log.d(TAG, "appIndex: " + appIndex);
-        updateApp(true);
 
         startTime = now;
         previousPackageName = tempPackageName;
@@ -100,6 +100,7 @@ public class TrackAccessibilityService extends AccessibilityService {
             startTime = now;
             if (appIndex == -2) updateApp(false);
         }
+        updateApp(true);
     }
     // helper functions
     private void storeInDatabase (final int duration) {
@@ -168,6 +169,7 @@ public class TrackAccessibilityService extends AccessibilityService {
             appIndex = -2;
             updateApp(false);
         }
+        else updateApp(true);
     }
 
     @Override
@@ -189,15 +191,9 @@ public class TrackAccessibilityService extends AccessibilityService {
             Log.d(TAG, "new currentApp...");
             ParseUser currentUser = ParseUser.getCurrentUser();
             currentApp = new ParseObject("CurrentApp");
-            currentApp.put("id", currentUser.getLong("id"));
+            currentApp.put("user_id", currentUser.getLong("id"));
             currentApp.put("name", currentUser.getString("name"));
             currentApp.saveEventually();
-            Log.d(TAG, "user id: " + currentUser.getLong("id") + ", " + currentApp.getLong("id"));
-        }
-        if (!currentApp.has("id")) {
-            Log.d(TAG, "currentApp lacks id...");
-            currentApp.put("id", ParseUser.getCurrentUser().getLong("id"));
-            Log.d(TAG, "user id" + currentApp.getLong("id"));
         }
         return currentApp;
     }
@@ -213,9 +209,11 @@ public class TrackAccessibilityService extends AccessibilityService {
                     getCurrentApp().saveEventually(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            if (e == null)
-                                Log.d(TAG, "updateApp: " + appInfo.getName());
-                            else
+                            if (e == null) {
+                                try {
+                                    Log.d(TAG, "updateApp: " + getCurrentApp().getString("AppName"));
+                                } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
+                            } else
                                 Log.d(TAG, e.getMessage());
                         }
                     });
@@ -235,4 +233,5 @@ public class TrackAccessibilityService extends AccessibilityService {
             });
         } catch (com.parse.ParseException e) { Log.d(TAG, e.getMessage()); }
     }
+
 }
