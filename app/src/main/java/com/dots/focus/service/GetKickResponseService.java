@@ -12,6 +12,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -40,11 +41,11 @@ public class GetKickResponseService extends Service {
         return mBinder;
     }
 
-    private void queryKickResponse() {
+    public static void queryKickResponse() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", currentUser.getLong("id"));
-        // query.whereEqualTo("state", 2);
+//         query.whereEqualTo("state", 2);
         query.whereGreaterThan("state", 1); // 2 or 3
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -52,9 +53,22 @@ public class GetKickResponseService extends Service {
                 if (e == null && objects != null) {
                     if (objects.isEmpty())  return;
 
+                    kickResponseList.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         objects.get(i).put("state", 3);
                         // add to kickResponseList
+                        JSONObject kickResponse = new JSONObject();
+                        // add to kickedList
+                        try {
+                          kickResponse.put("id", objects.get(i).getLong("user_id_kicked"));
+                          kickResponse.put("name", objects.get(i).getString("user_name_kicked"));
+                          kickResponse.put("state", objects.get(i).getLong("state"));
+                          kickResponse.put("content", objects.get(i).getString("content3"));
+                          kickResponse.put("objectId", objects.get(i).getObjectId());
+                          kickResponseList.add(kickResponse);
+                        } catch (JSONException e1) {
+                          e1.printStackTrace();
+                        }
                     }
                     try {
                         ParseObject.saveAll(objects);

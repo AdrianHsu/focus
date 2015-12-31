@@ -51,7 +51,7 @@ public class KickUtil {
             kickHistory.put("state", 2);
             Log.d("KickUtil", "kickResponse done");
             kickHistory.saveEventually();
-          } else {
+          } else if (e != null) {
             Log.d("KickUtil", e.getMessage());
 
           }

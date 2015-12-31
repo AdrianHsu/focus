@@ -31,6 +31,8 @@ public class MessagesRecyclerViewAdapter extends
   private Context mContext;
   private static final int KICK_REQUEST_ITEM = -1;
   private static final int KICK_HISTORY_ITEM = 1;
+  private static final int KICK_RESPONSE_ITEM = 3;
+
 
   private static final String TAG = "Messages";
 
@@ -57,6 +59,8 @@ public class MessagesRecyclerViewAdapter extends
         KickRequestBindItem(jsonObject, (KickRequestAdapterViewHolder) holder, position);
       } else if (holder instanceof KickHistoryAdapterViewHolder) {
         KickHistoryBindItem(jsonObject, (KickHistoryAdapterViewHolder) holder, position);
+      } else if (holder instanceof KickResponseAdapterViewHolder) {
+        KickResponseBindItem(jsonObject, (KickResponseAdapterViewHolder) holder, position);
       }
     }
   }
@@ -108,14 +112,46 @@ public class MessagesRecyclerViewAdapter extends
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
 
       final String objectId = jsonObject.getString("objectId");
-      Log.v(TAG, "ready to setOnClickListener, with objectId: " + objectId );
+      Log.v(TAG, "ready to setOnClickListener, with objectId: " + objectId);
 
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
           KickUtil.kickResponse(objectId, mContent);
-          Log.v(TAG, "called kickResponse with objectId:" + objectId );
+          Log.v(TAG, "called kickResponse with objectId:" + objectId);
+          remove(position);
+        }
+      });
+
+    } catch (JSONException e) {
+      Log.v(TAG, e.getMessage());
+    }
+  }
+
+  public void KickResponseBindItem(final JSONObject jsonObject, KickResponseAdapterViewHolder
+                          holder,
+                                  final int position) {
+    try {
+      holder.textViewSample.setText(jsonObject.getString("name"));
+
+      final long id = jsonObject.getLong("id");
+      final String name = jsonObject.getString("name");
+      String content = jsonObject.getString("content");
+
+      holder.textViewSample.setText(name);
+      holder.kickResponseContentTextView.setText(content);
+      String url = "https://graph.facebook.com/" + String.valueOf(id) +
+                              "/picture?type=large";
+      Picasso.with(mContext).load(url).into(holder.imageViewSample);
+
+      final String objectId = jsonObject.getString("objectId");
+      Log.v(TAG, "ready to setOnClickListener, with objectId: " + objectId );
+
+      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
           remove(position);
         }
       });
@@ -193,6 +229,23 @@ public class MessagesRecyclerViewAdapter extends
             Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
               .LENGTH_SHORT)
               .show();
+          }
+        });
+      }
+      return vh;
+
+    } else if (i == KICK_RESPONSE_ITEM) {
+      v = LayoutInflater.from(parent.getContext())
+                              .inflate(R.layout.kick_response_recycler_view_adapter, parent, false);
+      final KickResponseAdapterViewHolder vh = new KickResponseAdapterViewHolder(v, true);
+
+      if (v != null) {
+        v.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+                                    .LENGTH_SHORT)
+                                    .show();
           }
         });
       }
@@ -335,6 +388,40 @@ public class MessagesRecyclerViewAdapter extends
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         buttonSample = (Button) itemView.findViewById(R.id.button_reply);
         buttonSample.setText("回覆");
+
+        item_view = itemView.findViewById(R.id.itemview);
+      }
+    }
+
+    @Override
+    public void onItemSelected() {
+//      itemView.setBackgroundColor(Color.DKGRAY);
+    }
+
+    @Override
+    public void onItemClear() {
+//      itemView.setBackgroundColor(0);
+    }
+  }
+  public class KickResponseAdapterViewHolder extends UltimateRecyclerviewViewHolder {
+
+    TextView textViewSample;
+    TextView kickResponseContentTextView;
+    ImageView imageViewSample;
+    Button buttonSample;
+    View item_view;
+
+
+    public KickResponseAdapterViewHolder(View itemView, boolean isItem) {
+      super(itemView);
+      if (isItem) {
+        textViewSample = (TextView) itemView.findViewById(
+                                R.id.textview);
+        kickResponseContentTextView = (TextView) itemView.findViewById(R.id
+                                .kick_response_content_textview);
+        imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
+        buttonSample = (Button) itemView.findViewById(R.id.button_end);
+        buttonSample.setText("知道了");
 
         item_view = itemView.findViewById(R.id.itemview);
       }

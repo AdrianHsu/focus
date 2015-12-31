@@ -70,12 +70,12 @@ public class GetCurrentAppsService extends Service {
             }
         }
 
-        final List<Long> ids = new ArrayList<>();
-        for (int i = 0, size = friendCurrentAppList.size(); i < size; ++i) {
-            try {
-                ids.add(friendCurrentAppList.get(i).getLong("id"));
-            } catch (JSONException e) { Log.d (TAG, e.getMessage()); }
-        }
+//        final List<Long> ids = new ArrayList<>();
+//        for (int i = 0, size = friendCurrentAppList.size(); i < size; ++i) {
+//            try {
+//                ids.add(friendCurrentAppList.get(i).getLong("id"));
+//            } catch (JSONException e) { Log.d (TAG, e.getMessage()); }
+//        }
         final List<String> names = new ArrayList<>();
         for (int i = 0, size = friendCurrentAppList.size(); i < size; ++i) {
             try {
@@ -92,6 +92,7 @@ public class GetCurrentAppsService extends Service {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null && objects != null) {
                     Log.d(TAG, "objects.size: " + objects.size());
+
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         Log.d(TAG, "AppName: " + objects.get(i).getString("AppName"));
                         try {
@@ -120,6 +121,5 @@ public class GetCurrentAppsService extends Service {
                 }
             }
         });
-
     }
 }
