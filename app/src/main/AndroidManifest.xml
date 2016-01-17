@@ -32,7 +32,12 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.TotalAppUsageWeeklyChartActivity"
+        <activity android:name=".ui.WeeklyAppUsageChartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.DailyAppUsageChartActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"
                   android:theme="@style/SecondaryAppTheme">

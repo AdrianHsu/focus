@@ -14,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
-import com.dots.focus.ui.DashboardActivity;
-import com.dots.focus.ui.TotalAppUsageWeeklyChartActivity;
+import com.dots.focus.ui.DailyAppUsageChartActivity;
+import com.dots.focus.ui.WeeklyAppUsageChartActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 
@@ -73,7 +73,12 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
         Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
           .LENGTH_SHORT)
           .show();
-        Intent intent = new Intent(v.getContext(), TotalAppUsageWeeklyChartActivity.class);
+        Intent intent = null;
+        if(vh.getAdapterPosition() == 0)
+          intent = new Intent(v.getContext(), WeeklyAppUsageChartActivity.class);
+        else if (vh.getAdapterPosition() == 1)
+          intent = new Intent(v.getContext(), DailyAppUsageChartActivity.class);
+
         v.getContext().startActivity(intent);
       }
     });

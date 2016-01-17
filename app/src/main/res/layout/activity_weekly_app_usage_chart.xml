@@ -7,7 +7,7 @@
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="vertical"
-                  android:paddingBottom="50dp">
+                  android:paddingBottom="10dp">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2015年12月6日"
+                android:text="12月7日 - 12月13日"
                 android:textSize="16dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
@@ -50,16 +50,10 @@
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart1"
-            android:layout_width="300dp"
-            android:layout_height="210dp"
+            android:layout_width="350dp"
+            android:layout_height="280dp"
             android:layout_gravity="center_horizontal"
             />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/semi_white"
-            android:textSize="14sp"
-            android:text="        日         ㄧ         二          三          四          五          六"/>
 
     </LinearLayout>
 
@@ -133,10 +127,6 @@
                     android:layout_height="match_parent"
                     android:gravity="center"/>
             </LinearLayout>
-
         </android.support.v7.widget.CardView>
-
-
     </LinearLayout>
-
 </LinearLayout>
