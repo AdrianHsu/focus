@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.dots.focus.R;
 import com.dots.focus.ui.AppLeaderBoardChartActivity;
 import com.dots.focus.ui.DailyAppUsageChartActivity;
+import com.dots.focus.ui.RadarChartActivity;
 import com.dots.focus.ui.TopThreeAppUsageChartActivity;
 import com.dots.focus.ui.WeeklyAddictionIndexChartActivity;
 import com.dots.focus.ui.WeeklyAppUsageChartActivity;
@@ -87,6 +88,8 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
           intent = new Intent(v.getContext(), TopThreeAppUsageChartActivity.class);
         else if (vh.getAdapterPosition() == 4)
           intent = new Intent(v.getContext(), AppLeaderBoardChartActivity.class);
+        else if (vh.getAdapterPosition() == 6)
+          intent = new Intent(v.getContext(), RadarChartActivity.class);
         else {
           intent = null;
         }
