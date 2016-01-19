@@ -4,35 +4,31 @@ package com.dots.focus.adapter;
  * Created by AdrianHsu on 2015/12/12.
  */
 
-import android.content.Intent;
+import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
-import com.dots.focus.ui.AppLeaderBoardChartActivity;
-import com.dots.focus.ui.DailyAppUsageChartActivity;
-import com.dots.focus.ui.RadarChartActivity;
-import com.dots.focus.ui.TimePiggyBankActivity;
-import com.dots.focus.ui.TopThreeAppUsageChartActivity;
-import com.dots.focus.ui.WeeklyAddictionIndexChartActivity;
-import com.dots.focus.ui.WeeklyAppUsageChartActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 
-public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardViewAdapter
-  .SimpleAdapterViewHolder> {
+public class WeeklyPiggyBankRecyclerViewAdapter extends UltimateViewAdapter<WeeklyPiggyBankRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
   private List<String> stringList;
+  private Context mContext = null;
 
-  public OverviewCardViewAdapter(List<String> stringList) {
+  public WeeklyPiggyBankRecyclerViewAdapter(List<String> stringList) {
     this.stringList = stringList;
   }
 
@@ -42,6 +38,8 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
     if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
+      if(position % 3 == 0)
+        holder.textViewSample.setTextColor(Color.parseColor("#F3AE4E"));
 
       if (mDragStartListener != null) {
 
@@ -69,8 +67,10 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
   @Override
   public SimpleAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
     View v = LayoutInflater.from(parent.getContext())
-      .inflate(R.layout.overview_recycler_view_adapter, parent, false);
+      .inflate(R.layout.weekly_piggy_bank_recycler_view_adapter, parent, false);
     final SimpleAdapterViewHolder vh = new SimpleAdapterViewHolder(v, true);
+
+    mContext = parent.getContext();
 
     v.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -78,26 +78,6 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
         Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
           .LENGTH_SHORT)
           .show();
-        Intent intent = null;
-        if(vh.getAdapterPosition() == 0)
-          intent = new Intent(v.getContext(), WeeklyAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 1)
-          intent = new Intent(v.getContext(), DailyAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 2)
-          intent = new Intent(v.getContext(), WeeklyAddictionIndexChartActivity.class);
-        else if (vh.getAdapterPosition() == 3)
-          intent = new Intent(v.getContext(), TopThreeAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 4)
-          intent = new Intent(v.getContext(), AppLeaderBoardChartActivity.class);
-        else if (vh.getAdapterPosition() == 6)
-          intent = new Intent(v.getContext(), RadarChartActivity.class);
-        else if (vh.getAdapterPosition() == 7)
-          intent = new Intent(v.getContext(), TimePiggyBankActivity.class);
-        else {
-          intent = null;
-        }
-
-        v.getContext().startActivity(intent);
       }
     });
     return vh;

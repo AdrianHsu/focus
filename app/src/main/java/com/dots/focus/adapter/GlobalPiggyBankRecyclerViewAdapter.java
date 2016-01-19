@@ -1,64 +1,61 @@
 package com.dots.focus.adapter;
 
-/**
- * Created by AdrianHsu on 2015/12/12.
- */
-
-import android.content.Intent;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
-import com.dots.focus.ui.AppLeaderBoardChartActivity;
-import com.dots.focus.ui.DailyAppUsageChartActivity;
-import com.dots.focus.ui.RadarChartActivity;
-import com.dots.focus.ui.TimePiggyBankActivity;
-import com.dots.focus.ui.TopThreeAppUsageChartActivity;
-import com.dots.focus.ui.WeeklyAddictionIndexChartActivity;
-import com.dots.focus.ui.WeeklyAppUsageChartActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
+import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 
-public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardViewAdapter
-  .SimpleAdapterViewHolder> {
+public class GlobalPiggyBankRecyclerViewAdapter extends
+  UltimateViewAdapter<GlobalPiggyBankRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
-  private List<String> stringList;
+  private ArrayList<JSONObject> transformList;
+  private Context mContext;
 
-  public OverviewCardViewAdapter(List<String> stringList) {
-    this.stringList = stringList;
+  private static final String TAG = "transform";
+
+  public GlobalPiggyBankRecyclerViewAdapter(ArrayList<JSONObject> _transformList, Context context) {
+    transformList = _transformList;
+    mContext = context;
   }
 
 
   @Override
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
-    if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
-
-      holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
-
-      if (mDragStartListener != null) {
-
-        holder.item_view.setOnTouchListener(new View.OnTouchListener() {
-          @Override
-          public boolean onTouch(View v, MotionEvent event) {
-            return false;
-          }
-        });
-      }
+    if (position < getItemCount() && (customHeaderView != null ? position <= transformList.size() :
+                            position < transformList.size()) && (customHeaderView != null ? position
+                            > 0
+                            : true)) {
+      JSONObject tmp = transformList.get(customHeaderView != null ? position - 1 : position);
+//      try {
+//        holder.textViewSample.setText(tmp.getString("duration"));
+        if(position % 2 == 1) {
+          holder.textViewSample.setText("場足球賽的賽事時間長度");
+          holder.timeTextViewSample.setText("239.5");
+          Picasso.with(mContext).load(R.drawable.soccer).into(holder.imageViewSample);
+        }
+//      } catch (JSONException e) {
+//        e.printStackTrace();
+//      }
     }
-
   }
 
   @Override
   public int getAdapterItemCount() {
-    return stringList.size();
+    return transformList.size();
   }
 
   @Override
@@ -69,51 +66,32 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
   @Override
   public SimpleAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
     View v = LayoutInflater.from(parent.getContext())
-      .inflate(R.layout.overview_recycler_view_adapter, parent, false);
+                            .inflate(R.layout.global_piggy_bank_recycler_view_adapter, parent,
+                                                    false);
     final SimpleAdapterViewHolder vh = new SimpleAdapterViewHolder(v, true);
 
     v.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-          .LENGTH_SHORT)
-          .show();
-        Intent intent = null;
-        if(vh.getAdapterPosition() == 0)
-          intent = new Intent(v.getContext(), WeeklyAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 1)
-          intent = new Intent(v.getContext(), DailyAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 2)
-          intent = new Intent(v.getContext(), WeeklyAddictionIndexChartActivity.class);
-        else if (vh.getAdapterPosition() == 3)
-          intent = new Intent(v.getContext(), TopThreeAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 4)
-          intent = new Intent(v.getContext(), AppLeaderBoardChartActivity.class);
-        else if (vh.getAdapterPosition() == 6)
-          intent = new Intent(v.getContext(), RadarChartActivity.class);
-        else if (vh.getAdapterPosition() == 7)
-          intent = new Intent(v.getContext(), TimePiggyBankActivity.class);
-        else {
-          intent = null;
-        }
-
-        v.getContext().startActivity(intent);
+                                .LENGTH_SHORT)
+                                .show();
       }
     });
     return vh;
   }
 
 
-  public void insert(String string, int position) {
-    insert(stringList, string, position);
+  public void insert(JSONObject transform, int position) {
+    insert(transformList, transform, position);
   }
 
   public void remove(int position) {
-    remove(stringList, position);
+    remove(transformList, position);
   }
 
   public void clear() {
-    clear(stringList);
+    clear(transformList);
   }
 
   @Override
@@ -133,7 +111,7 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
 
 
   public void swapPositions(int from, int to) {
-    swapPositions(stringList, from, to);
+    swapPositions(transformList, from, to);
   }
 
 
@@ -188,13 +166,18 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
   public class SimpleAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
     TextView textViewSample;
+    TextView timeTextViewSample;
+    ImageView imageViewSample;
     View item_view;
 
     public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
       if (isItem) {
         textViewSample = (TextView) itemView.findViewById(
-          R.id.textview);
+                                R.id.textview);
+        timeTextViewSample = (TextView) itemView.findViewById(
+                                R.id.time_textview);
+        imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         item_view = itemView.findViewById(R.id.itemview);
       }
     }
@@ -210,12 +193,12 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
     }
   }
 
-  public String getItem(int position) {
+  public JSONObject getItem(int position) {
     if (customHeaderView != null)
       position--;
-    if (position < stringList.size())
-      return stringList.get(position);
-    else return "";
+    if (position < transformList.size())
+      return transformList.get(position);
+    else return null;
   }
 
 }

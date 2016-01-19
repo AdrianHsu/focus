@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/itemview"
+                android:clickable="true"
+                android:focusable="true"
+                style="@style/SelectableItemBackground">
+
+    <TextView
+        android:layout_toRightOf="@id/imageview"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/textview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:paddingLeft="10dip"
+        android:paddingTop="5dip"
+        android:textColor="@color/red"
+        android:text="Header Item"
+        android:textSize="18sp" />
+
+</RelativeLayout>

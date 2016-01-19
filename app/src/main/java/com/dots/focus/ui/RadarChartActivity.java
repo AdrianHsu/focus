@@ -6,6 +6,7 @@ package com.dots.focus.ui;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.dots.focus.R;
 import com.github.mikephil.charting.charts.RadarChart;
@@ -119,7 +120,11 @@ public class RadarChartActivity extends OverviewChartActivity {
 
     mChart.setData(data);
     mChart.getData().setHighlightEnabled(true);
-
     mChart.invalidate();
+  }
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    onBackPressed();
+    return true;
   }
 }
