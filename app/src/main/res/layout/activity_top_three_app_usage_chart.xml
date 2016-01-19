@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2015年12月6日"
+                android:text="12月7日 - 12月13日"
                 android:textSize="16dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
@@ -41,29 +41,20 @@
                 android:layout_height="20dp"
                 android:background="@drawable/dashboard_day_switch_btn"/>
         </LinearLayout>
-
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="25dp"
             android:id="@+id/spinner"
             android:layout_gravity="right"/>
-
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart1"
             android:layout_width="350dp"
             android:layout_height="280dp"
             android:layout_gravity="center_horizontal"
             />
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textColor="@color/semi_white"-->
-            <!--android:textSize="10sp"-->
-            <!--android:text="        0            6              12              18              24"/>-->
 
     </LinearLayout>
-
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -79,20 +70,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="應用軟體用量前三名 (12:00 - 13:00)"
-                android:textColor="@color/semi_white"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:text="應用軟體用量前三名 (12/7 星期日)"
+                    android:textColor="@color/semi_white"/>
+
+                <Button
+                    android:id="@+id/pick_app_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:text="設定"
+                    />
+            </LinearLayout>
+
             <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/hour_app_usage_recycler_view"
+                android:id="@+id/top_three_app_usage_recycler_view"
                 >
             </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
-
 </LinearLayout>

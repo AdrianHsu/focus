@@ -137,4 +137,31 @@
         <item>Undergraduate</item>
         <item>Others</item>
     </string-array>
+
+    <string-array name="testAppList">
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+    </string-array>
 </resources>

@@ -6,11 +6,18 @@
                 android:clickable="true"
                 android:focusable="true"
                 style="@style/SelectableItemBackground">
+    <TextView
+        android:id="@+id/ranking_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="3dp"
+        android:text="1"/>
     <ImageView
         android:id="@+id/imageview"
         android:src="@drawable/more_icon"
         android:layout_width="40dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
         android:layout_height="40dp" android:layout_centerVertical="true"/>
 
