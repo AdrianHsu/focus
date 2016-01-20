@@ -37,8 +37,34 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
     if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
-      Picasso.with(mContext).load(R.drawable.more_icon).into(holder.imageViewSample);
 
+      switch(position) {
+        case 0:
+          Picasso.with(mContext).load(R.drawable.more_goal_settings).into(holder.imageViewSample);
+          break;
+        case 1:
+          Picasso.with(mContext).load(R.drawable.more_kick_settings).into(holder.imageViewSample);
+          break;
+        case 2:
+          Picasso.with(mContext).load(R.drawable.more_lock_settings).into(holder.imageViewSample);
+          break;
+        case 3:
+          Picasso.with(mContext).load(R.drawable.more_noti_settings).into(holder.imageViewSample);
+          break;
+        case 4:
+          Picasso.with(mContext).load(R.drawable.more_focus_community).into(holder.imageViewSample);
+          break;
+        case 5:
+          Picasso.with(mContext).load(R.drawable.more_parental_control).into(holder.imageViewSample);
+          break;
+        case 6:
+          Picasso.with(mContext).load(R.drawable.more_advanced_settings).into(holder.imageViewSample);
+          break;
+        case 7:
+          Picasso.with(mContext).load(R.drawable.more_logout).into(holder.imageViewSample);
+          break;
+
+      }
       if (mDragStartListener != null) {
 
         holder.item_view.setOnTouchListener(new View.OnTouchListener() {
