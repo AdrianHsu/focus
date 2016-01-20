@@ -57,6 +57,11 @@
                   android:screenOrientation="portrait"
                   android:theme="@style/SecondaryAppTheme">
         </activity>
+        <activity android:name=".ui.DailyReportChartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
         <activity android:name=".ui.RadarChartActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"
