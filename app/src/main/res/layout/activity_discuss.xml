@@ -10,12 +10,12 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
-    <ListView
-        android:id="@+id/listView1"
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/discuss_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/form">
-    </ListView>
+    </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 
     <RelativeLayout
         android:id="@+id/form"
