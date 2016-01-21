@@ -6,13 +6,16 @@ package com.dots.focus.ui;
  * Created by AdrianHsu on 2015/12/13.
  */
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
@@ -30,6 +33,7 @@ import com.github.mikephil.charting.formatter.FillFormatter;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity implements OnSeekBarChangeListener {
 
@@ -128,6 +132,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
     onBackPressed();
     return true;
   }
+
   @Override
   public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
@@ -163,7 +168,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
       float val = (float) (Math.random() * mult);// + (float)
       // ((mult * 0.1) / 10);
       vals1.add(new Entry(val, i));
-      vals2.add(new Entry((float)0.8, i));
+      vals2.add(new Entry((float) 0.8, i));
     }
 
     // create a dataset and give it a type
