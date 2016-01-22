@@ -9,7 +9,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="FOCUS為您省下的總時數"
+            android:text="ㄎ"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"/>

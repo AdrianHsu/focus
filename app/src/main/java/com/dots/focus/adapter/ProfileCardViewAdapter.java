@@ -1,12 +1,15 @@
 package com.dots.focus.adapter;
 
-import android.content.Context;
+/**
+ * Created by AdrianHsu on 2015/12/12.
+ */
+
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,61 +17,48 @@ import com.dots.focus.R;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
 
-import java.util.ArrayList;
 
-public class DiscussRecyclerViewAdapter extends
-  UltimateViewAdapter<DiscussRecyclerViewAdapter.SimpleAdapterViewHolder> {
+public class ProfileCardViewAdapter extends UltimateViewAdapter<ProfileCardViewAdapter
+  .SimpleAdapterViewHolder> {
 
-  private ArrayList<JSONObject> messagesList;
-  private Context mContext;
-  private LinearLayout wrapper;
+  private List<String> stringList;
 
-  private static final String TAG = "messages";
-
-  public DiscussRecyclerViewAdapter(ArrayList<JSONObject> _messagesList, Context context) {
-    messagesList = _messagesList;
-    mContext = context;
+  public ProfileCardViewAdapter(List<String> stringList) {
+    this.stringList = stringList;
   }
 
 
   @Override
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
-    if (position < getItemCount() && (customHeaderView != null ? position <= messagesList.size() :
-                            position < messagesList.size()) && (customHeaderView != null ? position
-                            > 0
-                            : true)) {
-//      try {
-//        holder.textViewSample.setText(tmp.getString("duration"));
-//      } catch (JSONException e) {
-//        e.printStackTrace();
-//      }
+    if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
-      wrapper = (LinearLayout) holder.item_view;
+      holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
 
-      int tmp = position % 2;
+      if(position == 4)
+        holder.textViewContent.setText("出生年份");
+      else if (position == 5)
+        holder.textViewContent.setText("好友總數");
+      else if (position == 6)
+        holder.textViewContent.setText("FOCUS省下總時數");
 
-      holder.textViewSample.setBackgroundResource(tmp == 0 ? R.drawable.bubble_yellow : R.drawable
-                              .bubble_green);
+      if (mDragStartListener != null) {
 
-      String text = null;
-      try {
-        text = messagesList.get(position).getString("text");
-      } catch (JSONException e) {
-        e.printStackTrace();
+        holder.item_view.setOnTouchListener(new View.OnTouchListener() {
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+            return false;
+          }
+        });
       }
-
-      holder.textViewSample.setText(text);
-      wrapper.setGravity(tmp == 0 ? Gravity.LEFT : Gravity.RIGHT);
-
     }
+
   }
 
   @Override
   public int getAdapterItemCount() {
-    return messagesList.size();
+    return stringList.size();
   }
 
   @Override
@@ -79,32 +69,31 @@ public class DiscussRecyclerViewAdapter extends
   @Override
   public SimpleAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
     View v = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.messages_recycler_view_adapter, parent,
-                                                    false);
+      .inflate(R.layout.profile_recycler_view_adapter, parent, false);
     final SimpleAdapterViewHolder vh = new SimpleAdapterViewHolder(v, true);
-
     v.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
                                 .LENGTH_SHORT)
-                                .show();
+          .show();
+
       }
     });
     return vh;
   }
 
 
-  public void insert(JSONObject messages, int position) {
-    insert(messagesList, messages, position);
+  public void insert(String string, int position) {
+    insert(stringList, string, position);
   }
 
   public void remove(int position) {
-    remove(messagesList, position);
+    remove(stringList, position);
   }
 
   public void clear() {
-    clear(messagesList);
+    clear(stringList);
   }
 
   @Override
@@ -124,7 +113,7 @@ public class DiscussRecyclerViewAdapter extends
 
 
   public void swapPositions(int from, int to) {
-    swapPositions(messagesList, from, to);
+    swapPositions(stringList, from, to);
   }
 
 
@@ -179,14 +168,16 @@ public class DiscussRecyclerViewAdapter extends
   public class SimpleAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
     TextView textViewSample;
+    TextView textViewContent;
     View item_view;
 
     public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
       if (isItem) {
         textViewSample = (TextView) itemView.findViewById(
-                                R.id.comment);
-        item_view = itemView.findViewById(R.id.wrapper);
+          R.id.textview);
+        textViewContent = (TextView) itemView.findViewById(R.id.content);
+        item_view = itemView.findViewById(R.id.itemview);
       }
     }
 
@@ -201,12 +192,12 @@ public class DiscussRecyclerViewAdapter extends
     }
   }
 
-  public JSONObject getItem(int position) {
+  public String getItem(int position) {
     if (customHeaderView != null)
       position--;
-    if (position < messagesList.size())
-      return messagesList.get(position);
-    else return null;
+    if (position < stringList.size())
+      return stringList.get(position);
+    else return "";
   }
 
 }

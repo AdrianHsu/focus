@@ -35,11 +35,6 @@
         <activity android:name=".ui.KickMessagesActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name=".ui.WeeklyAppUsageChartActivity"
@@ -81,6 +76,17 @@
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"
                   android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.ProfileActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".ui.LoginActivity"
