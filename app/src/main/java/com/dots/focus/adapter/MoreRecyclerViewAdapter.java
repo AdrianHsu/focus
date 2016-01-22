@@ -5,6 +5,7 @@ package com.dots.focus.adapter;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,6 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.ui.GoalSettingsActivity;
+import com.dots.focus.ui.IdleSettingsActivity;
+import com.dots.focus.ui.LockSettingsActivity;
+import com.dots.focus.ui.NotificationSettingsActivity;
+import com.dots.focus.ui.ProfileActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -37,7 +43,6 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
     if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
-
       switch(position) {
         case 0:
           Picasso.with(mContext).load(R.drawable.more_goal_settings).into(holder.imageViewSample);
@@ -102,6 +107,24 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
         Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
           .LENGTH_SHORT)
           .show();
+        Intent intent = null;
+        switch(vh.getAdapterPosition()) {
+          case 0:
+            intent = new Intent(mContext, GoalSettingsActivity.class);
+            break;
+          case 1:
+            intent = new Intent(mContext, IdleSettingsActivity.class);
+            break;
+          case 2:
+            intent = new Intent(mContext, LockSettingsActivity.class);
+            break;
+          case 3:
+            intent = new Intent(mContext, NotificationSettingsActivity.class);
+            break;
+
+        }
+        if(intent != null)
+          mContext.startActivity(intent);
       }
     });
     return vh;

@@ -1,6 +1,7 @@
 package com.dots.focus.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.MoreRecyclerViewAdapter;
+import com.dots.focus.ui.GoalSettingsActivity;
+import com.dots.focus.ui.ProfileActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
@@ -50,6 +53,7 @@ public class MoreFragment extends Fragment {
       "/picture?type=large";
     Picasso.with(context).load(url).into(profileImageView);
 
+
     mStickyView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -57,6 +61,8 @@ public class MoreFragment extends Fragment {
           , Toast
           .LENGTH_SHORT)
           .show();
+        Intent intent = new Intent(context, ProfileActivity.class);
+        context.startActivity(intent);
       }
     });
 

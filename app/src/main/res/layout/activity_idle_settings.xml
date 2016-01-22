@@ -11,7 +11,7 @@
         android:background="@color/transparent"/>
 
     <TextView
-        android:text="今日使用上限"
+        android:text="某應用軟體連續使用時間超過："
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
         android:layout_marginTop="26dp"
-        android:max="240"/>
+        android:max="120"/>
 
     <TextView
         android:id="@+id/textView1"
@@ -38,20 +38,25 @@
         android:layout_marginTop="14dp" />
 
     <TextView
-        android:text="FOCUS 小提醒"
+        android:text="排除在外應用軟體"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_margin="14dp" />
-
     <TextView
+        android:text="Launcher, Coursera, 電話, 簡訊"
+        android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="14dp"
-        android:textSize="24dp"
-        android:text="根據Yahoo!的Flurry Report，本應用軟體將定義上癮程度如下（單位為點擊應用軟體次數/天）"/>
-
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="14dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="修改"
+        android:id="@+id/pick_app_button"
+        android:layout_gravity="center_horizontal"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

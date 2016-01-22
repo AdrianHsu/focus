@@ -63,6 +63,9 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
 //    https://github.com/prolificinteractive/material-calendarview
     compile 'com.prolificinteractive:material-calendarview:1.1.0'
+//    https://github.com/wdullaer/MaterialDateTimePicker
+    compile 'com.wdullaer:materialdatetimepicker:2.1.1'
+
 }
 
 

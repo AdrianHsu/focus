@@ -15,11 +15,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 
-public class GoalSettingsActivity extends BaseActivity {
+public class IdleSettingsActivity extends BaseActivity {
 
   private Button doneBtn;
+  private Button pickAppBtn;
   private SeekBar seekBar;
   private TextView textView;
 
@@ -27,14 +29,22 @@ public class GoalSettingsActivity extends BaseActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_goal_settings);
+    setContentView(R.layout.activity_idle_settings);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("目標設定");
+    getSupportActionBar().setTitle("耍廢條件設定");
     seekBar = (SeekBar) findViewById(R.id.seekBar1);
     textView = (TextView) findViewById(R.id.textView1);
-    doneBtn =(Button) findViewById(R.id.button);
+    doneBtn = (Button) findViewById(R.id.button);
+    pickAppBtn = (Button) findViewById(R.id.pick_app_button);
+
+    pickAppBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        createPickAppDialog();
+      }
+    });
 
     // Initialize the textview with '0'.
     textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
@@ -66,6 +76,24 @@ public class GoalSettingsActivity extends BaseActivity {
         onBackPressed();
       }
     });
+  }
+  private void createPickAppDialog() {
+    new MaterialDialog.Builder(this)
+                            .title("選擇您欲排除的應用軟體")
+                            .items(R.array.testAppList)
+                            .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                              @Override
+                              public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                /**
+                                 * If you use alwaysCallMultiChoiceCallback(), which is discussed below,
+                                 * returning false here won't allow the newly selected check box to actually be selected.
+                                 * See the limited multi choice dialog example in the sample project for details.
+                                 **/
+                                return true;
+                              }
+                            })
+                            .positiveText("完成")
+                            .show();
   }
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
