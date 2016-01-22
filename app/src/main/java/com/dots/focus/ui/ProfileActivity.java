@@ -55,7 +55,7 @@ public class ProfileActivity extends BaseActivity {
     stringList.add("1995");
     stringList.add("137");
     stringList.add("13.5");
-    mProfileCardViewAdapter = new ProfileCardViewAdapter(stringList);
+    mProfileCardViewAdapter = new ProfileCardViewAdapter(stringList, this);
     layoutManager = new GridLayoutManager(this, GRID_COLUMN);
 
     mRecyclerView.setLayoutManager(layoutManager);
