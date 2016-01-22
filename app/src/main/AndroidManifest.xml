@@ -81,21 +81,25 @@
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"
                   android:theme="@style/SecondaryAppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
-        <activity
-            android:name=".ui.LoginActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".ui.GoalSettingsActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".ui.CreateInfoActivity"></activity>
 
@@ -106,10 +110,6 @@
             >
         </activity>
 
-        <!--<activity-->
-        <!--android:name=".ui.InboxSettingsActivity"-->
-        <!--android:label="@string/drawer_item_inbox"-->
-        <!--android:screenOrientation="portrait"/>-->
 
 
         <activity android:name="com.facebook.FacebookActivity"
