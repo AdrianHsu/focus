@@ -105,6 +105,11 @@
                   android:theme="@style/SecondaryAppTheme">
 
         </activity>
+        <activity android:name=".ui.FocusCommunityActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait">
+
+        </activity>
         <activity android:name=".ui.AdvancedSettingsActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"
