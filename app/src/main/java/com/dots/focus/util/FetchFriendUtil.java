@@ -30,7 +30,7 @@ public class FetchFriendUtil {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
         if (friends == null) return -1;
         for (int i = 0, length = friends.length(); i < length; ++i)
-            if (id.equals(friends.getJSONObject(i).getLong("id")))
+            if (id.equals(friends.getJSONObject(i).getLong("user_id")))
                 return i;
         return -1;
     }
@@ -83,8 +83,8 @@ public class FetchFriendUtil {
 
         invite.put("user_id_invited", id);
         invite.put("user_name_invited", name);
-        invite.put("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
-        invite.put("user_name_inviting", ParseUser.getCurrentUser().getString("name"));
+        invite.put("user_id_inviting", ParseUser.getCurrentUser().getLong("user_id"));
+        invite.put("user_name_inviting", ParseUser.getCurrentUser().getString("user_name"));
         invite.put("time", System.currentTimeMillis());
         invite.put("downloaded", false);
         invite.saveEventually(new SaveCallback() {
@@ -114,8 +114,8 @@ public class FetchFriendUtil {
         JSONArray friends = currentUser.getJSONArray("Friends");
         if (friends == null) friends = new JSONArray();
         JSONObject newFriend = new JSONObject();
-        newFriend.put("id", id);
-        newFriend.put("name", name);
+        newFriend.put("user_id", id);
+        newFriend.put("user_name", name);
         newFriend.put("pop-up", false);
         newFriend.put("timeLock", false);
         newFriend.put("timeLocked", false);
@@ -144,8 +144,8 @@ public class FetchFriendUtil {
         if (friends == null)    friends = new JSONArray();
 
         JSONObject newFriend = new JSONObject();
-        newFriend.put("id", id);
-        newFriend.put("name", name);
+        newFriend.put("user_id", id);
+        newFriend.put("user_name", name);
         newFriend.put("pop-up", false);
         newFriend.put("timeLock", false);
         newFriend.put("timeLocked", false);

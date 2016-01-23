@@ -34,8 +34,8 @@ public class DashboardController {
               ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
 
               currentUser.put("installationId", currentInstallation.getInstallationId());
-              currentUser.put("id", jsonObject.getLong("id"));
-              currentUser.put("name", jsonObject.getString("name"));
+              currentUser.put("user_id", jsonObject.getLong("id"));
+              currentUser.put("user_name", jsonObject.getString("name"));
               currentInstallation.put("fbId", jsonObject.getLong("id"));
 
               currentUser.saveEventually();

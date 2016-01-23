@@ -14,7 +14,7 @@ public class KickUtil {
 
     public static void sendKickRequest(int limitType, int period, long time, String content) {
         ParseObject kickRequest = new ParseObject("KickRequest");
-        kickRequest.put("id", ParseUser.getCurrentUser().getLong("id"));
+        kickRequest.put("user_id", ParseUser.getCurrentUser().getLong("user_id"));
         kickRequest.put("limitType", limitType);
         kickRequest.put("period", period);
         kickRequest.put("time", time);
@@ -31,15 +31,15 @@ public class KickUtil {
         kickHistory.put("AppPackageName", AppPackageName);
         kickHistory.put("user_id_kicked", id);
         kickHistory.put("user_name_kicked", name);
-        kickHistory.put("user_id_kicking", currentUser.getLong("id"));
-        kickHistory.put("user_name_kicking", currentUser.getString("name"));
+        kickHistory.put("user_id_kicking", currentUser.getLong("user_id"));
+        kickHistory.put("user_name_kicking", currentUser.getString("user_name"));
         kickHistory.put("time2", System.currentTimeMillis());
         kickHistory.put("content2", content);
         kickHistory.put("state", 0);
 
         kickHistory.saveEventually();
     }
-    public static void kickResponse(String objectId,final String content) {
+    public static void kickResponse(String objectId, final String content) {
       ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
       query.fromLocalDatastore();
       query.getInBackground(objectId, new GetCallback<ParseObject>() {

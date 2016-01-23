@@ -19,6 +19,7 @@ public class FetchAppUtil {
 
     // public static List<AppInfo> getApps() { return new ArrayList<>(apps); }
 
+
     public static int getSize(){
         return apps.size();
     }
@@ -33,7 +34,7 @@ public class FetchAppUtil {
             return false;
         }
         List<String> name = new ArrayList<>(), packageName = new ArrayList<>(), category = new ArrayList<>();
-        for(int i = 0; i < apps.size(); ++i) {
+        for(int i = 0, size = apps.size(); i < size; ++i) {
             name.add(apps.get(i).getName());
             packageName.add(apps.get(i).getPackageName());
             category.add(apps.get(i).getCategory());
@@ -53,20 +54,20 @@ public class FetchAppUtil {
     }
 
     public static boolean findApp(String _packageName) {
-        for (int i = 0; i < apps.size(); i++)
+        for (int i = 0, size = apps.size(); i < size; i++)
             if (apps.get(i).getPackageName().equals(_packageName)) return true;
         return false;
     }
 
     public static int getAppIndex(String _packageName) {
-        for (int i = 0; i < apps.size(); i++)
+        for (int i = 0, size = apps.size(); i < size; i++)
             if (apps.get(i).getPackageName().equals(_packageName)) return i;
 
         return -1;
     }
 
     public static AppInfo getApp(String _packageName) {
-        for (int i = 0; i < apps.size(); i++)
+        for (int i = 0, size = apps.size(); i < size; i++)
             if (apps.get(i).getPackageName().equals(_packageName)) return apps.get(i);
         return null;
     }
@@ -102,7 +103,6 @@ public class FetchAppUtil {
             Log.d(TAG, e.getMessage());
         }
 
-
         Log.d(TAG, "start loading");
         if (ParseApps == null) {
             searching = true;
@@ -117,7 +117,7 @@ public class FetchAppUtil {
             } catch(ParseException e) {
                 loadExceptionOrNull();
             }
-            if(object == null) {
+            if (object == null) {
                 loadExceptionOrNull();
             } else {
                 Log.d("GetAppsService", "loading");
@@ -128,7 +128,6 @@ public class FetchAppUtil {
                 searching = false;
                 printApps();
             }
-
         }
     }
 
@@ -164,7 +163,7 @@ public class FetchAppUtil {
         List<AppInfo> extras = new ArrayList<>();
 
         int i = 0;
-        for (; i < apps.size(); ++i) {
+        for (int size = apps.size(); i < size; ++i) {
             if (i < packageName.size()) {
                 if(! packageName.get(i).equals(apps.get(i).getPackageName())) {
                     boolean flag = false;
@@ -189,11 +188,12 @@ public class FetchAppUtil {
             }
         }
         Log.d(localTAG, "i: " + i + ", packageName.size(): " + packageName.size());
-        for(; i < packageName.size(); ++i){
+        for(int size = packageName.size(); i < size; ++i){
             Log.d(localTAG, "packageName: " + packageName.get(i));
             addApp(new AppInfo(name.get(i), packageName.get(i), category.get(i)));
         }
-        for (i = 0; i < extras.size(); ++i)
+        i = 0;
+        for (int size = extras.size(); i < size; ++i)
             addApp(extras.get(i));
 
     }

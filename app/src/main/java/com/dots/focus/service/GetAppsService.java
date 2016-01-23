@@ -122,6 +122,5 @@ public class GetAppsService extends IntentService {
         }
         list.put(ri.activityInfo.packageName);
         FetchAppUtil.addApp(new AppInfo(name, ri.activityInfo.packageName, ri.loadIcon(getPackageManager())));
-
     }
 }

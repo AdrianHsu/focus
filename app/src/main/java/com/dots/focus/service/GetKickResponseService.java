@@ -44,7 +44,7 @@ public class GetKickResponseService extends Service {
     public static void queryKickResponse() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
-        query.whereEqualTo("user_id_kicking", currentUser.getLong("id"));
+        query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
 //         query.whereEqualTo("state", 2);
         query.whereGreaterThan("state", 1); // 2 or 3
         query.findInBackground(new FindCallback<ParseObject>() {

@@ -48,7 +48,7 @@ public class GetFriendInviteService extends Service {
   public static void refresh() {
 //    Log.d(TAG, "start GetFriendInviteService run...");
     ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
-    query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
+    query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("user_id"));
     //query.whereEqualTo("downloaded", false);
 
 
@@ -95,7 +95,7 @@ public class GetFriendInviteService extends Service {
 
   public static void updateList() {
     ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
-    query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("id"));
+    query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("user_id"));
     query.fromLocalDatastore();
     query.findInBackground(new FindCallback<ParseObject>() {
       public void done(List<ParseObject> inviteList, ParseException e) {

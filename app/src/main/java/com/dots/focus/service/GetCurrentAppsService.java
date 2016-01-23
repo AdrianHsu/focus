@@ -54,8 +54,8 @@ public class GetCurrentAppsService extends Service {
             for (int i = 0, length = friends.length(); i < length; ++i) {
                 try {
                     JSONObject tempFriend = new JSONObject();
-                    tempFriend.put("id", friends.getJSONObject(i).getLong("id"));
-                    tempFriend.put("name", friends.getJSONObject(i).getString("name"));
+                    tempFriend.put("id", friends.getJSONObject(i).getLong("user_id"));
+                    tempFriend.put("name", friends.getJSONObject(i).getString("user_name"));
                     tempFriend.put("numKick", friends.getJSONObject(i).getInt("numKick"));
                     tempFriend.put("state", -1);
 
@@ -70,24 +70,24 @@ public class GetCurrentAppsService extends Service {
             }
         }
 
-//        final List<Long> ids = new ArrayList<>();
-//        for (int i = 0, size = friendCurrentAppList.size(); i < size; ++i) {
-//            try {
-//                ids.add(friendCurrentAppList.get(i).getLong("id"));
-//            } catch (JSONException e) { Log.d (TAG, e.getMessage()); }
-//        }
-
-        final List<String> names = new ArrayList<>();
+        final List<Long> ids = new ArrayList<>();
         for (int i = 0, size = friendCurrentAppList.size(); i < size; ++i) {
             try {
-                names.add(friendCurrentAppList.get(i).getString("name"));
+                ids.add(friendCurrentAppList.get(i).getLong("user_id"));
             } catch (JSONException e) { Log.d (TAG, e.getMessage()); }
         }
 
+//        final List<String> names = new ArrayList<>();
+//        for (int i = 0, size = friendCurrentAppList.size(); i < size; ++i) {
+//            try {
+//                names.add(friendCurrentAppList.get(i).getString("user_name"));
+//            } catch (JSONException e) { Log.d (TAG, e.getMessage()); }
+//        }
+
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CurrentApp");
-        //query.whereContainedIn("id", ids);
-        query.whereContainedIn("name", names);
+        query.whereContainedIn("user_id", ids);
+        // query.whereContainedIn("user_name", names);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -98,7 +98,7 @@ public class GetCurrentAppsService extends Service {
                         Log.d(TAG, "AppName: " + objects.get(i).getString("AppName"));
                         try {
                             //int index = ids.indexOf(objects.get(i).getLong("id"));
-                            int index = names.indexOf(objects.get(i).getString("name"));
+                            int index = ids.indexOf(objects.get(i).getLong("user_id"));
                             if (index >= 0) {
                               friendCurrentAppList.get(index).put("AppName", objects.get(i).getString
                                 ("AppName"));
@@ -109,7 +109,7 @@ public class GetCurrentAppsService extends Service {
                               Log.d(TAG, "App Name: " + friendCurrentAppList.get(index).getString
                                 ("AppName"));
                               Log.d(TAG, "User Name: " + friendCurrentAppList.get(index).getString
-                                ("name"));
+                                ("user_name"));
                             }
                         } catch (JSONException e1) { Log.d(TAG, e1.getMessage()); }
                     }
@@ -117,7 +117,7 @@ public class GetCurrentAppsService extends Service {
                 }
                 else if (e != null)
                     Log.d(TAG, e.getMessage());
-                else if (objects == null) {
+                else { // objects == null
                   Log.d(TAG, "objects == null");
                 }
             }

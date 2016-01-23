@@ -104,6 +104,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="MPAndroidChart-v2.1.6" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
+    <orderEntry type="library" exported="" name="materialdatetimepicker-2.1.1" level="project" />
     <orderEntry type="library" exported="" name="ultra-ptr-1.0.10" level="project" />
     <orderEntry type="library" exported="" name="parse-android-1.11.0" level="project" />
     <orderEntry type="library" exported="" name="httpclient-cache-4.5.1" level="project" />
@@ -127,15 +128,7 @@
     <orderEntry type="library" exported="" name="cardview-v7-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.4.3" level="project" />
     <orderEntry type="library" exported="" name="core-0.8.1.0" level="project" />
-    <orderEntry type="library" exported="" name="Parse-1.11.0" level="project" />
-    <orderEntry type="library" exported="" name="jna-4.1.0" level="project" />
-    <orderEntry type="library" exported="" name="materialdatetimepicker-2.1.1" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="glide-3.6.0" level="project" />
     <orderEntry type="library" exported="" name="material-calendarview-1.1.0" level="project" />
-    <orderEntry type="library" exported="" name="MPAndroidChart-v2.1.6" level="project" />
-    <orderEntry type="library" exported="" name="bolts-android-1.2.0" level="project" />
-    <orderEntry type="library" exported="" name="android-DecoView-charting-v0.9.4" level="project" />
     <orderEntry type="library" exported="" name="appintro-3.2.0" level="project" />
     <orderEntry type="library" exported="" name="design-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.4.0" level="project" />

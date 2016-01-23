@@ -111,7 +111,8 @@ public class TrackAccessibilityService extends AccessibilityService {
             Log.d("TAG", "Different index, endIndex: " + endIndex + ", AppIndex: " + AppIndex);
 
         final ParseObject temp = new ParseObject("AppUsage");
-        temp.put("User", ParseUser.getCurrentUser());
+        ParseUser user = ParseUser.getCurrentUser();
+        temp.put("User", user);
         temp.put("appIndex", appIndex);
         temp.put("startTime", startTime);
         temp.put("duration", duration);
@@ -125,8 +126,8 @@ public class TrackAccessibilityService extends AccessibilityService {
         if (endIndex > AppIndex)    AppIndex = endIndex;
         ++AppIndex;
         hour.put("endIndex", AppIndex);
-        if (AppIndex > ParseUser.getCurrentUser().getInt("AppIndex"))
-            ParseUser.getCurrentUser().put("AppIndex", AppIndex);
+        if (AppIndex > user.getInt("AppIndex"))
+            user.put("AppIndex", AppIndex);
 
         List<Integer> appLength = hour.getList("appLength");
         Log.d(TAG, "hour appLength.get: " + appLength.get(appIndex) + ", duration: " + duration);
@@ -191,8 +192,8 @@ public class TrackAccessibilityService extends AccessibilityService {
             Log.d(TAG, "new currentApp...");
             ParseUser currentUser = ParseUser.getCurrentUser();
             currentApp = new ParseObject("CurrentApp");
-            currentApp.put("user_id", currentUser.getLong("id"));
-            currentApp.put("name", currentUser.getString("name"));
+            currentApp.put("user_id", currentUser.getLong("user_id"));
+            currentApp.put("user_name", currentUser.getString("user_name"));
             currentApp.saveEventually();
         }
         return currentApp;
