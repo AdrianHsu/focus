@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.ui.AdvancedSettingsActivity;
 import com.dots.focus.ui.GoalSettingsActivity;
 import com.dots.focus.ui.IdleSettingsActivity;
 import com.dots.focus.ui.LockSettingsActivity;
@@ -120,6 +121,9 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
             break;
           case 3:
             intent = new Intent(mContext, NotificationSettingsActivity.class);
+            break;
+          case 6:
+            intent = new Intent(mContext, AdvancedSettingsActivity.class);
             break;
 
         }
