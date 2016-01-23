@@ -1,14 +1,8 @@
 package com.dots.focus.adapter;
 
-/**
- * Created by AdrianHsu on 2015/12/12.
- */
-
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,77 +10,48 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
-import com.dots.focus.ui.AdvancedSettingsActivity;
-import com.dots.focus.ui.GoalSettingsActivity;
-import com.dots.focus.ui.IdleSettingsActivity;
-import com.dots.focus.ui.LockSettingsActivity;
-import com.dots.focus.ui.NotificationSettingsActivity;
-import com.dots.focus.ui.ProfileActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 
-public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerViewAdapter.SimpleAdapterViewHolder> {
+public class TopThreeAppUsageRecyclerViewAdapter extends
+  UltimateViewAdapter<TopThreeAppUsageRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
-  private List<String> stringList;
-  private Context mContext = null;
+  private ArrayList<JSONObject> appUsageList;
+  private Context mContext;
 
-  public MoreRecyclerViewAdapter(List<String> stringList) {
-    this.stringList = stringList;
+  private static final String TAG = "appUsage";
+
+  public TopThreeAppUsageRecyclerViewAdapter(ArrayList<JSONObject> _appUsageList, Context context) {
+    appUsageList = _appUsageList;
+    mContext = context;
   }
 
 
   @Override
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
-    if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
-
-      holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
-      switch(position) {
-        case 0:
-          Picasso.with(mContext).load(R.drawable.more_goal_settings).into(holder.imageViewSample);
-          break;
-        case 1:
-          Picasso.with(mContext).load(R.drawable.more_kick_settings).into(holder.imageViewSample);
-          break;
-        case 2:
-          Picasso.with(mContext).load(R.drawable.more_lock_settings).into(holder.imageViewSample);
-          break;
-        case 3:
-          Picasso.with(mContext).load(R.drawable.more_noti_settings).into(holder.imageViewSample);
-          break;
-        case 4:
-          Picasso.with(mContext).load(R.drawable.more_focus_community).into(holder.imageViewSample);
-          break;
-        case 5:
-          Picasso.with(mContext).load(R.drawable.more_parental_control).into(holder.imageViewSample);
-          break;
-        case 6:
-          Picasso.with(mContext).load(R.drawable.more_advanced_settings).into(holder.imageViewSample);
-          break;
-        case 7:
-          Picasso.with(mContext).load(R.drawable.more_logout).into(holder.imageViewSample);
-          break;
-
-      }
-      if (mDragStartListener != null) {
-
-        holder.item_view.setOnTouchListener(new View.OnTouchListener() {
-          @Override
-          public boolean onTouch(View v, MotionEvent event) {
-            return false;
-          }
-        });
-      }
+    if (position < getItemCount() && (customHeaderView != null ? position <= appUsageList.size() :
+                            position < appUsageList.size()) && (customHeaderView != null ? position
+                            > 0
+                            : true)) {
+      JSONObject tmp = appUsageList.get(customHeaderView != null ? position - 1 : position);
+//      try {
+//        holder.textViewSample.setText(tmp.getString("duration"));
+        holder.textViewSample.setText("00:05:42");
+        Picasso.with(mContext).load(R.drawable.instagram).into(holder.imageViewSample);
+//      } catch (JSONException e) {
+//        e.printStackTrace();
+//      }
     }
-
   }
 
   @Override
   public int getAdapterItemCount() {
-    return stringList.size();
+    return appUsageList.size();
   }
 
   @Override
@@ -97,54 +62,32 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
   @Override
   public SimpleAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
     View v = LayoutInflater.from(parent.getContext())
-      .inflate(R.layout.more_recycler_view_adapter, parent, false);
+                            .inflate(R.layout.top_three_app_usage_recycler_view_adapter, parent,
+                                                    false);
     final SimpleAdapterViewHolder vh = new SimpleAdapterViewHolder(v, true);
-
-    mContext = parent.getContext();
 
     v.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-          .LENGTH_SHORT)
-          .show();
-        Intent intent = null;
-        switch(vh.getAdapterPosition()) {
-          case 0:
-            intent = new Intent(mContext, GoalSettingsActivity.class);
-            break;
-          case 1:
-            intent = new Intent(mContext, IdleSettingsActivity.class);
-            break;
-          case 2:
-            intent = new Intent(mContext, LockSettingsActivity.class);
-            break;
-          case 3:
-            intent = new Intent(mContext, NotificationSettingsActivity.class);
-            break;
-          case 6:
-            intent = new Intent(mContext, AdvancedSettingsActivity.class);
-            break;
-
-        }
-        if(intent != null)
-          mContext.startActivity(intent);
+                                .LENGTH_SHORT)
+                                .show();
       }
     });
     return vh;
   }
 
 
-  public void insert(String string, int position) {
-    insert(stringList, string, position);
+  public void insert(JSONObject appUsage, int position) {
+    insert(appUsageList, appUsage, position);
   }
 
   public void remove(int position) {
-    remove(stringList, position);
+    remove(appUsageList, position);
   }
 
   public void clear() {
-    clear(stringList);
+    clear(appUsageList);
   }
 
   @Override
@@ -164,7 +107,7 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
 
 
   public void swapPositions(int from, int to) {
-    swapPositions(stringList, from, to);
+    swapPositions(appUsageList, from, to);
   }
 
 
@@ -226,7 +169,7 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
       super(itemView);
       if (isItem) {
         textViewSample = (TextView) itemView.findViewById(
-          R.id.textview);
+                                R.id.textview);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         item_view = itemView.findViewById(R.id.itemview);
       }
@@ -243,12 +186,12 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
     }
   }
 
-  public String getItem(int position) {
+  public JSONObject getItem(int position) {
     if (customHeaderView != null)
       position--;
-    if (position < stringList.size())
-      return stringList.get(position);
-    else return "";
+    if (position < appUsageList.size())
+      return appUsageList.get(position);
+    else return null;
   }
 
 }

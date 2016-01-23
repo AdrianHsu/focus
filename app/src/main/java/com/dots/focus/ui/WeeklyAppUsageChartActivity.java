@@ -21,6 +21,7 @@ import android.widget.Spinner;
 
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
@@ -32,18 +33,19 @@ import com.github.mikephil.charting.interfaces.LineDataProvider;
 
 import java.util.ArrayList;
 
-public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity implements OnSeekBarChangeListener {
+public class WeeklyAppUsageChartActivity extends OverviewChartActivity implements OnSeekBarChangeListener {
 
   private LineChart mChart;
   private Spinner spinner;
   private ArrayAdapter<String> timeInterval;
   private String[] timeIntervalArray = {"小時", "分鐘"};
 
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_total_app_usage_weekly_chart);
+    setContentView(R.layout.activity_weekly_app_usage_chart);
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -77,7 +79,7 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
 
     mChart = (LineChart) findViewById(R.id.chart1);
 //    mChart.setViewPortOffsets(80, 40, 80, 40);
-    mChart.setViewPortOffsets(0, 0, 0, 0);
+    mChart.setViewPortOffsets(35, 20, 20, 30);
     mChart.setBackgroundColor(Color.parseColor("#ff424242"));
     // no description text
     mChart.setDescription("");
@@ -104,6 +106,7 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
     x.setGridLineWidth(3.0f);
     x.setGridColor(Color.parseColor("#ff303030"));
     x.setTextColor(Color.WHITE);
+    x.setTextSize(8);
 
 
     x.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -113,18 +116,30 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
 
 
     YAxis y = mChart.getAxisLeft();
-    y.setEnabled(false);
+    y.setEnabled(true);
     y.setLabelCount(6, false);
     y.setStartAtZero(true);
     y.setTextColor(Color.WHITE);
     y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
     y.setDrawGridLines(false);
     y.setAxisLineWidth(3.0f);
+    y.setTextSize(5);
 //    y.setAxisLineColor(Color.parseColor("#F3AE4E"));
     y.setAxisLineColor(Color.TRANSPARENT);
 
     mChart.getAxisRight().setEnabled(false);
 
+    LimitLine ll1 = new LimitLine(130f, "Upper Limit");
+    ll1.setLineWidth(2f);
+    ll1.enableDashedLine(2f, 2f, 2f);
+    ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+    ll1.setTextSize(10f);
+    ll1.setTextColor(Color.WHITE);
+    y.addLimitLine(ll1);
+
+    ChartMarkerView mv = new ChartMarkerView(this, R.layout.chart_marker_view);
+    // set the marker to the chart
+    mChart.setMarkerView(mv);
     // add data
     setData(7, 5);
 
@@ -171,17 +186,21 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
     }
 
     ArrayList<Entry> vals1 = new ArrayList<>();
+    ArrayList<Entry> vals2 = new ArrayList<>();
+
 
     for (int i = 0; i < count; i++) {
       float mult = (range + 1);
       float val = (float) (Math.random() * mult);// + (float)
       // ((mult * 0.1) / 10);
       vals1.add(new Entry(val, i));
+      vals2.add(new Entry((float)0.8, i));
     }
 
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
-    set1.setDrawCubic(false);
+    LineDataSet limitSet = new LineDataSet(vals2, "Daily Limit");
+    set1.setDrawCubic(true);
 //    set1.setCubicIntensity(0.2f);
     set1.setDrawFilled(true);
     set1.setDrawCircles(false);
@@ -200,12 +219,14 @@ public class TotalAppUsageWeeklyChartActivity extends OverviewChartActivity impl
       }
     });
 
-    // create a data object with the datasets
-    LineData data = new LineData(xVals, set1);
+    ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+    dataSets.add(set1); // add the datasets
+
+//     create a data object with the datasets
+    LineData data = new LineData(xVals, dataSets);
     data.setValueTextSize(9f);
     data.setDrawValues(true);
 
-    // set data
     mChart.setData(data);
   }
 }

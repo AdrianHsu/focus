@@ -137,4 +137,37 @@
         <item>Undergraduate</item>
         <item>Others</item>
     </string-array>
+
+    <string-array name="testAppList">
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+        <item>Instagram</item>
+        <item>Facebook</item>
+        <item>Line</item>
+    </string-array>
+
+    <string-array name="lockConditionList">
+        <item>朋友鎖自己</item>
+        <item>自己鎖自己</item>
+        <item>永遠不鎖</item>
+    </string-array>
 </resources>

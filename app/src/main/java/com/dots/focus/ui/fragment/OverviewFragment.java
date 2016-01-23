@@ -37,9 +37,9 @@ public class OverviewFragment extends Fragment {
     stringList.add("每週總時數趨勢");
     stringList.add("每日使用時段趨勢");
     stringList.add("上癮程度趨勢");
-    stringList.add("前三應用程式比較");
+    stringList.add("前三應用軟體使用趨勢");
     stringList.add("應用程式排行榜");
-    stringList.add("今日報表");
+    stringList.add("我的每日報表");
     stringList.add("雷達圖");
     stringList.add("我的存錢筒");
     mOverviewCardViewAdapter = new OverviewCardViewAdapter(stringList);

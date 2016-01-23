@@ -1,65 +1,74 @@
 package com.dots.focus.adapter;
 
-/**
- * Created by AdrianHsu on 2015/12/12.
- */
-
-import android.content.Intent;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
-import com.dots.focus.ui.AppLeaderBoardChartActivity;
-import com.dots.focus.ui.DailyAppUsageChartActivity;
-import com.dots.focus.ui.DailyReportChartActivity;
-import com.dots.focus.ui.RadarChartActivity;
-import com.dots.focus.ui.TimePiggyBankActivity;
-import com.dots.focus.ui.TopThreeAppUsageChartActivity;
-import com.dots.focus.ui.WeeklyAddictionIndexChartActivity;
-import com.dots.focus.ui.WeeklyAppUsageChartActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 
-import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 
-public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardViewAdapter
-  .SimpleAdapterViewHolder> {
+public class DiscussRecyclerViewAdapter extends
+  UltimateViewAdapter<DiscussRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
-  private List<String> stringList;
+  private ArrayList<JSONObject> messagesList;
+  private Context mContext;
+  private LinearLayout wrapper;
 
-  public OverviewCardViewAdapter(List<String> stringList) {
-    this.stringList = stringList;
+  private static final String TAG = "messages";
+
+  public DiscussRecyclerViewAdapter(ArrayList<JSONObject> _messagesList, Context context) {
+    messagesList = _messagesList;
+    mContext = context;
   }
 
 
   @Override
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
-    if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
+    if (position < getItemCount() && (customHeaderView != null ? position <= messagesList.size() :
+                            position < messagesList.size()) && (customHeaderView != null ? position
+                            > 0
+                            : true)) {
+//      try {
+//        holder.textViewSample.setText(tmp.getString("duration"));
+//      } catch (JSONException e) {
+//        e.printStackTrace();
+//      }
 
-      holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
+      wrapper = (LinearLayout) holder.item_view;
 
-      if (mDragStartListener != null) {
+      int tmp = position % 2;
 
-        holder.item_view.setOnTouchListener(new View.OnTouchListener() {
-          @Override
-          public boolean onTouch(View v, MotionEvent event) {
-            return false;
-          }
-        });
+      holder.textViewSample.setBackgroundResource(tmp == 0 ? R.drawable.bubble_yellow : R.drawable
+                              .bubble_green);
+
+      String text = null;
+      try {
+        text = messagesList.get(position).getString("text");
+      } catch (JSONException e) {
+        e.printStackTrace();
       }
-    }
 
+      holder.textViewSample.setText(text);
+      wrapper.setGravity(tmp == 0 ? Gravity.LEFT : Gravity.RIGHT);
+
+    }
   }
 
   @Override
   public int getAdapterItemCount() {
-    return stringList.size();
+    return messagesList.size();
   }
 
   @Override
@@ -70,53 +79,32 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
   @Override
   public SimpleAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
     View v = LayoutInflater.from(parent.getContext())
-      .inflate(R.layout.overview_recycler_view_adapter, parent, false);
+                            .inflate(R.layout.messages_recycler_view_adapter, parent,
+                                                    false);
     final SimpleAdapterViewHolder vh = new SimpleAdapterViewHolder(v, true);
 
     v.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-          .LENGTH_SHORT)
-          .show();
-        Intent intent = null;
-        if(vh.getAdapterPosition() == 0)
-          intent = new Intent(v.getContext(), WeeklyAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 1)
-          intent = new Intent(v.getContext(), DailyAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 2)
-          intent = new Intent(v.getContext(), WeeklyAddictionIndexChartActivity.class);
-        else if (vh.getAdapterPosition() == 3)
-          intent = new Intent(v.getContext(), TopThreeAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 4)
-          intent = new Intent(v.getContext(), AppLeaderBoardChartActivity.class);
-        else if (vh.getAdapterPosition() == 5)
-          intent = new Intent(v.getContext(), DailyReportChartActivity.class);
-        else if (vh.getAdapterPosition() == 6)
-          intent = new Intent(v.getContext(), RadarChartActivity.class);
-        else if (vh.getAdapterPosition() == 7)
-          intent = new Intent(v.getContext(), TimePiggyBankActivity.class);
-        else {
-          intent = null;
-        }
-
-        v.getContext().startActivity(intent);
+                                .LENGTH_SHORT)
+                                .show();
       }
     });
     return vh;
   }
 
 
-  public void insert(String string, int position) {
-    insert(stringList, string, position);
+  public void insert(JSONObject messages, int position) {
+    insert(messagesList, messages, position);
   }
 
   public void remove(int position) {
-    remove(stringList, position);
+    remove(messagesList, position);
   }
 
   public void clear() {
-    clear(stringList);
+    clear(messagesList);
   }
 
   @Override
@@ -136,7 +124,7 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
 
 
   public void swapPositions(int from, int to) {
-    swapPositions(stringList, from, to);
+    swapPositions(messagesList, from, to);
   }
 
 
@@ -197,8 +185,8 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
       super(itemView);
       if (isItem) {
         textViewSample = (TextView) itemView.findViewById(
-          R.id.textview);
-        item_view = itemView.findViewById(R.id.itemview);
+                                R.id.comment);
+        item_view = itemView.findViewById(R.id.wrapper);
       }
     }
 
@@ -213,12 +201,12 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
     }
   }
 
-  public String getItem(int position) {
+  public JSONObject getItem(int position) {
     if (customHeaderView != null)
       position--;
-    if (position < stringList.size())
-      return stringList.get(position);
-    else return "";
+    if (position < messagesList.size())
+      return messagesList.get(position);
+    else return null;
   }
 
 }

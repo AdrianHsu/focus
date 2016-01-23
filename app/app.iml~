@@ -127,6 +127,8 @@
     <orderEntry type="library" exported="" name="cardview-v7-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.4.3" level="project" />
     <orderEntry type="library" exported="" name="core-0.8.1.0" level="project" />
+<<<<<<< HEAD
+=======
     <orderEntry type="library" exported="" name="Parse-1.11.0" level="project" />
     <orderEntry type="library" exported="" name="jna-4.1.0" level="project" />
     <orderEntry type="library" exported="" name="materialdatetimepicker-2.1.1" level="project" />
@@ -136,6 +138,7 @@
     <orderEntry type="library" exported="" name="MPAndroidChart-v2.1.6" level="project" />
     <orderEntry type="library" exported="" name="bolts-android-1.2.0" level="project" />
     <orderEntry type="library" exported="" name="android-DecoView-charting-v0.9.4" level="project" />
+>>>>>>> c0105d62f07dc5fa495cfaf787dfe53c16375620
     <orderEntry type="library" exported="" name="appintro-3.2.0" level="project" />
     <orderEntry type="library" exported="" name="design-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.4.0" level="project" />

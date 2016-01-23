@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:paddingBottom="10dp">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/transparent"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="14dp"
+            android:id="@+id/weekSwitch"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/dashboard_day_switch_btn"
+                android:scaleX="-1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12月7日 - 12月13日"
+                android:textSize="16dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:id="@+id/daySwitchTextView"
+                android:layout_gravity="center_horizontal"/>
+            <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/dashboard_day_switch_btn"/>
+        </LinearLayout>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
+            android:id="@+id/spinner"
+            android:layout_gravity="right"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart1"
+            android:layout_width="350dp"
+            android:layout_height="280dp"
+            android:layout_gravity="center_horizontal"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_gravity="bottom"
+            style="@style/FocusCardView.Dark"
+            android:foreground="?android:attr/selectableItemBackground"
+            card_view:cardCornerRadius="4dp"
+            card_view:contentPadding="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textviewNum1"
+                    android:text="5"
+                    android:textSize="80sp"
+                    android:paddingTop="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:id="@+id/textview1"
+                    android:text="超過目標用量 (days)"
+                    android:textSize="12sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_margin="10dp"
+            style="@style/FocusCardView.Dark"
+            android:foreground="?android:attr/selectableItemBackground"
+            card_view:cardCornerRadius="4dp"
+            card_view:contentPadding="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textviewNum2"
+                    android:text="13.5"
+                    android:textSize="70sp"
+                    android:paddingTop="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:id="@+id/textview2"
+                    android:text="使用總時數 (hrs)"
+                    android:textSize="12sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</LinearLayout>

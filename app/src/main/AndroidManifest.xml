@@ -32,10 +32,84 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.TotalAppUsageWeeklyChartActivity"
+        <activity android:name=".ui.KickMessagesActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".ui.WeeklyAppUsageChartActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"
                   android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.DailyAppUsageChartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.WeeklyAddictionIndexChartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.TopThreeAppUsageChartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.AppLeaderBoardChartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.DailyReportChartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.RadarChartActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.TimePiggyBankActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.ProfileActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.GoalSettingsActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
+        <activity android:name=".ui.IdleSettingsActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+
+        </activity>
+        <activity android:name=".ui.LockSettingsActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+
+        </activity>
+        <activity android:name=".ui.NotificationSettingsActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+
+        </activity>
+        <activity android:name=".ui.AdvancedSettingsActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+
         </activity>
         <activity
             android:name=".ui.LoginActivity"
@@ -54,12 +128,6 @@
             android:screenOrientation="portrait"
             >
         </activity>
-
-        <!--<activity-->
-        <!--android:name=".ui.InboxSettingsActivity"-->
-        <!--android:label="@string/drawer_item_inbox"-->
-        <!--android:screenOrientation="portrait"/>-->
-
 
         <activity android:name="com.facebook.FacebookActivity"
                   android:configChanges=

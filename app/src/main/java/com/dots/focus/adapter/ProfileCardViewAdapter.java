@@ -11,71 +11,51 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
-import com.dots.focus.ui.AdvancedSettingsActivity;
-import com.dots.focus.ui.GoalSettingsActivity;
-import com.dots.focus.ui.IdleSettingsActivity;
-import com.dots.focus.ui.LockSettingsActivity;
-import com.dots.focus.ui.NotificationSettingsActivity;
-import com.dots.focus.ui.ProfileActivity;
+import com.dots.focus.util.CreateInfoUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
-import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
 
-public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerViewAdapter.SimpleAdapterViewHolder> {
+public class ProfileCardViewAdapter extends UltimateViewAdapter<ProfileCardViewAdapter
+  .SimpleAdapterViewHolder> {
 
   private List<String> stringList;
-  private Context mContext = null;
+  private Context mContext;
 
-  public MoreRecyclerViewAdapter(List<String> stringList) {
+  public ProfileCardViewAdapter(List<String> stringList, Context context) {
     this.stringList = stringList;
+    this.mContext = context;
   }
 
 
   @Override
-  public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
+  public void onBindViewHolder(final SimpleAdapterViewHolder holder, final int position) {
     if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
-      switch(position) {
-        case 0:
-          Picasso.with(mContext).load(R.drawable.more_goal_settings).into(holder.imageViewSample);
-          break;
-        case 1:
-          Picasso.with(mContext).load(R.drawable.more_kick_settings).into(holder.imageViewSample);
-          break;
-        case 2:
-          Picasso.with(mContext).load(R.drawable.more_lock_settings).into(holder.imageViewSample);
-          break;
-        case 3:
-          Picasso.with(mContext).load(R.drawable.more_noti_settings).into(holder.imageViewSample);
-          break;
-        case 4:
-          Picasso.with(mContext).load(R.drawable.more_focus_community).into(holder.imageViewSample);
-          break;
-        case 5:
-          Picasso.with(mContext).load(R.drawable.more_parental_control).into(holder.imageViewSample);
-          break;
-        case 6:
-          Picasso.with(mContext).load(R.drawable.more_advanced_settings).into(holder.imageViewSample);
-          break;
-        case 7:
-          Picasso.with(mContext).load(R.drawable.more_logout).into(holder.imageViewSample);
-          break;
 
-      }
+      if(position == 4)
+        holder.textViewContent.setText("出生年份");
+      else if (position == 5)
+        holder.textViewContent.setText("好友總數");
+      else if (position == 6)
+        holder.textViewContent.setText("FOCUS省下總時數");
+
       if (mDragStartListener != null) {
 
         holder.item_view.setOnTouchListener(new View.OnTouchListener() {
           @Override
           public boolean onTouch(View v, MotionEvent event) {
+
             return false;
           }
         });
@@ -84,6 +64,65 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
 
   }
 
+  private void createGenderDialog(final TextView textView) {
+    new MaterialDialog.Builder(mContext)
+                            .title("Gender")
+                            .items(R.array.gender)
+                            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                              @Override
+                              public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                /**
+                                 * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                                 * returning false here won't allow the newly selected radio button to actually be selected.
+                                 **/
+                                if (textView != null && text != null) {
+                                  String temp = text.toString();
+                                  textView.setText(temp);
+                                }
+                                return true;
+                              }
+                            })
+                            .positiveText("完成")
+                            .show();
+  }
+  private void createOccupationDialog(final TextView textview) {
+    new MaterialDialog.Builder(mContext)
+                            .title("Occupation")
+                            .items(R.array.occupation)
+                            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                              @Override
+                              public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                /**
+                                 * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                                 * returning false here won't allow the newly selected radio button to actually be selected.
+                                 **/
+                                if (textview != null && text != null) {
+                                  String temp = text.toString();
+                                  textview.setText(temp);
+                                }
+                                return true;
+                              }
+                            })
+                            .positiveText("完成")
+                            .show();
+  }
+  private void createBirthDialog(final TextView textview) {
+    new MaterialDialog.Builder(mContext)
+                            .title("Year Of Birth")
+                            .items(R.array.birth)
+                            .itemsCallback(new MaterialDialog.ListCallback() {
+                              @Override
+                              public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+
+                                if (textview != null && text != null) {
+                                  String temp = text.toString();
+                                  textview.setText(temp);
+                                }
+                              }
+                            })
+                            .positiveText("Done")
+                            .show();
+  }
   @Override
   public int getAdapterItemCount() {
     return stringList.size();
@@ -97,38 +136,38 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
   @Override
   public SimpleAdapterViewHolder onCreateViewHolder(ViewGroup parent) {
     View v = LayoutInflater.from(parent.getContext())
-      .inflate(R.layout.more_recycler_view_adapter, parent, false);
+      .inflate(R.layout.profile_recycler_view_adapter, parent, false);
     final SimpleAdapterViewHolder vh = new SimpleAdapterViewHolder(v, true);
 
-    mContext = parent.getContext();
-
+    final TextView textview = (TextView) v.findViewById(R.id.textview);
     v.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-          .LENGTH_SHORT)
+                                .LENGTH_SHORT)
           .show();
-        Intent intent = null;
+
         switch(vh.getAdapterPosition()) {
           case 0:
-            intent = new Intent(mContext, GoalSettingsActivity.class);
+            createGenderDialog(textview);
             break;
           case 1:
-            intent = new Intent(mContext, IdleSettingsActivity.class);
             break;
           case 2:
-            intent = new Intent(mContext, LockSettingsActivity.class);
+            createOccupationDialog(textview);
             break;
           case 3:
-            intent = new Intent(mContext, NotificationSettingsActivity.class);
+            break;
+          case 4:
+            createBirthDialog(textview);
+            break;
+          case 5:
             break;
           case 6:
-            intent = new Intent(mContext, AdvancedSettingsActivity.class);
             break;
 
         }
-        if(intent != null)
-          mContext.startActivity(intent);
+
       }
     });
     return vh;
@@ -219,7 +258,7 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
   public class SimpleAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
     TextView textViewSample;
-    ImageView imageViewSample;
+    TextView textViewContent;
     View item_view;
 
     public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
@@ -227,7 +266,7 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
       if (isItem) {
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
-        imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
+        textViewContent = (TextView) itemView.findViewById(R.id.content);
         item_view = itemView.findViewById(R.id.itemview);
       }
     }
