@@ -59,8 +59,9 @@ public class GetKickedService extends Service {
                         JSONObject kickMessage = new JSONObject();
                         // add to kickedList
                         try {
-                            kickMessage.put("id", objects.get(i).getLong("user_id_kicking"));
-                            kickMessage.put("name", objects.get(i).getString("user_name_kicking"));
+                            kickMessage.put("user_id", objects.get(i).getLong("user_id_kicking"));
+                            kickMessage.put("user_name", objects.get(i).getString
+                                                    ("user_name_kicking"));
                             kickMessage.put("state", objects.get(i).getLong("state"));
                             kickMessage.put("content", objects.get(i).getString("content2"));
                             kickMessage.put("objectId", objects.get(i).getObjectId());

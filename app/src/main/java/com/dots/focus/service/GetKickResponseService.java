@@ -60,8 +60,9 @@ public class GetKickResponseService extends Service {
                         JSONObject kickResponse = new JSONObject();
                         // add to kickedList
                         try {
-                          kickResponse.put("id", objects.get(i).getLong("user_id_kicked"));
-                          kickResponse.put("name", objects.get(i).getString("user_name_kicked"));
+                          kickResponse.put("user_id", objects.get(i).getLong("user_id_kicked"));
+                          kickResponse.put("user_name", objects.get(i).getString
+                                                  ("user_name_kicked"));
                           kickResponse.put("state", objects.get(i).getLong("state"));
                           kickResponse.put("content", objects.get(i).getString("content3"));
                           kickResponse.put("objectId", objects.get(i).getObjectId());

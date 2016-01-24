@@ -68,7 +68,7 @@ public class MessagesRecyclerViewAdapter extends
   public void KickRequestBindItem(JSONObject jsonObject, KickRequestAdapterViewHolder holder,
                                    final int position) {
     try {
-      holder.textViewSample.setText(jsonObject.getString("name"));
+      holder.textViewSample.setText(jsonObject.getString("user_name"));
       final long time =  (System.currentTimeMillis() - jsonObject.getLong("time")) / 1000;
       final String appName = jsonObject.getString("AppName");
       final String appPackageName = jsonObject.getString("AppPackageName");
@@ -76,8 +76,8 @@ public class MessagesRecyclerViewAdapter extends
         "" + " 共使用: " + time + "秒";
       holder.currentAppTextViewSample.setText(currentAppInfo);
 
-      final long id = jsonObject.getLong("id");
-      final String name = jsonObject.getString("name");
+      final long id = jsonObject.getLong("user_id");
+      final String name = jsonObject.getString("user_name");
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
@@ -98,10 +98,9 @@ public class MessagesRecyclerViewAdapter extends
   public void KickHistoryBindItem(final JSONObject jsonObject, KickHistoryAdapterViewHolder holder,
                                   final int position) {
     try {
-      holder.textViewSample.setText(jsonObject.getString("name"));
 
-      final long id = jsonObject.getLong("id");
-      final String name = jsonObject.getString("name");
+      final long id = jsonObject.getLong("user_id");
+      final String name = jsonObject.getString("user_name");
       String content = jsonObject.getString("content");
       final String mContent = "謝謝你踢我！";
 
@@ -133,10 +132,10 @@ public class MessagesRecyclerViewAdapter extends
                           holder,
                                   final int position) {
     try {
-      holder.textViewSample.setText(jsonObject.getString("name"));
+      holder.textViewSample.setText(jsonObject.getString("user_name"));
 
-      final long id = jsonObject.getLong("id");
-      final String name = jsonObject.getString("name");
+      final long id = jsonObject.getLong("user_id");
+      final String name = jsonObject.getString("user_name");
       String content = jsonObject.getString("content");
 
       holder.textViewSample.setText(name);
