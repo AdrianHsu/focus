@@ -62,7 +62,10 @@ public class CreateInfoActivity extends AppIntro2 {
     Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
     startActivity(intent);
     Log.d(TAG, "start starting TrackService.");
-    startService(new Intent(this, TrackAccessibilityService.class));
+    Intent intent2 = new Intent(this, TrackAccessibilityService.class);
+    startService(intent2);
+
+
     Log.d(TAG, "finish starting TrackService.");
   }
 }

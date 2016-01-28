@@ -6,6 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.dots.focus.util.FetchFriendUtil;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -22,7 +23,7 @@ import java.util.TimerTask;
 
 public class GetFriendInviteService extends Service {
   private final IBinder mBinder = new GetFriendInviteBinder();
-  private final String TAG = "GetFriendInviteService";
+  private static final String TAG = "GetFriendInviteService";
   public static ArrayList<JSONObject> friendWaitingReplyList = new ArrayList<>();
 
   @Override
@@ -51,21 +52,24 @@ public class GetFriendInviteService extends Service {
     query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("user_id"));
     //query.whereEqualTo("downloaded", false);
 
-
     query.findInBackground(new FindCallback<ParseObject>() {
       public void done(List<ParseObject> inviteList, ParseException e) {
         if (e == null && inviteList != null && !inviteList.isEmpty()) {
-            friendWaitingReplyList.clear();
+          friendWaitingReplyList.clear();
 
           for (int i = 0, size = inviteList.size(); i < size; ++i) {
 //            Log.d(TAG, "download = false: inviteList.size() == " + inviteList.size());
+            long id = inviteList.get(i).getLong("user_id_inviting");
+            String name = inviteList.get(i).getString("user_name_inviting");
+
+            if (!FetchFriendUtil.mConfirmingFriendList.contains(id))
+              FetchFriendUtil.mConfirmingFriendList.add(id);
+
             inviteList.get(i).put("downloaded", true);
             JSONObject jsonObject = new JSONObject();
             try {
-              jsonObject.put("user_id", inviteList.get(i).getLong
-                ("user_id_inviting"));
-              jsonObject.put("user_name", inviteList.get(i).getString
-                ("user_name_inviting"));
+              jsonObject.put("user_id", id);
+              jsonObject.put("user_name", name);
 //              Log.d(TAG, "user_name_inviting == " + jsonObject.getString("name"));
               jsonObject.put("time", inviteList.get(i).getLong("time"));
               jsonObject.put("state", 1);

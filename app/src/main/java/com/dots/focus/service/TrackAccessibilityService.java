@@ -2,7 +2,10 @@ package com.dots.focus.service;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
@@ -35,6 +38,17 @@ public class TrackAccessibilityService extends AccessibilityService {
     private static ParseObject currentApp;
     private static int appIndex;
 
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equals("HourReceiver_broadcast_an_hour")){
+                Log.d(TAG, "Get HourReceiver's broadcast...");
+                checkWindowState(previousPackageName, intent.getExtras().getLong("time"));
+            }
+        }
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,13 +58,21 @@ public class TrackAccessibilityService extends AccessibilityService {
             public void done(ParseObject object, ParseException e) {
                 if (e == null && object != null) {
                     currentApp = object;
-                }
-                else {
+                } else {
                     Log.d(TAG, "Cannot find the currentApp...");
                 }
             }
         });
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("HourReceiver_broadcast_an_hour");
 
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
     }
 
     @Override
@@ -62,7 +84,7 @@ public class TrackAccessibilityService extends AccessibilityService {
             Thread thread = new Thread() {
                 @Override
                 public void run() {
-                    checkWindowState(tempPackageName);
+                    checkWindowState(tempPackageName, System.currentTimeMillis());
                 }
             };
             thread.start();
@@ -74,9 +96,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         Log.v(TAG, "***** onInterrupt");
     }
 
-    private void checkWindowState(String tempPackageName){
-
-        long now = System.currentTimeMillis();
+    public void checkWindowState(String tempPackageName, long now) {
 
         if (startTime == 0 || previousPackageName.contentEquals("") || appIndex < 0) {
             startTime = now;

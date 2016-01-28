@@ -16,7 +16,10 @@ import com.dots.focus.service.GetCurrentAppsService;
 import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -118,8 +121,8 @@ public class MessagesRecyclerViewAdapter extends
         public void onClick(View view) {
 
           KickUtil.kickResponse(objectId, mContent);
-          Log.v(TAG, "called kickResponse with objectId:" + objectId);
-          remove(position);
+          Log.v(TAG, "called kickResponse with objectId:" + objectId + ", position: " + position);
+          remove(position - 1);
         }
       });
 
@@ -150,7 +153,19 @@ public class MessagesRecyclerViewAdapter extends
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
+          ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
+          query.fromLocalDatastore();
+          query.getInBackground(objectId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject kickHistory, ParseException e) {
+              if (e == null && kickHistory != null) {
+                kickHistory.put("state", 4);
+                Log.d(TAG, "kickResponse known");
+              } else if (e != null) {
+                Log.d(TAG, e.getMessage());
+              }
+            }
+          });
           remove(position);
         }
       });

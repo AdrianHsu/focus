@@ -11,6 +11,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -65,13 +66,14 @@ public class TrackAccessibilityUtil {
             if (currentDay == null)
                 newDay(localDay);
         }
-        else if (localDay != currentDay.getLong("time")) {
+        else if (localDay != currentDay.getLong("time"))
             newDay(localDay);
-        }
+
         if (currentDay == null) Log.d(TAG, "return null day QAQ...");
         else Log.d(TAG, "day id: " + currentDay.getObjectId());
         return currentDay;
     }
+
     public static HourBlock getCurrentHour(long time){
         Calendar rightNow = Calendar.getInstance();
         rightNow.setTimeInMillis(time);
@@ -100,7 +102,8 @@ public class TrackAccessibilityUtil {
     //helper functions
     private static long getLocalDay(long time) {
         Calendar rightNow = Calendar.getInstance();
-        rightNow.setTimeInMillis(24*anHour * ((time + anHour * getTimeOffset()) / (24*anHour))); // shift to local time
+        rightNow.setTimeInMillis(24 * anHour * ((time + anHour * getTimeOffset()) / (24 * anHour)));
+         // shift to local time
         //rightNow.set(rightNow.get(Calendar.YEAR), rightNow.get(Calendar.MONTH),
         //        rightNow.get(Calendar.DAY_OF_MONTH), 0, 0); // discard hours
         rightNow.setTimeInMillis(rightNow.getTimeInMillis() - anHour * getTimeOffset()); // local day in  standard time
@@ -113,12 +116,14 @@ public class TrackAccessibilityUtil {
         return rightNow.getTimeInMillis();
     }
 
-    private static void newDay(final long dayInLong){
+    private static void newDay(final long dayInLong) {
+        if (currentDay != null)
+            currentDay.saveEventually();
         currentDay = new DayBlock(dayInLong);
         currentDay.saveEventually(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e != null)  {
+                if (e != null) {
                     Log.d(TAG, "currentDay pin error: " + e.getMessage());
                 }
                 List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
@@ -146,7 +151,9 @@ public class TrackAccessibilityUtil {
         });
 
     }
-    private static void newHour(final long hourInLong, final int h){
+    public static void newHour(final long hourInLong, final int h) {
+        storeHourInDay(hourInLong, h);
+
         currentHour = new HourBlock(hourInLong, h, ParseUser.getCurrentUser().getInt("AppIndex"));
 
         currentHour.saveEventually(new SaveCallback() {
@@ -156,15 +163,28 @@ public class TrackAccessibilityUtil {
                 if (e != null)  {
                     Log.d(TAG, "currentHour pin error: " + e.getMessage());
                 }
-                if (getCurrentDay(hourInLong).getHourBlocks() != null) {
-                    Log.d(TAG, "hour: " + h + ", List.size(): " + getCurrentDay(hourInLong).getHourBlocks().size());
-                    List<String> temp = getCurrentDay(hourInLong).getHourBlocks();
-                    temp.set(h, currentHour.getObjectId());
-                    getCurrentDay(hourInLong).setHourBlocks(temp);
-                } else Log.d(TAG, "DayBlock.getList(\"hourBlocks\") is null...!");
             }
         });
 
         Log.d(TAG, "hour id: " + currentHour.getObjectId());
+    }
+    private static void storeHourInDay(final long hourInLong, final int h) {
+        if (currentHour == null)    return;
+        currentHour.saveEventually();
+
+        if (currentDay == null)  return;
+        List<String> temp = currentDay.getHourBlocks();
+        temp.set(h, currentHour.getObjectId());
+        currentDay.setHourBlocks(temp);
+
+        List<Integer>   dayAppLength = currentDay.getAppLength(),
+                        hourAppLength = currentHour.getAppLength();
+        for (int i = 0; i < 24; ++i)
+            dayAppLength.set(i, hourAppLength.get(i) + dayAppLength.get(i));
+        currentDay.setAppLength(dayAppLength);
+
+        long localDay = getLocalDay(hourInLong);
+        if (localDay != currentDay.getLong("time"))
+            newDay(localDay);
     }
 }
