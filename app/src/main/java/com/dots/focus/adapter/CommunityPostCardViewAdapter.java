@@ -5,11 +5,13 @@ package com.dots.focus.adapter;
  */
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityP
 
   private List<String> stringList;
   private Context mContext;
+  private boolean pushBtnBoolean = true;
 
   public CommunityPostCardViewAdapter(List<String> stringList, Context context) {
     this.stringList = stringList;
@@ -37,14 +40,6 @@ public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityP
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, final int position) {
     if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
-      holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
-
-      if(position == 4)
-        holder.textViewContent.setText("出生年份");
-      else if (position == 5)
-        holder.textViewContent.setText("好友總數");
-      else if (position == 6)
-        holder.textViewContent.setText("FOCUS省下總時數");
 
       if (mDragStartListener != null) {
 
@@ -76,14 +71,31 @@ public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityP
       .inflate(R.layout.focus_community_recycler_view_adapter, parent, false);
     final SimpleAdapterViewHolder vh = new SimpleAdapterViewHolder(v, true);
 
-    final TextView textview = (TextView) v.findViewById(R.id.textview);
+    final ImageView pushView = (ImageView) v.findViewById(R.id.push_up);
     v.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+        Toast.makeText(v.getContext(), "clicked" + vh.getAdapterPosition(), Toast
                                 .LENGTH_SHORT)
           .show();
 
+      }
+    });
+    pushView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Toast.makeText(v.getContext(), "clicked push on adapter #" + vh.getAdapterPosition(),
+                                Toast
+                                .LENGTH_SHORT)
+                                .show();
+
+        Drawable res;
+        if(pushBtnBoolean)
+          res = mContext.getResources().getDrawable(R.drawable.community_up_button_white, null);
+        else
+          res = mContext.getResources().getDrawable(R.drawable.community_up_button_yellow, null);
+        pushView.setImageDrawable(res);
+        pushBtnBoolean = !pushBtnBoolean;
       }
     });
     return vh;
@@ -173,16 +185,27 @@ public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityP
 
   public class SimpleAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
-    TextView textViewSample;
-    TextView textViewContent;
+    TextView userNameTv;
+    TextView timeTv;
+    TextView contentTv;
+    TextView pointTv;
+    TextView commentTv;
+    ImageView profileIv;
+    ImageView pushIv;
     View item_view;
 
     public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
       if (isItem) {
-        textViewSample = (TextView) itemView.findViewById(
-          R.id.textview);
-        textViewContent = (TextView) itemView.findViewById(R.id.content);
+        userNameTv = (TextView) itemView.findViewById(
+          R.id.user_name);
+        timeTv = (TextView) itemView.findViewById(R.id.time);
+        contentTv = (TextView) itemView.findViewById(R.id.content);
+        pointTv = (TextView) itemView.findViewById(R.id.points);
+        commentTv = (TextView) itemView.findViewById(R.id.comment);
+        profileIv = (ImageView) itemView.findViewById(R.id.profile_image);
+        pushIv = (ImageView) itemView.findViewById(R.id.push_up);
+
         item_view = itemView.findViewById(R.id.itemview);
       }
     }
