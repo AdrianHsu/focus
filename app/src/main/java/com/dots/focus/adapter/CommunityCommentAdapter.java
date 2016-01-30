@@ -50,13 +50,10 @@ public class CommunityCommentAdapter extends
       JSONObject jsonObject = jsonObjectList.get(customHeaderView != null ? position - 1 :
                               position);
 
-      if (mDragStartListener != null) {
-
-        if(holder instanceof PostAdapterViewHolder) {
-          PostBindItem(jsonObject, (PostAdapterViewHolder) holder, position);
-        } else if (holder instanceof CommentAdapterViewHolder) {
-          CommentBindItem(jsonObject, (CommentAdapterViewHolder) holder, position);
-        }
+      if(holder instanceof PostAdapterViewHolder) {
+        PostBindItem(jsonObject, (PostAdapterViewHolder) holder, position);
+      } else if (holder instanceof CommentAdapterViewHolder) {
+        CommentBindItem(jsonObject, (CommentAdapterViewHolder) holder, position);
       }
     }
   }
