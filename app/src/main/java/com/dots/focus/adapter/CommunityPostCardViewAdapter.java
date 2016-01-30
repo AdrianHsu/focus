@@ -5,6 +5,7 @@ package com.dots.focus.adapter;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,8 +18,13 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
+import com.dots.focus.ui.FocusCommunityCommentsActivity;
+import com.dots.focus.ui.KickMessagesActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -26,38 +32,38 @@ import java.util.List;
 public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityPostCardViewAdapter
   .SimpleAdapterViewHolder> {
 
-  private List<String> stringList;
+  private List<JSONObject> jsonObjectList;
   private Context mContext;
   private boolean pushBtnBoolean = true;
 
-  public CommunityPostCardViewAdapter(List<String> stringList, Context context) {
-    this.stringList = stringList;
+  public CommunityPostCardViewAdapter(List<JSONObject> jsonObjectList, Context context) {
+    this.jsonObjectList = jsonObjectList;
     this.mContext = context;
   }
 
 
   @Override
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, final int position) {
-    if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
+    if (position < getItemCount() && (customHeaderView != null ? position <= jsonObjectList.size() : position
+                            < jsonObjectList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
 
       if (mDragStartListener != null) {
 
-        holder.item_view.setOnTouchListener(new View.OnTouchListener() {
-          @Override
-          public boolean onTouch(View v, MotionEvent event) {
-
-            return false;
-          }
-        });
+        String content = null;
+        try {
+          content = jsonObjectList.get(position).getString("content");
+        } catch(JSONException e) {
+          e.printStackTrace();
+        }
+        holder.contentTv.setText(content);
       }
     }
-
   }
 
   @Override
   public int getAdapterItemCount() {
-    return stringList.size();
+    return jsonObjectList.size();
   }
 
   @Override
@@ -78,6 +84,9 @@ public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityP
         Toast.makeText(v.getContext(), "clicked" + vh.getAdapterPosition(), Toast
                                 .LENGTH_SHORT)
           .show();
+        Intent intent;
+        intent = new Intent(mContext, FocusCommunityCommentsActivity.class);
+        mContext.startActivity(intent);
 
       }
     });
@@ -98,20 +107,22 @@ public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityP
         pushBtnBoolean = !pushBtnBoolean;
       }
     });
+
+
     return vh;
   }
 
 
-  public void insert(String string, int position) {
-    insert(stringList, string, position);
+  public void insert(JSONObject jsonObject, int position) {
+    insert(jsonObjectList, jsonObject, position);
   }
 
   public void remove(int position) {
-    remove(stringList, position);
+    remove(jsonObjectList, position);
   }
 
   public void clear() {
-    clear(stringList);
+    clear(jsonObjectList);
   }
 
   @Override
@@ -131,7 +142,7 @@ public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityP
 
 
   public void swapPositions(int from, int to) {
-    swapPositions(stringList, from, to);
+    swapPositions(jsonObjectList, from, to);
   }
 
 
@@ -221,12 +232,12 @@ public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityP
     }
   }
 
-  public String getItem(int position) {
+  public JSONObject getItem(int position) {
     if (customHeaderView != null)
       position--;
-    if (position < stringList.size())
-      return stringList.get(position);
-    else return "";
+    if (position < jsonObjectList.size())
+      return jsonObjectList.get(position);
+    else return null;
   }
 
 }

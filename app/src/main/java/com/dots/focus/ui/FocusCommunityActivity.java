@@ -21,6 +21,9 @@ import com.dots.focus.adapter.CommunityPostCardViewAdapter;
 import com.dots.focus.adapter.ProfileCardViewAdapter;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,12 +53,23 @@ public class FocusCommunityActivity extends BaseActivity {
 
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.focus_community_recycler_view);
 
-    final List<String> stringList = new ArrayList<>();
+    final List<JSONObject> jsonObjectList = new ArrayList<>();
 
-    for(int i = 0; i < 100; i++)
-      stringList.add("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " + i);
+    for(int i = 0; i < 100; i++) {
+      JSONObject jsonObject = new JSONObject();
+      try {
+        jsonObject.put("content", "Lorem ipsum dolor sit amet, consectetur adipiscing " +
+                                "elit, sed" +
+                                " do " +
+                                "eiusmod" +
+                                " tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " + i);
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+      jsonObjectList.add(jsonObject);
+    }
 
-    mCommunityPostCardViewAdapter = new CommunityPostCardViewAdapter(stringList, this);
+    mCommunityPostCardViewAdapter = new CommunityPostCardViewAdapter(jsonObjectList, this);
     linearLayoutManager = new LinearLayoutManager(this);
 
     mRecyclerView.setLayoutManager(linearLayoutManager);
