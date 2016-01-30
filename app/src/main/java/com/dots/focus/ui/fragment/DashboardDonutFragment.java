@@ -44,6 +44,7 @@ public class DashboardDonutFragment extends SampleFragment {
   private int mSeries1Index;
   private int mSeries2Index;
   private int mSeries3Index;
+  private int mSeries4Index;
   private int mStyleIndex;
 
   public DashboardDonutFragment() {}
@@ -80,7 +81,7 @@ public class DashboardDonutFragment extends SampleFragment {
     if (mTrackBackWidth != mTrackWidth) {
       inset = getDimension((mTrackBackWidth - mTrackWidth) / 2);
     }
-    SeriesItem seriesItem1 = new SeriesItem.Builder(COLOR_BLUE)
+    SeriesItem seriesItem1 = new SeriesItem.Builder(COLOR_NEUTRAL)
       .setRange(0, seriesMax, 0)
       .setInitialVisibility(false)
       .setLineWidth(getDimension(mTrackWidth))
@@ -92,7 +93,7 @@ public class DashboardDonutFragment extends SampleFragment {
 
     mSeries1Index = decoView.addSeries(seriesItem1);
 
-    SeriesItem seriesItem2 = new SeriesItem.Builder(COLOR_PINK)
+    SeriesItem seriesItem2 = new SeriesItem.Builder(COLOR_YELLOW)
       .setRange(0, seriesMax, 0)
       .setInitialVisibility(false)
       .setCapRounded(true)
@@ -103,7 +104,7 @@ public class DashboardDonutFragment extends SampleFragment {
 
     mSeries2Index = decoView.addSeries(seriesItem2);
 
-    SeriesItem seriesItem3 = new SeriesItem.Builder(COLOR_YELLOW)
+    SeriesItem seriesItem3 = new SeriesItem.Builder(COLOR_PINK)
       .setRange(0, seriesMax, 0)
       .setInitialVisibility(false)
       .setCapRounded(true)
@@ -113,6 +114,17 @@ public class DashboardDonutFragment extends SampleFragment {
       .build();
 
     mSeries3Index = decoView.addSeries(seriesItem3);
+
+    SeriesItem seriesItem4 = new SeriesItem.Builder(COLOR_BLUE)
+                            .setRange(0, seriesMax, 0)
+                            .setInitialVisibility(false)
+                            .setCapRounded(true)
+                            .setLineWidth(getDimension(mTrackWidth))
+                            .setInset(new PointF(inset, inset))
+                            .setCapRounded(mRounded)
+                            .build();
+
+    mSeries4Index = decoView.addSeries(seriesItem4);
 
     final TextView textPercent = (TextView) view.findViewById(R.id.textPercentage);
     if (textPercent != null) {
@@ -142,7 +154,9 @@ public class DashboardDonutFragment extends SampleFragment {
     final TextView textActivity3 = (TextView) getView().findViewById(R.id.textActivity3);
     textActivity3.setText("");
 //    addProgressListener(seriesItem3, textActivity3, "%.0f Km");
-
+    final TextView textActivity4 = (TextView) getView().findViewById(R.id.textActivity4);
+    textActivity4.setText("");
+//    addProgressListener(seriesItem4, textActivity4, "%.0f Km");
   }
 
   @Override
@@ -192,11 +206,19 @@ public class DashboardDonutFragment extends SampleFragment {
       .setDuration(2000)
       .setDelay(1200)
       .build());
+    decoView.addEvent(new DecoEvent.Builder(DecoDrawEffect.EffectType.EFFECT_SPIRAL_OUT)
+      .setIndex(mSeries4Index)
+      .setLinkedViews(linkedViews)
+      .setDuration(2000)
+      .setDelay(1300)
+      .build());
 
-    decoView.addEvent(new DecoEvent.Builder(5).setIndex(mSeries3Index).setDelay(4500).build());
-    decoView.addEvent(new DecoEvent.Builder(10).setIndex(mSeries2Index).setDelay(3900).build());
-//    decoView.addEvent(new DecoEvent.Builder(22).setIndex(mSeries2Index).setDelay(7000).build());
-    decoView.addEvent(new DecoEvent.Builder(25).setIndex(mSeries1Index).setDelay(3300).build());
+
+
+    decoView.addEvent(new DecoEvent.Builder(48).setIndex(mSeries1Index).setDelay(3300).build());
+    decoView.addEvent(new DecoEvent.Builder(45).setIndex(mSeries2Index).setDelay(3900).build());
+    decoView.addEvent(new DecoEvent.Builder(40).setIndex(mSeries3Index).setDelay(4500).build());
+    decoView.addEvent(new DecoEvent.Builder(30).setIndex(mSeries4Index).setDelay(5000).build());
 //    decoView.addEvent(new DecoEvent.Builder(50).setIndex(mSeries1Index).setDuration(1500).setDelay(9000).build());
 //    decoView.addEvent(new DecoEvent.Builder(0).setIndex(mSeries1Index).setDuration(500).setDelay(10500)
 //      .setListener(new DecoEvent.ExecuteEventListener() {

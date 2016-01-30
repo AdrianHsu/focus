@@ -33,9 +33,9 @@ import com.hookedonplay.decoviewlib.charts.SeriesItem;
 abstract public class SampleFragment extends Fragment {
     protected final String TAG = getClass().getSimpleName();
 
-    final protected int COLOR_BLUE = Color.parseColor("#AA1D76D2");
-    final protected int COLOR_PINK = Color.parseColor("#AAFF4081");
-    final protected int COLOR_YELLOW = Color.parseColor("#AAFFC107");
+    final protected int COLOR_BLUE = Color.parseColor("#1D76D2");
+    final protected int COLOR_PINK = Color.parseColor("#FF4081");
+    final protected int COLOR_YELLOW = Color.parseColor("#FFC107");
     final protected int COLOR_GREEN = Color.parseColor("#AA07CC07");
     final protected int COLOR_EDGE = Color.parseColor("#22000000");
     final protected int COLOR_BACK = Color.parseColor("#22888888");
