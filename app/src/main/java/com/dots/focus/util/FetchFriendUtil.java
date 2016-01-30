@@ -24,6 +24,7 @@ import java.util.List;
 public class FetchFriendUtil {
     private static String TAG = "FetchFriendUtil";
     public static ArrayList<JSONObject> mFriendList = new ArrayList<>();
+    public static ArrayList<Long> mConfirmingFriendList = new ArrayList<>();
     public static ArrayList<JSONObject> mConfirmedFriendList = new ArrayList<>();
 
     public static int checkFriend(Long id) throws JSONException {
@@ -51,6 +52,8 @@ public class FetchFriendUtil {
                                         try {
                                             Long id = jsonArray.getJSONObject(i).getLong("id");
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                            if (mConfirmingFriendList.contains(id))
+                                                continue;
                                             if (checkFriend(id) == -1) {
                                                 jsonObject.put("state", 0);
                                                 mFriendList.add(jsonObject);
@@ -79,6 +82,9 @@ public class FetchFriendUtil {
     }
 
     public static void friendInvite(Long id, String name) {
+        if (mConfirmingFriendList.contains(id))
+            mConfirmingFriendList.add(id);
+
         final ParseObject invite = new ParseObject("FriendInvitation");
 
         invite.put("user_id_invited", id);
@@ -110,6 +116,8 @@ public class FetchFriendUtil {
     public static void friendConfirm(Long id, String name) throws JSONException {
         Log.d(TAG, "friendConfirm...");
 
+        mConfirmingFriendList.remove(id);
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");
         if (friends == null) friends = new JSONArray();
@@ -128,8 +136,8 @@ public class FetchFriendUtil {
         ParseObject friendConfirm = new ParseObject("FriendConfirmation");
         friendConfirm.put("user_id_inviting", id);
         friendConfirm.put("user_name_inviting", name);
-        friendConfirm.put("user_id_invited", currentUser.getLong("id"));
-        friendConfirm.put("user_name_invited", currentUser.getString("name"));
+        friendConfirm.put("user_id_invited", currentUser.getLong("user_id"));
+        friendConfirm.put("user_name_invited", currentUser.getString("user_name"));
         friendConfirm.put("downloaded", false);
 
         friendConfirm.saveEventually();
@@ -139,6 +147,9 @@ public class FetchFriendUtil {
 
     public static void getFriendConfirm(Long id, String name) throws JSONException {
         Log.d(TAG, "getFriendConfirm...");
+
+        mConfirmingFriendList.remove(id);
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");
         if (friends == null)    friends = new JSONArray();

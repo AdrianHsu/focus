@@ -1,5 +1,9 @@
 package com.dots.focus.ui;
 
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -10,6 +14,9 @@ import android.view.MenuItem;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.MainTabPagerAdapter;
+import com.dots.focus.receiver.HourReceiver;
+
+import java.util.Calendar;
 
 /**
  * Created by AdrianHsu on 15/9/23.
@@ -65,6 +72,8 @@ public class MainActivity extends BaseActivity {
 
       }
     });
+
+    setHourAlarm();
   }
   private void setTabLayoutIcon(TabLayout tabLayout) {
     tabLayout.getTabAt(0).setIcon(R.drawable.tab_dashboard);
@@ -101,5 +110,20 @@ public class MainActivity extends BaseActivity {
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.main, menu);
     return true;
+  }
+
+  public void setHourAlarm() {
+    HourReceiver.setMain(this);
+
+    Long time = 3600000 * (System.currentTimeMillis() / 3600000 + 1);
+
+    Intent intent = new Intent(this, HourReceiver.class);
+    // Intent intent = new Intent();
+    intent.putExtra("msg", "an_hour_is_up");
+
+    PendingIntent pi = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
+
+    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+    am.set(AlarmManager.RTC_WAKEUP, time, pi);
   }
 }

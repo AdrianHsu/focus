@@ -42,33 +42,66 @@ public class GetKickResponseService extends Service {
     }
 
     public static void queryKickResponse() {
+        kickResponseList.clear();
         ParseUser currentUser = ParseUser.getCurrentUser();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
-        query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
-//         query.whereEqualTo("state", 2);
-        query.whereGreaterThan("state", 1); // 2 or 3
-        query.findInBackground(new FindCallback<ParseObject>() {
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("KickHistory"),
+                                query2 = ParseQuery.getQuery("KickHistory");
+        query1.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
+        query1.whereEqualTo("state", 2);
+//         query1.whereGreaterThan("state", 1); // 2 or 3
+        query1.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null && objects != null) {
                     if (objects.isEmpty())  return;
 
-                    kickResponseList.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         objects.get(i).put("state", 3);
                         // add to kickResponseList
                         JSONObject kickResponse = new JSONObject();
-                        // add to kickedList
                         try {
-                          kickResponse.put("user_id", objects.get(i).getLong("user_id_kicked"));
-                          kickResponse.put("user_name", objects.get(i).getString
-                                                  ("user_name_kicked"));
-                          kickResponse.put("state", objects.get(i).getLong("state"));
-                          kickResponse.put("content", objects.get(i).getString("content3"));
-                          kickResponse.put("objectId", objects.get(i).getObjectId());
-                          kickResponseList.add(kickResponse);
+                            kickResponse.put("user_id", objects.get(i).getLong("user_id_kicked"));
+                            kickResponse.put("user_name", objects.get(i).getString
+                                    ("user_name_kicked"));
+                            kickResponse.put("state", objects.get(i).getLong("state"));
+                            kickResponse.put("content", objects.get(i).getString("content3"));
+                            kickResponse.put("objectId", objects.get(i).getObjectId());
+                            kickResponseList.add(kickResponse);
                         } catch (JSONException e1) {
-                          e1.printStackTrace();
+                            e1.printStackTrace();
+                        }
+                    }
+                    try {
+                        ParseObject.saveAll(objects);
+                        ParseObject.pinAll(objects);
+                    } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
+                    // refresh the content
+                }
+            }
+        });
+
+        query2.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
+        query2.whereEqualTo("state", 3);
+        query2.fromLocalDatastore();
+        query2.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null && objects != null) {
+                    if (objects.isEmpty())  return;
+
+                    for (int i = 0, size = objects.size(); i < size; ++i) {
+                        // add to kickResponseList
+                        JSONObject kickResponse = new JSONObject();
+                        try {
+                            kickResponse.put("user_id", objects.get(i).getLong("user_id_kicked"));
+                            kickResponse.put("user_name", objects.get(i).getString
+                                    ("user_name_kicked"));
+                            kickResponse.put("state", objects.get(i).getLong("state"));
+                            kickResponse.put("content", objects.get(i).getString("content3"));
+                            kickResponse.put("objectId", objects.get(i).getObjectId());
+                            kickResponseList.add(kickResponse);
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
                         }
                     }
                     try {

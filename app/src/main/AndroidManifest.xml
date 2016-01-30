@@ -202,6 +202,11 @@
                 <category android:name="com.dots.focus" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".receiver.HourReceiver">
+            <intent-filter>
+                <action android:name="an_hour_is_up" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

@@ -53,7 +53,6 @@ public class KickUtil {
             kickHistory.saveEventually();
           } else if (e != null) {
             Log.d("KickUtil", e.getMessage());
-
           }
         }
       });

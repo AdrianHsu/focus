@@ -55,7 +55,6 @@ public class AddFriendFragment extends Fragment {
     friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
     friendProfileList.addAll(GetFriendConfirmService.friendRepliedList);
 
-
     addFriendRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
