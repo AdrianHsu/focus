@@ -69,14 +69,14 @@ public class AddFriendRecyclerViewAdapter extends
   public void friendInviteBindItem(JSONObject jsonObject, FriendInviteAdapterViewHolder holder,
                                    final int position) {
     try {
-      holder.textViewSample.setText(jsonObject.getString("user_name"));
+      holder.mProfileNameTextView.setText(jsonObject.getString("user_name"));
 
       final long id = jsonObject.getLong("user_id");
       final String name = jsonObject.getString("user_name");
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
-      Picasso.with(mContext).load(url).into(holder.imageViewSample);
-      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+      Picasso.with(mContext).load(url).into(holder.mProfileImageView);
+      holder.mButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
@@ -93,14 +93,14 @@ public class AddFriendRecyclerViewAdapter extends
   public void friendConfirmBindItem(JSONObject jsonObject, FriendConfirmAdapterViewHolder holder,
                                     final int position) {
     try {
-      holder.textViewSample.setText(jsonObject.getString("user_name"));
+      holder.mProfileNameTextView.setText(jsonObject.getString("user_name"));
 
       final long id = jsonObject.getLong("user_id");
       final String name = jsonObject.getString("user_name");
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
-      Picasso.with(mContext).load(url).into(holder.imageViewSample);
-      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+      Picasso.with(mContext).load(url).into(holder.mProfileImageView);
+      holder.mButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 //            FetchFriendUtil.friendInvite(id, name);
@@ -130,13 +130,13 @@ public class AddFriendRecyclerViewAdapter extends
   public void friendConfirmedBindItem(JSONObject jsonObject, FriendConfirmedAdapterViewHolder
     holder, final int position) {
     try {
-      holder.textViewSample.setText(jsonObject.getString("user_name"));
+      holder.mProfileNameTextView.setText(jsonObject.getString("user_name"));
 
       final long id = jsonObject.getLong("user_id");
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
-      Picasso.with(mContext).load(url).into(holder.imageViewSample);
-      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+      Picasso.with(mContext).load(url).into(holder.mProfileImageView);
+      holder.mButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
           Log.d(TAG, "I've known clicked.");
@@ -162,14 +162,14 @@ public class AddFriendRecyclerViewAdapter extends
   public void friendBindItem(JSONObject jsonObject, FriendAdapterViewHolder
     holder, final int position) {
     try {
-      holder.textViewSample.setText(jsonObject.getString("user_name"));
+      holder.mProfileNameTextView.setText(jsonObject.getString("user_name"));
 
       final long id = jsonObject.getLong("user_id");
       final String name = jsonObject.getString("user_name");
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
-      Picasso.with(mContext).load(url).into(holder.imageViewSample);
-      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+      Picasso.with(mContext).load(url).into(holder.mProfileImageView);
+      holder.mButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
@@ -377,19 +377,19 @@ public class AddFriendRecyclerViewAdapter extends
 
   public class FriendInviteAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
-    TextView textViewSample;
-    ImageView imageViewSample;
-    Button buttonSample;
+    TextView mProfileNameTextView;
+    ImageView mProfileImageView;
+    Button mButton;
     View item_view;
 
 
     public FriendInviteAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
       if (isItem) {
-        textViewSample = (TextView) itemView.findViewById(
-          R.id.textview);
-        imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
-        buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
+        mProfileNameTextView = (TextView) itemView.findViewById(
+          R.id.profile_name);
+        mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
+        mButton = (Button) itemView.findViewById(R.id.button);
 
         item_view = itemView.findViewById(R.id.itemview);
       }
@@ -416,9 +416,9 @@ public class AddFriendRecyclerViewAdapter extends
 
   public class FriendConfirmAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
-    TextView textViewSample;
-    ImageView imageViewSample;
-    Button buttonSample;
+    TextView mProfileNameTextView;
+    ImageView mProfileImageView;
+    Button mButton;
     View item_view;
 
 
@@ -426,12 +426,11 @@ public class AddFriendRecyclerViewAdapter extends
       super(itemView);
       if (isItem) {
         Log.v(TAG, "ConfirmViewHolder Created");
-        textViewSample = (TextView) itemView.findViewById(
-          R.id.textview);
-        imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
-        buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
+        mProfileNameTextView = (TextView) itemView.findViewById(
+          R.id.profile_name);
+        mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
+        mButton = (Button) itemView.findViewById(R.id.button);
 
-        buttonSample.setText("接受");
         item_view = itemView.findViewById(R.id.itemview);
       }
     }
@@ -448,9 +447,9 @@ public class AddFriendRecyclerViewAdapter extends
   }
   public class FriendConfirmedAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
-    TextView textViewSample;
-    ImageView imageViewSample;
-    Button buttonSample;
+    TextView mProfileNameTextView;
+    ImageView mProfileImageView;
+    Button mButton;
     View item_view;
 
 
@@ -458,12 +457,11 @@ public class AddFriendRecyclerViewAdapter extends
       super(itemView);
       if (isItem) {
         Log.v(TAG, "ConfirmedViewHolder Created");
-        textViewSample = (TextView) itemView.findViewById(
-          R.id.textview);
-        imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
-        buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
+        mProfileNameTextView = (TextView) itemView.findViewById(
+          R.id.profile_name);
+        mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
+        mButton = (Button) itemView.findViewById(R.id.button);
 
-        buttonSample.setText("知道了");
 
         item_view = itemView.findViewById(R.id.itemview);
       }
@@ -481,21 +479,19 @@ public class AddFriendRecyclerViewAdapter extends
   }
   public class FriendAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
-    TextView textViewSample;
-    ImageView imageViewSample;
-    Button buttonSample;
+    TextView mProfileNameTextView;
+    ImageView mProfileImageView;
+    Button mButton;
     View item_view;
 
 
     public FriendAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
       if (isItem) {
-        textViewSample = (TextView) itemView.findViewById(
-          R.id.textview);
-        imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
-        buttonSample = (Button) itemView.findViewById(R.id.button_invite_friend);
-
-        buttonSample.setText("好友");
+        mProfileNameTextView = (TextView) itemView.findViewById(
+          R.id.profile_name);
+        mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
+        mButton = (Button) itemView.findViewById(R.id.button);
 
         item_view = itemView.findViewById(R.id.itemview);
       }

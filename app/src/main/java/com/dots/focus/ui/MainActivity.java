@@ -1,9 +1,12 @@
 package com.dots.focus.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.MainTabPagerAdapter;
@@ -14,13 +17,14 @@ import com.dots.focus.adapter.MainTabPagerAdapter;
 public class MainActivity extends BaseActivity {
 
   private ViewPager mPager;
+  private Toolbar toolbar;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
     MainTabPagerAdapter adapter = new MainTabPagerAdapter(getSupportFragmentManager());
@@ -29,6 +33,38 @@ public class MainActivity extends BaseActivity {
     TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
     tabLayout.setupWithViewPager(mPager);
     setTabLayoutIcon(tabLayout);
+    mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+      @Override
+      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+      }
+
+      @Override
+      public void onPageSelected(int position) {
+        switch (position) {
+          case 0:
+            toolbar.setTitle("資訊主頁");
+            break;
+          case 1:
+            toolbar.setTitle("好友邀請");
+            break;
+          case 2:
+            toolbar.setTitle("訊息");
+            break;
+          case 3:
+            toolbar.setTitle("總覽");
+            break;
+          case 4:
+            toolbar.setTitle("更多");
+            break;
+        }
+      }
+
+      @Override
+      public void onPageScrollStateChanged(int state) {
+
+      }
+    });
   }
   private void setTabLayoutIcon(TabLayout tabLayout) {
     tabLayout.getTabAt(0).setIcon(R.drawable.tab_dashboard);
@@ -48,5 +84,22 @@ public class MainActivity extends BaseActivity {
       // Otherwise, select the dashboard step.
       mPager.setCurrentItem(0);
     }
+  }
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+
+      case R.id.action_friend_list:
+        Intent intent;
+        intent = new Intent(this, FriendListActivity.class);
+        startActivity(intent);
+        break;
+    }
+    return true;
+  }
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.main, menu);
+    return true;
   }
 }

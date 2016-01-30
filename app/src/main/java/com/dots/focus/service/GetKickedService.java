@@ -69,8 +69,6 @@ public class GetKickedService extends Service {
                         } catch (JSONException e1) {
                             e1.printStackTrace();
                         }
-
-
                     }
                     try {
                         ParseObject.saveAll(objects);

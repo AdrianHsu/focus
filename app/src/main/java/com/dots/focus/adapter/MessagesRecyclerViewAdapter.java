@@ -1,6 +1,7 @@
 package com.dots.focus.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 
 import com.dots.focus.R;
 import com.dots.focus.service.GetCurrentAppsService;
+import com.dots.focus.ui.FriendListActivity;
+import com.dots.focus.ui.KickMessagesActivity;
 import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
@@ -211,6 +214,9 @@ public class MessagesRecyclerViewAdapter extends
             Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
               .LENGTH_SHORT)
               .show();
+            Intent intent;
+            intent = new Intent(mContext, KickMessagesActivity.class);
+            mContext.startActivity(intent);
           }
         });
       }
@@ -228,6 +234,9 @@ public class MessagesRecyclerViewAdapter extends
             Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
               .LENGTH_SHORT)
               .show();
+            Intent intent;
+            intent = new Intent(mContext, KickMessagesActivity.class);
+            mContext.startActivity(intent);
           }
         });
       }
@@ -245,6 +254,9 @@ public class MessagesRecyclerViewAdapter extends
             Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
                                     .LENGTH_SHORT)
                                     .show();
+            Intent intent;
+            intent = new Intent(mContext, KickMessagesActivity.class);
+            mContext.startActivity(intent);
           }
         });
       }

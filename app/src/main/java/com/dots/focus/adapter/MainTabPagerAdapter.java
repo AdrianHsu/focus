@@ -10,7 +10,6 @@ import com.dots.focus.ui.fragment.DashboardFragment;
 import com.dots.focus.ui.fragment.MessagesFragment;
 import com.dots.focus.ui.fragment.MoreFragment;
 import com.dots.focus.ui.fragment.OverviewFragment;
-import com.dots.focus.util.FetchFriendUtil;
 
 /**
  * Created by AdrianHsu on 2015/12/12.
@@ -45,7 +44,6 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
     }
     return null;
   }
-
   @Override
   public int getCount() {
     return PAGE_COUNT;
