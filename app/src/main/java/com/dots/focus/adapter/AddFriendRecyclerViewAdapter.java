@@ -55,21 +55,20 @@ public class AddFriendRecyclerViewAdapter extends
         position);
 
       if(holder instanceof FriendInviteAdapterViewHolder) {
-        friendInviteBindItem(jsonObject, (FriendInviteAdapterViewHolder) holder, position);
+        friendInviteBindItem(jsonObject, (FriendInviteAdapterViewHolder) holder);
       } else if (holder instanceof FriendConfirmAdapterViewHolder){
-        friendConfirmBindItem(jsonObject, (FriendConfirmAdapterViewHolder) holder, position);
+        friendConfirmBindItem(jsonObject, (FriendConfirmAdapterViewHolder) holder);
       } else if (holder instanceof FriendConfirmedAdapterViewHolder){
-        friendConfirmedBindItem(jsonObject, (FriendConfirmedAdapterViewHolder) holder, position);
+        friendConfirmedBindItem(jsonObject, (FriendConfirmedAdapterViewHolder) holder);
       } else if (holder instanceof FriendAdapterViewHolder){
-        friendBindItem(jsonObject, (FriendAdapterViewHolder) holder, position);
+        friendBindItem(jsonObject, (FriendAdapterViewHolder) holder);
       }
     }
   }
 
-  public void friendInviteBindItem(JSONObject jsonObject, FriendInviteAdapterViewHolder holder,
-                                   final int position) {
+  public void friendInviteBindItem(final JSONObject jsonObject, FriendInviteAdapterViewHolder
+          holder) {
     try {
-
       final long id = jsonObject.getLong("id");
       final String name = jsonObject.getString("name");
       holder.mProfileNameTextView.setText(name);
@@ -77,12 +76,18 @@ public class AddFriendRecyclerViewAdapter extends
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.mProfileImageView);
+
+      Log.d(TAG, jsonObject.toString());
+      for (int i = 0; i < friendProfileList.size(); ++i)
+        Log.d(TAG, friendProfileList.get(i).toString());
+
       holder.mButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
           FetchFriendUtil.friendInvite(id, name);
-          remove(position);
+          int index = indexOf(jsonObject);
+          if (index != -1)
+            remove(index);
         }
       });
 
@@ -91,12 +96,12 @@ public class AddFriendRecyclerViewAdapter extends
     }
   }
 
-  public void friendConfirmBindItem(JSONObject jsonObject, FriendConfirmAdapterViewHolder holder,
-                                    final int position) {
+  public void friendConfirmBindItem(final JSONObject jsonObject, FriendConfirmAdapterViewHolder
+          holder) {
     try {
 
-      final long id = jsonObject.getLong("user_id");
-      final String name = jsonObject.getString("user_name");
+      final long id = jsonObject.getLong("id");
+      final String name = jsonObject.getString("name");
       holder.mProfileNameTextView.setText(name);
 
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
@@ -111,7 +116,9 @@ public class AddFriendRecyclerViewAdapter extends
           } catch (JSONException e) {
             e.printStackTrace();
           }
-          remove(position);
+          int index = indexOf(jsonObject);
+          if (index != -1)
+            remove(index);
         }
       });
 
@@ -129,12 +136,12 @@ public class AddFriendRecyclerViewAdapter extends
       });
     }
   }
-  public void friendConfirmedBindItem(JSONObject jsonObject, FriendConfirmedAdapterViewHolder
-    holder, final int position) {
+  public void friendConfirmedBindItem(final JSONObject jsonObject, FriendConfirmedAdapterViewHolder
+    holder) {
     try {
 
-      final long id = jsonObject.getLong("user_id");
-      final String name = jsonObject.getString("user_name");
+      final long id = jsonObject.getLong("id");
+      final String name = jsonObject.getString("name");
 
       holder.mProfileNameTextView.setText(name);
 
@@ -145,7 +152,9 @@ public class AddFriendRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
           Log.d(TAG, "I've known clicked.");
-          remove(position);
+          int index = indexOf(jsonObject);
+          if (index != -1)
+            remove(index);
         }
       });
 
@@ -164,12 +173,12 @@ public class AddFriendRecyclerViewAdapter extends
     }
   }
 
-  public void friendBindItem(JSONObject jsonObject, FriendAdapterViewHolder
-    holder, final int position) {
+  public void friendBindItem(final JSONObject jsonObject, FriendAdapterViewHolder
+    holder) {
     try {
 
-      final long id = jsonObject.getLong("user_id");
-      final String name = jsonObject.getString("user_name");
+      final long id = jsonObject.getLong("id");
+      final String name = jsonObject.getString("name");
       holder.mProfileNameTextView.setText(name);
 
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
@@ -306,6 +315,10 @@ public class AddFriendRecyclerViewAdapter extends
 
   public void remove(int position) {
     remove(friendProfileList, position);
+  }
+
+  public int indexOf(JSONObject jsonObject) {
+    return friendProfileList.indexOf(jsonObject);
   }
 
   public void clear() {

@@ -193,6 +193,14 @@ public class FetchFriendUtil {
         });
     }
 
+    public static void checkRemoveMFL(Long id) throws JSONException {
+        for (int i = 0, size = mFriendList.size(); i < size; ++i)
+            if (mFriendList.get(i).getLong("id") == id) {
+                mFriendList.remove(i);
+                return;
+            }
+    }
+
 //    public static void waitFriendConfirm() {
 //        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
 //        query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));

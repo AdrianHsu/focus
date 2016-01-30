@@ -13,8 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
-import com.dots.focus.service.GetCurrentAppsService;
-import com.dots.focus.ui.FriendListActivity;
 import com.dots.focus.ui.KickMessagesActivity;
 import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
@@ -62,17 +60,17 @@ public class MessagesRecyclerViewAdapter extends
         position);
 
       if (holder instanceof KickRequestAdapterViewHolder) {
-        KickRequestBindItem(jsonObject, (KickRequestAdapterViewHolder) holder, position);
+        KickRequestBindItem(jsonObject, (KickRequestAdapterViewHolder) holder);
       } else if (holder instanceof KickHistoryAdapterViewHolder) {
-        KickHistoryBindItem(jsonObject, (KickHistoryAdapterViewHolder) holder, position);
+        KickHistoryBindItem(jsonObject, (KickHistoryAdapterViewHolder) holder);
       } else if (holder instanceof KickResponseAdapterViewHolder) {
-        KickResponseBindItem(jsonObject, (KickResponseAdapterViewHolder) holder, position);
+        KickResponseBindItem(jsonObject, (KickResponseAdapterViewHolder) holder);
       }
     }
   }
 
-  public void KickRequestBindItem(JSONObject jsonObject, KickRequestAdapterViewHolder holder,
-                                   final int position) {
+  public void KickRequestBindItem(final JSONObject jsonObject, KickRequestAdapterViewHolder
+          holder) {
     try {
       holder.textViewSample.setText(jsonObject.getString("user_name"));
       final long time =  (System.currentTimeMillis() - jsonObject.getLong("time")) / 1000;
@@ -92,7 +90,9 @@ public class MessagesRecyclerViewAdapter extends
         public void onClick(View view) {
 
           KickUtil.kick(id, name, "你被踢了！這是測試訊息。", time, appName, appPackageName);
-          remove(position);
+          int index = indexOf(jsonObject);
+          if (index != -1)
+            remove(index);
         }
       });
 
@@ -101,8 +101,8 @@ public class MessagesRecyclerViewAdapter extends
     }
   }
 
-  public void KickHistoryBindItem(final JSONObject jsonObject, KickHistoryAdapterViewHolder holder,
-                                  final int position) {
+  public void KickHistoryBindItem(final JSONObject jsonObject, KickHistoryAdapterViewHolder
+          holder) {
     try {
 
       final long id = jsonObject.getLong("user_id");
@@ -124,8 +124,10 @@ public class MessagesRecyclerViewAdapter extends
         public void onClick(View view) {
 
           KickUtil.kickResponse(objectId, mContent);
-          Log.v(TAG, "called kickResponse with objectId:" + objectId + ", position: " + position);
-          remove(position - 1);
+          Log.v(TAG, "called kickResponse with objectId:" + objectId);
+          int index = indexOf(jsonObject);
+          if (index != -1)
+            remove(index);
         }
       });
 
@@ -135,8 +137,7 @@ public class MessagesRecyclerViewAdapter extends
   }
 
   public void KickResponseBindItem(final JSONObject jsonObject, KickResponseAdapterViewHolder
-                          holder,
-                                  final int position) {
+                          holder) {
     try {
       holder.textViewSample.setText(jsonObject.getString("user_name"));
 
@@ -169,7 +170,9 @@ public class MessagesRecyclerViewAdapter extends
               }
             }
           });
-          remove(position);
+          int index = indexOf(jsonObject);
+          if (index != -1)
+            remove(index);
         }
       });
 
@@ -215,7 +218,7 @@ public class MessagesRecyclerViewAdapter extends
   @Override
   public UltimateRecyclerviewViewHolder onCreateViewHolder(ViewGroup parent, int i) {
 
-    View v = null;
+    View v;
 
     if (i == KICK_REQUEST_ITEM) {
       v = LayoutInflater.from(parent.getContext())
@@ -287,6 +290,10 @@ public class MessagesRecyclerViewAdapter extends
 
   public void remove(int position) {
     remove(messagesList, position);
+  }
+
+  public int indexOf(JSONObject jsonObject) {
+    return messagesList.indexOf(jsonObject);
   }
 
   public void clear() {

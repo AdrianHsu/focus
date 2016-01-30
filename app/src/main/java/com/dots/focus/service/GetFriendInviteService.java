@@ -29,7 +29,7 @@ public class GetFriendInviteService extends Service {
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     Log.d(TAG, "GetFriendInviteService start...");
-//    updateList();
+    updateList(); // friendWaitingReplyList.clear();
     Timer timer = new Timer();
     timer.schedule(new CheckFriendInvitation(), 0, 60000);
     return 0;
@@ -47,18 +47,17 @@ public class GetFriendInviteService extends Service {
   }
 
   public static void refresh() {
-//    Log.d(TAG, "start GetFriendInviteService run...");
+    Log.d(TAG, "start GetFriendInviteService run...");
     ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
     query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("user_id"));
-    //query.whereEqualTo("downloaded", false);
+    query.whereEqualTo("downloaded", false);
 
     query.findInBackground(new FindCallback<ParseObject>() {
       public void done(List<ParseObject> inviteList, ParseException e) {
         if (e == null && inviteList != null && !inviteList.isEmpty()) {
-          friendWaitingReplyList.clear();
-
+//          friendWaitingReplyList.clear();
+          Log.d(TAG, "inviteList.size() == " + inviteList.size());
           for (int i = 0, size = inviteList.size(); i < size; ++i) {
-//            Log.d(TAG, "download = false: inviteList.size() == " + inviteList.size());
             long id = inviteList.get(i).getLong("user_id_inviting");
             String name = inviteList.get(i).getString("user_name_inviting");
 
@@ -68,6 +67,8 @@ public class GetFriendInviteService extends Service {
             inviteList.get(i).put("downloaded", true);
             JSONObject jsonObject = new JSONObject();
             try {
+              FetchFriendUtil.checkRemoveMFL(id);
+
               jsonObject.put("id", id);
               jsonObject.put("name", name);
 //              Log.d(TAG, "user_name_inviting == " + jsonObject.getString("name"));
@@ -91,13 +92,14 @@ public class GetFriendInviteService extends Service {
   }
 
   class CheckFriendInvitation extends TimerTask {
-
     public void run() {
       refresh();
     }
   }
 
   public static void updateList() {
+    friendWaitingReplyList.clear();
+
     ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
     query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("user_id"));
     query.fromLocalDatastore();

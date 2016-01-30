@@ -79,17 +79,23 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("FBUser", err.toString());
                     Log.d("FBUser", "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
+                    Log.d("FBUser", "is new...");
                     ParseUser currentUser = ParseUser.getCurrentUser();
-                    if ((currentUser != null) && currentUser.isAuthenticated())
+                    Log.d("FBUser", "user == currentUser: " + (user == currentUser));
+                    if ((currentUser != null) && currentUser.isAuthenticated()) {
+                        Log.d("FBUser", "makeMeRequest...");
                         DashboardController.makeMeRequest();
-
+                    }
                     showSetInfoActivity();
 //                    showMainActivity();
                 } else {
+                    Log.d("FBUser", "is not new...");
                     ParseUser currentUser = ParseUser.getCurrentUser();
-                    if ((currentUser != null) && currentUser.isAuthenticated())
+                    Log.d("FBUser", "user == currentUser: " + (user == currentUser));
+                    if ((currentUser != null) && currentUser.isAuthenticated()) {
+                        Log.d("FBUser", "makeMeRequest...");
                         DashboardController.makeMeRequest();
-
+                    }
                     showSetInfoActivity();
 //                    showMainActivity();
                 }
