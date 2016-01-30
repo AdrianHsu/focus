@@ -29,6 +29,8 @@ public class GetFriendInviteService extends Service {
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     Log.d(TAG, "GetFriendInviteService start...");
+    ParseUser user = ParseUser.getCurrentUser();
+    Log.d(TAG, "id: " + user.getLong("id") + ", name: " + user.getString("name"));
     updateList(); // friendWaitingReplyList.clear();
     Timer timer = new Timer();
     timer.schedule(new CheckFriendInvitation(), 0, 60000);
