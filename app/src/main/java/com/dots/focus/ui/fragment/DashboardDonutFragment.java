@@ -18,12 +18,16 @@ package com.dots.focus.ui.fragment;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dots.focus.R;
+import com.dots.focus.util.FetchAppUtil;
+import com.dots.focus.util.FetchFriendUtil;
+import com.dots.focus.util.TrackAccessibilityUtil;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.DecoDrawEffect;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
@@ -40,12 +44,17 @@ public class DashboardDonutFragment extends SampleFragment {
   final private boolean mPie = false;
   final private int mTotalAngle = 360;
   final private int mRotateAngle = 0;
+  final private float seriesMax = 100f;
+  private float [] separableOutput = new float [4];
+  private float [] accumulateOutput = new float[4];
+  private String[] appName = new String[4];
   private int mBackIndex;
   private int mSeries1Index;
   private int mSeries2Index;
   private int mSeries3Index;
   private int mSeries4Index;
   private int mStyleIndex;
+  private static final String TAG = "donut";
 
   public DashboardDonutFragment() {}
 
@@ -58,11 +67,13 @@ public class DashboardDonutFragment extends SampleFragment {
 
   @Override
   protected void createTracks() {
+
+    initData();
     setDemoFinished(false);
-    final float seriesMax = 50f;
     final DecoView decoView = getDecoView();
     final View view = getView();
     if (decoView == null || view == null) {
+      Log.d(TAG, "decoView == null || view == null");
       return;
     }
     decoView.deleteAll();
@@ -140,23 +151,23 @@ public class DashboardDonutFragment extends SampleFragment {
     final TextView textTodayUsage = (TextView)view.findViewById(R.id.textTodayUsage);
 
 
-    View layout = getView().findViewById(R.id.layoutActivities);
-    layout.setVisibility(View.INVISIBLE);
+//    View layout = getView().findViewById(R.id.layoutActivities);
+//    layout.setVisibility(View.INVISIBLE);
 
     final TextView textActivity1 = (TextView) getView().findViewById(R.id.textActivity1);
-//    addProgressListener(seriesItem1, textActivity1, "%.0f Km");
-    textActivity1.setText("");
+    addProgressListener(seriesItem1, textActivity1, "Others: %.0f");
+//    textActivity1.setText("Others");
 
     final TextView textActivity2 = (TextView) getView().findViewById(R.id.textActivity2);
-    textActivity2.setText("");
-//    addProgressListener(seriesItem2, textActivity2, "%.0f Km");
+//    textActivity2.setText(appName[2]);
+    addProgressListener(seriesItem2, textActivity2, appName[2] + ": %.0f");
 
     final TextView textActivity3 = (TextView) getView().findViewById(R.id.textActivity3);
-    textActivity3.setText("");
-//    addProgressListener(seriesItem3, textActivity3, "%.0f Km");
+//    textActivity3.setText(appName[1]);
+    addProgressListener(seriesItem3, textActivity3, appName[1] + ": %.0f");
     final TextView textActivity4 = (TextView) getView().findViewById(R.id.textActivity4);
-    textActivity4.setText("");
-//    addProgressListener(seriesItem4, textActivity4, "%.0f Km");
+//    textActivity4.setText(appName[0]);
+    addProgressListener(seriesItem4, textActivity4, appName[0] + ": %.0f");
   }
 
   @Override
@@ -164,6 +175,7 @@ public class DashboardDonutFragment extends SampleFragment {
     final DecoView decoView = getDecoView();
     final View view = getView();
     if (decoView == null || decoView.isEmpty() || view == null) {
+      Log.d(TAG, "decoView == null || decoView.isEmpty() || view == null");
       return;
     }
 
@@ -213,12 +225,20 @@ public class DashboardDonutFragment extends SampleFragment {
       .setDelay(1300)
       .build());
 
-
-
-    decoView.addEvent(new DecoEvent.Builder(48).setIndex(mSeries1Index).setDelay(3300).build());
-    decoView.addEvent(new DecoEvent.Builder(45).setIndex(mSeries2Index).setDelay(3900).build());
-    decoView.addEvent(new DecoEvent.Builder(40).setIndex(mSeries3Index).setDelay(4500).build());
-    decoView.addEvent(new DecoEvent.Builder(30).setIndex(mSeries4Index).setDelay(5000).build());
+    //mSeries1Index is others app
+    //mSeries4Index is top 1 app
+    decoView.addEvent(new DecoEvent.Builder(accumulateOutput[3]).setIndex(mSeries1Index).setDelay
+                            (3300).build
+                            ());
+    decoView.addEvent(new DecoEvent.Builder(accumulateOutput[2]).setIndex(mSeries2Index).setDelay
+                            (3900).build
+                            ());
+    decoView.addEvent(new DecoEvent.Builder(accumulateOutput[1]).setIndex(mSeries3Index).setDelay
+                            (4500).build
+                            ());
+    decoView.addEvent(new DecoEvent.Builder(accumulateOutput[0]).setIndex(mSeries4Index).setDelay
+                            (5000).build
+                            ());
 //    decoView.addEvent(new DecoEvent.Builder(50).setIndex(mSeries1Index).setDuration(1500).setDelay(9000).build());
 //    decoView.addEvent(new DecoEvent.Builder(0).setIndex(mSeries1Index).setDuration(500).setDelay(10500)
 //      .setListener(new DecoEvent.ExecuteEventListener() {
@@ -260,5 +280,33 @@ public class DashboardDonutFragment extends SampleFragment {
 //        }
 //      })
 //      .build());
+  }
+  private void initData() {
+    int [][] data = TrackAccessibilityUtil.getFirstThreeAppToday();
+
+//    int [][] data = new int [4][2];
+//    data[0][1] = 555; // second
+//    data[1][1] = 444;
+//    data[2][1] = 333;
+//    data[3][1] = 111;
+//    data[0][0] = 0; // app index
+//    data[1][0] = 0;
+//    data[2][0] = 0;
+//    data[3][0] = 0;
+
+    float total = 0;
+    for(int i = 0; i < 4; i++) {
+      total += data[i][1];
+      if(i != 3)
+        appName[i] = FetchAppUtil.getApp(data[i][0]).getName();
+    }
+    for(int i = 0; i < 4; i ++) {
+      separableOutput[i] = (data[i][1]/total) * seriesMax;
+    }
+    accumulateOutput[3] = separableOutput[0] + separableOutput[1] + separableOutput[2] +
+                            separableOutput[3];
+    accumulateOutput[2] = separableOutput[0] + separableOutput[1] + separableOutput[2];
+    accumulateOutput[1] = separableOutput[0] + separableOutput[1];
+    accumulateOutput[0] = separableOutput[0];
   }
 }

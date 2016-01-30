@@ -114,7 +114,7 @@
             android:id="@+id/textActivity4"
             android:layout_centerVertical="true"
             android:paddingRight="4dp"
-            android:paddingBottom="90dp"/>
+            android:paddingBottom="150dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -141,7 +141,6 @@
             android:id="@+id/textActivity1"
             android:layout_centerVertical="true"
             android:paddingRight="4dp" />
-
     </RelativeLayout>
 
     <include layout="@layout/layout_service_off"/>
