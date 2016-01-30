@@ -26,17 +26,19 @@ public class DashboardController {
         public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
           if (jsonObject != null) {
             try {
+              Long id = jsonObject.getLong("id");
+              String name = jsonObject.getString("name");
               Log.d(TAG, jsonObject.toString());
-              Log.d(TAG, "id: " + jsonObject.getLong("id"));
-              Log.d(TAG, "name: " + jsonObject.getString("name"));
+              Log.d(TAG, "id: " + id);
+              Log.d(TAG, "name: " + name);
               // Save the user profile info in a user property
               ParseUser currentUser = ParseUser.getCurrentUser();
               ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
 
               currentUser.put("installationId", currentInstallation.getInstallationId());
-              currentUser.put("user_id", jsonObject.getLong("id"));
-              currentUser.put("user_name", jsonObject.getString("name"));
-              currentInstallation.put("fbId", jsonObject.getLong("id"));
+              currentUser.put("user_id", id);
+              currentUser.put("user_name", name);
+              currentInstallation.put("fbId", id);
 
               currentUser.saveEventually();
               currentInstallation.saveEventually();

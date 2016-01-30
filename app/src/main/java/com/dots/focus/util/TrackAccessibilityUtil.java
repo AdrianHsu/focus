@@ -187,4 +187,39 @@ public class TrackAccessibilityUtil {
         if (localDay != currentDay.getLong("time"))
             newDay(localDay);
     }
+    public static int[][] getFirstThreeAppToday() {
+        int[][] x = new int[4][2];
+        for (int i = 0; i < 4; ++i)
+            for (int j = 0; j < 2; ++j)
+                x[i][j] = 0;
+
+        long now = System.currentTimeMillis();
+        List<Integer> appLength = getCurrentDay(now).getAppLength(),
+                      appLength2 = getCurrentHour(now).getAppLength();
+        int size = appLength.size();
+        if (size > appLength2.size())   size = appLength2.size();
+        for (int i = 0; i < size; ++i)
+            appLength.set(i, appLength.get(i) + appLength2.get(i));
+
+        for (int i = 0, s = appLength.size(); i < s; ++i) {
+            int length = appLength.get(i);
+            boolean flag = true;
+            for (int j = 0; j < 3; ++j) {
+                if (length > x[j][1]) {
+                    x[3][1] += x[2][1];
+                    for (int k = 2; k != j; --k) {
+                        x[k][0] = x[k - 1][0];
+                        x[k][1] = x[k - 1][1];
+                    }
+                    x[j][0] = i;
+                    x[j][1] = length;
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)   x[3][1] += length;
+        }
+
+        return x;
+    }
 }

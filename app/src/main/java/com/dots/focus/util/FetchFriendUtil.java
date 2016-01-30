@@ -80,7 +80,7 @@ public class FetchFriendUtil {
     }
 
     public static void friendInvite(Long id, String name) {
-        if (mConfirmingFriendList.contains(id))
+        if (!mConfirmingFriendList.contains(id))
             mConfirmingFriendList.add(id);
 
         final ParseObject invite = new ParseObject("FriendInvitation");
