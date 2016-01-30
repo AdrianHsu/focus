@@ -69,10 +69,11 @@ public class AddFriendRecyclerViewAdapter extends
   public void friendInviteBindItem(JSONObject jsonObject, FriendInviteAdapterViewHolder holder,
                                    final int position) {
     try {
-      holder.mProfileNameTextView.setText(jsonObject.getString("user_name"));
 
-      final long id = jsonObject.getLong("user_id");
-      final String name = jsonObject.getString("user_name");
+      final long id = jsonObject.getLong("id");
+      final String name = jsonObject.getString("name");
+      holder.mProfileNameTextView.setText(name);
+
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.mProfileImageView);
@@ -93,10 +94,11 @@ public class AddFriendRecyclerViewAdapter extends
   public void friendConfirmBindItem(JSONObject jsonObject, FriendConfirmAdapterViewHolder holder,
                                     final int position) {
     try {
-      holder.mProfileNameTextView.setText(jsonObject.getString("user_name"));
 
       final long id = jsonObject.getLong("user_id");
       final String name = jsonObject.getString("user_name");
+      holder.mProfileNameTextView.setText(name);
+
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.mProfileImageView);
@@ -130,9 +132,12 @@ public class AddFriendRecyclerViewAdapter extends
   public void friendConfirmedBindItem(JSONObject jsonObject, FriendConfirmedAdapterViewHolder
     holder, final int position) {
     try {
-      holder.mProfileNameTextView.setText(jsonObject.getString("user_name"));
 
       final long id = jsonObject.getLong("user_id");
+      final String name = jsonObject.getString("user_name");
+
+      holder.mProfileNameTextView.setText(name);
+
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.mProfileImageView);
@@ -162,10 +167,11 @@ public class AddFriendRecyclerViewAdapter extends
   public void friendBindItem(JSONObject jsonObject, FriendAdapterViewHolder
     holder, final int position) {
     try {
-      holder.mProfileNameTextView.setText(jsonObject.getString("user_name"));
 
       final long id = jsonObject.getLong("user_id");
       final String name = jsonObject.getString("user_name");
+      holder.mProfileNameTextView.setText(name);
+
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.mProfileImageView);
