@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -76,11 +77,11 @@ public class MainActivity extends BaseActivity {
     setHourAlarm();
   }
   private void setTabLayoutIcon(TabLayout tabLayout) {
-    tabLayout.getTabAt(0).setIcon(R.drawable.tab_dashboard);
-    tabLayout.getTabAt(1).setIcon(R.drawable.tab_add_friend);
-    tabLayout.getTabAt(2).setIcon(R.drawable.tab_messages);
-    tabLayout.getTabAt(3).setIcon(R.drawable.tab_overview);
-    tabLayout.getTabAt(4).setIcon(R.drawable.tab_more);
+      tabLayout.getTabAt(0).setIcon(R.drawable.tab_dashboard);
+      tabLayout.getTabAt(1).setIcon(R.drawable.tab_add_friend);
+      tabLayout.getTabAt(2).setIcon(R.drawable.tab_messages);
+      tabLayout.getTabAt(3).setIcon(R.drawable.tab_overview);
+      tabLayout.getTabAt(4).setIcon(R.drawable.tab_more);
   }
 
   @Override

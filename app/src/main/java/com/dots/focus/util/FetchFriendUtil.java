@@ -57,8 +57,6 @@ public class FetchFriendUtil {
                                             if (checkFriend(id) == -1) {
                                                 jsonObject.put("state", 0);
                                                 mFriendList.add(jsonObject);
-                                                // showFriend(id ,jsonArray.getJSONObject(i)
-                                                // .getString("name"), getProfile(id));
                                             } else {
                                                 jsonObject.put("state", 3);
                                                 mConfirmedFriendList.add(jsonObject);

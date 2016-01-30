@@ -68,8 +68,8 @@ public class GetFriendInviteService extends Service {
             inviteList.get(i).put("downloaded", true);
             JSONObject jsonObject = new JSONObject();
             try {
-              jsonObject.put("user_id", id);
-              jsonObject.put("user_name", name);
+              jsonObject.put("id", id);
+              jsonObject.put("name", name);
 //              Log.d(TAG, "user_name_inviting == " + jsonObject.getString("name"));
               jsonObject.put("time", inviteList.get(i).getLong("time"));
               jsonObject.put("state", 1);

@@ -62,8 +62,8 @@ public class GetFriendConfirmService extends Service {
               try {
                 Long id = inviteList.get(i).getLong("user_id_invited");
                 String name = inviteList.get(i).getString("user_name_invited");
-                jsonObject.put("user_id", id);
-                jsonObject.put("user_name", name);
+                jsonObject.put("id", id);
+                jsonObject.put("name", name);
                 jsonObject.put("time", inviteList.get(i).getLong("time"));
                 jsonObject.put("state", 2);
                 friendRepliedList.add(jsonObject);

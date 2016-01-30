@@ -76,16 +76,16 @@ public class AddFriendFragment extends Fragment {
             mRecyclerView.getAdapter().notifyDataSetChanged();
 
             friendProfileList.addAll(FetchFriendUtil.mFriendList);
-            Log.v(TAG, "mFriendList.size() ==" + FetchFriendUtil.mFriendList.size());
+            Log.v(TAG, "mFriendList.size() == " + FetchFriendUtil.mFriendList.size());
             friendProfileList.addAll(FetchFriendUtil.mConfirmedFriendList);
-            Log.v(TAG, "mConfirmedFriendList.size() ==" + FetchFriendUtil.mConfirmedFriendList.size
+            Log.v(TAG, "mConfirmedFriendList.size() == " + FetchFriendUtil.mConfirmedFriendList.size
               ());
             friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
-            Log.v(TAG, "friendWaitingReplyList.size() ==" + GetFriendInviteService
+            Log.v(TAG, "friendWaitingReplyList.size() == " + GetFriendInviteService
               .friendWaitingReplyList.size());
 
             friendProfileList.addAll(GetFriendConfirmService.friendRepliedList);
-            Log.v(TAG, "friendRepliedList.size() ==" + GetFriendConfirmService.friendRepliedList
+            Log.v(TAG, "friendRepliedList.size() == " + GetFriendConfirmService.friendRepliedList
               .size());
             mRecyclerView.getAdapter().notifyDataSetChanged();
 
