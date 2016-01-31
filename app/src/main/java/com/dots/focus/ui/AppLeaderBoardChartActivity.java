@@ -66,6 +66,7 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
                         return (int)(e2.getVal() - e1.getVal());
                     }
                 });
+
         // indexList can be used
 
         mRecyclerView = (UltimateRecyclerView) findViewById(R.id.hour_app_usage_recycler_view);
