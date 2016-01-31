@@ -70,12 +70,13 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
           // add data
           ArrayList<Entry> val = setData(0, false);
           drawChart(val, false);
-        } else if (i == 1){
+        } else if (i == 1) {
           // add data
           ArrayList<Entry> val = setData(0, true);
           drawChart(val, false);
         }
       }
+
       @Override
       public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -83,39 +84,10 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     });
 
     mChart = (LineChart) findViewById(R.id.chart1);
-//    mChart.setViewPortOffsets(80, 40, 80, 40);
-    mChart.setViewPortOffsets(35, 20, 20, 30);
-    mChart.setBackgroundColor(Color.parseColor("#ff424242"));
-    // no description text
-    mChart.setDescription("");
 
-    // enable touch gestures
-    mChart.setTouchEnabled(true);
-
-    // enable scaling and dragging
-//    mChart.setDragEnabled(true);
-//    mChart.setScaleEnabled(true);
-    mChart.setDragEnabled(false);
-    mChart.setScaleEnabled(false);
-
-
-    // if disabled, scaling can be done on x- and y-axis separately
-    mChart.setPinchZoom(false);
-//    mChart.setPinchZoom(true);
-    mChart.setDrawGridBackground(false);
     // add data
     ArrayList<Entry> val = setData(0, false);
     drawChart(val, false);
-
-    mChart.getLegend().setEnabled(false);
-
-    mChart.animateY(2000);
-    for (DataSet<?> set : mChart.getData().getDataSets()) {
-      set.setDrawValues(!set.isDrawValuesEnabled());
-    }
-    mChart.setNoDataText("No data Available");
-    // dont forget to refresh the drawing
-    mChart.invalidate();
   }
 
   @Override
@@ -142,6 +114,25 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
   }
   private void drawChart(ArrayList<Entry> vals1, boolean IS_MINUTE) {
 
+//    mChart.setViewPortOffsets(80, 40, 80, 40);
+    mChart.setViewPortOffsets(35, 20, 20, 30);
+    mChart.setBackgroundColor(Color.parseColor("#ff424242"));
+    // no description text
+    mChart.setDescription("");
+
+    // enable touch gestures
+    mChart.setTouchEnabled(true);
+
+    // enable scaling and dragging
+//    mChart.setDragEnabled(true);
+//    mChart.setScaleEnabled(true);
+    mChart.setDragEnabled(false);
+    mChart.setScaleEnabled(false);
+
+    // if disabled, scaling can be done on x- and y-axis separately
+    mChart.setPinchZoom(false);
+//    mChart.setPinchZoom(true);
+    mChart.setDrawGridBackground(false);
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
     ArrayList<String> xVals = new ArrayList<>();
@@ -224,6 +215,15 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     data.setDrawValues(true);
 
     mChart.setData(data);
+    mChart.getLegend().setEnabled(false);
+
+    mChart.animateY(2000);
+    for (DataSet<?> set : mChart.getData().getDataSets()) {
+      set.setDrawValues(!set.isDrawValuesEnabled());
+    }
+    mChart.setNoDataText("No data Available");
+    // dont forget to refresh the drawing
+    mChart.invalidate();
   }
   private ArrayList<Entry> setData(int week, boolean IS_MINUTE) { // 0: current week, 1: last week
 
