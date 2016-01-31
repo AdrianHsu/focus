@@ -46,7 +46,7 @@ public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityP
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, final int position) {
     if (position < getItemCount() && (customHeaderView != null ? position <= jsonObjectList.size() : position
                             < jsonObjectList.size()) && (customHeaderView != null ? position > 0 : true)) {
-      
+
       String content = null;
       try {
         content = jsonObjectList.get(position).getString("content");
