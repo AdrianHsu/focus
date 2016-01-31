@@ -11,6 +11,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -209,6 +210,34 @@ public class TrackAccessibilityUtil {
             if (flag)   x[3][1] += length;
         }
 
+        return x;
+    }
+
+    public static int[] weekUsage(Calendar calendar) {
+        int[] x = new int[7];
+        long time0 = calendar.getTimeInMillis() + getTimeOffset() * anHour,
+             oneDay = 86400000;
+        ArrayList<Long> times = new ArrayList<>();
+        List<DayBlock> dayBlocks = new ArrayList<>();
+        for (int i = 0; i < 7; ++i) {
+            x[i] = 0;
+            times.add(time0 + i * oneDay);
+        }
+
+        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        query.whereContainedIn("time", times);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            dayBlocks = query.find();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+        for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+            int day = (int)((dayBlocks.get(i).getLong("time") - time0) / oneDay);
+            List<Integer> appLength = dayBlocks.get(i).getAppLength();
+            for (int j = 0, n = appLength.size(); j < n; ++j)
+                x[day] += appLength.get(j);
+        }
         return x;
     }
 }
