@@ -280,4 +280,33 @@ public class TrackAccessibilityUtil {
 
         return x;
     }
+
+    public static List<List<Integer>> hourAppLength(long time0) {
+        ArrayList<List<Integer>> x = new ArrayList<>();
+
+        ArrayList<Long> times = new ArrayList<>();
+        times.ensureCapacity(24);
+        for (int i = 0; i < 24; ++i) {
+            x.set(i, new ArrayList<Integer>());
+            times.add(time0 + i * anHour);
+        }
+        List<HourBlock> hourBlocks = new ArrayList<>();
+
+        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
+        query.whereContainedIn("time", times);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            hourBlocks = query.find();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+        for (int i = 0, size = hourBlocks.size(); i < size; ++i) {
+            int hour = (int) ((hourBlocks.get(i).getLong("time") - time0) / anHour);
+            List<Integer> appLength = hourBlocks.get(i).getAppLength();
+            x.set(hour, appLength);
+        }
+
+        return x;
+    }
 }
