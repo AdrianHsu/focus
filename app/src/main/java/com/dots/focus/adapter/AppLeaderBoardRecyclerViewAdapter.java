@@ -50,6 +50,7 @@ public class AppLeaderBoardRecyclerViewAdapter extends
           AppInfo mAppInfo = FetchAppUtil.getApp(index);
           Drawable mIcon = mAppInfo.getIcon();
 
+          holder.appNameTv.setText(mAppInfo.getName());
           holder.appTimeTv.setText(timeToString((int) e.getVal()));
           holder.appIconIv.setImageDrawable(mIcon);
           String rank = String.valueOf(position + 1);
