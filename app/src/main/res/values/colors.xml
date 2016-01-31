@@ -35,5 +35,6 @@
     <color name="top_three_first">#5d9bd6</color>
     <color name="top_three_second">#c95f9d</color>
     <color name="top_three_third">#eca239</color>
+    <color name="top_three_others">#FF999999</color>
 
 </resources>

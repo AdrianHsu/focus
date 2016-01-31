@@ -80,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15dp"
-                    android:text="應用軟體用量前三名 (12/7 星期日)"
+                    android:text="應用軟體用量前三名（一週總和）"
                     android:textColor="@color/semi_white"/>
 
                 <Button

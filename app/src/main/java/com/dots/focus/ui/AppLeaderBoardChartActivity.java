@@ -32,8 +32,9 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
     private UltimateRecyclerView mRecyclerView;
     private LinearLayoutManager linearLayoutManager;
     private AppLeaderBoardRecyclerViewAdapter appLeaderBoardRecyclerViewAdapter;
+    public static List<Integer> appLength;
 
-    @Override
+  @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -55,7 +56,7 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         calendar.setTimeInMillis(time - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
         //- 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK)  - 1) * oneDay
 
-        List<Integer> appLength = TrackAccessibilityUtil.weekAppUsage(calendar.getTimeInMillis());
+        appLength = TrackAccessibilityUtil.weekAppUsage(calendar.getTimeInMillis());
         List<Entry> indexList = new ArrayList<>(appLength.size());
         for (int i = 0, size = appLength.size(); i < size; ++i)
             indexList.add(new Entry(appLength.get(i), i));
@@ -63,25 +64,17 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         Collections.sort(indexList, new Comparator<Entry>() {
                     @Override
                     public int compare(Entry e1, Entry e2) {
-                        if (e1.getVal() < e2.getVal())  return 1;
+                        if (e1.getVal() > e2.getVal())  return 1;
                         return 0;
                     }
                 });
         // indexList can be used
 
-        final ArrayList<JSONObject> appUsageList = new ArrayList<>();
+        final ArrayList<Integer> appUsageList = new ArrayList<>();
 
-        for (int i = 0; i < 100; i++) {
-            JSONObject appUsage = new JSONObject();
-            try {
-                appUsage.put("appName", "Facebook");
-                appUsage.put("duration", 600); // 600sec
-//      app.put(icon); // put icon
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            appUsageList.add(appUsage);
+        for (int i = 0; i < indexList.size(); i++) {
+          int index = indexList.get(i).getXIndex();
+          appUsageList.add(index);
         }
         mRecyclerView = (UltimateRecyclerView) findViewById(R.id.hour_app_usage_recycler_view);
         appLeaderBoardRecyclerViewAdapter = new AppLeaderBoardRecyclerViewAdapter(appUsageList, this);

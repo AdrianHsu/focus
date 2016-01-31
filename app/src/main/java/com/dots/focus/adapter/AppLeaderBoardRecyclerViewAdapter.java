@@ -1,6 +1,8 @@
 package com.dots.focus.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.model.AppInfo;
+import com.dots.focus.ui.AppLeaderBoardChartActivity;
+import com.dots.focus.util.FetchAppUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -18,16 +23,17 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class AppLeaderBoardRecyclerViewAdapter extends
         UltimateViewAdapter<AppLeaderBoardRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
-    private ArrayList<JSONObject> appUsageList;
+    private ArrayList<Integer> appUsageList;
     private Context mContext;
 
     private static final String TAG = "appUsage";
 
-    public AppLeaderBoardRecyclerViewAdapter(ArrayList<JSONObject> _appUsageList, Context context) {
+    public AppLeaderBoardRecyclerViewAdapter(ArrayList<Integer> _appUsageList, Context context) {
         appUsageList = _appUsageList;
         mContext = context;
     }
@@ -37,17 +43,30 @@ public class AppLeaderBoardRecyclerViewAdapter extends
     public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
         if (position < getItemCount() && (customHeaderView != null ? position <= appUsageList.size() :
                 position < appUsageList.size()) && (customHeaderView == null || position > 0)) {
-            JSONObject tmp = appUsageList.get(customHeaderView != null ? position - 1 : position);
-//      try {
-//        holder.textViewSample.setText(tmp.getString("duration"));
-            holder.textViewSample.setText("00:05:42");
-            String rank = String.valueOf(position + 1);
-            holder.textViewRanking.setText(rank);
 
-            Picasso.with(mContext).load(R.drawable.instagram).into(holder.imageViewSample);
-//      } catch (JSONException e) {
-//        e.printStackTrace();
-//      }
+          int index = appUsageList.get(position);
+          AppInfo mAppInfo = FetchAppUtil.getApp(index);
+          Drawable mIcon = mAppInfo.getIcon();
+
+          holder.appTimeTv.setText(timeToString(AppLeaderBoardChartActivity.appLength.get(index)));
+          holder.appIconIv.setImageDrawable(mIcon);
+          String rank = String.valueOf(position + 1);
+          holder.rankingTv.setText(rank);
+
+
+          if(position == 0)
+              holder.appTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
+                                      .top_three_first));
+          else if(position == 1)
+              holder.appTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
+                                      .top_three_second));
+          else if(position == 2)
+              holder.appTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
+                                      .top_three_third));
+          else
+          holder.appTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
+                                    .top_three_others));
+
         }
     }
 
@@ -81,7 +100,7 @@ public class AppLeaderBoardRecyclerViewAdapter extends
     }
 
 
-    public void insert(JSONObject appUsage, int position) {
+    public void insert(Integer appUsage, int position) {
         insert(appUsageList, appUsage, position);
     }
 
@@ -117,11 +136,11 @@ public class AppLeaderBoardRecyclerViewAdapter extends
     @Override
     public long generateHeaderId(int position) {
         // URLogs.d("position--" + position + "   " + getItem(position));
-        if (getItem(position).length() > 0) {
+//        if (getItem(position).length() > 0) {
 //      return getItem(position).charAt(0);
-            return 0;
-        }
-        else return -1;
+          return 0;
+//        }
+//        else return -1;
     }
 
     @Override
@@ -164,18 +183,20 @@ public class AppLeaderBoardRecyclerViewAdapter extends
 
     public class SimpleAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
-        TextView textViewSample;
-        TextView textViewRanking;
-        ImageView imageViewSample;
+        TextView appNameTv;
+        TextView appTimeTv;
+        TextView rankingTv;
+        ImageView appIconIv;
         View item_view;
 
         public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
             super(itemView);
             if (isItem) {
-                textViewSample = (TextView) itemView.findViewById(
+                appNameTv = (TextView) itemView.findViewById(
                         R.id.textview);
-                textViewRanking = (TextView) itemView.findViewById(R.id.ranking_text_view);
-                imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
+                appTimeTv = (TextView) itemView.findViewById(R.id.app_time);
+                rankingTv = (TextView) itemView.findViewById(R.id.ranking_text_view);
+                appIconIv = (ImageView) itemView.findViewById(R.id.imageview);
                 item_view = itemView.findViewById(R.id.itemview);
             }
         }
@@ -191,12 +212,19 @@ public class AppLeaderBoardRecyclerViewAdapter extends
         }
     }
 
-    public JSONObject getItem(int position) {
+    public Integer getItem(int position) {
         if (customHeaderView != null)
             position--;
         if (position < appUsageList.size())
             return appUsageList.get(position);
-        else return null;
+        else return 0;
+    }
+    private String timeToString(int seconds) {
+      int day = (int) TimeUnit.SECONDS.toDays(seconds);
+      long hours = TimeUnit.SECONDS.toHours(seconds) - (day * 24);
+      long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
+      long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
+      return String.format("%02d:%02d:%02d", hours, minute, second);
     }
 
 }
