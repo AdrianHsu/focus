@@ -329,7 +329,6 @@ public class DashboardDonutFragment extends SampleFragment {
       Drawable mIcon = mAppInfo.getIcon();
 
       if(mIcon != null) {
-        appIconIv.setImageDrawable(mIcon);
         if(i != 3) {
           appNameTv.setText(mAppInfo.getName());
           appIconIv.setImageDrawable(mIcon);

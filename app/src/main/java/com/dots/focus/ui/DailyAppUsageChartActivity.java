@@ -199,6 +199,7 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     y.addLimitLine(ll1);
 
     ChartMarkerView mv = new ChartMarkerView(this, R.layout.chart_marker_view);
+
     // set the marker to the chart
     mChart.setMarkerView(mv);
     // create a dataset and give it a type

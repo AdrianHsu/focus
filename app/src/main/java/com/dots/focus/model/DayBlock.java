@@ -43,7 +43,7 @@ public class DayBlock extends ParseObject {
     public List<Integer> getAppLength() {
         return getList("appLength");
     }
-    public void setAppLength(ArrayList<Integer> appLength) {
+    public void setAppLength(List<Integer> appLength) {
         put("appLength", appLength);
     }
     public long getTime() {
