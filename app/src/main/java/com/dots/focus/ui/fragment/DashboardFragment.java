@@ -14,6 +14,7 @@ public class DashboardFragment extends Fragment {
   private Context mContext;
   private DashboardDonutFragment mSampleFitFragment;
 
+
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -28,6 +29,7 @@ public class DashboardFragment extends Fragment {
         .beginTransaction()
         .add(R.id.frameDashboardDonut, mSampleFitFragment, "tag")
         .commit();
+
     }
     return v;
   }

@@ -155,19 +155,19 @@ public class DashboardDonutFragment extends SampleFragment {
 //    layout.setVisibility(View.INVISIBLE);
 
     final TextView textActivity1 = (TextView) getView().findViewById(R.id.textActivity1);
-    addProgressListener(seriesItem1, textActivity1, "Others: %.0f");
+    addProgressListener(seriesItem1, textActivity1, "%.0f");
 //    textActivity1.setText("Others");
 
     final TextView textActivity2 = (TextView) getView().findViewById(R.id.textActivity2);
 //    textActivity2.setText(appName[2]);
-    addProgressListener(seriesItem2, textActivity2, appName[2] + ": %.0f");
+    addProgressListener(seriesItem2, textActivity2, "%.0f");
 
     final TextView textActivity3 = (TextView) getView().findViewById(R.id.textActivity3);
 //    textActivity3.setText(appName[1]);
-    addProgressListener(seriesItem3, textActivity3, appName[1] + ": %.0f");
+    addProgressListener(seriesItem3, textActivity3, "%.0f");
     final TextView textActivity4 = (TextView) getView().findViewById(R.id.textActivity4);
 //    textActivity4.setText(appName[0]);
-    addProgressListener(seriesItem4, textActivity4, appName[0] + ": %.0f");
+    addProgressListener(seriesItem4, textActivity4, "%.0f");
   }
 
   @Override
