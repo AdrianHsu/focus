@@ -41,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Your Email Here"
+        android:text="adrianhsu1995@gmail.com"
         android:textSize="24sp"
         app:met_baseColor="@android:color/white"
         app:met_floatingLabel="highlight"

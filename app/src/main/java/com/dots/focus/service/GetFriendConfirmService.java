@@ -50,7 +50,7 @@ public class GetFriendConfirmService extends Service {
 
     public static void refresh() {
       ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendConfirmation");
-      query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
+      query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("user_id"));
       query.whereEqualTo("downloaded", false);
       query.findInBackground(new FindCallback<ParseObject>() {
         public void done(List<ParseObject> inviteList, ParseException e) {
@@ -73,12 +73,6 @@ public class GetFriendConfirmService extends Service {
               }
             }
             ParseObject.deleteAllInBackground(inviteList);
-            try {
-              ParseObject.saveAll(inviteList);
-              ParseObject.pinAll(inviteList);
-            } catch (ParseException e1) {
-              Log.d(TAG, e1.getMessage());
-            }
           }
         }
       });
