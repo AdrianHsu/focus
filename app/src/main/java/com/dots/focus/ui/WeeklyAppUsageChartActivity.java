@@ -41,7 +41,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
   private LineChart mChart;
   private Spinner spinner;
   private ArrayAdapter<String> timeInterval;
-  private String[] timeIntervalArray = {"小時", "分鐘"};
+  private String[] timeIntervalArray = {"秒鐘", "分鐘"};
 
 
   @Override
@@ -66,16 +66,18 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if (i == 0) { // hour by default
-
-        } else {
-
+        if (i == 0) { // second by default
+          // add data
+          ArrayList<Entry> val = setData(0, false);
+          drawChart(val, false);
+        } else if (i == 1){
+          // add data
+          ArrayList<Entry> val = setData(0, true);
+          drawChart(val, false);
         }
       }
-
       @Override
       public void onNothingSelected(AdapterView<?> adapterView) {
-
 
       }
     });
@@ -101,7 +103,51 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     mChart.setPinchZoom(false);
 //    mChart.setPinchZoom(true);
     mChart.setDrawGridBackground(false);
+    // add data
+    ArrayList<Entry> val = setData(0, false);
+    drawChart(val, false);
 
+    mChart.getLegend().setEnabled(false);
+
+    mChart.animateY(2000);
+    for (DataSet<?> set : mChart.getData().getDataSets()) {
+      set.setDrawValues(!set.isDrawValuesEnabled());
+    }
+    mChart.setNoDataText("No data Available");
+    // dont forget to refresh the drawing
+    mChart.invalidate();
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    onBackPressed();
+    return true;
+  }
+  @Override
+  public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    // redraw
+    mChart.invalidate();
+  }
+
+  @Override
+  public void onStartTrackingTouch(SeekBar seekBar) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void onStopTrackingTouch(SeekBar seekBar) {
+    // TODO Auto-generated method stub
+
+  }
+  private void drawChart(ArrayList<Entry> vals1, boolean IS_MINUTE) {
+
+    // create a dataset and give it a type
+    LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
+    ArrayList<String> xVals = new ArrayList<>();
+    for (int i = 0; i < 7; i++) {
+      xVals.add((i) + "");
+    }
 
     XAxis x = mChart.getXAxis();
 //    x.setEnabled(false);
@@ -132,7 +178,13 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
     mChart.getAxisRight().setEnabled(false);
 
-    LimitLine ll1 = new LimitLine(130f, "Upper Limit");
+    LimitLine ll1;
+    int DAILY_USAGE_UPPER_LIMIT_MINUTE = 5;
+    if(IS_MINUTE)
+      ll1= new LimitLine(DAILY_USAGE_UPPER_LIMIT_MINUTE, "Upper Limit");
+    else
+      ll1= new LimitLine(DAILY_USAGE_UPPER_LIMIT_MINUTE * 60, "Upper Limit");
+
     ll1.setLineWidth(2f);
     ll1.enableDashedLine(2f, 2f, 2f);
     ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
@@ -143,69 +195,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     ChartMarkerView mv = new ChartMarkerView(this, R.layout.chart_marker_view);
     // set the marker to the chart
     mChart.setMarkerView(mv);
-    // add data
-    setData(0);
 
-    mChart.getLegend().setEnabled(false);
-
-    mChart.animateY(2000);
-    for (DataSet<?> set : mChart.getData().getDataSets()) {
-      set.setDrawValues(!set.isDrawValuesEnabled());
-    }
-    mChart.setNoDataText("No data Available");
-    // dont forget to refresh the drawing
-    mChart.invalidate();
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    onBackPressed();
-    return true;
-  }
-  @Override
-  public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-    // redraw
-    mChart.invalidate();
-  }
-
-  @Override
-  public void onStartTrackingTouch(SeekBar seekBar) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void onStopTrackingTouch(SeekBar seekBar) {
-    // TODO Auto-generated method stub
-
-  }
-
-  private void setData(int week) { // 0: current week, 1: last week
-    Calendar calendar = Calendar.getInstance();
-    long time = System.currentTimeMillis() + TrackAccessibilityUtil.getTimeOffset() *
-            TrackAccessibilityUtil.anHour,
-         oneDay = 86400000;
-    time = oneDay * (time / oneDay);
-    calendar.setTimeInMillis(time);
-    Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
-            (Calendar.DAY_OF_WEEK));
-    calendar.setTimeInMillis(time - 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK) - 1) *
-            oneDay - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
-    int[] x = TrackAccessibilityUtil.weekUsage(calendar);
-
-    ArrayList<String> xVals = new ArrayList<>();
-    for (int i = 0; i < 7; i++) {
-      xVals.add((i) + "");
-    }
-    ArrayList<Entry> vals1 = new ArrayList<>();
-
-    for (int i = 0; i < 7; i++) {
-      vals1.add(new Entry(x[i], i));
-    }
-
-    // create a dataset and give it a type
-    LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
     set1.setDrawCubic(true);
 //    set1.setCubicIntensity(0.2f);
     set1.setDrawFilled(true);
@@ -235,4 +225,29 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
     mChart.setData(data);
   }
+  private ArrayList<Entry> setData(int week, boolean IS_MINUTE) { // 0: current week, 1: last week
+
+    Calendar calendar = Calendar.getInstance();
+    long time = System.currentTimeMillis() + TrackAccessibilityUtil.getTimeOffset() *
+            TrackAccessibilityUtil.anHour,
+         oneDay = 86400000;
+    time = oneDay * (time / oneDay);
+    calendar.setTimeInMillis(time);
+    Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
+            (Calendar.DAY_OF_WEEK));
+    calendar.setTimeInMillis(time - 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK) - 1) *
+            oneDay - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
+    int[] x = TrackAccessibilityUtil.weekUsage(calendar);
+
+    ArrayList<Entry> vals1 = new ArrayList<>();
+
+    for (int i = 0; i < 7; i++) {
+      if(IS_MINUTE)
+        vals1.add(new Entry( (x[i]/60), i));
+      else
+        vals1.add(new Entry(x[i], i));
+    }
+    return vals1;
+  }
+
 }
