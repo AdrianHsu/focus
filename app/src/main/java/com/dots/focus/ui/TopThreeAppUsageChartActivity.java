@@ -226,20 +226,13 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     }
 
     ArrayList<Entry> vals1 = new ArrayList<>();
-    ArrayList<Entry> vals2 = new ArrayList<>();
-
 
     for (int i = 0; i < count; i++) {
-      float mult = (range + 1);
-      float val = (float) (Math.random() * mult);// + (float)
-      // ((mult * 0.1) / 10);
-      vals1.add(new Entry(val, i));
-      vals2.add(new Entry((float)0.8, i));
+      vals1.add(new Entry(0, i));
     }
 
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
-    LineDataSet limitSet = new LineDataSet(vals2, "Daily Limit");
     set1.setDrawCubic(true);
 //    set1.setCubicIntensity(0.2f);
     set1.setDrawFilled(true);

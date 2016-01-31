@@ -243,7 +243,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
     for (int i = 0; i < 7; i++) {
       if(IS_MINUTE)
-        vals1.add(new Entry( (x[i]/60), i));
+        vals1.add(new Entry( (x[i] / 60), i));
       else
         vals1.add(new Entry(x[i], i));
     }

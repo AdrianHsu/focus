@@ -121,33 +121,33 @@ public class TrackAccessibilityUtil {
             currentDay.saveEventually();
         currentDay = new DayBlock(dayInLong);
         currentDay.saveEventually(new SaveCallback() {
-          @Override
-          public void done(ParseException e) {
-            if (e != null) {
-              Log.d(TAG, "currentDay pin error: " + e.getMessage());
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.d(TAG, "currentDay pin error: " + e.getMessage());
+                }
+                List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
+                if (hourBlocks == null) {
+                    Log.d(TAG, "hourBlocks is null.");
+                    return;
+                }
+                if (hourBlocks.size() < 24) {
+                    Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
+                    return;
+                }
+                for (int i = 0; i < 24; ++i) {
+                    if (!hourBlocks.get(i).equals("")) {
+                        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
+                        query.getInBackground(hourBlocks.get(i), new GetCallback<HourBlock>() {
+                            @Override
+                            public void done(HourBlock hourBlock, ParseException e) {
+                                if (hourBlock != null && e == null)
+                                    hourBlock.setDayBlock(getCurrentDay(dayInLong).getObjectId());
+                            }
+                        });
+                    }
+                }
             }
-            List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
-            if (hourBlocks == null) {
-              Log.d(TAG, "hourBlocks is null.");
-              return;
-            }
-            if (hourBlocks.size() < 24) {
-              Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
-              return;
-            }
-            for (int i = 0; i < 24; ++i) {
-              if (!hourBlocks.get(i).equals("")) {
-                ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
-                query.getInBackground(hourBlocks.get(i), new GetCallback<HourBlock>() {
-                  @Override
-                  public void done(HourBlock hourBlock, ParseException e) {
-                    if (hourBlock != null && e == null)
-                      hourBlock.setDayBlock(getCurrentDay(dayInLong).getObjectId());
-                  }
-                });
-              }
-            }
-          }
         });
         currentDay.pinInBackground();
     }
@@ -223,9 +223,7 @@ public class TrackAccessibilityUtil {
         for (int i = 0; i < 7; ++i) {
             x[i] = 0;
             times.add(time0 + i * oneDay);
-            Log.d(TAG, "time " + i + ": " + (time0 + i * oneDay));
         }
-        Log.d(TAG, "currentDay: " + currentDay.getTime());
 
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
         query.whereContainedIn("time", times);
@@ -235,18 +233,13 @@ public class TrackAccessibilityUtil {
         } catch (ParseException e) {
             Log.d(TAG, e.getMessage());
         }
-        if (dayBlocks == null)
-            Log.d(TAG, "dayBlocks is null");
-        else {
-            Log.d(TAG, "dayBlocks.size(): " + dayBlocks.size());
-            for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
-                int day = (int) ((dayBlocks.get(i).getLong("time") - time0) / oneDay);
-                List<Integer> appLength = dayBlocks.get(i).getAppLength();
 
-                for (int j = 0, n = appLength.size(); j < n; ++j)
-                    x[day] += appLength.get(j);
-                Log.d(TAG, "x[day]: " + x[day]);
-            }
+        for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+            int day = (int) ((dayBlocks.get(i).getLong("time") - time0) / oneDay);
+            List<Integer> appLength = dayBlocks.get(i).getAppLength();
+
+            for (int j = 0, n = appLength.size(); j < n; ++j)
+                x[day] += appLength.get(j);
         }
         return x;
     }
@@ -328,5 +321,34 @@ public class TrackAccessibilityUtil {
             }
         }
         return x;
+    }
+    public static List<Integer> weekAppUsage(long time0) {
+        int temp = FetchAppUtil.getSize();
+        List<Integer> appLength = new ArrayList<>(temp);
+        for (int i = 0; i < temp; ++i)
+            appLength.add(0);
+        long oneDay = 86400000;
+        ArrayList<Long> times = new ArrayList<>();
+        times.ensureCapacity(7);
+        List<DayBlock> dayBlocks = new ArrayList<>();
+        for (int i = 0; i < 7; ++i)
+            times.add(time0 + i * oneDay);
+
+        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        query.whereContainedIn("time", times);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            dayBlocks = query.find();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+        for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+            List<Integer> appLength2 = dayBlocks.get(i).getAppLength();
+            for (int j = 0, n = appLength2.size(); j < n && j < temp; ++j)
+                appLength.set(j, appLength.get(j) + appLength2.get(j));
+        }
+
+        return appLength;
+
     }
 }
