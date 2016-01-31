@@ -66,7 +66,7 @@ public class TrackAccessibilityUtil {
             if (currentDay == null)
                 newDay(localDay);
         }
-        else if (localDay != currentDay.getLong("time"))
+        else if (localDay != currentDay.getTime())
             newDay(localDay);
 
         if (currentDay == null) Log.d(TAG, "return null day QAQ...");
@@ -92,7 +92,7 @@ public class TrackAccessibilityUtil {
             if (currentHour == null)
                 newHour(time, theHour);
         }
-        else if (time != currentHour.getLong("time")) {
+        else if (time != currentHour.getTime()) {
             newHour(time, theHour);
         }
         if (currentHour == null)  Log.d(TAG, "return null hour QAQ...");
@@ -149,6 +149,7 @@ public class TrackAccessibilityUtil {
                 }
             }
         });
+        currentDay.pinInBackground();
     }
     public static void newHour(final long hourInLong, final int h) {
         storeHourInDay(hourInLong, h);
@@ -163,6 +164,7 @@ public class TrackAccessibilityUtil {
         });
 
         Log.d(TAG, "hour id: " + currentHour.getObjectId());
+        currentHour.pinInBackground();
     }
     private static void storeHourInDay(final long hourInLong, final int h) {
         if (currentHour == null)    return;
@@ -213,14 +215,16 @@ public class TrackAccessibilityUtil {
 
     public static int[] weekUsage(Calendar calendar) {
         int[] x = new int[7];
-        long time0 = calendar.getTimeInMillis() + getTimeOffset() * anHour,
+        long time0 = calendar.getTimeInMillis(),
              oneDay = 86400000;
         ArrayList<Long> times = new ArrayList<>();
         List<DayBlock> dayBlocks = new ArrayList<>();
         for (int i = 0; i < 7; ++i) {
             x[i] = 0;
             times.add(time0 + i * oneDay);
+            Log.d(TAG, "time " + i + ": " + (time0 + i * oneDay));
         }
+        Log.d(TAG, "currentDay: " + currentDay.getTime());
 
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
         query.whereContainedIn("time", times);
@@ -230,11 +234,18 @@ public class TrackAccessibilityUtil {
         } catch (ParseException e) {
             Log.d(TAG, e.getMessage());
         }
-        for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
-            int day = (int)((dayBlocks.get(i).getLong("time") - time0) / oneDay);
-            List<Integer> appLength = dayBlocks.get(i).getAppLength();
-            for (int j = 0, n = appLength.size(); j < n; ++j)
-                x[day] += appLength.get(j);
+        if (dayBlocks == null)
+            Log.d(TAG, "dayBlocks is null");
+        else {
+            Log.d(TAG, "dayBlocks.size(): " + dayBlocks.size());
+            for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+                int day = (int) ((dayBlocks.get(i).getLong("time") - time0) / oneDay);
+                List<Integer> appLength = dayBlocks.get(i).getAppLength();
+
+                for (int j = 0, n = appLength.size(); j < n; ++j)
+                    x[day] += appLength.get(j);
+                Log.d(TAG, "x[day]: " + x[day]);
+            }
         }
         return x;
     }

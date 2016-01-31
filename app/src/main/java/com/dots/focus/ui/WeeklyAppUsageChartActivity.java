@@ -7,6 +7,7 @@ package com.dots.focus.ui;
  */
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.dots.focus.R;
@@ -187,7 +188,10 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
          oneDay = 86400000;
     time = oneDay * (time / oneDay);
     calendar.setTimeInMillis(time);
-    calendar.setTimeInMillis(time - calendar.get(Calendar.DAY_OF_WEEK) * oneDay);
+    Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
+            (Calendar.DAY_OF_WEEK));
+    calendar.setTimeInMillis(time - 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK) - 1) *
+            oneDay - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
     int[] x = TrackAccessibilityUtil.weekUsage(calendar);
 
     ArrayList<String> xVals = new ArrayList<>();
