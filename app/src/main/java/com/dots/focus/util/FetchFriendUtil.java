@@ -2,6 +2,7 @@ package com.dots.focus.util;
 
 import android.util.Log;
 
+import com.dots.focus.config.FriendRelationship;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphRequestBatch;
@@ -55,10 +56,12 @@ public class FetchFriendUtil {
                                             if (mConfirmingFriendList.contains(id))
                                                 continue;
                                             if (checkFriend(id) == -1) {
-                                                jsonObject.put("state", 0);
+                                                jsonObject.put("state",
+                                                        FriendRelationship.NOT_FRIEND.getValue());
                                                 mFriendList.add(jsonObject);
                                             } else {
-                                                jsonObject.put("state", 3);
+                                                jsonObject.put("state",
+                                                        FriendRelationship.IS_FRIEND.getValue());
                                                 mConfirmedFriendList.add(jsonObject);
                                             }
                                         } catch (JSONException e) {

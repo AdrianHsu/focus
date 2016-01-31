@@ -11,7 +11,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -149,20 +148,18 @@ public class TrackAccessibilityUtil {
                 }
             }
         });
-
     }
     public static void newHour(final long hourInLong, final int h) {
         storeHourInDay(hourInLong, h);
 
+        if (currentHour == null)    return;
+        currentHour.saveEventually();
         currentHour = new HourBlock(hourInLong, h, ParseUser.getCurrentUser().getInt("AppIndex"));
-
         currentHour.saveEventually(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                // if (getCurrentDay(hourInLong) != null)  Log.d(TAG, );
-                if (e != null)  {
+                if (e != null)
                     Log.d(TAG, "currentHour pin error: " + e.getMessage());
-                }
             }
         });
 
@@ -170,18 +167,15 @@ public class TrackAccessibilityUtil {
     }
     private static void storeHourInDay(final long hourInLong, final int h) {
         if (currentHour == null)    return;
+        if (currentDay != null)
+            currentHour.setDayBlock(currentDay.getObjectId());
         currentHour.saveEventually();
 
         if (currentDay == null)  return;
         List<String> temp = currentDay.getHourBlocks();
         temp.set(h, currentHour.getObjectId());
         currentDay.setHourBlocks(temp);
-
-        List<Integer>   dayAppLength = currentDay.getAppLength(),
-                        hourAppLength = currentHour.getAppLength();
-        for (int i = 0; i < 24; ++i)
-            dayAppLength.set(i, hourAppLength.get(i) + dayAppLength.get(i));
-        currentDay.setAppLength(dayAppLength);
+        currentDay.saveEventually();
 
         long localDay = getLocalDay(hourInLong);
         if (localDay != currentDay.getLong("time"))
@@ -194,12 +188,7 @@ public class TrackAccessibilityUtil {
                 x[i][j] = 0;
 
         long now = System.currentTimeMillis();
-        List<Integer> appLength = getCurrentDay(now).getAppLength(),
-                      appLength2 = getCurrentHour(now).getAppLength();
-        int size = appLength.size();
-        if (size > appLength2.size())   size = appLength2.size();
-        for (int i = 0; i < size; ++i)
-            appLength.set(i, appLength.get(i) + appLength2.get(i));
+        List<Integer> appLength = getCurrentDay(now).getAppLength();
 
         for (int i = 0, s = appLength.size(); i < s; ++i) {
             int length = appLength.get(i);

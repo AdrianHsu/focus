@@ -35,13 +35,10 @@ public class HourReceiver extends BroadcastReceiver {
         rightNow.setTimeInMillis(time);
 
         time = TrackAccessibilityUtil.anHour * (time / TrackAccessibilityUtil.anHour);
-        int theHour = (rightNow.get(Calendar.HOUR_OF_DAY) + TrackAccessibilityUtil.getTimeOffset()) % 24;
 
         Intent intent = new Intent();
         intent.setAction("HourReceiver_broadcast_an_hour");
         intent.putExtra("time", time);
         context.sendBroadcast(intent);
-
-        TrackAccessibilityUtil.newHour(time, theHour);
     }
 }
