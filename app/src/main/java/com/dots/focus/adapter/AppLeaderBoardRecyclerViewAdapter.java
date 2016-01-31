@@ -15,6 +15,7 @@ import com.dots.focus.R;
 import com.dots.focus.model.AppInfo;
 import com.dots.focus.ui.AppLeaderBoardChartActivity;
 import com.dots.focus.util.FetchAppUtil;
+import com.github.mikephil.charting.data.Entry;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -28,27 +29,28 @@ import java.util.concurrent.TimeUnit;
 public class AppLeaderBoardRecyclerViewAdapter extends
         UltimateViewAdapter<AppLeaderBoardRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
-    private ArrayList<Integer> appUsageList;
+    private ArrayList<Entry> indexList;
     private Context mContext;
 
-    private static final String TAG = "appUsage";
+    private static final String TAG = "index";
 
-    public AppLeaderBoardRecyclerViewAdapter(ArrayList<Integer> _appUsageList, Context context) {
-        appUsageList = _appUsageList;
+    public AppLeaderBoardRecyclerViewAdapter(ArrayList<Entry> _indexList, Context context) {
+        indexList = _indexList;
         mContext = context;
     }
 
 
     @Override
     public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
-        if (position < getItemCount() && (customHeaderView != null ? position <= appUsageList.size() :
-                position < appUsageList.size()) && (customHeaderView == null || position > 0)) {
+        if (position < getItemCount() && (customHeaderView != null ? position <= indexList.size() :
+                position < indexList.size()) && (customHeaderView == null || position > 0)) {
 
-          int index = appUsageList.get(position);
+          Entry e = indexList.get(position);
+          int index = e.getXIndex();
           AppInfo mAppInfo = FetchAppUtil.getApp(index);
           Drawable mIcon = mAppInfo.getIcon();
 
-          holder.appTimeTv.setText(timeToString(AppLeaderBoardChartActivity.appLength.get(index)));
+          holder.appTimeTv.setText(timeToString((int) e.getVal()));
           holder.appIconIv.setImageDrawable(mIcon);
           String rank = String.valueOf(position + 1);
           holder.rankingTv.setText(rank);
@@ -72,7 +74,7 @@ public class AppLeaderBoardRecyclerViewAdapter extends
 
     @Override
     public int getAdapterItemCount() {
-        return appUsageList.size();
+        return indexList.size();
     }
 
     @Override
@@ -100,16 +102,16 @@ public class AppLeaderBoardRecyclerViewAdapter extends
     }
 
 
-    public void insert(Integer appUsage, int position) {
-        insert(appUsageList, appUsage, position);
+    public void insert(Entry index, int position) {
+        insert(indexList, index, position);
     }
 
     public void remove(int position) {
-        remove(appUsageList, position);
+        remove(indexList, position);
     }
 
     public void clear() {
-        clear(appUsageList);
+        clear(indexList);
     }
 
     @Override
@@ -129,7 +131,7 @@ public class AppLeaderBoardRecyclerViewAdapter extends
 
 
     public void swapPositions(int from, int to) {
-        swapPositions(appUsageList, from, to);
+        swapPositions(indexList, from, to);
     }
 
 
@@ -212,12 +214,12 @@ public class AppLeaderBoardRecyclerViewAdapter extends
         }
     }
 
-    public Integer getItem(int position) {
+    public Entry getItem(int position) {
         if (customHeaderView != null)
             position--;
-        if (position < appUsageList.size())
-            return appUsageList.get(position);
-        else return 0;
+        if (position < indexList.size())
+            return indexList.get(position);
+        else return null;
     }
     private String timeToString(int seconds) {
       int day = (int) TimeUnit.SECONDS.toDays(seconds);

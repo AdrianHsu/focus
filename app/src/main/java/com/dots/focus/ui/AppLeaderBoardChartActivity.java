@@ -32,7 +32,6 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
     private UltimateRecyclerView mRecyclerView;
     private LinearLayoutManager linearLayoutManager;
     private AppLeaderBoardRecyclerViewAdapter appLeaderBoardRecyclerViewAdapter;
-    public static List<Integer> appLength;
 
   @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +55,8 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         calendar.setTimeInMillis(time - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
         //- 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK)  - 1) * oneDay
 
-        appLength = TrackAccessibilityUtil.weekAppUsage(calendar.getTimeInMillis());
-        List<Entry> indexList = new ArrayList<>(appLength.size());
+        List<Integer>appLength = TrackAccessibilityUtil.weekAppUsage(calendar.getTimeInMillis());
+        ArrayList<Entry> indexList = new ArrayList<>(appLength.size());
         for (int i = 0, size = appLength.size(); i < size; ++i)
             indexList.add(new Entry(appLength.get(i), i));
 
@@ -70,14 +69,8 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
                 });
         // indexList can be used
 
-        final ArrayList<Integer> appUsageList = new ArrayList<>();
-
-        for (int i = 0; i < indexList.size(); i++) {
-          int index = indexList.get(i).getXIndex();
-          appUsageList.add(index);
-        }
         mRecyclerView = (UltimateRecyclerView) findViewById(R.id.hour_app_usage_recycler_view);
-        appLeaderBoardRecyclerViewAdapter = new AppLeaderBoardRecyclerViewAdapter(appUsageList, this);
+        appLeaderBoardRecyclerViewAdapter = new AppLeaderBoardRecyclerViewAdapter(indexList, this);
         linearLayoutManager = new LinearLayoutManager(this);
 
         mRecyclerView.setLayoutManager(linearLayoutManager);
