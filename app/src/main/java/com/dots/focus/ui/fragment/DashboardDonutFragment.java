@@ -61,8 +61,8 @@ public class DashboardDonutFragment extends SampleFragment {
   private SeriesItem seriesItem3;
   private SeriesItem seriesItem4; // top 1
   private SeriesItem arcBackTrack;
-
   private int mStyleIndex;
+
   private static final String TAG = "donut";
 
   public DashboardDonutFragment(){}

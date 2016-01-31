@@ -47,9 +47,8 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
   private Spinner spinner;
   private ArrayAdapter<String> timeInterval;
   private String[] timeIntervalArray = {"分段", "累計"};
-  private UltimateRecyclerView mRecyclerView;
-  private LinearLayoutManager linearLayoutManager;
-  private HourAppUsageRecyclerViewAdapter hourAppUsageRecyclerViewAdapter;
+  public static View topThreeCardHourlyView;
+  public static int day = 0;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,27 +60,7 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle("每日使用時段趨勢");
-
-    final ArrayList<JSONObject> appUsageList = new ArrayList<>();
-
-    for(int i = 0; i < 3; i++) {
-      JSONObject appUsage = new JSONObject();
-      try {
-        appUsage.put("appName", "Facebook");
-        appUsage.put("duration", 600); // 600sec
-//      app.put(icon); // put icon
-      } catch (JSONException e) {
-        e.printStackTrace();
-      }
-
-      appUsageList.add(appUsage);
-    }
-    mRecyclerView = (UltimateRecyclerView) findViewById(R.id.hour_app_usage_recycler_view);
-    hourAppUsageRecyclerViewAdapter = new HourAppUsageRecyclerViewAdapter( appUsageList, this);
-    linearLayoutManager = new LinearLayoutManager(this);
-
-    mRecyclerView.setLayoutManager(linearLayoutManager);
-    mRecyclerView.setAdapter(hourAppUsageRecyclerViewAdapter);
+    topThreeCardHourlyView = findViewById(R.id.top_three_card_hourly);
 
 //    DEBUG: W/System.err: java.lang.RuntimeException: Can't create handler inside thread that has
 // not called Looper.prepare()
@@ -113,7 +92,7 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     mChart = (LineChart) findViewById(R.id.chart1);
 
     // add data
-    ArrayList<Entry> val = setData(0, false);
+    ArrayList<Entry> val = setData(day, false);
     drawChart(val, false);
   }
 
@@ -198,7 +177,7 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     ll1.setTextColor(Color.WHITE);
     y.addLimitLine(ll1);
 
-    ChartMarkerView mv = new ChartMarkerView(this, R.layout.chart_marker_view);
+    DailyChartMarkerView mv = new DailyChartMarkerView(this, R.layout.chart_marker_view);
 
     // set the marker to the chart
     mChart.setMarkerView(mv);
