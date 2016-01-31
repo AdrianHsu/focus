@@ -17,14 +17,18 @@ package com.dots.focus.ui.fragment;
 
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import java.util.concurrent.TimeUnit;
 
 import com.dots.focus.R;
+import com.dots.focus.model.AppInfo;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.FetchFriendUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
@@ -33,6 +37,7 @@ import com.hookedonplay.decoviewlib.charts.DecoDrawEffect;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 public class DashboardDonutFragment extends SampleFragment {
@@ -45,18 +50,23 @@ public class DashboardDonutFragment extends SampleFragment {
   final private int mTotalAngle = 360;
   final private int mRotateAngle = 0;
   final private float seriesMax = 100f;
-  private float [] separableOutput = new float [4];
   private float [] accumulateOutput = new float[4];
-  private String[] appName = new String[4];
   private int mBackIndex;
-  private int mSeries1Index;
+  private int mSeries1Index; // others
   private int mSeries2Index;
   private int mSeries3Index;
-  private int mSeries4Index;
+  private int mSeries4Index; // top 1
+  private SeriesItem seriesItem1; // others
+  private SeriesItem seriesItem2;
+  private SeriesItem seriesItem3;
+  private SeriesItem seriesItem4; // top 1
+  private SeriesItem arcBackTrack;
+
   private int mStyleIndex;
   private static final String TAG = "donut";
 
-  public DashboardDonutFragment() {}
+  public DashboardDonutFragment(){}
+
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,106 +78,28 @@ public class DashboardDonutFragment extends SampleFragment {
   @Override
   protected void createTracks() {
 
-    initData();
+    int [][] data = TrackAccessibilityUtil.getFirstThreeAppToday();
+
+    initData(data);
     setDemoFinished(false);
     final DecoView decoView = getDecoView();
     final View view = getView();
     if (decoView == null || view == null) {
-      Log.d(TAG, "decoView == null || view == null");
       return;
     }
     decoView.deleteAll();
     decoView.configureAngles(mTotalAngle, mRotateAngle);
 
-    SeriesItem arcBackTrack = new SeriesItem.Builder(Color.argb(255, 228, 228, 228))
-      .setRange(0, seriesMax, seriesMax)
-      .setInitialVisibility(false)
-      .setLineWidth(getDimension(mTrackBackWidth))
-      .setChartStyle(mPie ? SeriesItem.ChartStyle.STYLE_PIE : SeriesItem.ChartStyle.STYLE_DONUT)
-      .build();
-
-    mBackIndex = decoView.addSeries(arcBackTrack);
-
     float inset = 0;
     if (mTrackBackWidth != mTrackWidth) {
       inset = getDimension((mTrackBackWidth - mTrackWidth) / 2);
     }
-    SeriesItem seriesItem1 = new SeriesItem.Builder(COLOR_NEUTRAL)
-      .setRange(0, seriesMax, 0)
-      .setInitialVisibility(false)
-      .setLineWidth(getDimension(mTrackWidth))
-      .setInset(new PointF(-inset, -inset))
-      .setSpinClockwise(mClockwise)
-      .setCapRounded(mRounded)
-      .setChartStyle(mPie ? SeriesItem.ChartStyle.STYLE_PIE : SeriesItem.ChartStyle.STYLE_DONUT)
-      .build();
-
-    mSeries1Index = decoView.addSeries(seriesItem1);
-
-    SeriesItem seriesItem2 = new SeriesItem.Builder(COLOR_YELLOW)
-      .setRange(0, seriesMax, 0)
-      .setInitialVisibility(false)
-      .setCapRounded(true)
-      .setLineWidth(getDimension(mTrackWidth))
-      .setInset(new PointF(inset, inset))
-      .setCapRounded(mRounded)
-      .build();
-
-    mSeries2Index = decoView.addSeries(seriesItem2);
-
-    SeriesItem seriesItem3 = new SeriesItem.Builder(COLOR_PINK)
-      .setRange(0, seriesMax, 0)
-      .setInitialVisibility(false)
-      .setCapRounded(true)
-      .setLineWidth(getDimension(mTrackWidth))
-      .setInset(new PointF(inset, inset))
-      .setCapRounded(mRounded)
-      .build();
-
-    mSeries3Index = decoView.addSeries(seriesItem3);
-
-    SeriesItem seriesItem4 = new SeriesItem.Builder(COLOR_BLUE)
-                            .setRange(0, seriesMax, 0)
-                            .setInitialVisibility(false)
-                            .setCapRounded(true)
-                            .setLineWidth(getDimension(mTrackWidth))
-                            .setInset(new PointF(inset, inset))
-                            .setCapRounded(mRounded)
-                            .build();
-
-    mSeries4Index = decoView.addSeries(seriesItem4);
-
-    final TextView textPercent = (TextView) view.findViewById(R.id.textPercentage);
-    if (textPercent != null) {
-      textPercent.setText("02:25:53");
-//      addProgressListener(seriesItem1, textPercent, "%.0f%%");
-
-    }
-
-    final TextView textToGo = (TextView) view.findViewById(R.id.textRemaining);
-    textToGo.setText("剩餘00:34:07");
-//    addProgressRemainingListener(seriesItem1, textToGo, "%.0f min to goal", seriesMax);
-
-    final TextView textTodayUsage = (TextView)view.findViewById(R.id.textTodayUsage);
-
-
+    initSeriesIndex(inset, decoView);
+    initTotalUsage(view, data);
+    initTopThreeProgress(data);
 //    View layout = getView().findViewById(R.id.layoutActivities);
 //    layout.setVisibility(View.INVISIBLE);
 
-    final TextView textActivity1 = (TextView) getView().findViewById(R.id.textActivity1);
-    addProgressListener(seriesItem1, textActivity1, "%.0f");
-//    textActivity1.setText("Others");
-
-    final TextView textActivity2 = (TextView) getView().findViewById(R.id.textActivity2);
-//    textActivity2.setText(appName[2]);
-    addProgressListener(seriesItem2, textActivity2, "%.0f");
-
-    final TextView textActivity3 = (TextView) getView().findViewById(R.id.textActivity3);
-//    textActivity3.setText(appName[1]);
-    addProgressListener(seriesItem3, textActivity3, "%.0f");
-    final TextView textActivity4 = (TextView) getView().findViewById(R.id.textActivity4);
-//    textActivity4.setText(appName[0]);
-    addProgressListener(seriesItem4, textActivity4, "%.0f");
   }
 
   @Override
@@ -281,8 +213,7 @@ public class DashboardDonutFragment extends SampleFragment {
 //      })
 //      .build());
   }
-  private void initData() {
-    int [][] data = TrackAccessibilityUtil.getFirstThreeAppToday();
+  private void initData(int [][] data) {
 
 //    int [][] data = new int [4][2];
 //    data[0][1] = 555; // second
@@ -297,9 +228,9 @@ public class DashboardDonutFragment extends SampleFragment {
     float total = 0;
     for(int i = 0; i < 4; i++) {
       total += data[i][1];
-      if(i != 3)
-        appName[i] = FetchAppUtil.getApp(data[i][0]).getName();
     }
+    float [] separableOutput = new float [4];
+
     for(int i = 0; i < 4; i ++) {
       separableOutput[i] = (data[i][1]/total) * seriesMax;
     }
@@ -308,5 +239,133 @@ public class DashboardDonutFragment extends SampleFragment {
     accumulateOutput[2] = separableOutput[0] + separableOutput[1] + separableOutput[2];
     accumulateOutput[1] = separableOutput[0] + separableOutput[1];
     accumulateOutput[0] = separableOutput[0];
+  }
+  private void initSeriesIndex(float inset, DecoView decoView) {
+
+    arcBackTrack = new SeriesItem.Builder(Color.argb(255, 228, 228, 228))
+                            .setRange(0, seriesMax, seriesMax)
+                            .setInitialVisibility(false)
+                            .setLineWidth(getDimension(mTrackBackWidth))
+                            .setChartStyle(mPie ? SeriesItem.ChartStyle.STYLE_PIE : SeriesItem.ChartStyle.STYLE_DONUT)
+                            .build();
+
+    mBackIndex = decoView.addSeries(arcBackTrack);
+
+    seriesItem1 = new SeriesItem.Builder(COLOR_NEUTRAL)
+                            .setRange(0, seriesMax, 0)
+                            .setInitialVisibility(false)
+                            .setLineWidth(getDimension(mTrackWidth))
+                            .setInset(new PointF(-inset, -inset))
+                            .setSpinClockwise(mClockwise)
+                            .setCapRounded(mRounded)
+                            .setChartStyle(mPie ? SeriesItem.ChartStyle.STYLE_PIE : SeriesItem.ChartStyle.STYLE_DONUT)
+                            .build();
+
+    mSeries1Index = decoView.addSeries(seriesItem1);
+
+    seriesItem2 = new SeriesItem.Builder(COLOR_YELLOW)
+                            .setRange(0, seriesMax, 0)
+                            .setInitialVisibility(false)
+                            .setCapRounded(true)
+                            .setLineWidth(getDimension(mTrackWidth))
+                            .setInset(new PointF(inset, inset))
+                            .setCapRounded(mRounded)
+                            .build();
+
+    mSeries2Index = decoView.addSeries(seriesItem2);
+
+    seriesItem3 = new SeriesItem.Builder(COLOR_PINK)
+                            .setRange(0, seriesMax, 0)
+                            .setInitialVisibility(false)
+                            .setCapRounded(true)
+                            .setLineWidth(getDimension(mTrackWidth))
+                            .setInset(new PointF(inset, inset))
+                            .setCapRounded(mRounded)
+                            .build();
+
+    mSeries3Index = decoView.addSeries(seriesItem3);
+
+    seriesItem4 = new SeriesItem.Builder(COLOR_BLUE)
+                            .setRange(0, seriesMax, 0)
+                            .setInitialVisibility(false)
+                            .setCapRounded(true)
+                            .setLineWidth(getDimension(mTrackWidth))
+                            .setInset(new PointF(inset, inset))
+                            .setCapRounded(mRounded)
+                            .build();
+
+    mSeries4Index = decoView.addSeries(seriesItem4);
+  }
+  private void initTotalUsage(View view, int[][] data) {
+    final TextView textPercent = (TextView) view.findViewById(R.id.textPercentage);
+    if (textPercent != null) {
+      int time = 0;
+      for(int i = 0 ; i < 4; i++)
+        time += data[i][1];
+
+      textPercent.setText(timeToString((time)));
+//      addProgressListener(seriesItem1, textPercent, "%.0f%%");
+    }
+
+    final TextView textToGo = (TextView) view.findViewById(R.id.textRemaining);
+    textToGo.setText("剩餘00:34:07");
+//    addProgressRemainingListener(seriesItem1, textToGo, "%.0f min to goal", seriesMax);
+
+  }
+  private void initTopThreeProgress(int[][] data) {
+
+    View v = DashboardFragment.topThreeCardView;
+    View [] itemViewArray = new View [4];
+    itemViewArray[0] = v.findViewById(R.id.first_adapter);
+    itemViewArray[1] = v.findViewById(R.id.second_adapter);
+    itemViewArray[2] = v.findViewById(R.id.third_adapter);
+    itemViewArray[3] = v.findViewById(R.id.others_adapter);
+
+    for(int i = 0; i < 4; i++) {
+      AppInfo mAppInfo = FetchAppUtil.getApp(data[i][0]);
+      TextView appNameTv = (TextView) itemViewArray[i].findViewById(R.id.app_name);
+      TextView appTimeTv = (TextView) itemViewArray[i].findViewById(R.id.app_time);
+      ImageView appIconIv = (ImageView) itemViewArray[i].findViewById(R.id.imageview);
+      Drawable mIcon = mAppInfo.getIcon();
+
+      if(mIcon != null) {
+        appIconIv.setImageDrawable(mIcon);
+        if(i != 3) {
+          appNameTv.setText(mAppInfo.getName());
+          appIconIv.setImageDrawable(mIcon);
+        } else {
+          appNameTv.setText("其他應用軟體");
+        }
+      }
+      switch(i) {
+        case 0:
+//          addProgressListener(seriesItem1, appTimeTv, "%.0f");
+          appTimeTv.setText(timeToString(data[0][1]));
+          appTimeTv.setTextColor(COLOR_BLUE);
+          break;
+        case 1:
+//          addProgressListener(seriesItem2, appTimeTv, "%.0f");
+          appTimeTv.setText(timeToString(data[1][1]));
+          appTimeTv.setTextColor(COLOR_PINK);
+          break;
+        case 2:
+//          addProgressListener(seriesItem3, appTimeTv, "%.0f");
+          appTimeTv.setText(timeToString(data[2][1]));
+          appTimeTv.setTextColor(COLOR_YELLOW);
+          break;
+        case 3:
+//          addProgressListener(seriesItem4, appTimeTv, "%.0f");
+          appTimeTv.setText(timeToString(data[3][1]));
+          appTimeTv.setTextColor(COLOR_NEUTRAL);
+          break;
+      }
+    }
+  }
+  private String timeToString(int seconds) {
+    long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.SECONDS.toHours(TimeUnit.SECONDS.toDays(seconds));
+    long minute = TimeUnit.SECONDS.toMinutes(seconds) - TimeUnit.SECONDS.toMinutes(TimeUnit.SECONDS.toHours(seconds));
+    long second = TimeUnit.SECONDS.toSeconds(seconds) - TimeUnit.SECONDS.toSeconds(TimeUnit.SECONDS.toMinutes(seconds));
+
+    return String.format("%02d:%02d:%02d", hours, minute, second);
   }
 }

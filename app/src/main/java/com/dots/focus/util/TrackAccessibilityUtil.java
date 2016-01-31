@@ -153,8 +153,6 @@ public class TrackAccessibilityUtil {
     public static void newHour(final long hourInLong, final int h) {
         storeHourInDay(hourInLong, h);
 
-        if (currentHour == null)    return;
-        currentHour.saveEventually();
         currentHour = new HourBlock(hourInLong, h, ParseUser.getCurrentUser().getInt("AppIndex"));
         currentHour.saveEventually(new SaveCallback() {
             @Override
