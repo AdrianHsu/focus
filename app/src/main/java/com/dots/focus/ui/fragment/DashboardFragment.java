@@ -13,6 +13,7 @@ public class DashboardFragment extends Fragment {
 
   private Context mContext;
   private DashboardDonutFragment mSampleFitFragment;
+  public static View topThreeCardView;
 
 
   @Override
@@ -20,6 +21,7 @@ public class DashboardFragment extends Fragment {
 
     mContext = getActivity();
     View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
+    topThreeCardView = v.findViewById(R.id.top_three_card);
 
     if (savedInstanceState == null){
       mSampleFitFragment = new DashboardDonutFragment();
@@ -31,6 +33,7 @@ public class DashboardFragment extends Fragment {
         .commit();
 
     }
+
     return v;
   }
 }
