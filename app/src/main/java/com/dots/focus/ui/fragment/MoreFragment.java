@@ -46,10 +46,10 @@ public class MoreFragment extends Fragment {
     TextView profileTextView = (TextView) mStickyView.findViewById(R.id.profile_name);
 
     ParseUser user = ParseUser.getCurrentUser();
-    String name = user.getString("name");
+    String name = user.getString("user_name");
     profileTextView.setText(name);
     String url ="https://graph.facebook.com/" + String.valueOf( user.getLong
-      ("id") )+
+      ("user_id") )+
       "/picture?type=large";
     Picasso.with(context).load(url).into(profileImageView);
 

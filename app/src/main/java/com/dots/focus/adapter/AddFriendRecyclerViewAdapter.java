@@ -32,7 +32,7 @@ public class AddFriendRecyclerViewAdapter extends
   private static final int FRIEND_INVITE_ITEM = FriendRelationship.NOT_FRIEND.getValue();
   private static final int FRIEND_CONFIRM_ITEM = FriendRelationship.FRIEND_INVITED.getValue();
   private static final int FRIEND_CONFIRMED_ITEM = FriendRelationship.FRIEND_CONFIRMED.getValue();
-  private static final int FRIEND_ITEM = FriendRelationship.IS_FRIEND.getValue();
+//  private static final int FRIEND_ITEM = FriendRelationship.IS_FRIEND.getValue();
 
   private static final String TAG = "AddFriend";
 
@@ -61,8 +61,6 @@ public class AddFriendRecyclerViewAdapter extends
         friendConfirmBindItem(jsonObject, (FriendConfirmAdapterViewHolder) holder);
       } else if (holder instanceof FriendConfirmedAdapterViewHolder){
         friendConfirmedBindItem(jsonObject, (FriendConfirmedAdapterViewHolder) holder);
-      } else if (holder instanceof FriendAdapterViewHolder){
-        friendBindItem(jsonObject, (FriendAdapterViewHolder) holder);
       }
     }
   }
@@ -174,38 +172,6 @@ public class AddFriendRecyclerViewAdapter extends
     }
   }
 
-  public void friendBindItem(final JSONObject jsonObject, FriendAdapterViewHolder
-    holder) {
-    try {
-
-      final long id = jsonObject.getLong("id");
-      final String name = jsonObject.getString("name");
-      holder.mProfileNameTextView.setText(name);
-
-      String url = "https://graph.facebook.com/" + String.valueOf(id) +
-        "/picture?type=large";
-      Picasso.with(mContext).load(url).into(holder.mProfileImageView);
-      holder.mButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-        }
-      });
-
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-
-    if (mDragStartListener != null) {
-
-      holder.item_view.setOnTouchListener(new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-          return false;
-        }
-      });
-    }
-  }
   @Override
   public int getAdapterItemCount() {
     if (friendProfileList.isEmpty())
@@ -280,21 +246,6 @@ public class AddFriendRecyclerViewAdapter extends
       v = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.friend_confirmed_recycler_view_adapter, parent, false);
       final FriendConfirmedAdapterViewHolder vh = new FriendConfirmedAdapterViewHolder(v, true);
-      if (v != null) {
-        v.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-              .LENGTH_SHORT)
-              .show();
-          }
-        });
-      }
-      return vh;
-    } else if (i == FRIEND_ITEM) {
-      v = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.friend_recycler_view_adapter, parent, false);
-      final FriendAdapterViewHolder vh = new FriendAdapterViewHolder(v, true);
       if (v != null) {
         v.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -482,36 +433,6 @@ public class AddFriendRecyclerViewAdapter extends
         mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
         mButton = (Button) itemView.findViewById(R.id.button);
 
-
-        item_view = itemView.findViewById(R.id.itemview);
-      }
-    }
-
-    @Override
-    public void onItemSelected() {
-//      itemView.setBackgroundColor(Color.DKGRAY);
-    }
-
-    @Override
-    public void onItemClear() {
-//      itemView.setBackgroundColor(0);
-    }
-  }
-  public class FriendAdapterViewHolder extends UltimateRecyclerviewViewHolder {
-
-    TextView mProfileNameTextView;
-    ImageView mProfileImageView;
-    Button mButton;
-    View item_view;
-
-
-    public FriendAdapterViewHolder(View itemView, boolean isItem) {
-      super(itemView);
-      if (isItem) {
-        mProfileNameTextView = (TextView) itemView.findViewById(
-          R.id.profile_name);
-        mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
-        mButton = (Button) itemView.findViewById(R.id.button);
 
         item_view = itemView.findViewById(R.id.itemview);
       }

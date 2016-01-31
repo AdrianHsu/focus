@@ -362,10 +362,10 @@ public class DashboardDonutFragment extends SampleFragment {
     }
   }
   private String timeToString(int seconds) {
-    long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.SECONDS.toHours(TimeUnit.SECONDS.toDays(seconds));
-    long minute = TimeUnit.SECONDS.toMinutes(seconds) - TimeUnit.SECONDS.toMinutes(TimeUnit.SECONDS.toHours(seconds));
-    long second = TimeUnit.SECONDS.toSeconds(seconds) - TimeUnit.SECONDS.toSeconds(TimeUnit.SECONDS.toMinutes(seconds));
-
+    int day = (int)TimeUnit.SECONDS.toDays(seconds);
+    long hours = TimeUnit.SECONDS.toHours(seconds) - (day * 24);
+    long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
+    long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
     return String.format("%02d:%02d:%02d", hours, minute, second);
   }
 }
