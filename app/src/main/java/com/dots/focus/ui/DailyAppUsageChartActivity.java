@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import com.dots.focus.R;
 import com.dots.focus.adapter.HourAppUsageRecyclerViewAdapter;
 import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
+import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.MarkerView;
@@ -167,7 +168,7 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     mChart.setMarkerView(mv);
 
     // add data
-    setData(25, 60);
+    setData(0);
     mChart.getLegend().setEnabled(false);
 
     mChart.animateY(2000);
@@ -203,28 +204,27 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
 
   }
 
-  private void setData(int count, float range) {
+  private void setData(int day) {
+
+    long time = System.currentTimeMillis(),
+        offset = TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour;
+    time = 86400000 * ((time + offset) / 86400000 - day) - offset;
+
+    int[] x = TrackAccessibilityUtil.dayUsage(time);
 
     ArrayList<String> xVals = new ArrayList<>();
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < 24; i++) {
       xVals.add((i) + "");
     }
 
     ArrayList<Entry> vals1 = new ArrayList<>();
-    ArrayList<Entry> vals2 = new ArrayList<>();
 
-
-    for (int i = 0; i < count; i++) {
-      float mult = (range + 1);
-      float val = (float) (Math.random() * mult);// + (float)
-      // ((mult * 0.1) / 10);
-      vals1.add(new Entry(val, i));
-      vals2.add(new Entry((float)1.2, i));
+    for (int i = 0; i < 24; i++) {
+      vals1.add(new Entry(x[i], i));
     }
 
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
-    LineDataSet limitSet = new LineDataSet(vals2, "Daily Limit");
     set1.setDrawCubic(true);
     set1.setCubicIntensity(0.2f);
     set1.setDrawFilled(true);

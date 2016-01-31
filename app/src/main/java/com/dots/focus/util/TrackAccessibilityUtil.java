@@ -218,6 +218,7 @@ public class TrackAccessibilityUtil {
         long time0 = calendar.getTimeInMillis(),
              oneDay = 86400000;
         ArrayList<Long> times = new ArrayList<>();
+        times.ensureCapacity(7);
         List<DayBlock> dayBlocks = new ArrayList<>();
         for (int i = 0; i < 7; ++i) {
             x[i] = 0;
@@ -247,6 +248,36 @@ public class TrackAccessibilityUtil {
                 Log.d(TAG, "x[day]: " + x[day]);
             }
         }
+        return x;
+    }
+
+    public static int[] dayUsage(long time0) {
+        int[] x = new int[24];
+        ArrayList<Long> times = new ArrayList<>();
+        times.ensureCapacity(24);
+        for (int i = 0; i < 24; ++i) {
+            x[i] = 0;
+            times.add(time0 + i * anHour);
+        }
+        List<HourBlock> hourBlocks = new ArrayList<>();
+
+        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
+        query.whereContainedIn("time", times);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            hourBlocks = query.find();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+        for (int i = 0, size = hourBlocks.size(); i < size; ++i) {
+            int hour = (int) ((hourBlocks.get(i).getLong("time") - time0) / anHour);
+            List<Integer> appLength = hourBlocks.get(i).getAppLength();
+
+            for (int j = 0, n = appLength.size(); j < n; ++j)
+                x[hour] += appLength.get(j);
+        }
+
         return x;
     }
 }
