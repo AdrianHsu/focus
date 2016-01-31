@@ -6,6 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.dots.focus.config.FriendRelationship;
 import com.dots.focus.util.FetchFriendUtil;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -30,6 +31,7 @@ public class GetFriendConfirmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        updateList();
         Timer timer = new Timer();
         timer.schedule(new CheckFriendConfirmation(), 0, 60000);
         return 0;
@@ -49,15 +51,12 @@ public class GetFriendConfirmService extends Service {
     public static void refresh() {
       ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendConfirmation");
       query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("id"));
+      query.whereEqualTo("downloaded", false);
       query.findInBackground(new FindCallback<ParseObject>() {
         public void done(List<ParseObject> inviteList, ParseException e) {
           if (e == null && inviteList != null) {
-            friendRepliedList.clear();
-
             for (int i = 0, size = inviteList.size(); i < size; ++i) {
-
-              // showFriendConfirm(inviteList.get(i).getString("user_id_invited"),
-              //                  inviteList.get(i).getString("time"));
+              inviteList.get(i).put("downloaded", true);
               JSONObject jsonObject = new JSONObject();
               try {
                 Long id = inviteList.get(i).getLong("user_id_invited");
@@ -65,7 +64,7 @@ public class GetFriendConfirmService extends Service {
                 jsonObject.put("id", id);
                 jsonObject.put("name", name);
                 jsonObject.put("time", inviteList.get(i).getLong("time"));
-                jsonObject.put("state", 2);
+                jsonObject.put("state", FriendRelationship.FRIEND_CONFIRMED.getValue());
                 friendRepliedList.add(jsonObject);
 
                 FetchFriendUtil.getFriendConfirm(id, name);
@@ -74,6 +73,12 @@ public class GetFriendConfirmService extends Service {
               }
             }
             ParseObject.deleteAllInBackground(inviteList);
+            try {
+              ParseObject.saveAll(inviteList);
+              ParseObject.pinAll(inviteList);
+            } catch (ParseException e1) {
+              Log.d(TAG, e1.getMessage());
+            }
           }
         }
       });
@@ -82,5 +87,34 @@ public class GetFriendConfirmService extends Service {
         public void run() {
             refresh();
         }
+    }
+    public static void updateList() {
+        friendRepliedList.clear();
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
+        query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("user_id"));
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> inviteList, ParseException e) {
+
+                if (e == null && inviteList != null) {
+                    for (int i = 0, size = inviteList.size(); i < size; ++i) {
+                        JSONObject jsonObject = new JSONObject();
+
+                        try {
+                            jsonObject.put("id", inviteList.get(i).getLong("user_id_inviting"));
+                            jsonObject.put("name", inviteList.get(i).getString("user_name_inviting"));
+                            jsonObject.put("time", inviteList.get(i).getLong("time"));
+                            jsonObject.put("state", FriendRelationship.FRIEND_CONFIRMED.getValue());
+
+                            friendRepliedList.add(jsonObject);
+
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
     }
 }

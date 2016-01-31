@@ -154,13 +154,13 @@ public class TrackAccessibilityService extends AccessibilityService {
         appLength.set(appIndex, appLength.get(appIndex) + duration);
         hour.put("appLength", appLength);
         Log.d(TAG, "Hour appLength.get: " + hour.getList("appLength").get(appIndex));
-/*
+
         appLength = day.getList("appLength");
         Log.d(TAG, "day appLength.get: " + appLength.get(appIndex) + ", duration: " + duration);
         appLength.set(appIndex, appLength.get(appIndex) + duration);
         day.put("appLength", appLength);
         Log.d(TAG, "Hour appLength.get: " + hour.getList("appLength").get(appIndex));
-*/
+
         Log.d(TAG, "appName: " + previousPackageName + ", startTime: " + startTime + ", duration: " + duration);
     }
 

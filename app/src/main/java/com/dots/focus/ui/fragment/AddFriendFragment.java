@@ -124,5 +124,4 @@ public class AddFriendFragment extends Fragment {
 
     super.onStop();
   }
-
 }

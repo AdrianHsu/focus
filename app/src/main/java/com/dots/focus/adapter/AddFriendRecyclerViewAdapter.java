@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.config.FriendRelationship;
 import com.dots.focus.util.FetchFriendUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
@@ -28,10 +29,10 @@ public class AddFriendRecyclerViewAdapter extends
 
   private ArrayList<JSONObject> friendProfileList;
   private Context mContext;
-  private static final int FRIEND_INVITE_ITEM = 0;
-  private static final int FRIEND_CONFIRM_ITEM = 1;
-  private static final int FRIEND_CONFIRMED_ITEM = 2;
-  private static final int FRIEND_ITEM = 3;
+  private static final int FRIEND_INVITE_ITEM = FriendRelationship.NOT_FRIEND.getValue();
+  private static final int FRIEND_CONFIRM_ITEM = FriendRelationship.FRIEND_INVITED.getValue();
+  private static final int FRIEND_CONFIRMED_ITEM = FriendRelationship.FRIEND_CONFIRMED.getValue();
+  private static final int FRIEND_ITEM = FriendRelationship.IS_FRIEND.getValue();
 
   private static final String TAG = "AddFriend";
 
