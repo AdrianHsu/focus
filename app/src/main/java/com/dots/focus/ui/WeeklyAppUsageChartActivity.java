@@ -7,6 +7,7 @@ package com.dots.focus.ui;
  */
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.dots.focus.R;
@@ -20,6 +21,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 
 
+import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -32,6 +34,7 @@ import com.github.mikephil.charting.formatter.FillFormatter;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class WeeklyAppUsageChartActivity extends OverviewChartActivity implements OnSeekBarChangeListener {
 
@@ -141,7 +144,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     // set the marker to the chart
     mChart.setMarkerView(mv);
     // add data
-    setData(7, 5);
+    setData(0);
 
     mChart.getLegend().setEnabled(false);
 
@@ -178,28 +181,31 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
   }
 
-  private void setData(int count, float range) {
+  private void setData(int week) { // 0: current week, 1: last week
+    Calendar calendar = Calendar.getInstance();
+    long time = System.currentTimeMillis() + TrackAccessibilityUtil.getTimeOffset() *
+            TrackAccessibilityUtil.anHour,
+         oneDay = 86400000;
+    time = oneDay * (time / oneDay);
+    calendar.setTimeInMillis(time);
+    Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
+            (Calendar.DAY_OF_WEEK));
+    calendar.setTimeInMillis(time - 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK) - 1) *
+            oneDay - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
+    int[] x = TrackAccessibilityUtil.weekUsage(calendar);
 
     ArrayList<String> xVals = new ArrayList<>();
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < 7; i++) {
       xVals.add((i) + "");
     }
-
     ArrayList<Entry> vals1 = new ArrayList<>();
-    ArrayList<Entry> vals2 = new ArrayList<>();
 
-
-    for (int i = 0; i < count; i++) {
-      float mult = (range + 1);
-      float val = (float) (Math.random() * mult);// + (float)
-      // ((mult * 0.1) / 10);
-      vals1.add(new Entry(val, i));
-      vals2.add(new Entry((float)0.8, i));
+    for (int i = 0; i < 7; i++) {
+      vals1.add(new Entry(x[i], i));
     }
 
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
-    LineDataSet limitSet = new LineDataSet(vals2, "Daily Limit");
     set1.setDrawCubic(true);
 //    set1.setCubicIntensity(0.2f);
     set1.setDrawFilled(true);
