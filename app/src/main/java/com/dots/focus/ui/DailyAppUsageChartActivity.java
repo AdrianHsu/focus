@@ -19,7 +19,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 
 import com.dots.focus.R;
-import com.dots.focus.adapter.HourAppUsageRecyclerViewAdapter;
 import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;

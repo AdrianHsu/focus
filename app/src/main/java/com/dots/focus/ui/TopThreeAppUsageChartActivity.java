@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,12 +19,12 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
-import com.dots.focus.adapter.HourAppUsageRecyclerViewAdapter;
-import com.dots.focus.adapter.TopThreeAppUsageRecyclerViewAdapter;
-import com.dots.focus.util.CreateInfoUtil;
+import com.dots.focus.util.FetchAppUtil;
+import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -40,6 +41,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class TopThreeAppUsageChartActivity extends OverviewChartActivity implements OnSeekBarChangeListener {
 
@@ -47,9 +50,6 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
   private Spinner spinner;
   private ArrayAdapter<String> timeInterval;
   private String[] timeIntervalArray = {"小時", "分鐘"};
-  private UltimateRecyclerView mRecyclerView;
-  private LinearLayoutManager linearLayoutManager;
-  private TopThreeAppUsageRecyclerViewAdapter topThreeAppUsageRecyclerViewAdapter;
   private Button pickAppBtn = null;
 
   @Override
@@ -63,28 +63,6 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle("前三應用軟體用量趨勢");
 
-    final ArrayList<JSONObject> appUsageList = new ArrayList<>();
-
-    for(int i = 0; i < 3; i++) {
-      JSONObject appUsage = new JSONObject();
-      try {
-        appUsage.put("appName", "Facebook");
-        appUsage.put("duration", 600); // 600sec
-//      app.put(icon); // put icon
-      } catch (JSONException e) {
-        e.printStackTrace();
-      }
-
-      appUsageList.add(appUsage);
-    }
-
-    mRecyclerView = (UltimateRecyclerView) findViewById(R.id.top_three_app_usage_recycler_view);
-    topThreeAppUsageRecyclerViewAdapter = new TopThreeAppUsageRecyclerViewAdapter( appUsageList,
-                            this);
-    linearLayoutManager = new LinearLayoutManager(this);
-
-    mRecyclerView.setLayoutManager(linearLayoutManager);
-    mRecyclerView.setAdapter(topThreeAppUsageRecyclerViewAdapter);
 
 //    DEBUG: W/System.err: java.lang.RuntimeException: Can't create handler inside thread that has
 // not called Looper.prepare()
@@ -108,14 +86,19 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
 
       }
     });
+
+    final int length = FetchAppUtil.getSize();
+    final String [] appNameArray = new String [length];
+    for(int i = 0; i < length; i++) {
+      appNameArray[i] = FetchAppUtil.getApp(i).getName();
+    }
     pickAppBtn = (Button) findViewById(R.id.pick_app_button);
     pickAppBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        createPickAppDialog();
+        createPickAppDialog(appNameArray);
       }
     });
-
 
     mChart = (LineChart) findViewById(R.id.chart1);
 //    mChart.setViewPortOffsets(80, 40, 80, 40);
@@ -262,22 +245,24 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
 
     mChart.setData(data);
   }
-  private void createPickAppDialog() {
+  private void createPickAppDialog(String[] appNameList) {
     new MaterialDialog.Builder(this)
-                            .title("選擇您感興趣的應用軟體") // at most 3 apps limited
-                            .items(R.array.testAppList)
-                            .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                            .title("選擇您感興趣的App(至多三個)") // at most 3 apps limited
+                            .items(appNameList)
+                            .itemsCallbackMultiChoice(new Integer[]{1, 3}, new MaterialDialog
+                                                    .ListCallbackMultiChoice() {
                               @Override
                               public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                /**
-                                 * If you use alwaysCallMultiChoiceCallback(), which is discussed below,
-                                 * returning false here won't allow the newly selected check box to actually be selected.
-                                 * See the limited multi choice dialog example in the sample project for details.
-                                 **/
-                                return true;
+                                boolean allowSelection = which.length <= 3; // limit selection to
+                                // 3, the new selection is included in the which array
+                                if (!allowSelection) {
+
+                                }
+                                return allowSelection;
                               }
                             })
                             .positiveText("完成")
+                            .alwaysCallMultiChoiceCallback() // the callback will always be called, to check if selection is still allowed
                             .show();
   }
 }
