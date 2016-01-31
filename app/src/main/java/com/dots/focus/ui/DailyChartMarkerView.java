@@ -78,19 +78,24 @@ public class DailyChartMarkerView extends MarkerView {
     itemViewArray[3] = v.findViewById(R.id.others_adapter);
 
     for(int i = 0; i < 3; i++) {
-      Log.d("Marker", "1111EEEEEE");
 
-      if(topThreeAppIndex[i] == -1) continue;
-      int index = topThreeAppIndex[i];
-      AppInfo mAppInfo = FetchAppUtil.getApp(index);
-
-      int time = hourAppLength.get(pickedHour).get(topThreeAppIndex[i]);
 
       TextView appNameTv = (TextView) itemViewArray[i].findViewById(R.id.app_name);
       TextView appTimeTv = (TextView) itemViewArray[i].findViewById(R.id.app_time);
       ImageView appIconIv = (ImageView) itemViewArray[i].findViewById(R.id.imageview);
+
+      if(topThreeAppIndex[i] == -1) {
+
+        appIconIv.setImageDrawable(null);
+        appNameTv.setText("");
+        appTimeTv.setText("");
+        continue;
+      }
+      int index = topThreeAppIndex[i];
+      AppInfo mAppInfo = FetchAppUtil.getApp(index);
       Drawable mIcon = mAppInfo.getIcon();
-      Log.d("Marker", "EEEEEE");
+
+      int time = hourAppLength.get(pickedHour).get(topThreeAppIndex[i]);
 
       if(mIcon != null) {
         if(i != 3) {

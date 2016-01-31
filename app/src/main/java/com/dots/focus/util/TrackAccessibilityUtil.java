@@ -316,7 +316,9 @@ public class TrackAccessibilityUtil {
                         x[k] = x[k - 1];
                         value[k] = value[k - 1];
                     }
-                    break;
+                    x[j] = i;
+                    value[j] = length;
+                  break;
                 }
             }
         }
