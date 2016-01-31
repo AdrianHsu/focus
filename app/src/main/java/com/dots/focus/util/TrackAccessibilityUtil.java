@@ -309,4 +309,23 @@ public class TrackAccessibilityUtil {
 
         return x;
     }
+    public static int[] getFirstThree(List<Integer> appLength) {
+        int[] x = new int[3], value = new int[3];
+        for (int i = 0; i < 3; ++i) {
+            x[i] = 0;   value[i] = 0;
+        }
+        for (int i = 0, size = appLength.size(); i < size; ++i) {
+            int length = appLength.get(i);
+            for (int j = 0; j < 3; ++j) {
+                if (length > value[j]) {
+                    for (int k = 2; k != j; --k) {
+                        x[k] = x[k - 1];
+                        value[k] = value[k - 1];
+                    }
+                    break;
+                }
+            }
+        }
+        return x;
+    }
 }
