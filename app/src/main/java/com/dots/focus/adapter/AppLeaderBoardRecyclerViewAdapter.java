@@ -195,7 +195,7 @@ public class AppLeaderBoardRecyclerViewAdapter extends
             super(itemView);
             if (isItem) {
                 appNameTv = (TextView) itemView.findViewById(
-                        R.id.textview);
+                        R.id.app_name);
                 appTimeTv = (TextView) itemView.findViewById(R.id.app_time);
                 rankingTv = (TextView) itemView.findViewById(R.id.ranking_text_view);
                 appIconIv = (ImageView) itemView.findViewById(R.id.imageview);
