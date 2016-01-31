@@ -63,8 +63,7 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         Collections.sort(indexList, new Comparator<Entry>() {
                     @Override
                     public int compare(Entry e1, Entry e2) {
-                        if (e1.getVal() > e2.getVal())  return 1;
-                        return 0;
+                        return (int)(e2.getVal() - e1.getVal());
                     }
                 });
         // indexList can be used

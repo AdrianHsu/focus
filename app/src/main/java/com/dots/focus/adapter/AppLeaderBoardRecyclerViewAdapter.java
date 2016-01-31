@@ -55,7 +55,6 @@ public class AppLeaderBoardRecyclerViewAdapter extends
           String rank = String.valueOf(position + 1);
           holder.rankingTv.setText(rank);
 
-
           if(position == 0)
               holder.appTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
                                       .top_three_first));
