@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.util.concurrent.TimeUnit;
 
 import com.dots.focus.R;
 import com.dots.focus.model.AppInfo;
@@ -35,7 +36,6 @@ import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.DecoDrawEffect;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -95,7 +95,7 @@ public class DashboardDonutFragment extends SampleFragment {
       inset = getDimension((mTrackBackWidth - mTrackWidth) / 2);
     }
     initSeriesIndex(inset, decoView);
-    initTotalUsage(view);
+    initTotalUsage(view, data);
     initTopThreeProgress(data);
 //    View layout = getView().findViewById(R.id.layoutActivities);
 //    layout.setVisibility(View.INVISIBLE);
@@ -296,12 +296,15 @@ public class DashboardDonutFragment extends SampleFragment {
 
     mSeries4Index = decoView.addSeries(seriesItem4);
   }
-  private void initTotalUsage(View view) {
+  private void initTotalUsage(View view, int[][] data) {
     final TextView textPercent = (TextView) view.findViewById(R.id.textPercentage);
     if (textPercent != null) {
-      textPercent.setText("02:25:53");
-//      addProgressListener(seriesItem1, textPercent, "%.0f%%");
+      int time = 0;
+      for(int i = 0 ; i < 4; i++)
+        time += data[i][1];
 
+      textPercent.setText(timeToString((time)));
+//      addProgressListener(seriesItem1, textPercent, "%.0f%%");
     }
 
     final TextView textToGo = (TextView) view.findViewById(R.id.textRemaining);
@@ -336,23 +339,33 @@ public class DashboardDonutFragment extends SampleFragment {
       }
       switch(i) {
         case 0:
-          addProgressListener(seriesItem1, appTimeTv, "%.0f");
+//          addProgressListener(seriesItem1, appTimeTv, "%.0f");
+          appTimeTv.setText(timeToString(data[0][1]));
           appTimeTv.setTextColor(COLOR_BLUE);
           break;
         case 1:
-          addProgressListener(seriesItem2, appTimeTv, "%.0f");
+//          addProgressListener(seriesItem2, appTimeTv, "%.0f");
+          appTimeTv.setText(timeToString(data[1][1]));
           appTimeTv.setTextColor(COLOR_PINK);
           break;
         case 2:
-          addProgressListener(seriesItem3, appTimeTv, "%.0f");
+//          addProgressListener(seriesItem3, appTimeTv, "%.0f");
+          appTimeTv.setText(timeToString(data[2][1]));
           appTimeTv.setTextColor(COLOR_YELLOW);
           break;
         case 3:
-          addProgressListener(seriesItem4, appTimeTv, "%.0f");
+//          addProgressListener(seriesItem4, appTimeTv, "%.0f");
+          appTimeTv.setText(timeToString(data[3][1]));
           appTimeTv.setTextColor(COLOR_NEUTRAL);
           break;
       }
     }
+  }
+  private String timeToString(int seconds) {
+    long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.SECONDS.toHours(TimeUnit.SECONDS.toDays(seconds));
+    long minute = TimeUnit.SECONDS.toMinutes(seconds) - TimeUnit.SECONDS.toMinutes(TimeUnit.SECONDS.toHours(seconds));
+    long second = TimeUnit.SECONDS.toSeconds(seconds) - TimeUnit.SECONDS.toSeconds(TimeUnit.SECONDS.toMinutes(seconds));
 
+    return String.format("%02d:%02d:%02d", hours, minute, second);
   }
 }
