@@ -51,9 +51,11 @@ public class AddFriendFragment extends Fragment {
     final ArrayList<JSONObject> friendProfileList = new ArrayList<>();
 
     friendProfileList.addAll(FetchFriendUtil.mFriendList);
+    friendProfileList.addAll(FetchFriendUtil.mInvitingFriendList);
 //    friendProfileList.addAll(FetchFriendUtil.mConfirmedFriendList);
     friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
     friendProfileList.addAll(GetFriendConfirmService.friendRepliedList);
+
 
     addFriendRecyclerViewAdapter = new AddFriendRecyclerViewAdapter(friendProfileList, context);
     linearLayoutManager = new LinearLayoutManager(context);
@@ -80,6 +82,9 @@ public class AddFriendFragment extends Fragment {
 //            friendProfileList.addAll(FetchFriendUtil.mConfirmedFriendList);
 //            Log.v(TAG, "mConfirmedFriendList.size() == " + FetchFriendUtil.mConfirmedFriendList.size
 //              ());
+            friendProfileList.addAll(FetchFriendUtil.mInvitingFriendList);
+            Log.v(TAG, "mFriendList.size() == " + FetchFriendUtil.mInvitingFriendList.size());
+
             friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
             Log.v(TAG, "friendWaitingReplyList.size() == " + GetFriendInviteService
               .friendWaitingReplyList.size());

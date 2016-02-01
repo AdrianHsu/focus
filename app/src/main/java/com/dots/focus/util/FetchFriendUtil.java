@@ -27,6 +27,7 @@ public class FetchFriendUtil {
     public static ArrayList<JSONObject> mFriendList = new ArrayList<>();
     public static ArrayList<Long> mConfirmingFriendList = new ArrayList<>();
     public static ArrayList<JSONObject> mConfirmedFriendList = new ArrayList<>();
+    public static ArrayList<JSONObject> mInvitingFriendList = new ArrayList<>();
 
     public static int checkFriend(Long id) throws JSONException {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
@@ -85,6 +86,14 @@ public class FetchFriendUtil {
     public static void friendInvite(Long id, String name) {
         if (!mConfirmingFriendList.contains(id))
             mConfirmingFriendList.add(id);
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", id);
+            jsonObject.put("name", name);
+            jsonObject.put("state", FriendRelationship.FRIEND_INVITING.getValue());
+            mInvitingFriendList.add(jsonObject);
+        } catch(JSONException e) { Log.d(TAG, e.getMessage()); }
 
         final ParseObject invite = new ParseObject("FriendInvitation");
 
@@ -202,6 +211,14 @@ public class FetchFriendUtil {
                 mFriendList.remove(i);
                 return;
             }
+    }
+    public static void checkRemoveMIFL(Long id) throws JSONException {
+        for (int i = 0, size = mInvitingFriendList.size(); i < size; ++i) {
+            if (mInvitingFriendList.get(i).getLong("id") == id) {
+                mInvitingFriendList.remove(i);
+                return;
+            }
+        }
     }
 
 //    public static void waitFriendConfirm() {
