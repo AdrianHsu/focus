@@ -419,7 +419,7 @@ public class TrackAccessibilityUtil {
 
                 case "Weather":
                 case "Lifestyle":
-                case "Transporation":
+                case "Transportation":
                 case "Family":
                 case "Travel & Local":
                 case "Health & Fitness":

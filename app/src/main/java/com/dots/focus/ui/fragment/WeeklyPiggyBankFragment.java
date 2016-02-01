@@ -10,9 +10,12 @@ import android.view.ViewGroup;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.WeeklyPiggyBankRecyclerViewAdapter;
+import com.dots.focus.util.TrackAccessibilityUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class WeeklyPiggyBankFragment extends Fragment {
@@ -33,6 +36,9 @@ public class WeeklyPiggyBankFragment extends Fragment {
       mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.weekly_piggy_bank_recycler_view);
 
       final List<String> stringList = new ArrayList<>();
+      long time = TrackAccessibilityUtil.getPrevXWeek(0);
+      int[] timeBox = TrackAccessibilityUtil.timeBox(time);
+
 
       for(int i = 0; i < 7; i++)
         stringList.add("12/07 (星期日) -00:15:30");
