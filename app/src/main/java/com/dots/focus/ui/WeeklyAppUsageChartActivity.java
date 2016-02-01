@@ -226,18 +226,8 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     mChart.invalidate();
   }
   private ArrayList<Entry> setData(int week, boolean IS_MINUTE) { // 0: current week, 1: last week
-
-    Calendar calendar = Calendar.getInstance();
-    long time = System.currentTimeMillis() + TrackAccessibilityUtil.getTimeOffset() *
-            TrackAccessibilityUtil.anHour,
-         oneDay = 86400000;
-    time = oneDay * (time / oneDay);
-    calendar.setTimeInMillis(time);
-    Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
-            (Calendar.DAY_OF_WEEK));
-    calendar.setTimeInMillis(time - 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK) - 1) *
-            oneDay - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
-    int[] x = TrackAccessibilityUtil.weekUsage(calendar);
+    long time = TrackAccessibilityUtil.getPrevXWeek(week);
+    int[] x = TrackAccessibilityUtil.weekUsage(time);
 
     ArrayList<Entry> vals1 = new ArrayList<>();
 
