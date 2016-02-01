@@ -50,11 +50,11 @@ public class AppLeaderBoardRecyclerViewAdapter extends
           AppInfo mAppInfo = FetchAppUtil.getApp(index);
           Drawable mIcon = mAppInfo.getIcon();
 
+          holder.appNameTv.setText(mAppInfo.getName());
           holder.appTimeTv.setText(timeToString((int) e.getVal()));
           holder.appIconIv.setImageDrawable(mIcon);
           String rank = String.valueOf(position + 1);
           holder.rankingTv.setText(rank);
-
 
           if(position == 0)
               holder.appTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
@@ -195,7 +195,7 @@ public class AppLeaderBoardRecyclerViewAdapter extends
             super(itemView);
             if (isItem) {
                 appNameTv = (TextView) itemView.findViewById(
-                        R.id.textview);
+                        R.id.app_name);
                 appTimeTv = (TextView) itemView.findViewById(R.id.app_time);
                 rankingTv = (TextView) itemView.findViewById(R.id.ranking_text_view);
                 appIconIv = (ImageView) itemView.findViewById(R.id.imageview);

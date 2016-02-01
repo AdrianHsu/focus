@@ -63,27 +63,13 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         for (int i = 0, size = appLength.size(); i < size; ++i)
             indexList.add(new Entry(appLength.get(i), i));
 
-
-        for (int i = 0, size = indexList.size(); i < size; ++i) {
-            for (int j = i; j != 0; --j) {
-                if (indexList.get(j).getVal() > indexList.get(j - 1).getVal()) {
-                    Entry e1 = indexList.get(j),
-                          e2 = indexList.get(j - 1);
-                    indexList.set(j, e2);
-                    indexList.set(j - 1, e1);
-                }
-                else    break;
-            }
-        }
-      /*
         Collections.sort(indexList, new Comparator<Entry>() {
                     @Override
                     public int compare(Entry e1, Entry e2) {
-                        if (e1.getVal() > e2.getVal())  return 1;
-                        return 0;
+                        return (int)(e2.getVal() - e1.getVal());
                     }
                 });
-      */
+
         // indexList can be used
 
         mRecyclerView = (UltimateRecyclerView) findViewById(R.id.hour_app_usage_recycler_view);
