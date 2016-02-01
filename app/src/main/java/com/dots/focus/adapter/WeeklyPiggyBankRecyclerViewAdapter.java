@@ -6,6 +6,7 @@ package com.dots.focus.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -40,7 +41,8 @@ public class WeeklyPiggyBankRecyclerViewAdapter extends UltimateViewAdapter<Week
 
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
       if(WeeklyPiggyBankFragment.positiveColor[position])
-        holder.textViewSample.setTextColor(Color.parseColor("#F3AE4E"));
+        holder.textViewSample.setTextColor(ContextCompat.getColor(mContext, R.color
+                                .yellow));
 
       if (mDragStartListener != null) {
 

@@ -3,6 +3,7 @@ package com.dots.focus.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,10 +62,16 @@ public class WeeklyPiggyBankFragment extends Fragment {
       }
     }
 
-    if(timeBox[7] >= 0)
+    if(timeBox[7] >= 0) {
       total.setText("+" + timeToString(timeBox[7]));
-    else
+      total.setTextColor(ContextCompat.getColor(mContext, R.color
+                              .yellow));
+    }
+    else {
       total.setText("-" + timeToString(timeBox[7] * (-1)));
+      total.setTextColor(ContextCompat.getColor(mContext, R.color
+                              .red));
+    }
 
     simpleRecyclerViewAdapter = new WeeklyPiggyBankRecyclerViewAdapter(stringList);
     linearLayoutManager = new LinearLayoutManager(mContext);
