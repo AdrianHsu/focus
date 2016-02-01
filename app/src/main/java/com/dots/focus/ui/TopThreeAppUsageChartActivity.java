@@ -164,7 +164,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     // set the marker to the chart
     mChart.setMarkerView(mv);
     // add data
-    setData(7, 5);
+    setData();
 
     mChart.getLegend().setEnabled(false);
 
@@ -201,18 +201,12 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
 
   }
 
-  private void setData(int count, float range) {
+  private void setData() {
 
     ArrayList<String> xVals = new ArrayList<>();
-    for (int i = 0; i < count; i++) {
-      xVals.add((i) + "");
-    }
+
 
     ArrayList<Entry> vals1 = new ArrayList<>();
-
-    for (int i = 0; i < count; i++) {
-      vals1.add(new Entry(0, i));
-    }
 
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
