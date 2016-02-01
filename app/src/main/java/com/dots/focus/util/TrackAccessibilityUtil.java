@@ -340,6 +340,32 @@ public class TrackAccessibilityUtil {
         return appLengths;
 
     }
+    public static int[] timeBox() {
+        int[] x = new int[8];
+        long today = getLocalDay(System.currentTimeMillis());
+        List<DayBlock> dayBlocks = new ArrayList<>();
+        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            dayBlocks = query.find();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+        int maxDay = 0;
+        for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+            int count = 0, day = (int)((today - dayBlocks.get(i).getTime()) / 86400000);
+            List<Integer> appLength = dayBlocks.get(i).getAppLength();
+            for (int j = 0, n = appLength.size(); j < n; ++j)
+                count += appLength.get(j);
+            if (day < 7)    x[day] = count;
+            if (day > maxDay)   maxDay = day;
+            x[7] += count;
+        }
+        x[7] -= 2 * anHour * (maxDay + 1);
+
+        return x;
+    }
 
     public static int[] getCategory() {
         int[] data = new int[] {0, 0, 0, 0, 0, 0, 0};
