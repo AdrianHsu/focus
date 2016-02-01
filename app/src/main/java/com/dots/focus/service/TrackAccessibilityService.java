@@ -191,6 +191,24 @@ public class TrackAccessibilityService extends AccessibilityService {
             updateApp(false);
         }
         else updateApp(true);
+
+        long now = System.currentTimeMillis();
+        HourBlock hourBlock = TrackAccessibilityUtil.getCurrentHour(now);
+        DayBlock  dayBlock  = TrackAccessibilityUtil.getCurrentDay(now);
+
+        List<Integer> appLength1 = hourBlock.getAppLength(),
+                      appLength2 = dayBlock.getAppLength();
+        int size = FetchAppUtil.getSize();
+        if (appLength1.size() < size) {
+            for (int i = appLength1.size(); i < size; ++i)
+                appLength1.add(0);
+            hourBlock.setAppLength(appLength1);
+        }
+        if (appLength2.size() < size) {
+            for (int i = appLength2.size(); i < size; ++i)
+                appLength2.add(0);
+            dayBlock.setAppLength(appLength2);
+        }
     }
 
     @Override

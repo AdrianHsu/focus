@@ -224,8 +224,9 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     calendar.setTimeInMillis(time);
     Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
                             (Calendar.DAY_OF_WEEK));
-    calendar.setTimeInMillis(time - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
-    //- 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK)  - 1) * oneDay
+    calendar.setTimeInMillis(time - TrackAccessibilityUtil.getTimeOffset() *
+            TrackAccessibilityUtil.anHour - (calendar.get(Calendar.DAY_OF_WEEK)  - 1) * oneDay);
+    //- 7 * oneDay * week
 
     appLengths = TrackAccessibilityUtil.weekAppUsage(calendar
                             .getTimeInMillis());

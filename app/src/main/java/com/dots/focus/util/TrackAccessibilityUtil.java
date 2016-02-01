@@ -329,7 +329,7 @@ public class TrackAccessibilityUtil {
             Log.d(TAG, e.getMessage());
         }
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
-            int day = (int)((dayBlocks.get(i).getTime() - time0) / 86400000);
+            int day = (int)((dayBlocks.get(i).getTime() - time0) / oneDay);
             List<Integer> appLength2 = dayBlocks.get(i).getAppLength();
             for (int j = 0, n = appLength2.size(); j < n && j < temp; ++j)
                 appLength.set(j, appLength.get(j) + appLength2.get(j));
