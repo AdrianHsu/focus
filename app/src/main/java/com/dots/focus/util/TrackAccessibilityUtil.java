@@ -329,7 +329,7 @@ public class TrackAccessibilityUtil {
             Log.d(TAG, e.getMessage());
         }
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
-            int day = (int)((dayBlocks.get(i).getTime() - time0) / 86400000);
+            int day = (int)((dayBlocks.get(i).getTime() - time0) / oneDay);
             List<Integer> appLength2 = dayBlocks.get(i).getAppLength();
             for (int j = 0, n = appLength2.size(); j < n && j < temp; ++j)
                 appLength.set(j, appLength.get(j) + appLength2.get(j));
@@ -339,6 +339,36 @@ public class TrackAccessibilityUtil {
 
         return appLengths;
 
+    }
+    public static int[] timeBox() {
+        int[] x = new int[8];
+		for (int i = 0; i < 7; ++i)
+			x[i] = -1;
+		x[7] = 0;
+
+        long today = getLocalDay(System.currentTimeMillis());
+        List<DayBlock> dayBlocks = new ArrayList<>();
+        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            dayBlocks = query.find();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+        int maxDay = 0;
+        for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+            int count = 0, day = (int)((today - dayBlocks.get(i).getTime()) / 86400000);
+            List<Integer> appLength = dayBlocks.get(i).getAppLength();
+            for (int j = 0, n = appLength.size(); j < n; ++j)
+                count += appLength.get(j);
+            if (day < 7)    x[day] = count;
+            if (day > maxDay)   maxDay = day;
+            x[7] += count;
+        }
+        x[7] -= 2 * anHour * (maxDay + 1);
+
+        return x;
     }
 
     public static int[] getCategory() {

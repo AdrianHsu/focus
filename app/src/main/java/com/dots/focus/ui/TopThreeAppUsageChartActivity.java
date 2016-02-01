@@ -240,6 +240,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
                             TrackAccessibilityUtil.anHour - (calendar.get(Calendar.DAY_OF_WEEK)
                             - 1) * oneDay);
     //- 7 * oneDay * week
+
     appLengths = TrackAccessibilityUtil.weekAppUsage(calendar
                             .getTimeInMillis());
     List<Integer> appLength = appLengths.get(7);
