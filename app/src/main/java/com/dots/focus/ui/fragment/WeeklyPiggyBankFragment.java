@@ -26,6 +26,7 @@ public class WeeklyPiggyBankFragment extends Fragment {
   private UltimateRecyclerView mRecyclerView;
   private WeeklyPiggyBankRecyclerViewAdapter simpleRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
+  public static boolean []positiveColor;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class WeeklyPiggyBankFragment extends Fragment {
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.weekly_piggy_bank_recycler_view);
 
+    positiveColor = new boolean[7];
     final List<String> stringList = new ArrayList<>();
     long time = TrackAccessibilityUtil.getPrevXWeek(0);
     int[] timeBox = TrackAccessibilityUtil.timeBox(time);
@@ -48,10 +50,14 @@ public class WeeklyPiggyBankFragment extends Fragment {
         stringList.add(weekString[i] + " +" + "00:00:00");
       else {
         int t = (2 * (TrackAccessibilityUtil.anHour / 1000)) - timeBox[i];
-        if(t >= 0)
+        if(t >= 0) {
           stringList.add(weekString[i] + " +" + timeToString(t));
-        else
+          positiveColor[i] = true;
+        }
+        else {
+          positiveColor[i] = false;
           stringList.add(weekString[i] + " -" + timeToString(t * (-1)));
+        }
       }
     }
 

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.ui.fragment.WeeklyPiggyBankFragment;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -38,7 +39,7 @@ public class WeeklyPiggyBankRecyclerViewAdapter extends UltimateViewAdapter<Week
     if (position < getItemCount() && (customHeaderView != null ? position <= stringList.size() : position < stringList.size()) && (customHeaderView != null ? position > 0 : true)) {
 
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
-      if(position % 3 == 0)
+      if(WeeklyPiggyBankFragment.positiveColor[position])
         holder.textViewSample.setTextColor(Color.parseColor("#F3AE4E"));
 
       if (mDragStartListener != null) {
