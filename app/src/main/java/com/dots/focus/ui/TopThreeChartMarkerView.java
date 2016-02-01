@@ -66,7 +66,7 @@ public class TopThreeChartMarkerView extends MarkerView {
     itemViewArray[1] = v.findViewById(R.id.second_adapter);
     itemViewArray[2] = v.findViewById(R.id.third_adapter);
 
-    int []topThreeAppIndex = TopThreeAppUsageChartActivity.mIndexList;
+    Integer []topThreeAppIndex = TopThreeAppUsageChartActivity.defaultMultiChoice;
     List<List<Integer>> appLengths = TopThreeAppUsageChartActivity.appLengths;
 
     for(int i = 0; i < 3; i++) {
@@ -76,11 +76,18 @@ public class TopThreeChartMarkerView extends MarkerView {
       TextView appTimeTv = (TextView) itemViewArray[i].findViewById(R.id.app_time);
       ImageView appIconIv = (ImageView) itemViewArray[i].findViewById(R.id.imageview);
 
+      if(topThreeAppIndex[i] == null) {
+
+        appIconIv.setImageDrawable(null);
+        appNameTv.setText("");
+        appTimeTv.setText("");
+        continue;
+      }
       int index = topThreeAppIndex[i];
       AppInfo mAppInfo = FetchAppUtil.getApp(index);
       Drawable mIcon = mAppInfo.getIcon();
 
-      int time = appLengths.get(i).get(topThreeAppIndex[i]);
+      int time = appLengths.get(pickedDay).get(index);
 
       if(mIcon != null) {
         if(i != 3) {
