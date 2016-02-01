@@ -26,31 +26,7 @@ public class TrackAccessibilityUtil {
     public static int getTimeOffset() {
         return TimeZone.getDefault().getOffset(System.currentTimeMillis()) / anHour;
     }
-/*
-    public static int[] getCategory() {
-        int[] data = new int[] {0, 0, 0, 0};
-        List<Integer> appLength = getCurrentHour(System.currentTimeMillis()).getList("appLength");
-        for (int i = 0; i < appLength.size(); ++i) {
-            Log.d(TAG, "FetchAppUtil.getApp: " + FetchAppUtil.getApp(i).getPackageName());
-            String temp = FetchAppUtil.getApp(i).getCategory();
-            switch (temp) {
-                case "Social":
-                    data[0] += appLength.get(i);
-                    break;
-                case "Productivity":
-                    data[1] += appLength.get(i);
-                    break;
-                case "Communication":
-                    data[2] += appLength.get(i);
-                    break;
-                default:
-                    data[3] += appLength.get(i);
-                    break;
-            }
-        }
-        return data;
-    }
-*/
+
     public static DayBlock getCurrentDay(long time){
         long localDay = getLocalDay(time);
 
@@ -363,5 +339,86 @@ public class TrackAccessibilityUtil {
 
         return appLengths;
 
+    }
+
+    public static int[] getCategory() {
+        int[] data = new int[] {0, 0, 0, 0, 0, 0, 0};
+        List<DayBlock> dayBlocks = new ArrayList<>();
+        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            dayBlocks = query.find();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+        int size = FetchAppUtil.getSize();
+        List<Integer> appLength = new ArrayList<>(size);
+        for (int i = 0; i < size; ++i)
+            appLength.add(0);
+
+        for (int i = 0, n = dayBlocks.size(); i < n; ++i) {
+            List<Integer> appLength1 = dayBlocks.get(i).getAppLength();
+            for (int j = 0, temp = appLength1.size(); j < temp && j < size; ++j)
+                appLength.set(j, appLength.get(j) + appLength1.get(j));
+        }
+
+        for (int i = 0; i < size; ++i) {
+            switch (FetchAppUtil.getApp(i).getCategory()) {
+                case "Social":
+                case "Communication":
+                    data[0] += appLength.get(i);
+                    break;
+                case "Productivity":
+                case "Finance":
+                case "Business":
+                    data[1] += appLength.get(i);
+                    break;
+
+                case "Education":
+                case "News & Magazines":
+                case "Books & Reference":
+                    data[2] += appLength.get(i);
+                    break;
+
+                case "Weather":
+                case "Lifestyle":
+                case "Transporation":
+                case "Family":
+                case "Travel & Local":
+                case "Health & Fitness":
+                case "Sports":
+                case "Shopping":
+                case "Medical":
+                    data[3] += appLength.get(i);
+                    break;
+
+                case "Game":
+                case "Comics":
+                    data[4] += appLength.get(i);
+                    break;
+
+                case "Media & Video":
+                case "Music & Audio":
+                case "Entertainment":
+                case "Photography":
+                    data[5] += appLength.get(i);
+                    break;
+
+                case "Android Wear":
+                case "Libraries & Demo":
+                case "Live Wallpaper":
+                case "Personalization":
+                case "Tools":
+                case "Widgets":
+                    data[6] += appLength.get(i);
+                    break;
+
+                default:
+                    Log.d(TAG, "No such category: " + FetchAppUtil.getApp(i).getCategory());
+                    break;
+            }
+        }
+        return data;
     }
 }
