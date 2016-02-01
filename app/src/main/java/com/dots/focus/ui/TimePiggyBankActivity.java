@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.TimePiggyBankTabPagerAdapter;
+import com.parse.ParseUser;
 
 /**
  * Created by AdrianHsu on 15/9/23.
@@ -24,7 +25,9 @@ public class TimePiggyBankActivity extends OverviewChartActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("許秉鈞's 時間存錢筒");
+    ParseUser user = ParseUser.getCurrentUser();
+    String name = user.getString("user_name");
+    getSupportActionBar().setTitle(name + "'s 時間存錢筒");
 
     TimePiggyBankTabPagerAdapter adapter = new TimePiggyBankTabPagerAdapter
                             (getSupportFragmentManager());
