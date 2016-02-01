@@ -19,6 +19,7 @@ import java.util.TimeZone;
 
 public class TrackAccessibilityUtil {
     public static int anHour = 3600000;
+    public static long aDay = 86400000;
     private static DayBlock currentDay = null;
     private static HourBlock currentHour = null;
     private static String TAG = "TrackAccessibilityUtil";
@@ -97,33 +98,33 @@ public class TrackAccessibilityUtil {
             currentDay.saveEventually();
         currentDay = new DayBlock(dayInLong);
         currentDay.saveEventually(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.d(TAG, "currentDay pin error: " + e.getMessage());
-                }
-                List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
-                if (hourBlocks == null) {
-                    Log.d(TAG, "hourBlocks is null.");
-                    return;
-                }
-                if (hourBlocks.size() < 24) {
-                    Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
-                    return;
-                }
-                for (int i = 0; i < 24; ++i) {
-                    if (!hourBlocks.get(i).equals("")) {
-                        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
-                        query.getInBackground(hourBlocks.get(i), new GetCallback<HourBlock>() {
-                            @Override
-                            public void done(HourBlock hourBlock, ParseException e) {
-                                if (hourBlock != null && e == null)
-                                    hourBlock.setDayBlock(getCurrentDay(dayInLong).getObjectId());
-                            }
-                        });
-                    }
-                }
+          @Override
+          public void done(ParseException e) {
+            if (e != null) {
+              Log.d(TAG, "currentDay pin error: " + e.getMessage());
             }
+            List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
+            if (hourBlocks == null) {
+              Log.d(TAG, "hourBlocks is null.");
+              return;
+            }
+            if (hourBlocks.size() < 24) {
+              Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
+              return;
+            }
+            for (int i = 0; i < 24; ++i) {
+              if (!hourBlocks.get(i).equals("")) {
+                ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
+                query.getInBackground(hourBlocks.get(i), new GetCallback<HourBlock>() {
+                  @Override
+                  public void done(HourBlock hourBlock, ParseException e) {
+                    if (hourBlock != null && e == null)
+                      hourBlock.setDayBlock(getCurrentDay(dayInLong).getObjectId());
+                  }
+                });
+              }
+            }
+          }
         });
         currentDay.pinInBackground();
     }
@@ -191,13 +192,12 @@ public class TrackAccessibilityUtil {
 
     public static int[] weekUsage(long time0) {
         int[] x = new int[7];
-        long oneDay = 86400000;
         ArrayList<Long> times = new ArrayList<>();
         times.ensureCapacity(7);
         List<DayBlock> dayBlocks = new ArrayList<>();
         for (int i = 0; i < 7; ++i) {
             x[i] = 0;
-            times.add(time0 + i * oneDay);
+            times.add(time0 + i * aDay);
         }
 
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
@@ -210,7 +210,7 @@ public class TrackAccessibilityUtil {
         }
 
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
-            int day = (int) ((dayBlocks.get(i).getLong("time") - time0) / oneDay);
+            int day = (int) ((dayBlocks.get(i).getLong("time") - time0) / aDay);
             List<Integer> appLength = dayBlocks.get(i).getAppLength();
 
             for (int j = 0, n = appLength.size(); j < n; ++j)
@@ -312,12 +312,12 @@ public class TrackAccessibilityUtil {
         List<Integer> appLength = new ArrayList<>(temp);
         for (int i = 0; i < temp; ++i)
             appLength.add(0);
-        long oneDay = 86400000;
+
         ArrayList<Long> times = new ArrayList<>();
         times.ensureCapacity(7);
         List<DayBlock> dayBlocks = new ArrayList<>();
         for (int i = 0; i < 7; ++i)
-            times.add(time0 + i * oneDay);
+            times.add(time0 + i * aDay);
 
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
         query.whereContainedIn("time", times);
@@ -328,7 +328,7 @@ public class TrackAccessibilityUtil {
             Log.d(TAG, e.getMessage());
         }
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
-            int day = (int)((dayBlocks.get(i).getTime() - time0) / oneDay);
+            int day = (int)((dayBlocks.get(i).getTime() - time0) / aDay);
             List<Integer> appLength2 = dayBlocks.get(i).getAppLength();
             for (int j = 0, n = appLength2.size(); j < n && j < temp; ++j)
                 appLength.set(j, appLength.get(j) + appLength2.get(j));
@@ -372,7 +372,8 @@ public class TrackAccessibilityUtil {
                 if (day < minDay)   minDay = day;
             }
         }
-        x[7] -= 2 * anHour * (maxDay - minDay + 1);
+//        x[7] -= 2 * anHour * (maxDay - minDay + 1);
+        x[7] = 2 * (anHour / 1000) * (maxDay - minDay + 1) - x[7];
 
         return x;
     }
@@ -459,15 +460,33 @@ public class TrackAccessibilityUtil {
     }
 
     public static long getPrevXWeek(int week) { // 0: current week
-        Calendar calendar = Calendar.getInstance();
-        long time = System.currentTimeMillis() + TrackAccessibilityUtil.getTimeOffset() *
-                TrackAccessibilityUtil.anHour,
-                oneDay = 86400000;
-        time = oneDay * (time / oneDay);
+      Calendar calendar = Calendar.getInstance();
+        long time = System.currentTimeMillis() + getTimeOffset() * anHour;
+        time = aDay * (time / aDay);
         calendar.setTimeInMillis(time);
         Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
                 (Calendar.DAY_OF_WEEK));
-        return (time - getTimeOffset() * anHour - 7 * oneDay * week
-                - (calendar.get(Calendar.DAY_OF_WEEK) - 1) * oneDay);
+        return (time - getTimeOffset() * anHour - 7 * aDay * week
+                - (calendar.get(Calendar.DAY_OF_WEEK) - 1) * aDay);
+    }
+
+    public static String[] weekString(long time) {
+        String[] theWeek = new String[7];
+        Calendar calendar = Calendar.getInstance();
+        time += getTimeOffset() * anHour;
+        calendar.setTimeInMillis(time);
+        String[] weekStr = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+
+
+      calendar.setTimeInMillis(time - (calendar.get(Calendar.DAY_OF_WEEK) - 1) * aDay);
+
+        for (int i = 0; i < 7; ++i) {
+            theWeek[i] = "" + calendar.get(Calendar.YEAR) + "/" +
+                                    ( calendar.get(Calendar.MONTH) + 1)  + "/" +
+                            calendar.get(Calendar.DAY_OF_MONTH) + " (" + weekStr[i] + ")";
+            calendar.setTimeInMillis(calendar.getTimeInMillis() + aDay);
+        }
+
+        return theWeek;
     }
 }
