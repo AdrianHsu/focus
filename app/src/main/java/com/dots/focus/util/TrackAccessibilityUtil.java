@@ -342,6 +342,10 @@ public class TrackAccessibilityUtil {
     }
     public static int[] timeBox() {
         int[] x = new int[8];
+		for (int i = 0; i < 7; ++i)
+			x[i] = -1;
+		x[7] = 0;
+
         long today = getLocalDay(System.currentTimeMillis());
         List<DayBlock> dayBlocks = new ArrayList<>();
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
