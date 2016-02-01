@@ -3,7 +3,6 @@ package com.dots.focus.ui;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,8 +17,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -28,11 +25,11 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Philipp Jahoda
  */
-public class DailyChartMarkerView extends MarkerView {
+public class TopThreeChartMarkerView extends MarkerView {
 
   private TextView tvContent;
 
-  public DailyChartMarkerView(Context context, int layoutResource) {
+  public TopThreeChartMarkerView(Context context, int layoutResource) {
     super(context, layoutResource);
 
     tvContent = (TextView) findViewById(R.id.tvContent);
@@ -57,24 +54,20 @@ public class DailyChartMarkerView extends MarkerView {
 
   private void refreshTopThree(Entry e) {
 
-    int pickedHour = e.getXIndex();
-    long t = System.currentTimeMillis(),
-                            offset = TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour;
-    t = 86400000 * ((t + offset) / 86400000 - DailyAppUsageChartActivity.day) - offset;
+    int pickedDay = e.getXIndex();
 
-    List<List<Integer>> hourAppLength = TrackAccessibilityUtil.hourAppLength(t);
-    int [] topThreeAppIndex = TrackAccessibilityUtil.getFirstThree(hourAppLength.get(pickedHour));
-
-    View v = DailyAppUsageChartActivity.topThreeCardHourlyView;
-    TextView pickedHourIntervalTv = (TextView) v.findViewById(R.id.picked_hour_interval);
-    String interval = String.valueOf(pickedHour) + ":00 - " + String.valueOf
-                            (pickedHour + 1) + ":00";
+    View v = TopThreeAppUsageChartActivity.topThreeCardDailyView;
+    TextView pickedHourIntervalTv = (TextView) v.findViewById(R.id.picked_day_interval);
+    String interval = "DAY" + String.valueOf(pickedDay);
     pickedHourIntervalTv.setText(interval);
 
-    View [] itemViewArray = new View [4];
+    View [] itemViewArray = new View [3];
     itemViewArray[0] = v.findViewById(R.id.first_adapter);
     itemViewArray[1] = v.findViewById(R.id.second_adapter);
     itemViewArray[2] = v.findViewById(R.id.third_adapter);
+
+    int []topThreeAppIndex = TopThreeAppUsageChartActivity.mIndexList;
+    List<List<Integer>> appLengths = TopThreeAppUsageChartActivity.appLengths;
 
     for(int i = 0; i < 3; i++) {
 
@@ -83,18 +76,11 @@ public class DailyChartMarkerView extends MarkerView {
       TextView appTimeTv = (TextView) itemViewArray[i].findViewById(R.id.app_time);
       ImageView appIconIv = (ImageView) itemViewArray[i].findViewById(R.id.imageview);
 
-      if(topThreeAppIndex[i] == -1) {
-
-        appIconIv.setImageDrawable(null);
-        appNameTv.setText("");
-        appTimeTv.setText("");
-        continue;
-      }
       int index = topThreeAppIndex[i];
       AppInfo mAppInfo = FetchAppUtil.getApp(index);
       Drawable mIcon = mAppInfo.getIcon();
 
-      int time = hourAppLength.get(pickedHour).get(topThreeAppIndex[i]);
+      int time = appLengths.get(i).get(topThreeAppIndex[i]);
 
       if(mIcon != null) {
         if(i != 3) {

@@ -68,6 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:id="@+id/top_three_itemview"
                 style="@style/FocusCardView.Dark"
                 android:foreground="?android:attr/selectableItemBackground"
                 card_view:cardCornerRadius="4dp"
@@ -87,9 +88,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
-                            android:text="應用軟體用量前三名（一週總和）"
+                            android:text="應用軟體用量前三名  "
                             android:textColor="@color/semi_white"/>
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:id="@+id/picked_day_interval"
+                            android:text="Day ?"
+                            android:textColor="@color/semi_white"/>
                         <Button
                             android:id="@+id/pick_app_button"
                             android:layout_width="wrap_content"
@@ -102,13 +109,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/itemview"
                         android:orientation="vertical">
                         <include layout="@layout/top_three_app_usage_daily_top_three_adapter"
                                  android:id="@+id/first_adapter"/>
                         <include layout="@layout/top_three_app_usage_daily_top_three_adapter"
-                                 android:id="@+id/second_adapter"
-                            />
+                                 android:id="@+id/second_adapter"/>
                         <include layout="@layout/top_three_app_usage_daily_top_three_adapter"
                                  android:id="@+id/third_adapter"/>
                     </LinearLayout>

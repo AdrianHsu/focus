@@ -7,7 +7,9 @@ package com.dots.focus.ui;
  */
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,13 +18,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
+import com.dots.focus.model.AppInfo;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;
@@ -42,7 +47,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class TopThreeAppUsageChartActivity extends OverviewChartActivity implements OnSeekBarChangeListener {
 
@@ -51,12 +59,16 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
   private ArrayAdapter<String> timeInterval;
   private String[] timeIntervalArray = {"小時", "分鐘"};
   private Button pickAppBtn = null;
+  public static View topThreeCardDailyView;
+  public static List<List<Integer>> appLengths;
+  public static int[] mIndexList;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_top_three_app_usage_chart);
+    topThreeCardDailyView = findViewById(R.id.top_three_itemview);
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -134,9 +146,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
 
     x.setPosition(XAxis.XAxisPosition.BOTTOM);
     x.setAxisLineWidth(3.0f);
-
     x.setAxisLineColor(Color.parseColor("#F3AE4E"));
-
 
     YAxis y = mChart.getAxisLeft();
     y.setEnabled(true);
@@ -152,7 +162,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
 
     mChart.getAxisRight().setEnabled(false);
 
-    LimitLine ll1 = new LimitLine(130f, "Upper Limit");
+    LimitLine ll1 = new LimitLine(5f, "Upper Limit");
     ll1.setLineWidth(2f);
     ll1.enableDashedLine(2f, 2f, 2f);
     ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
@@ -160,11 +170,15 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     ll1.setTextColor(Color.WHITE);
     y.addLimitLine(ll1);
 
-    ChartMarkerView mv = new ChartMarkerView(this, R.layout.chart_marker_view);
+    TopThreeChartMarkerView mv = new TopThreeChartMarkerView(this, R.layout
+                            .top_three_chart_marker_view);
     // set the marker to the chart
     mChart.setMarkerView(mv);
     // add data
-    setData();
+    for(int i = 0; i < 3; i++) {
+      ArrayList<Entry> vals1 = setTopThreeData(i);
+      drawChart(vals1, i);
+    }
 
     mChart.getLegend().setEnabled(false);
 
@@ -200,13 +214,46 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     // TODO Auto-generated method stub
 
   }
+  private ArrayList<Entry> setTopThreeData(int appRank) {
 
-  private void setData() {
+    Calendar calendar = Calendar.getInstance();
+    long time = System.currentTimeMillis() + TrackAccessibilityUtil.getTimeOffset() *
+                            TrackAccessibilityUtil.anHour,
+                            oneDay = 86400000;
+    time = oneDay * (time / oneDay);
+    calendar.setTimeInMillis(time);
+    Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
+                            (Calendar.DAY_OF_WEEK));
+    calendar.setTimeInMillis(time - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
+    //- 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK)  - 1) * oneDay
 
-    ArrayList<String> xVals = new ArrayList<>();
+    appLengths = TrackAccessibilityUtil.weekAppUsage(calendar
+                            .getTimeInMillis());
+    List<Integer> appLength = appLengths.get(7);
 
+    ArrayList<Entry> indexList = new ArrayList<>(appLength.size());
+    for (int i = 0, size = appLength.size(); i < size; ++i)
+      indexList.add(new Entry(appLength.get(i), i));
 
+    Collections.sort(indexList, new Comparator<Entry>() {
+      @Override
+      public int compare(Entry e1, Entry e2) {
+        return (int) (e2.getVal() - e1.getVal());
+      }
+    });
+    mIndexList = new int[3];
+    for (int i = 0; i < 3; i++) {
+      mIndexList[i] = indexList.get(i).getXIndex();
+    }
+    // top 1 app
     ArrayList<Entry> vals1 = new ArrayList<>();
+    for (int i = 0; i < 7; i++) {
+      int mTime = appLengths.get(i).get(mIndexList[appRank]);
+      vals1.add(new Entry(mTime, i));
+    }
+    return vals1;
+  }
+  private void drawChart(ArrayList<Entry> vals1, int index) {
 
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
@@ -218,8 +265,20 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     set1.setCircleSize(4f);
     set1.setCircleColor(Color.WHITE);
     set1.setHighLightColor(Color.rgb(244, 117, 117));
-    set1.setColor(Color.WHITE);
-    set1.setFillColor(Color.parseColor("#607D8B"));
+    if(index == 0) {
+      set1.setColor(ContextCompat.getColor(this, R.color.top_three_first));
+      set1.setFillColor(ContextCompat.getColor(this, R.color.top_three_first));
+    }
+    else if (index == 1) {
+      set1.setColor(ContextCompat.getColor(this, R.color.top_three_second));
+      set1.setFillColor(ContextCompat.getColor(this, R.color.top_three_second));
+
+    }
+    else if (index == 2) {
+      set1.setColor(ContextCompat.getColor(this, R.color.top_three_third));
+      set1.setFillColor(ContextCompat.getColor(this, R.color.top_three_third));
+    }
+
     set1.setFillAlpha(50);
     set1.setDrawHorizontalHighlightIndicator(false);
     set1.setFillFormatter(new FillFormatter() {
@@ -232,6 +291,10 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
     dataSets.add(set1); // add the datasets
 
+    ArrayList<String> xVals = new ArrayList<>();
+    for (int i = 0; i < 7; i++) {
+      xVals.add((i) + "");
+    }
 //     create a data object with the datasets
     LineData data = new LineData(xVals, dataSets);
     data.setValueTextSize(9f);
@@ -239,6 +302,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
 
     mChart.setData(data);
   }
+
   private void createPickAppDialog(String[] appNameList) {
     new MaterialDialog.Builder(this)
                             .title("選擇您感興趣的App(至多三個)") // at most 3 apps limited
@@ -259,4 +323,12 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
                             .alwaysCallMultiChoiceCallback() // the callback will always be called, to check if selection is still allowed
                             .show();
   }
+  private String timeToString(int seconds) {
+    int day = (int) TimeUnit.SECONDS.toDays(seconds);
+    long hours = TimeUnit.SECONDS.toHours(seconds) - (day * 24);
+    long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
+    long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
+    return String.format("%02d:%02d:%02d", hours, minute, second);
+  }
+
 }

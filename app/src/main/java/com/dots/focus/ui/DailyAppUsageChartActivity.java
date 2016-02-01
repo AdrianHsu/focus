@@ -176,7 +176,7 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     ll1.setTextColor(Color.WHITE);
     y.addLimitLine(ll1);
 
-    DailyChartMarkerView mv = new DailyChartMarkerView(this, R.layout.chart_marker_view);
+    DailyChartMarkerView mv = new DailyChartMarkerView(this, R.layout.daily_chart_marker_view);
 
     // set the marker to the chart
     mChart.setMarkerView(mv);

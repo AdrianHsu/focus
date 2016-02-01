@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.AppLeaderBoardRecyclerViewAdapter;
@@ -38,7 +39,6 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_app_leader_board);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
