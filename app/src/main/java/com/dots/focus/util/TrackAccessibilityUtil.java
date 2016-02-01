@@ -324,8 +324,16 @@ public class TrackAccessibilityUtil {
         }
         return x;
     }
-    public static List<Integer> weekAppUsage(long time0) {
+    public static List<List<Integer>> weekAppUsage(long time0) {
+        List<List<Integer>> appLengths = new ArrayList<>(8);
         int temp = FetchAppUtil.getSize();
+
+        for (int i = 0; i < 7; ++i) {
+            List<Integer> tempLength = new ArrayList<Integer>(temp);
+            for (int j = 0; j < temp; ++j)
+                tempLength.add(0);
+            appLengths.add(tempLength);
+        }
         List<Integer> appLength = new ArrayList<>(temp);
         for (int i = 0; i < temp; ++i)
             appLength.add(0);
@@ -345,12 +353,15 @@ public class TrackAccessibilityUtil {
             Log.d(TAG, e.getMessage());
         }
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+            int day = (int)((dayBlocks.get(i).getTime() - time0) / 86400000);
             List<Integer> appLength2 = dayBlocks.get(i).getAppLength();
             for (int j = 0, n = appLength2.size(); j < n && j < temp; ++j)
                 appLength.set(j, appLength.get(j) + appLength2.get(j));
+            appLengths.set(day, appLength2);
         }
+        appLengths.add(appLength);
 
-        return appLength;
+        return appLengths;
 
     }
 }

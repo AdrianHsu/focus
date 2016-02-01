@@ -55,7 +55,10 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         calendar.setTimeInMillis(time - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
         //- 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK)  - 1) * oneDay
 
-        List<Integer>appLength = TrackAccessibilityUtil.weekAppUsage(calendar.getTimeInMillis());
+        List<List<Integer>> appLengths = TrackAccessibilityUtil.weekAppUsage(calendar
+                .getTimeInMillis());
+        List<Integer> appLength = appLengths.get(7);
+
         ArrayList<Entry> indexList = new ArrayList<>(appLength.size());
         for (int i = 0, size = appLength.size(); i < size; ++i)
             indexList.add(new Entry(appLength.get(i), i));
