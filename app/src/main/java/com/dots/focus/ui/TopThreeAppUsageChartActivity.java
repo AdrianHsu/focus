@@ -69,6 +69,8 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
   public static View topThreeCardDailyView;
   public static List<List<Integer>> appLengths;
   public static Integer[] defaultMultiChoice;
+  public static Integer[] pickedMultiChoice;
+
   private static final String TAG = "TopThree";
 
   @Override
@@ -160,6 +162,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     // set the marker to the chart
     mChart.setMarkerView(mv);
     defaultMultiChoice = new Integer[3];
+    pickedMultiChoice = new Integer[3];
     // add data
     for(int i = 0; i < 3; i++) {
       ArrayList<Entry> vals1 = setTopThreeData(i, false);
@@ -373,15 +376,17 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
                                   if(i < which.length) {
                                     Log.v(TAG, "test on Selection: " + i + ", which.length: " +
                                                             which.length);
-                                    defaultMultiChoice[i] = which[i];
+                                    pickedMultiChoice[i] = which[i];
                                   }
                                   else
-                                    defaultMultiChoice[i] = null;
+                                    pickedMultiChoice[i] = null;
                                 }
                                 
                                 // Adrian: cannot fix the bug for <= 3, null pointer exception..
                                 if(which.length != 3) {
                                   dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+                                } else {
+                                  dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
                                 }
                                 return allowSelection;
                               }
@@ -390,6 +395,8 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
                               @Override
                               public void onDismiss(DialogInterface dialogInterface) {
                                 Log.v(TAG, "on dismiss");
+
+                                defaultMultiChoice = pickedMultiChoice;
                                 for(int i = 0; i < 3; i++) {
                                   if(spinnerChoice == 1) {
                                     if(defaultMultiChoice[i] != null) {
@@ -405,6 +412,12 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
                                 }
                                 resetTopThree();
                                 reCreateChart();
+                              }
+                            })
+                            .cancelListener(new DialogInterface.OnCancelListener() {
+                              @Override
+                              public void onCancel(DialogInterface dialogInterface) {
+                                pickedMultiChoice = defaultMultiChoice;
                               }
                             })
                             .positiveText("完成")
