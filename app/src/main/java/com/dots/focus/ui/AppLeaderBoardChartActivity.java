@@ -44,19 +44,10 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("常用應用程式排行榜");
 
-        Calendar calendar = Calendar.getInstance();
-        long time = System.currentTimeMillis() + TrackAccessibilityUtil.getTimeOffset() *
-                TrackAccessibilityUtil.anHour,
-                oneDay = 86400000;
-        time = oneDay * (time / oneDay);
-        calendar.setTimeInMillis(time);
-        Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
-                (Calendar.DAY_OF_WEEK));
-        calendar.setTimeInMillis(time - TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour);
-        //- 7 * oneDay * week - (calendar.get(Calendar.DAY_OF_WEEK)  - 1) * oneDay
 
-        List<List<Integer>> appLengths = TrackAccessibilityUtil.weekAppUsage(calendar
-                .getTimeInMillis());
+        long time = TrackAccessibilityUtil.getPrevXWeek(0);
+
+        List<List<Integer>> appLengths = TrackAccessibilityUtil.weekAppUsage(time);
         List<Integer> appLength = appLengths.get(7);
 
         ArrayList<Entry> indexList = new ArrayList<>(appLength.size());

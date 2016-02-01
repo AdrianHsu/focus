@@ -228,21 +228,10 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
   private ArrayList<Entry> setTopThreeData(int appRank, boolean IS_MINUTE) {
 
     ArrayList<Entry> vals1 = new ArrayList<>();
-    Calendar calendar = Calendar.getInstance();
-    long time = System.currentTimeMillis() + TrackAccessibilityUtil.getTimeOffset() *
-                            TrackAccessibilityUtil.anHour,
-                            oneDay = 86400000;
-    time = oneDay * (time / oneDay);
-    calendar.setTimeInMillis(time);
-    Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
-                            (Calendar.DAY_OF_WEEK));
-    calendar.setTimeInMillis(time - TrackAccessibilityUtil.getTimeOffset() *
-                            TrackAccessibilityUtil.anHour - (calendar.get(Calendar.DAY_OF_WEEK)
-                            - 1) * oneDay);
+    long time = TrackAccessibilityUtil.getPrevXWeek(0);
     //- 7 * oneDay * week
 
-    appLengths = TrackAccessibilityUtil.weekAppUsage(calendar
-                            .getTimeInMillis());
+    appLengths = TrackAccessibilityUtil.weekAppUsage(time);
     List<Integer> appLength = appLengths.get(7);
 
     ArrayList<Entry> indexList = new ArrayList<>(appLength.size());

@@ -189,10 +189,9 @@ public class TrackAccessibilityUtil {
         return x;
     }
 
-    public static int[] weekUsage(Calendar calendar) {
+    public static int[] weekUsage(long time0) {
         int[] x = new int[7];
-        long time0 = calendar.getTimeInMillis(),
-             oneDay = 86400000;
+        long oneDay = 86400000;
         ArrayList<Long> times = new ArrayList<>();
         times.ensureCapacity(7);
         List<DayBlock> dayBlocks = new ArrayList<>();
@@ -340,13 +339,12 @@ public class TrackAccessibilityUtil {
         return appLengths;
 
     }
-    public static int[] timeBox() {
+    public static int[] timeBox(long time) { // time: start of the week
         int[] x = new int[8];
 		for (int i = 0; i < 7; ++i)
 			x[i] = -1;
 		x[7] = 0;
 
-        long today = getLocalDay(System.currentTimeMillis());
         List<DayBlock> dayBlocks = new ArrayList<>();
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
         query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
@@ -356,17 +354,25 @@ public class TrackAccessibilityUtil {
             Log.d(TAG, e.getMessage());
         }
 
-        int maxDay = 0;
+        int maxDay = 0, minDay = 0;
+
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
-            int count = 0, day = (int)((today - dayBlocks.get(i).getTime()) / 86400000);
+            int count = 0, day = (int)((dayBlocks.get(i).getTime() - time) / 86400000);
             List<Integer> appLength = dayBlocks.get(i).getAppLength();
             for (int j = 0, n = appLength.size(); j < n; ++j)
                 count += appLength.get(j);
-            if (day < 7)    x[day] = count;
-            if (day > maxDay)   maxDay = day;
+            if (day < 7 && day > -1)    x[day] = count;
             x[7] += count;
+
+            if (i == 0) {
+                maxDay = day;   minDay = day;
+            }
+            else {
+                if (day > maxDay)   maxDay = day;
+                if (day < minDay)   minDay = day;
+            }
         }
-        x[7] -= 2 * anHour * (maxDay + 1);
+        x[7] -= 2 * anHour * (maxDay - minDay + 1);
 
         return x;
     }
@@ -450,5 +456,18 @@ public class TrackAccessibilityUtil {
             }
         }
         return data;
+    }
+
+    public static long getPrevXWeek(int week) { // 0: current week
+        Calendar calendar = Calendar.getInstance();
+        long time = System.currentTimeMillis() + TrackAccessibilityUtil.getTimeOffset() *
+                TrackAccessibilityUtil.anHour,
+                oneDay = 86400000;
+        time = oneDay * (time / oneDay);
+        calendar.setTimeInMillis(time);
+        Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
+                (Calendar.DAY_OF_WEEK));
+        return (time - getTimeOffset() * anHour - 7 * oneDay * week
+                - (calendar.get(Calendar.DAY_OF_WEEK) - 1) * oneDay);
     }
 }
