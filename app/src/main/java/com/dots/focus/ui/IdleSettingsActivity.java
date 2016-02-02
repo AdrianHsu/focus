@@ -35,6 +35,7 @@ public class IdleSettingsActivity extends BaseActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle("耍廢條件設定");
     seekBar = (SeekBar) findViewById(R.id.seekBar1);
+    // Adrian: 連續要改掉..
     textView = (TextView) findViewById(R.id.textView1);
     doneBtn = (Button) findViewById(R.id.button);
     pickAppBtn = (Button) findViewById(R.id.pick_app_button);

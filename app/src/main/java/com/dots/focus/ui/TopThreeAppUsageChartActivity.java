@@ -64,12 +64,16 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
   private String[] timeIntervalArray = {"秒鐘", "分鐘"};
   private Button pickAppBtn = null;
   private ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-  private int spinnerChoice = 0;
   private boolean initTopThree = true;
   public static View topThreeCardDailyView;
   public static List<List<Integer>> appLengths;
   public static Integer[] defaultMultiChoice;
   public static Integer[] pickedMultiChoice;
+  private TextView weekSwitchTv;
+  private Button daySwitchLeftBtn;
+  private Button daySwitchRightBtn;
+  private boolean IS_MINUTE = false;
+  private int CURRENT_WEEK = 0;
 
   private static final String TAG = "TopThree";
 
@@ -85,6 +89,51 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle("前三應用軟體用量趨勢");
 
+    weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+    String week = TrackAccessibilityUtil.weekPeriodString(0);
+    weekSwitchTv.setText(week);
+
+
+    daySwitchLeftBtn = (Button) findViewById(R.id.day_switch_left_btn);
+    daySwitchLeftBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+
+        CURRENT_WEEK++;
+        weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+        String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
+        weekSwitchTv.setText(week);
+        ArrayList<Entry> val = resetData(CURRENT_WEEK, IS_MINUTE);
+        for(int i = 0; i < 3; i++) {
+          if(defaultMultiChoice[i] != null) {
+            ArrayList<Entry> vals1 = resetData(i, IS_MINUTE);
+            drawChart(vals1, i, IS_MINUTE);
+          }
+        }
+        daySwitchRightBtn.setEnabled(true);
+//        daySwitchLeftBtn.setEnabled(false);
+      }
+    });
+    daySwitchRightBtn = (Button) findViewById(R.id.day_switch_right_btn);
+    daySwitchRightBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+
+        CURRENT_WEEK--;
+        weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+        String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
+        weekSwitchTv.setText(week);
+        ArrayList<Entry> val = resetData(CURRENT_WEEK, IS_MINUTE);
+        for(int i = 0; i < 3; i++) {
+          if(defaultMultiChoice[i] != null) {
+            ArrayList<Entry> vals1 = resetData(i, IS_MINUTE);
+            drawChart(vals1, i, IS_MINUTE);
+          }
+        }        if (CURRENT_WEEK == 0)
+          daySwitchRightBtn.setEnabled(false);
+        daySwitchLeftBtn.setEnabled(true);
+      }
+    });
 
 //    DEBUG: W/System.err: java.lang.RuntimeException: Can't create handler inside thread that has
 // not called Looper.prepare()
@@ -97,23 +146,17 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int j, long l) {
         if (j == 0) { // second by default
-
-          for(int i = 0; i < 3; i++) {
-            if(defaultMultiChoice[i] != null) {
-              ArrayList<Entry> vals1 = resetData(i, false);
-              drawChart(vals1, i, false);
-            }
-          }
+          IS_MINUTE = false;
         } else if(j == 1){
-          for(int i = 0; i < 3; i++) {
-            if(defaultMultiChoice[i] != null) {
-
-              ArrayList<Entry> vals1 = resetData(i, true);
-              drawChart(vals1, i, true);
-            }
+          IS_MINUTE = true;
+        }
+        for(int i = 0; i < 3; i++) {
+          if(defaultMultiChoice[i] != null) {
+            ArrayList<Entry> vals1 = resetData(i, IS_MINUTE);
+            drawChart(vals1, i, IS_MINUTE);
           }
         }
-        spinnerChoice = j;
+        IS_MINUTE = (j == 0);
         reCreateChart();
       }
       @Override
@@ -165,8 +208,8 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     pickedMultiChoice = new Integer[3];
     // add data
     for(int i = 0; i < 3; i++) {
-      ArrayList<Entry> vals1 = setTopThreeData(i, false);
-      drawChart(vals1, i, false);
+      ArrayList<Entry> vals1 = setTopThreeData(i, IS_MINUTE);
+      drawChart(vals1, i, IS_MINUTE);
     }
     reCreateChart();
   }
@@ -370,7 +413,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
                                   else
                                     pickedMultiChoice[i] = null;
                                 }
-                                
+
                                 // Adrian: cannot fix the bug for <= 3, null pointer exception..
                                 if(which.length != 3) {
                                   dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
@@ -387,16 +430,10 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
 
                                 defaultMultiChoice = pickedMultiChoice;
                                 for(int i = 0; i < 3; i++) {
-                                  if(spinnerChoice == 1) {
-                                    if(defaultMultiChoice[i] != null) {
-                                      ArrayList<Entry> vals1 = resetData(i, true);
-                                      drawChart(vals1, i, true);
-                                    }
-                                  } else {
-                                    if(defaultMultiChoice[i] != null) {
-                                      ArrayList<Entry> vals1 = resetData(i, false);
-                                      drawChart(vals1, i, false);
-                                    }
+
+                                  if(defaultMultiChoice[i] != null) {
+                                    ArrayList<Entry> vals1 = resetData(i, IS_MINUTE);
+                                    drawChart(vals1, i, IS_MINUTE);
                                   }
                                 }
                                 resetTopThree();
