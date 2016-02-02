@@ -470,13 +470,11 @@ public class TrackAccessibilityUtil {
     }
 
     public static String[] weekString(long time) {
-        String[] theWeek = new String[7];
+        String[] theWeek = new String[7],
+                weekStr = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
         Calendar calendar = Calendar.getInstance();
         time += getTimeOffset() * anHour;
         calendar.setTimeInMillis(time);
-        String[] weekStr = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
-
-
         calendar.setTimeInMillis(time - (calendar.get(Calendar.DAY_OF_WEEK) - 1) * aDay);
 
         for (int i = 0; i < 7; ++i) {
@@ -485,7 +483,6 @@ public class TrackAccessibilityUtil {
                             calendar.get(Calendar.DAY_OF_MONTH) + " (" + weekStr[i] + ")";
             calendar.setTimeInMillis(calendar.getTimeInMillis() + aDay);
         }
-
         return theWeek;
     }
 }

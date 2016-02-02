@@ -15,10 +15,7 @@ public class FetchAppUtil {
     private static List<AppInfo> apps = new ArrayList<>();
     private static ParseObject ParseApps = null;
     private static boolean searching = false;
-    private static String TAG = "OverviewUtil";
-
-    // public static List<AppInfo> getApps() { return new ArrayList<>(apps); }
-
+    private static String TAG = "FetchAppUtil";
 
     public static int getSize(){
         return apps.size();
