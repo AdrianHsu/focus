@@ -17,11 +17,9 @@ public class HourReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String msg = intent.getExtras().getString("msg");
-        if (msg != null && msg.equals("an_hour_is_up")) {
+        if (msg != null && msg.equals("an_hour_is_up"))
             resetHourBlock(context);
 
-            main.setHourAlarm();
-        }
     }
 
     public static void setMain(MainActivity m) {

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.dots.focus.R;
 import com.dots.focus.adapter.MainTabPagerAdapter;
 import com.dots.focus.receiver.HourReceiver;
+import com.dots.focus.util.TrackAccessibilityUtil;
 
 import java.util.Calendar;
 
@@ -114,9 +115,8 @@ public class MainActivity extends BaseActivity {
   }
 
   public void setHourAlarm() {
-    HourReceiver.setMain(this);
-
-    Long time = 3600000 * (System.currentTimeMillis() / 3600000 + 1);
+    int anHour = TrackAccessibilityUtil.anHour;
+    Long time = anHour * (System.currentTimeMillis() / anHour + 1);
 
     Intent intent = new Intent(this, HourReceiver.class);
     // Intent intent = new Intent();
@@ -125,6 +125,6 @@ public class MainActivity extends BaseActivity {
     PendingIntent pi = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
 
     AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-    am.set(AlarmManager.RTC_WAKEUP, time, pi);
+    am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, anHour, pi);
   }
 }
