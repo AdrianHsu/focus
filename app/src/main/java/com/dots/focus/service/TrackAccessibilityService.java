@@ -10,23 +10,24 @@ import android.os.Build;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.dots.focus.config.LimitType;
 import com.dots.focus.model.AppInfo;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.dots.focus.util.FetchAppUtil;
+import com.dots.focus.util.KickUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.GetCallback;
-import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TrackAccessibilityService extends AccessibilityService {
 
@@ -36,7 +37,9 @@ public class TrackAccessibilityService extends AccessibilityService {
     public static final String TAG = "TrackService";
     public static List<String> ignore = new ArrayList<>();
     private static ParseObject currentApp;
-    private static int appIndex;
+    private static int appIndex = -1;
+    private static int[] appsUsage = {0, 0, 0, 0, 0, 0};
+    private static long blockTime = 0;
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -67,6 +70,43 @@ public class TrackAccessibilityService extends AccessibilityService {
         filter.addAction("HourReceiver_broadcast_an_hour");
 
         registerReceiver(receiver, filter);
+
+        blockTime = System.currentTimeMillis();
+        Timer timer = new Timer();
+        timer.schedule(new CheckLimitTask(), 0, 300000);
+    }
+    class CheckLimitTask extends TimerTask {
+        public void run() {
+            checkLimit();
+        }
+    }
+
+    public static void checkLimit() {
+        int count = 0;
+        blockTime = System.currentTimeMillis();
+        if (appIndex >= 0) {
+            appsUsage[5] += (int)((blockTime - startTime) / 1000);
+        }
+
+        for (int i = 0; i < 6; ++i)
+            count += appsUsage[i];
+        if (count >= 1200) // 20 mins
+            KickUtil.sendKickRequest(LimitType.HOUR_LIMIT.getValue(), count, blockTime,
+                    "我在耍廢，快來踢我！");
+
+        List<Integer> appLength = TrackAccessibilityUtil.getCurrentDay(blockTime).getAppLength();
+        count = 0;
+        for (int i = 0, size = appLength.size(); i < size; ++i)
+            count += appLength.get(i);
+
+        if (count >= 7200) // 2 hours
+            KickUtil.sendKickRequest(LimitType.DAY_LIMIT.getValue(), count, blockTime,
+                    "我在耍廢，快來踢我！");
+
+        /*for (int i = 0; i < 5; ++i)
+            appsUsage[i] = appsUsage[i + 1];*/
+        System.arraycopy(appsUsage, 1, appsUsage, 0, 5);
+        appsUsage[5] = 0;
     }
 
     @Override
@@ -106,11 +146,12 @@ public class TrackAccessibilityService extends AccessibilityService {
             return;
         }
 
+
         while (now > startHour + TrackAccessibilityUtil.anHour) {
-            storeInDatabase((int)((startHour + TrackAccessibilityUtil.anHour - startTime) / 1000));
+            storeInDatabase(startHour + TrackAccessibilityUtil.anHour);
             startTime = startHour = startHour + TrackAccessibilityUtil.anHour;
         }
-        storeInDatabase((int) ((now - startTime) / 1000));
+        storeInDatabase(now);
         Log.d(TAG, "appIndex: " + appIndex);
 
         startTime = now;
@@ -120,10 +161,14 @@ public class TrackAccessibilityService extends AccessibilityService {
             startTime = now;
             if (appIndex == -2) updateApp(false);
         }
-        updateApp(true);
+        else    updateApp(true);
     }
     // helper functions
-    private void storeInDatabase (final int duration) {
+    private void storeInDatabase (long now) {
+        int duration = (int)((now - startTime) / 1000), blockDuration = duration;
+        if (blockTime > startTime)  blockDuration = (int)((now - blockTime) / 1000);
+        appsUsage[5] += blockDuration;
+
         if (appIndex < 0)   return;
         int endIndex = TrackAccessibilityUtil.getCurrentHour(startTime).getInt("endIndex"),
             AppIndex = ParseUser.getCurrentUser().getInt("AppIndex");
