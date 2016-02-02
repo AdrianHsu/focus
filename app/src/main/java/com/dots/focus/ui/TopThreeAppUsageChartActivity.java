@@ -222,7 +222,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     for (int i = 0; i < 7; i++) {
       int mTime = appLengths.get(i).get(defaultMultiChoice[appRank]);
       if (IS_MINUTE)
-        vals1.add(new Entry((mTime / 60), i));
+        vals1.add(new Entry((float)(mTime / 60), i));
       else
         vals1.add(new Entry(mTime, i));
     }
@@ -253,7 +253,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     for (int i = 0; i < 7; i++) {
       int mTime = appLengths.get(i).get(defaultMultiChoice[appRank]);
       if (IS_MINUTE)
-        vals1.add(new Entry((mTime / 60), i));
+        vals1.add(new Entry((float)(mTime / 60), i));
       else
         vals1.add(new Entry(mTime, i));
     }
