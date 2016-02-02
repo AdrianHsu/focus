@@ -86,9 +86,6 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
       }
     });
-
-    mChart = (LineChart) findViewById(R.id.chart1);
-
     weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
     String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
     weekSwitchTv.setText(week);
@@ -109,6 +106,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
       }
     });
     daySwitchRightBtn = (Button) findViewById(R.id.day_switch_right_btn);
+    daySwitchRightBtn.setEnabled(false);
     daySwitchRightBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -119,12 +117,14 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
         weekSwitchTv.setText(week);
         ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);
         drawChart(val, IS_MINUTE);
-        if(CURRENT_WEEK == 0)
+        if (CURRENT_WEEK == 0)
           daySwitchRightBtn.setEnabled(false);
         daySwitchLeftBtn.setEnabled(true);
       }
     });
 
+    mChart = (LineChart) findViewById(R.id.chart1);
+    initChart();
     // add data
     ArrayList<Entry> val = setData(0, false);
     drawChart(val, false);
@@ -152,7 +152,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     // TODO Auto-generated method stub
 
   }
-  private void drawChart(ArrayList<Entry> vals1, boolean IS_MINUTE) {
+  private void initChart() {
 
 //    mChart.setViewPortOffsets(80, 40, 80, 40);
     mChart.setViewPortOffsets(35, 20, 20, 30);
@@ -173,12 +173,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     mChart.setPinchZoom(false);
 //    mChart.setPinchZoom(true);
     mChart.setDrawGridBackground(false);
-    // create a dataset and give it a type
-    LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
-    ArrayList<String> xVals = new ArrayList<>();
-    for (int i = 0; i < 7; i++) {
-      xVals.add((i) + "");
-    }
+
 
     XAxis x = mChart.getXAxis();
 //    x.setEnabled(false);
@@ -207,7 +202,21 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 //    y.setAxisLineColor(Color.parseColor("#F3AE4E"));
     y.setAxisLineColor(Color.TRANSPARENT);
 
+    ChartMarkerView mv = new ChartMarkerView(this, R.layout.chart_marker_view);
+    // set the marker to the chart
+    mChart.setMarkerView(mv);
+
     mChart.getAxisRight().setEnabled(false);
+  }
+  private void drawChart(ArrayList<Entry> vals1, boolean IS_MINUTE) {
+
+    // create a dataset and give it a type
+    LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
+    ArrayList<String> xVals = new ArrayList<>();
+    for (int i = 0; i < 7; i++) {
+      xVals.add((i) + "");
+    }
+
 
     LimitLine ll1;
     int DAILY_USAGE_UPPER_LIMIT_MINUTE = 5;
@@ -221,11 +230,10 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
     ll1.setTextSize(10f);
     ll1.setTextColor(Color.WHITE);
+    YAxis y = mChart.getAxisLeft();
+    y.removeAllLimitLines();
     y.addLimitLine(ll1);
 
-    ChartMarkerView mv = new ChartMarkerView(this, R.layout.chart_marker_view);
-    // set the marker to the chart
-    mChart.setMarkerView(mv);
 
     set1.setDrawCubic(true);
 //    set1.setCubicIntensity(0.2f);

@@ -103,18 +103,19 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
         weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
-        ArrayList<Entry> val = resetData(CURRENT_WEEK, IS_MINUTE);
         for(int i = 0; i < 3; i++) {
           if(defaultMultiChoice[i] != null) {
-            ArrayList<Entry> vals1 = resetData(i, IS_MINUTE);
+            ArrayList<Entry> vals1 = setTopThreeData(i);
             drawChart(vals1, i, IS_MINUTE);
           }
         }
+        reCreateChart();
         daySwitchRightBtn.setEnabled(true);
 //        daySwitchLeftBtn.setEnabled(false);
       }
     });
     daySwitchRightBtn = (Button) findViewById(R.id.day_switch_right_btn);
+    daySwitchRightBtn.setEnabled(false);
     daySwitchRightBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -123,13 +124,14 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
         weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
-        ArrayList<Entry> val = resetData(CURRENT_WEEK, IS_MINUTE);
         for(int i = 0; i < 3; i++) {
           if(defaultMultiChoice[i] != null) {
-            ArrayList<Entry> vals1 = resetData(i, IS_MINUTE);
+            ArrayList<Entry> vals1 = setTopThreeData(i);
             drawChart(vals1, i, IS_MINUTE);
           }
-        }        if (CURRENT_WEEK == 0)
+        }
+        reCreateChart();
+        if (CURRENT_WEEK == 0)
           daySwitchRightBtn.setEnabled(false);
         daySwitchLeftBtn.setEnabled(true);
       }
@@ -152,11 +154,10 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
         }
         for(int i = 0; i < 3; i++) {
           if(defaultMultiChoice[i] != null) {
-            ArrayList<Entry> vals1 = resetData(i, IS_MINUTE);
+            ArrayList<Entry> vals1 = resetData(i);
             drawChart(vals1, i, IS_MINUTE);
           }
         }
-        IS_MINUTE = (j == 0);
         reCreateChart();
       }
       @Override
@@ -208,7 +209,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     pickedMultiChoice = new Integer[3];
     // add data
     for(int i = 0; i < 3; i++) {
-      ArrayList<Entry> vals1 = setTopThreeData(i, IS_MINUTE);
+      ArrayList<Entry> vals1 = setTopThreeData(i);
       drawChart(vals1, i, IS_MINUTE);
     }
     reCreateChart();
@@ -259,7 +260,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     // dont forget to refresh the drawing
     mChart.invalidate();
   }
-  private ArrayList<Entry> resetData(int appRank, boolean IS_MINUTE) {
+  private ArrayList<Entry> resetData(int appRank) {
     ArrayList<Entry> vals1 = new ArrayList<>();
 
     for (int i = 0; i < 7; i++) {
@@ -271,10 +272,10 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     }
     return vals1;
   }
-  private ArrayList<Entry> setTopThreeData(int appRank, boolean IS_MINUTE) {
+  private ArrayList<Entry> setTopThreeData(int appRank) {
 
     ArrayList<Entry> vals1 = new ArrayList<>();
-    long time = TrackAccessibilityUtil.getPrevXWeek(0);
+    long time = TrackAccessibilityUtil.getPrevXWeek(CURRENT_WEEK);
     //- 7 * oneDay * week
 
     appLengths = TrackAccessibilityUtil.weekAppUsage(time);
@@ -304,7 +305,6 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     return vals1;
   }
   private void drawChart(ArrayList<Entry> vals1, int index, boolean IS_MINUTE) {
-
 
     XAxis x = mChart.getXAxis();
 //    x.setEnabled(false);
@@ -382,7 +382,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
       }
     });
 
-    if(dataSets.size() == 3)
+    if(dataSets.size() >= 3)
       dataSets.clear();
 
     dataSets.add(set1); // add the datasets
@@ -432,7 +432,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
                                 for(int i = 0; i < 3; i++) {
 
                                   if(defaultMultiChoice[i] != null) {
-                                    ArrayList<Entry> vals1 = resetData(i, IS_MINUTE);
+                                    ArrayList<Entry> vals1 = resetData(i);
                                     drawChart(vals1, i, IS_MINUTE);
                                   }
                                 }
