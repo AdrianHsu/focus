@@ -24,6 +24,7 @@
             <Button
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:id="@+id/day_switch_left_btn"
                 android:background="@drawable/dashboard_day_switch_btn"
                 android:scaleX="-1"/>
             <TextView
@@ -33,11 +34,12 @@
                 android:textSize="16dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
-                android:id="@+id/daySwitchTextView"
+                android:id="@+id/week_switch_textview"
                 android:layout_gravity="center_horizontal"/>
             <Button
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:id="@+id/day_switch_right_btn"
                 android:background="@drawable/dashboard_day_switch_btn"/>
         </LinearLayout>
 

@@ -14,13 +14,16 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.dots.focus.R;
+import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -39,7 +42,12 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
 
   private LineChart mChart;
   private Spinner spinner;
-  private ArrayAdapter<String> timeInterval;
+  private TextView weekSwitchTv;
+  private Button daySwitchLeftBtn;
+  private Button daySwitchRightBtn;
+  private boolean IS_MINUTE = false;
+  private int CURRENT_WEEK = 0;
+//  private ArrayAdapter<String> timeInterval;
 //  private String[] timeIntervalArray = {"小時", "分鐘"};
 
 
@@ -53,6 +61,41 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle("上癮程度趨勢");
+
+    weekSwitchTv = (TextView) findViewById(R.id.week_switch_textview);
+    String week = TrackAccessibilityUtil.weekPeriodString(0);
+    weekSwitchTv.setText(week);
+
+    daySwitchLeftBtn = (Button) findViewById(R.id.day_switch_left_btn);
+    daySwitchLeftBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+
+        CURRENT_WEEK++;
+        weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+        String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
+        weekSwitchTv.setText(week);
+//        ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);
+        daySwitchRightBtn.setEnabled(true);
+//        daySwitchLeftBtn.setEnabled(false);
+      }
+    });
+    daySwitchRightBtn = (Button) findViewById(R.id.day_switch_right_btn);
+    daySwitchRightBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+
+        CURRENT_WEEK--;
+        weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+        String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
+        weekSwitchTv.setText(week);
+//        ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);
+        if (CURRENT_WEEK == 0)
+          daySwitchRightBtn.setEnabled(false);
+        daySwitchLeftBtn.setEnabled(true);
+      }
+    });
+
 
     mChart = (LineChart) findViewById(R.id.chart1);
 //    mChart.setViewPortOffsets(80, 40, 80, 40);

@@ -16,9 +16,11 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 import com.dots.focus.util.TrackAccessibilityUtil;
@@ -42,7 +44,11 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
   private Spinner spinner;
   private ArrayAdapter<String> timeInterval;
   private String[] timeIntervalArray = {"秒鐘", "分鐘"};
-
+  private TextView weekSwitchTv;
+  private Button daySwitchLeftBtn;
+  private Button daySwitchRightBtn;
+  private boolean IS_MINUTE = false;
+  private int CURRENT_WEEK = 0;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +61,6 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle("每週總時數趨勢");
 
-
 //    DEBUG: W/System.err: java.lang.RuntimeException: Can't create handler inside thread that has
 // not called Looper.prepare()
     spinner = (Spinner)findViewById(R.id.spinner);
@@ -67,14 +72,13 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (i == 0) { // second by default
-          // add data
-          ArrayList<Entry> val = setData(0, false);
-          drawChart(val, false);
+          IS_MINUTE = false;
         } else if (i == 1) {
-          // add data
-          ArrayList<Entry> val = setData(0, true);
-          drawChart(val, false);
+          IS_MINUTE = true;
         }
+        // add data
+        ArrayList<Entry> val = setData(0, IS_MINUTE);
+        drawChart(val, IS_MINUTE);
       }
 
       @Override
@@ -84,6 +88,42 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     });
 
     mChart = (LineChart) findViewById(R.id.chart1);
+
+    weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+    String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
+    weekSwitchTv.setText(week);
+
+    daySwitchLeftBtn = (Button) findViewById(R.id.day_switch_left_btn);
+    daySwitchLeftBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+
+        CURRENT_WEEK++;
+        weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+        String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
+        weekSwitchTv.setText(week);
+        ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);
+        drawChart(val, IS_MINUTE);
+        daySwitchRightBtn.setEnabled(true);
+//        daySwitchLeftBtn.setEnabled(false);
+      }
+    });
+    daySwitchRightBtn = (Button) findViewById(R.id.day_switch_right_btn);
+    daySwitchRightBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+
+        CURRENT_WEEK--;
+        weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+        String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
+        weekSwitchTv.setText(week);
+        ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);
+        drawChart(val, IS_MINUTE);
+        if(CURRENT_WEEK == 0)
+          daySwitchRightBtn.setEnabled(false);
+        daySwitchLeftBtn.setEnabled(true);
+      }
+    });
 
     // add data
     ArrayList<Entry> val = setData(0, false);

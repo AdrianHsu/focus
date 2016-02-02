@@ -48,7 +48,7 @@ public class MessagesFragment extends Fragment {
     final ArrayList<JSONObject> messages = new ArrayList<>();
 
     GetCurrentAppsService.checkCurrentApps();
-    GetKickedService.queryKicked();g
+    GetKickedService.queryKicked();
     GetKickResponseService.queryKickResponse();
 
     messages.addAll(GetCurrentAppsService.friendCurrentAppList);
