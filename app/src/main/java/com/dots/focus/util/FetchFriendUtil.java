@@ -38,6 +38,17 @@ public class FetchFriendUtil {
         return -1;
     }
 
+    public static String getFriendName(Long id) throws JSONException {
+        JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
+        if (friends == null) return "";
+        for (int i = 0, length = friends.length(); i < length; ++i) {
+            JSONObject jsonObject = friends.getJSONObject(i);
+            if (id.equals(jsonObject.getLong("user_id")))
+                return jsonObject.getString("user_name");
+        }
+        return "";
+    }
+
     public static void refresh() {
         GraphRequestBatch batch = new GraphRequestBatch(
                 GraphRequest.newMyFriendsRequest(

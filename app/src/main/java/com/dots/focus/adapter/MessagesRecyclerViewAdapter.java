@@ -33,10 +33,12 @@ public class MessagesRecyclerViewAdapter extends
 
   private ArrayList<JSONObject> messagesList;
   private Context mContext;
+
+  // need to be redefined, KickState.XXXXXX.getValue()
   private static final int KICK_REQUEST_ITEM = -1;
   private static final int KICK_HISTORY_ITEM = 1;
   private static final int KICK_RESPONSE_ITEM = 3;
-
+  //
 
   private static final String TAG = "Messages";
 
@@ -73,23 +75,23 @@ public class MessagesRecyclerViewAdapter extends
           holder) {
     try {
       holder.textViewSample.setText(jsonObject.getString("user_name"));
-      final long time =  (System.currentTimeMillis() - jsonObject.getLong("time")) / 1000;
-      final String appName = jsonObject.getString("AppName");
-      final String appPackageName = jsonObject.getString("AppPackageName");
-      String currentAppInfo = "App Name: "+ appName + " ," +
-        "" + " 共使用: " + time + "秒";
+      final long time =  (System.currentTimeMillis() - jsonObject.getLong("time1")) / 1000;
+      // final String appName = jsonObject.getString("AppName");
+      final String objectId = jsonObject.getString("objectId");
+      String currentAppInfo =  ""; // need to be redefined
+
+              /*"App Name: "+ appName + " ," +
+        "" + " 共使用: " + time + "秒"; */
       holder.currentAppTextViewSample.setText(currentAppInfo);
 
       final long id = jsonObject.getLong("user_id");
-      final String name = jsonObject.getString("user_name");
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
-          KickUtil.kick(id, name, "你被踢了！這是測試訊息。", time, appName, appPackageName);
+          KickUtil.kick("你被踢了！這是測試訊息。", objectId);
           int index = indexOf(jsonObject);
           if (index != -1)
             remove(index);
@@ -107,7 +109,7 @@ public class MessagesRecyclerViewAdapter extends
 
       final long id = jsonObject.getLong("user_id");
       final String name = jsonObject.getString("user_name");
-      String content = jsonObject.getString("content");
+      String content = jsonObject.getString("content2");
       final String mContent = "謝謝你踢我！";
 
       holder.textViewSample.setText(name);
@@ -123,7 +125,7 @@ public class MessagesRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
 
-          KickUtil.kickResponse(objectId, mContent);
+          KickUtil.kickResponse(mContent, objectId);
           Log.v(TAG, "called kickResponse with objectId:" + objectId);
           int index = indexOf(jsonObject);
           if (index != -1)

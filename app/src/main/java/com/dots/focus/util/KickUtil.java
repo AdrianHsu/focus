@@ -2,6 +2,7 @@ package com.dots.focus.util;
 
 import android.util.Log;
 
+import com.dots.focus.config.KickState;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -11,6 +12,7 @@ import com.parse.ParseUser;
 import org.json.JSONArray;
 
 public class KickUtil {
+    private static String TAG = "KickUtil";
 
     public static void sendKickRequest(int limitType, int period, long time, String content) {
         ParseObject kickRequest = new ParseObject("KickRequest");
@@ -22,24 +24,25 @@ public class KickUtil {
 
         kickRequest.saveEventually();
     }
-    public static void kick(long id, String name, String content, long period, String AppName,
-                            String AppPackageName) {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        ParseObject kickHistory = new ParseObject("KickHistory");
-        kickHistory.put("period", period);
-        kickHistory.put("AppName", AppName);
-        kickHistory.put("AppPackageName", AppPackageName);
-        kickHistory.put("user_id_kicked", id);
-        kickHistory.put("user_name_kicked", name);
-        kickHistory.put("user_id_kicking", currentUser.getLong("user_id"));
-        kickHistory.put("user_name_kicking", currentUser.getString("user_name"));
-        kickHistory.put("time2", System.currentTimeMillis());
-        kickHistory.put("content2", content);
-        kickHistory.put("state", 0);
+    public static void kick(final String content, String objectId) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
+        query.fromLocalDatastore();
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject kickHistory, ParseException e) {
+                if (e == null && kickHistory != null) {
+                    kickHistory.put("time2", System.currentTimeMillis());
+                    kickHistory.put("content2", content);
+                    kickHistory.put("state", KickState.KICK_NOT_DOWNLOADED.getValue());
 
-        kickHistory.saveEventually();
+                    kickHistory.saveEventually();
+                } else if (e != null) {
+                    Log.d(TAG, e.getMessage());
+                }
+            }
+        });
     }
-    public static void kickResponse(String objectId, final String content) {
+    public static void kickResponse(final String content, String objectId) {
       ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
       query.fromLocalDatastore();
       query.getInBackground(objectId, new GetCallback<ParseObject>() {
@@ -49,10 +52,9 @@ public class KickUtil {
             kickHistory.put("time3", System.currentTimeMillis());
             kickHistory.put("content3", content);
             kickHistory.put("state", 2);
-            Log.d("KickUtil", "kickResponse done");
             kickHistory.saveEventually();
           } else if (e != null) {
-            Log.d("KickUtil", e.getMessage());
+            Log.d(TAG, e.getMessage());
           }
         }
       });

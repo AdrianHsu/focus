@@ -1,7 +1,6 @@
 package com.dots.focus.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -13,14 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dots.focus.R;
-import com.dots.focus.adapter.AddFriendRecyclerViewAdapter;
 import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
-import com.dots.focus.service.GetCurrentAppsService;
-import com.dots.focus.service.GetFriendConfirmService;
-import com.dots.focus.service.GetFriendInviteService;
+import com.dots.focus.service.GetKickRequestService;
 import com.dots.focus.service.GetKickResponseService;
 import com.dots.focus.service.GetKickedService;
-import com.dots.focus.util.FetchFriendUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
 import org.json.JSONObject;
@@ -47,14 +42,14 @@ public class MessagesFragment extends Fragment {
 
     final ArrayList<JSONObject> messages = new ArrayList<>();
 
-    GetCurrentAppsService.checkCurrentApps();
+    GetKickRequestService.queryKickRequest();
     GetKickedService.queryKicked();
     GetKickResponseService.queryKickResponse();
 
-    messages.addAll(GetCurrentAppsService.friendCurrentAppList);
+    messages.addAll(GetKickRequestService.friendKickRequestList);
     messages.addAll(GetKickedService.kickedList);
     messages.addAll(GetKickResponseService.kickResponseList);
-    Log.v(TAG, "friendCurrentAppList.size() == " + GetCurrentAppsService.friendCurrentAppList
+    Log.v(TAG, "friendKickRequestList.size() == " + GetKickRequestService.friendKickRequestList
       .size());
     messagesRecyclerViewAdapter = new MessagesRecyclerViewAdapter( messages, context);
     linearLayoutManager = new LinearLayoutManager(context);
@@ -72,11 +67,11 @@ public class MessagesFragment extends Fragment {
             messages.clear();
             mRecyclerView.getAdapter().notifyDataSetChanged();
 
-            GetCurrentAppsService.checkCurrentApps();
+            GetKickRequestService.queryKickRequest();
             GetKickedService.queryKicked();
             GetKickResponseService.queryKickResponse();
 
-            messages.addAll(GetCurrentAppsService.friendCurrentAppList);
+            messages.addAll(GetKickRequestService.friendKickRequestList);
             messages.addAll(GetKickedService.kickedList);
             messages.addAll(GetKickResponseService.kickResponseList);
 
