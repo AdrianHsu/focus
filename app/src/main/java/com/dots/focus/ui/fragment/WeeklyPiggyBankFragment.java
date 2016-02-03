@@ -108,6 +108,7 @@ public class WeeklyPiggyBankFragment extends Fragment {
     int[] timeBox = TrackAccessibilityUtil.timeBox(time);
     String[] weekString = TrackAccessibilityUtil.weekString(time);
     List<String> mStringList = new ArrayList<>();
+    int total = 0;
 
     for(int i = 0; i < 7; i++) {
 
@@ -123,16 +124,17 @@ public class WeeklyPiggyBankFragment extends Fragment {
           positiveColor[i] = false;
           mStringList.add(weekString[i] + " -" + timeToString(t * (-1)));
         }
+        total += t;
       }
     }
 
-    if(timeBox[7] >= 0) {
-      totalTimeTv.setText("+" + timeToString(timeBox[7]));
+    if(total >= 0) {
+      totalTimeTv.setText("+" + timeToString(total));
       totalTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
                               .yellow));
     }
     else {
-      totalTimeTv.setText("-" + timeToString(timeBox[7] * (-1)));
+      totalTimeTv.setText("-" + timeToString(total * (-1)));
       totalTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
                               .red));
     }

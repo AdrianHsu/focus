@@ -20,12 +20,22 @@ import java.util.concurrent.TimeUnit;
 
 public class TotalPiggyBankFragment extends Fragment {
 
-  Context mContext;
+  private Context mContext;
+  private TextView totalTv;
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
     mContext = getActivity();
     View v = inflater.inflate(R.layout.fragment_piggy_bank_total, container, false);
+
+    totalTv = (TextView) v.findViewById(R.id.total_saved_textview);
+    long time = TrackAccessibilityUtil.getPrevXWeek(0); // 0 dont care for total
+    int[] timeBox = TrackAccessibilityUtil.timeBox(time);
+    int totalTime = timeBox[7];
+    if(totalTime >= 0)
+      totalTv.setText("+" + timeToString(totalTime));
+    else
+      totalTv.setText("-" + timeToString(totalTime * (-1)));
 
     return v;
   }
