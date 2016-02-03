@@ -107,7 +107,7 @@ public class KickMessagesActivity extends BaseActivity {
     JSONObject mRequest = new JSONObject();
     try {
       mRequest.put("content", content);
-      mRequest.put("time", timeToString((int)time));
+      mRequest.put("time", time);
     } catch(JSONException e) {
       e.printStackTrace();
     }
@@ -132,7 +132,7 @@ public class KickMessagesActivity extends BaseActivity {
     String text = editText1.getText().toString();
     try {
       tmp.put("content", text);
-      tmp.put("time", timeToString((int)time));
+      tmp.put("time",time);
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -144,12 +144,5 @@ public class KickMessagesActivity extends BaseActivity {
     editText1.setText("");
     sendBtn.setEnabled(false);
     onBackPressed();
-  }
-  private String timeToString(int seconds) {
-    int day = (int) TimeUnit.SECONDS.toDays(seconds);
-    long hours = TimeUnit.SECONDS.toHours(seconds) - (day * 24);
-    long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
-    long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
-    return String.format("%02d:%02d:%02d", hours, minute, second);
   }
 }
