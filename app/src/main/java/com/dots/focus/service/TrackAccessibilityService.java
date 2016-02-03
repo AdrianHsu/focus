@@ -73,7 +73,8 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         blockTime = System.currentTimeMillis();
         Timer timer = new Timer();
-        timer.schedule(new CheckLimitTask(), 0, 300000);
+//        timer.schedule(new CheckLimitTask(), 0, 300000);
+        timer.schedule(new CheckLimitTask(), 0, 15000); // 15 sec
     }
     class CheckLimitTask extends TimerTask {
         public void run() {
@@ -90,9 +91,11 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         for (int i = 0; i < 6; ++i)
             count += appsUsage[i];
-        if (count >= 1200) // 20 mins
+//        if (count >= 1200) // 20 mins
+          if(count >= 10) {
             KickUtil.sendKickRequest(LimitType.HOUR_LIMIT.getValue(), count, blockTime,
-                    "我在耍廢，快來踢我！");
+                                    "我在耍廢，快來踢我！");
+          }
 
         List<Integer> appLength = TrackAccessibilityUtil.getCurrentDay(blockTime).getAppLength();
         count = 0;

@@ -33,18 +33,18 @@
             android:paddingTop="5dip"
             android:text="fake name"
             android:textSize="14sp" />
-        <TextView
-            android:layout_toRightOf="@id/imageview"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:id="@+id/current_app_textview"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:paddingLeft="10dip"
-            android:paddingTop="5dip"
-            android:text="App Name: fake app, 共使用: 0 秒"
-            android:textSize="10sp" />
+        <!--<TextView-->
+            <!--android:layout_toRightOf="@id/imageview"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:id="@+id/current_app_textview"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="start"-->
+            <!--android:paddingLeft="10dip"-->
+            <!--android:paddingTop="5dip"-->
+            <!--android:text="App Name: fake app, 共使用: 0 秒"-->
+            <!--android:textSize="10sp" />-->
 
         <Button
             android:layout_width="wrap_content"

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.config.KickState;
 import com.dots.focus.ui.KickMessagesActivity;
 import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
@@ -34,10 +35,9 @@ public class MessagesRecyclerViewAdapter extends
   private ArrayList<JSONObject> messagesList;
   private Context mContext;
 
-  // need to be redefined, KickState.XXXXXX.getValue()
-  private static final int KICK_REQUEST_ITEM = -1;
-  private static final int KICK_HISTORY_ITEM = 1;
-  private static final int KICK_RESPONSE_ITEM = 3;
+  private static final int KICK_REQUEST_ITEM = KickState.REQUEST_DOWNLOADED.getValue();
+  private static final int KICK_HISTORY_ITEM = KickState.REQUEST_DOWNLOADED.getValue();
+  private static final int KICK_RESPONSE_ITEM = KickState.REQUEST_DOWNLOADED.getValue();
   //
 
   private static final String TAG = "Messages";
@@ -78,15 +78,15 @@ public class MessagesRecyclerViewAdapter extends
       final long time =  (System.currentTimeMillis() - jsonObject.getLong("time1")) / 1000;
       // final String appName = jsonObject.getString("AppName");
       final String objectId = jsonObject.getString("objectId");
-      String currentAppInfo =  ""; // need to be redefined
+//      String currentAppInfo =  ""; // need to be redefined
 
               /*"App Name: "+ appName + " ," +
         "" + " 共使用: " + time + "秒"; */
-      holder.currentAppTextViewSample.setText(currentAppInfo);
+//      holder.currentAppTextViewSample.setText(currentAppInfo);
 
       final long id = jsonObject.getLong("user_id");
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
-        "/picture?type=large";
+        "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -115,7 +115,7 @@ public class MessagesRecyclerViewAdapter extends
       holder.textViewSample.setText(name);
       holder.kickHistoryContentTextView.setText(content);
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
-        "/picture?type=large";
+        "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
 
       final String objectId = jsonObject.getString("objectId");
@@ -150,7 +150,7 @@ public class MessagesRecyclerViewAdapter extends
       holder.textViewSample.setText(name);
       holder.kickResponseContentTextView.setText(content);
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
-                              "/picture?type=large";
+                              "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
 
       final String objectId = jsonObject.getString("objectId");
@@ -200,16 +200,21 @@ public class MessagesRecyclerViewAdapter extends
   @Override
   public int getItemViewType(int position) {
 
-    int type = -2;
+    int process = -1;
     try {
-      type = messagesList.get(position).getInt("state");
+      process = messagesList.get(position).getInt("state");
     } catch (JSONException e) {
       Log.v(TAG, e.getMessage());
     }
 
-    Log.v(TAG, "itemViewType = " + type);
-//    return type;
-    return type;
+    if(process <= KICK_REQUEST_ITEM && process >= 0)
+      return KICK_REQUEST_ITEM;
+    else if(process <= KICK_HISTORY_ITEM && process > KICK_REQUEST_ITEM)
+      return KICK_HISTORY_ITEM;
+    else if(process <= KICK_RESPONSE_ITEM && process > KICK_HISTORY_ITEM)
+      return KICK_RESPONSE_ITEM;
+    else
+      return process; // error
   }
 
   @Override

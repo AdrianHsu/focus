@@ -10,13 +10,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
+import com.dots.focus.config.LimitType;
 import com.dots.focus.service.GetKickRequestService;
 import com.dots.focus.service.GetKickResponseService;
 import com.dots.focus.service.GetKickedService;
+import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -26,6 +33,7 @@ import java.util.ArrayList;
 public class MessagesFragment extends Fragment {
 
   private UltimateRecyclerView mRecyclerView;
+  private View mStickyView;
   private Context context;
   private MessagesRecyclerViewAdapter messagesRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
@@ -39,6 +47,19 @@ public class MessagesFragment extends Fragment {
     View v = inflater.inflate(R.layout.fragment_messages, container, false);
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.messages_recycler_view);
+
+    mStickyView = v.findViewById(R.id.messages_sticky_view);
+
+    ImageView profileImageView = (ImageView) mStickyView.findViewById(R.id.profile_image);
+    TextView profileTextView = (TextView) mStickyView.findViewById(R.id.profile_name);
+
+    ParseUser user = ParseUser.getCurrentUser();
+    String name = user.getString("user_name");
+    profileTextView.setText(name);
+    String url ="https://graph.facebook.com/" + String.valueOf( user.getLong
+                            ("user_id") )+
+                            "/picture?type=large";
+    Picasso.with(context).load(url).into(profileImageView);
 
     final ArrayList<JSONObject> messages = new ArrayList<>();
 
@@ -66,7 +87,8 @@ public class MessagesFragment extends Fragment {
 
             messages.clear();
             mRecyclerView.getAdapter().notifyDataSetChanged();
-
+            Log.v(TAG, "friendKickRequestList.size() == " + GetKickRequestService.friendKickRequestList
+                                    .size());
             GetKickRequestService.queryKickRequest();
             GetKickedService.queryKicked();
             GetKickResponseService.queryKickResponse();
