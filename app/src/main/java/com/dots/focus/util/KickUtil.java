@@ -21,6 +21,7 @@ public class KickUtil {
         kickRequest.put("period", period);
         kickRequest.put("time", time);
         kickRequest.put("content", content);
+        kickRequest.put("userId", ParseUser.getCurrentUser().getObjectId());
 
         kickRequest.saveEventually();
     }
