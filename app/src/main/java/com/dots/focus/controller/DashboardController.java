@@ -6,8 +6,11 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,7 +43,15 @@ public class DashboardController {
               currentUser.put("user_name", name);
               currentInstallation.put("fbId", id);
 
-              currentUser.saveEventually();
+              currentUser.saveEventually(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                  if (e == null)
+                    Log.d(TAG, "Succeed updating.");
+                  else
+                    Log.d(TAG, "Failed updating: " + e.getMessage());
+                }
+              });
               currentInstallation.saveEventually();
 
             } catch (JSONException e) {
