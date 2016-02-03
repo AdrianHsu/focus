@@ -73,6 +73,8 @@ public class MessagesRecyclerViewAdapter extends
 
   public void KickRequestBindItem(final JSONObject jsonObject, final KickRequestAdapterViewHolder
           holder) {
+    Log.v(TAG, "KickRequestBindItem~~~");
+
     try {
 
 //      final long time =  (System.currentTimeMillis() - jsonObject.getLong("time1")) / 1000;
@@ -169,9 +171,9 @@ public class MessagesRecyclerViewAdapter extends
                                   , Toast
                                   .LENGTH_SHORT)
                                   .show();
-          Intent intent;
-          intent = new Intent(mContext, KickMessagesActivity.class);
-          mContext.startActivity(intent);
+//          Intent intent;
+//          intent = new Intent(mContext, KickMessagesActivity.class);
+//          mContext.startActivity(intent);
         }
       });
     }
@@ -230,9 +232,9 @@ public class MessagesRecyclerViewAdapter extends
                                   , Toast
                                   .LENGTH_SHORT)
                                   .show();
-          Intent intent;
-          intent = new Intent(mContext, KickMessagesActivity.class);
-          mContext.startActivity(intent);
+//          Intent intent;
+//          intent = new Intent(mContext, KickMessagesActivity.class);
+//          mContext.startActivity(intent);
         }
       });
     }
@@ -262,14 +264,15 @@ public class MessagesRecyclerViewAdapter extends
       Log.v(TAG, e.getMessage());
     }
 
+    Log.v(TAG, "process = " + process);
     if(process <= KICK_REQUEST_ITEM && process >= 0)
       return KICK_REQUEST_ITEM;
     else if(process <= KICK_HISTORY_ITEM && process > KICK_REQUEST_ITEM)
       return KICK_HISTORY_ITEM;
     else if(process <= KICK_RESPONSE_ITEM && process > KICK_HISTORY_ITEM)
       return KICK_RESPONSE_ITEM;
-    else
-      return process; // error
+
+    return process; // error
   }
 
   @Override
@@ -281,7 +284,7 @@ public class MessagesRecyclerViewAdapter extends
   public UltimateRecyclerviewViewHolder onCreateViewHolder(ViewGroup parent, int i) {
 
     View v;
-
+    Log.v(TAG, "onCreateViewHolder~~~" + i);
     if (i == KICK_REQUEST_ITEM) {
       v = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.kick_request_recycler_view_adapter, parent, false);
