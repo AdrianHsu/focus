@@ -16,6 +16,7 @@ import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -41,7 +42,7 @@ public class DiscussRecyclerViewAdapter extends
                             > 0
                             : true)) {
 //      try {
-//        holder.textViewSample.setText(tmp.getString("duration"));
+//        holder.mTextView.setText(tmp.getString("duration"));
 //      } catch (JSONException e) {
 //        e.printStackTrace();
 //      }
@@ -50,17 +51,20 @@ public class DiscussRecyclerViewAdapter extends
 
       int tmp = position % 2;
 
-      holder.textViewSample.setBackgroundResource(tmp == 0 ? R.drawable.bubble_yellow : R.drawable
+      holder.mTextView.setBackgroundResource(tmp == 0 ? R.drawable.bubble_yellow : R.drawable
                               .bubble_green);
 
-      String text = null;
+      String text = "";
+      String time = "";
       try {
-        text = messagesList.get(position).getString("text");
+        text = messagesList.get(position).getString("messages");
+        time = messagesList.get(position).getString("time");
       } catch (JSONException e) {
         e.printStackTrace();
       }
 
-      holder.textViewSample.setText(text);
+      holder.mTextView.setText(text);
+      holder.mTimeTv.setText(time);
       wrapper.setGravity(tmp == 0 ? Gravity.LEFT : Gravity.RIGHT);
 
     }
@@ -178,14 +182,16 @@ public class DiscussRecyclerViewAdapter extends
 
   public class SimpleAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
-    TextView textViewSample;
+    TextView mTextView;
+    TextView mTimeTv;
     View item_view;
 
     public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
       if (isItem) {
-        textViewSample = (TextView) itemView.findViewById(
+        mTextView = (TextView) itemView.findViewById(
                                 R.id.comment);
+        mTimeTv = (TextView) itemView.findViewById(R.id.time);
         item_view = itemView.findViewById(R.id.wrapper);
       }
     }

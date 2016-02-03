@@ -71,20 +71,25 @@ public class MessagesRecyclerViewAdapter extends
     }
   }
 
-  public void KickRequestBindItem(final JSONObject jsonObject, KickRequestAdapterViewHolder
+  public void KickRequestBindItem(final JSONObject jsonObject, final KickRequestAdapterViewHolder
           holder) {
     try {
-      holder.textViewSample.setText(jsonObject.getString("user_name"));
-      final long time =  (System.currentTimeMillis() - jsonObject.getLong("time1")) / 1000;
+
+//      final long time =  (System.currentTimeMillis() - jsonObject.getLong("time1")) / 1000;
       // final String appName = jsonObject.getString("AppName");
-      final String objectId = jsonObject.getString("objectId");
 //      String currentAppInfo =  ""; // need to be redefined
 
               /*"App Name: "+ appName + " ," +
         "" + " 共使用: " + time + "秒"; */
 //      holder.currentAppTextViewSample.setText(currentAppInfo);
-
+      final String name = jsonObject.getString("user_name");
+      final String objectId = jsonObject.getString("objectId");
       final long id = jsonObject.getLong("user_id");
+      final int period = jsonObject.getInt("period");
+      final long time = jsonObject.getLong("time");
+      final String content = jsonObject.getString("content");
+
+      holder.textViewSample.setText(name);
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
@@ -97,13 +102,33 @@ public class MessagesRecyclerViewAdapter extends
             remove(index);
         }
       });
+      holder.item_view.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition
+                                  (), Toast
+                                  .LENGTH_SHORT)
+                                  .show();
+          Intent intent;
+          intent = new Intent(mContext, KickMessagesActivity.class);
+          intent.putExtra("user_name", name);
+          intent.putExtra("objectId", objectId);
+          intent.putExtra("user_id", id);
+//          intent.putExtra("LimitType", limitType);
+          intent.putExtra("period", period);
+          intent.putExtra("time", time);
+          intent.putExtra("content", content);
+          mContext.startActivity(intent);
+        }
+      });
 
     } catch (JSONException e) {
       e.printStackTrace();
     }
-  }
 
-  public void KickHistoryBindItem(final JSONObject jsonObject, KickHistoryAdapterViewHolder
+    }
+
+  public void KickHistoryBindItem(final JSONObject jsonObject, final KickHistoryAdapterViewHolder
           holder) {
     try {
 
@@ -136,9 +161,23 @@ public class MessagesRecyclerViewAdapter extends
     } catch (JSONException e) {
       Log.v(TAG, e.getMessage());
     }
+    if (holder.item_view != null) {
+      holder.item_view.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition()
+                                  , Toast
+                                  .LENGTH_SHORT)
+                                  .show();
+          Intent intent;
+          intent = new Intent(mContext, KickMessagesActivity.class);
+          mContext.startActivity(intent);
+        }
+      });
+    }
   }
 
-  public void KickResponseBindItem(final JSONObject jsonObject, KickResponseAdapterViewHolder
+  public void KickResponseBindItem(final JSONObject jsonObject, final KickResponseAdapterViewHolder
                           holder) {
     try {
       holder.textViewSample.setText(jsonObject.getString("user_name"));
@@ -180,6 +219,22 @@ public class MessagesRecyclerViewAdapter extends
 
     } catch (JSONException e) {
       Log.v(TAG, e.getMessage());
+    }
+
+    if (holder.item_view != null) {
+      holder.item_view.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Toast.makeText(v.getContext(), "inside viewholder position = " +
+                                  holder.getAdapterPosition()
+                                  , Toast
+                                  .LENGTH_SHORT)
+                                  .show();
+          Intent intent;
+          intent = new Intent(mContext, KickMessagesActivity.class);
+          mContext.startActivity(intent);
+        }
+      });
     }
   }
   @Override
@@ -232,59 +287,18 @@ public class MessagesRecyclerViewAdapter extends
         .inflate(R.layout.kick_request_recycler_view_adapter, parent, false);
       final KickRequestAdapterViewHolder vh = new KickRequestAdapterViewHolder(v, true);
 
-      if (v != null) {
-        v.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-              .LENGTH_SHORT)
-              .show();
-            Intent intent;
-            intent = new Intent(mContext, KickMessagesActivity.class);
-            mContext.startActivity(intent);
-          }
-        });
-      }
       return vh;
-
     } else if (i == KICK_HISTORY_ITEM) {
       v = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.kick_history_recycler_view_adapter, parent, false);
       final KickHistoryAdapterViewHolder vh = new KickHistoryAdapterViewHolder(v, true);
 
-      if (v != null) {
-        v.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-              .LENGTH_SHORT)
-              .show();
-            Intent intent;
-            intent = new Intent(mContext, KickMessagesActivity.class);
-            mContext.startActivity(intent);
-          }
-        });
-      }
       return vh;
 
     } else if (i == KICK_RESPONSE_ITEM) {
       v = LayoutInflater.from(parent.getContext())
                               .inflate(R.layout.kick_response_recycler_view_adapter, parent, false);
       final KickResponseAdapterViewHolder vh = new KickResponseAdapterViewHolder(v, true);
-
-      if (v != null) {
-        v.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-                                    .LENGTH_SHORT)
-                                    .show();
-            Intent intent;
-            intent = new Intent(mContext, KickMessagesActivity.class);
-            mContext.startActivity(intent);
-          }
-        });
-      }
       return vh;
 
     }
@@ -379,7 +393,6 @@ public class MessagesRecyclerViewAdapter extends
   public class KickRequestAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
     TextView textViewSample;
-    TextView currentAppTextViewSample;
     ImageView imageViewSample;
     Button buttonSample;
     View item_view;
@@ -390,7 +403,6 @@ public class MessagesRecyclerViewAdapter extends
       if (isItem) {
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
-        currentAppTextViewSample = (TextView) itemView.findViewById(R.id.current_app_textview);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         buttonSample = (Button) itemView.findViewById(R.id.button_kick);
 
