@@ -68,9 +68,8 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         weekSwitchTv.setText(week);
         time = TrackAccessibilityUtil.getPrevXWeek(CURRENT_WEEK);
         mIndexList.clear();
-        mIndexList = new ArrayList<Entry>();
         mRecyclerView.getAdapter().notifyDataSetChanged();
-        mIndexList = getIndex(time);
+        mIndexList.addAll(getIndex(time));
         mRecyclerView.getAdapter().notifyDataSetChanged();
         daySwitchRightBtn.setEnabled(true);
 //        daySwitchLeftBtn.setEnabled(false);
@@ -88,9 +87,8 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         weekSwitchTv.setText(week);
         time = TrackAccessibilityUtil.getPrevXWeek(CURRENT_WEEK);
         mIndexList.clear();
-        mIndexList = new ArrayList<Entry>();
         mRecyclerView.getAdapter().notifyDataSetChanged();
-        mIndexList = getIndex(time);
+        mIndexList.addAll(getIndex(time));
         mRecyclerView.getAdapter().notifyDataSetChanged();
 
         if (CURRENT_WEEK == 0)
@@ -100,8 +98,8 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
     });
 
         time = TrackAccessibilityUtil.getPrevXWeek(0);
-        mIndexList = new ArrayList<Entry>();
-        mIndexList = getIndex(time);
+        mIndexList = new ArrayList<>();
+        mIndexList.addAll(getIndex(time));
 
         // indexList can be used
         mRecyclerView = (UltimateRecyclerView) findViewById(R.id.hour_app_usage_recycler_view);

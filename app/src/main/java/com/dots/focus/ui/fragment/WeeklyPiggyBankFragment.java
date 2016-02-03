@@ -58,9 +58,8 @@ public class WeeklyPiggyBankFragment extends Fragment {
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
         stringList.clear();
-        stringList = new ArrayList<String>();
         mRecyclerView.getAdapter().notifyDataSetChanged();
-        setData();
+        stringList.addAll(setData());
         mRecyclerView.getAdapter().notifyDataSetChanged();
 
         daySwitchRightBtn.setEnabled(true);
@@ -78,9 +77,8 @@ public class WeeklyPiggyBankFragment extends Fragment {
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
         stringList.clear();
-        stringList = new ArrayList<String>();
         mRecyclerView.getAdapter().notifyDataSetChanged();
-        setData();
+        stringList.addAll(setData());
         mRecyclerView.getAdapter().notifyDataSetChanged();
 
         if (CURRENT_WEEK == 0)
@@ -93,7 +91,7 @@ public class WeeklyPiggyBankFragment extends Fragment {
     totalTimeTv = (TextView) v.findViewById(R.id.total_weekly_time_textview);
 
     stringList = new ArrayList<String>();
-    setData();
+    stringList.addAll(setData());
 
     simpleRecyclerViewAdapter = new WeeklyPiggyBankRecyclerViewAdapter(stringList);
     linearLayoutManager = new LinearLayoutManager(mContext);
@@ -104,25 +102,26 @@ public class WeeklyPiggyBankFragment extends Fragment {
 
     return v;
   }
-  private void setData() {
+  private List<String> setData() {
     positiveColor = new boolean[7];
     long time = TrackAccessibilityUtil.getPrevXWeek(CURRENT_WEEK);
     int[] timeBox = TrackAccessibilityUtil.timeBox(time);
     String[] weekString = TrackAccessibilityUtil.weekString(time);
+    List<String> mStringList = new ArrayList<>();
 
     for(int i = 0; i < 7; i++) {
 
       if(timeBox[i] == -1)
-        stringList.add(weekString[i] + " +" + "00:00:00");
+        mStringList.add(weekString[i] + " +" + "00:00:00");
       else {
         int t = (2 * (TrackAccessibilityUtil.anHour / 1000)) - timeBox[i];
         if(t >= 0) {
-          stringList.add(weekString[i] + " +" + timeToString(t));
+          mStringList.add(weekString[i] + " +" + timeToString(t));
           positiveColor[i] = true;
         }
         else {
           positiveColor[i] = false;
-          stringList.add(weekString[i] + " -" + timeToString(t * (-1)));
+          mStringList.add(weekString[i] + " -" + timeToString(t * (-1)));
         }
       }
     }
@@ -137,6 +136,7 @@ public class WeeklyPiggyBankFragment extends Fragment {
       totalTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
                               .red));
     }
+    return mStringList;
   }
 
 
