@@ -72,7 +72,6 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
       public void onClick(View view) {
 
         CURRENT_WEEK++;
-        weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
 //        ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);
@@ -81,12 +80,12 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
       }
     });
     daySwitchRightBtn = (Button) findViewById(R.id.day_switch_right_btn);
+    daySwitchRightBtn.setEnabled(false);
     daySwitchRightBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
 
         CURRENT_WEEK--;
-        weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
 //        ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);

@@ -31,9 +31,11 @@ public class WeeklyPiggyBankFragment extends Fragment {
   private LinearLayoutManager linearLayoutManager;
   public static boolean []positiveColor;
   private TextView weekSwitchTv;
+  private TextView totalTimeTv;
   private Button daySwitchLeftBtn;
   private Button daySwitchRightBtn;
   private int CURRENT_WEEK = 0;
+  private List<String> stringList;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,8 +57,10 @@ public class WeeklyPiggyBankFragment extends Fragment {
         weekSwitchTv = (TextView) v.findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
-        final List<String> stringList = setData(v);
-        simpleRecyclerViewAdapter = new WeeklyPiggyBankRecyclerViewAdapter(stringList);
+        stringList.clear();
+        stringList = new ArrayList<String>();
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        setData();
         mRecyclerView.getAdapter().notifyDataSetChanged();
 
         daySwitchRightBtn.setEnabled(true);
@@ -64,6 +68,7 @@ public class WeeklyPiggyBankFragment extends Fragment {
       }
     });
     daySwitchRightBtn = (Button) v.findViewById(R.id.day_switch_right_btn);
+    daySwitchRightBtn.setEnabled(false);
     daySwitchRightBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -72,8 +77,10 @@ public class WeeklyPiggyBankFragment extends Fragment {
         weekSwitchTv = (TextView) v.findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
-        final List<String> stringList = setData(v);
-        simpleRecyclerViewAdapter = new WeeklyPiggyBankRecyclerViewAdapter(stringList);
+        stringList.clear();
+        stringList = new ArrayList<String>();
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        setData();
         mRecyclerView.getAdapter().notifyDataSetChanged();
 
         if (CURRENT_WEEK == 0)
@@ -83,8 +90,10 @@ public class WeeklyPiggyBankFragment extends Fragment {
     });
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.weekly_piggy_bank_recycler_view);
+    totalTimeTv = (TextView) v.findViewById(R.id.total_weekly_time_textview);
 
-    final List<String> stringList = setData(v);
+    stringList = new ArrayList<String>();
+    setData();
 
     simpleRecyclerViewAdapter = new WeeklyPiggyBankRecyclerViewAdapter(stringList);
     linearLayoutManager = new LinearLayoutManager(mContext);
@@ -92,16 +101,14 @@ public class WeeklyPiggyBankFragment extends Fragment {
     mRecyclerView.setLayoutManager(linearLayoutManager);
     mRecyclerView.setAdapter(simpleRecyclerViewAdapter);
 
+
     return v;
   }
-  private List<String> setData(View v) {
+  private void setData() {
     positiveColor = new boolean[7];
-    final List<String> stringList = new ArrayList<>();
     long time = TrackAccessibilityUtil.getPrevXWeek(CURRENT_WEEK);
     int[] timeBox = TrackAccessibilityUtil.timeBox(time);
     String[] weekString = TrackAccessibilityUtil.weekString(time);
-
-    TextView total = (TextView) v.findViewById(R.id.total_weekly_time_textview);
 
     for(int i = 0; i < 7; i++) {
 
@@ -121,17 +128,17 @@ public class WeeklyPiggyBankFragment extends Fragment {
     }
 
     if(timeBox[7] >= 0) {
-      total.setText("+" + timeToString(timeBox[7]));
-      total.setTextColor(ContextCompat.getColor(mContext, R.color
+      totalTimeTv.setText("+" + timeToString(timeBox[7]));
+      totalTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
                               .yellow));
     }
     else {
-      total.setText("-" + timeToString(timeBox[7] * (-1)));
-      total.setTextColor(ContextCompat.getColor(mContext, R.color
+      totalTimeTv.setText("-" + timeToString(timeBox[7] * (-1)));
+      totalTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
                               .red));
     }
-    return stringList;
   }
+
 
   private String timeToString(int seconds) {
     int day = (int) TimeUnit.SECONDS.toDays(seconds);
