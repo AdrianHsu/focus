@@ -15,7 +15,7 @@ public class KickUtil {
     public static void sendKickRequest(int limitType, int period, long time, String content) {
         ParseObject kickRequest = new ParseObject("KickRequest");
         kickRequest.put("user_id", ParseUser.getCurrentUser().getLong("user_id"));
-        kickRequest.put("limitType", limitType);
+        kickRequest.put("LimitType", limitType);
         kickRequest.put("period", period);
         kickRequest.put("time", time);
         kickRequest.put("content", content);

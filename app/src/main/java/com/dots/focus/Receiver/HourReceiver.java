@@ -12,18 +12,12 @@ import com.dots.focus.util.TrackAccessibilityUtil;
 import java.util.Calendar;
 
 public class HourReceiver extends BroadcastReceiver {
-    private static MainActivity main = null;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String msg = intent.getExtras().getString("msg");
         if (msg != null && msg.equals("an_hour_is_up"))
             resetHourBlock(context);
-
-    }
-
-    public static void setMain(MainActivity m) {
-        main = m;
     }
 
     private void resetHourBlock(Context context) {

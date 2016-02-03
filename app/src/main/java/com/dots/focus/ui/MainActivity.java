@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,7 +17,6 @@ import com.dots.focus.adapter.MainTabPagerAdapter;
 import com.dots.focus.receiver.HourReceiver;
 import com.dots.focus.util.TrackAccessibilityUtil;
 
-import java.util.Calendar;
 
 /**
  * Created by AdrianHsu on 15/9/23.
