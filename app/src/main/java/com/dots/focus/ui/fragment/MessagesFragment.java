@@ -98,7 +98,6 @@ public class MessagesFragment extends Fragment {
             messages.addAll(GetKickResponseService.kickResponseList);
 
             mRecyclerView.getAdapter().notifyDataSetChanged();
-
             mRecyclerView.setRefreshing(false);
           }
         }, 1000);

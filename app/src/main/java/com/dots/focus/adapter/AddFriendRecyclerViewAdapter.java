@@ -29,10 +29,12 @@ public class AddFriendRecyclerViewAdapter extends
 
   private ArrayList<JSONObject> friendProfileList;
   private Context mContext;
-  private static final int FRIEND_INVITE_ITEM = FriendRelationship.NOT_FRIEND.getValue();
-  private static final int FRIEND_CONFIRM_ITEM = FriendRelationship.FRIEND_INVITED.getValue();
+  private static final int NOT_FRIEND_ITEM = FriendRelationship.NOT_FRIEND.getValue();
+  private static final int FRIEND_INVITED_ITEM = FriendRelationship.FRIEND_INVITED.getValue();
   private static final int FRIEND_CONFIRMED_ITEM = FriendRelationship.FRIEND_CONFIRMED.getValue();
 //  private static final int FRIEND_ITEM = FriendRelationship.IS_FRIEND.getValue();
+  private static final int FRIEND_INVITING_ITEM = FriendRelationship.FRIEND_INVITING.getValue();
+
 
   private static final String TAG = "AddFriend";
 
@@ -80,15 +82,20 @@ public class AddFriendRecyclerViewAdapter extends
       for (int i = 0; i < friendProfileList.size(); ++i)
         Log.d(TAG, friendProfileList.get(i).toString());
 
-      holder.mButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          FetchFriendUtil.friendInvite(id, name);
-          int index = indexOf(jsonObject);
-          if (index != -1)
-            remove(index);
-        }
-      });
+      if(jsonObject.getInt("state") == FRIEND_INVITING_ITEM) {
+        holder.mButton.setEnabled(false);
+        holder.mButton.setText("等待回覆");
+      } else {
+        holder.mButton.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            FetchFriendUtil.friendInvite(id, name);
+            int index = indexOf(jsonObject);
+            if (index != -1)
+              remove(index);
+          }
+        });
+      }
 
     } catch (JSONException e) {
       e.printStackTrace();
@@ -194,9 +201,9 @@ public class AddFriendRecyclerViewAdapter extends
     try {
       type = friendProfileList.get(position).getInt("state");
     } catch (JSONException e) {
-      e.printStackTrace();
+      Log.v(TAG, e.getMessage());
     }
-
+    Log.v(TAG, "type = " + type);
     return type;
   }
 
@@ -210,7 +217,7 @@ public class AddFriendRecyclerViewAdapter extends
 
     View v = null;
 
-    if (i == FRIEND_INVITE_ITEM) {
+    if (i == NOT_FRIEND_ITEM || i == FRIEND_INVITING_ITEM) {
       v = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.friend_invite_recycler_view_adapter, parent, false);
       final FriendInviteAdapterViewHolder vh = new FriendInviteAdapterViewHolder(v, true);
@@ -227,7 +234,7 @@ public class AddFriendRecyclerViewAdapter extends
       }
       return vh;
 
-    } else if (i == FRIEND_CONFIRM_ITEM) {
+    } else if (i == FRIEND_INVITED_ITEM) {
       v = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.friend_confirm_recycler_view_adapter, parent, false);
       final FriendConfirmAdapterViewHolder vh = new FriendConfirmAdapterViewHolder(v, true);
