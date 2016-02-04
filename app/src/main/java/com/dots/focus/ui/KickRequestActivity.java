@@ -28,7 +28,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class KickMessagesActivity extends BaseActivity {
+public class KickRequestActivity extends BaseActivity {
 
   private EditText editText1;
   private ImageView sendBtn;
@@ -41,7 +41,7 @@ public class KickMessagesActivity extends BaseActivity {
   private int period;
   private long time;
   private String content;
-  private static final String TAG = "KickMessages";
+  private static final String TAG = "KickRequest";
 
   private UltimateRecyclerView mRecyclerView;
   private DiscussRecyclerViewAdapter discussRecyclerViewAdapter = null;
@@ -51,7 +51,7 @@ public class KickMessagesActivity extends BaseActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_kick_messages);
+    setContentView(R.layout.activity_kick_request);
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
