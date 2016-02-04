@@ -91,7 +91,7 @@ public class KickRequestActivity extends BaseActivity {
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
-      name = extras.getString("name");
+      name = extras.getString("user_name");
       objectId = extras.getString("objectId");
       id = extras.getLong("user_id");
       period = extras.getInt("period");
@@ -109,7 +109,7 @@ public class KickRequestActivity extends BaseActivity {
       mRequest.put("content", content);
       mRequest.put("time", time);
     } catch(JSONException e) {
-      e.printStackTrace();
+      Log.v(TAG, e.getMessage());
     }
     messages.add(mRequest);
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.discuss_recycler_view);
