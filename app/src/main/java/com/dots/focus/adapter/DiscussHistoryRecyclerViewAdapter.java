@@ -65,7 +65,7 @@ public class DiscussHistoryRecyclerViewAdapter extends
 
       holder.mTextView.setText(text);
       holder.mTimeTv.setText(time);
-      wrapper.setGravity(tmp == 0 ? Gravity.LEFT : Gravity.RIGHT);
+      wrapper.setGravity(tmp == 1 ? Gravity.LEFT : Gravity.RIGHT);
 
     }
   }

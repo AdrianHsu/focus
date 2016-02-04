@@ -263,30 +263,14 @@ public class MessagesRecyclerViewAdapter extends
             intent.putExtra("content1", content1);
             intent.putExtra("time2", time2);
             intent.putExtra("content2", content2);
-            intent.putExtra("time2", time3);
-            intent.putExtra("content2", content3);
+            intent.putExtra("time3", time3);
+            intent.putExtra("content3", content3);
             mContext.startActivity(intent);
           }
         });
       }
     } catch (JSONException e) {
       Log.v(TAG, e.getMessage());
-    }
-
-    if (holder.item_view != null) {
-      holder.item_view.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Toast.makeText(v.getContext(), "inside viewholder position = " +
-                                  holder.getAdapterPosition()
-                                  , Toast
-                                  .LENGTH_SHORT)
-                                  .show();
-//          Intent intent;
-//          intent = new Intent(mContext, KickRequestActivity.class);
-//          mContext.startActivity(intent);
-        }
-      });
     }
   }
   @Override
