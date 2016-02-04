@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dots.focus.R;
-import com.dots.focus.adapter.DiscussRecyclerViewAdapter;
+import com.dots.focus.adapter.DiscussHistoryRecyclerViewAdapter;
 import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.squareup.picasso.Picasso;
@@ -45,7 +45,7 @@ public class KickHistoryActivity extends BaseActivity {
   private static final String TAG = "KickHistory";
 
   private UltimateRecyclerView mRecyclerView;
-  private DiscussRecyclerViewAdapter discussRecyclerViewAdapter = null;
+  private DiscussHistoryRecyclerViewAdapter discussHistoryRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
   private final ArrayList<JSONObject> messages = new ArrayList<>();
 
@@ -124,11 +124,11 @@ public class KickHistoryActivity extends BaseActivity {
     messages.add(mRequest1);
     messages.add(mRequest2);
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.discuss_recycler_view);
-    discussRecyclerViewAdapter = new DiscussRecyclerViewAdapter( messages, this);
+    discussHistoryRecyclerViewAdapter = new DiscussHistoryRecyclerViewAdapter( messages, this);
     linearLayoutManager = new LinearLayoutManager(this);
 
     mRecyclerView.setLayoutManager(linearLayoutManager);
-    mRecyclerView.setAdapter(discussRecyclerViewAdapter);
+    mRecyclerView.setAdapter(discussHistoryRecyclerViewAdapter);
     mRecyclerView.scrollVerticallyToPosition(messages.size() - 1);
   }
   @Override
