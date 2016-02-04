@@ -66,7 +66,6 @@ public class GetFriendInviteService extends Service {
             JSONObject jsonObject = new JSONObject();
             try {
               FetchFriendUtil.checkRemoveMFL(id);
-              FetchFriendUtil.checkRemoveMIFL(id);
 
               jsonObject.put("id", id);
               jsonObject.put("name", name);

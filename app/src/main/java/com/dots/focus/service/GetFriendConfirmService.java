@@ -94,9 +94,12 @@ public class GetFriendConfirmService extends Service {
                 if (e == null && inviteList != null) {
                     for (int i = 0, size = inviteList.size(); i < size; ++i) {
                         JSONObject jsonObject = new JSONObject();
+                        long id = inviteList.get(i).getLong("user_id_inviting");
 
                         try {
-                            jsonObject.put("id", inviteList.get(i).getLong("user_id_inviting"));
+                            FetchFriendUtil.checkRemoveMIFL(id);
+
+                            jsonObject.put("id", id);
                             jsonObject.put("name", inviteList.get(i).getString("user_name_inviting"));
                             jsonObject.put("time", inviteList.get(i).getLong("time"));
                             jsonObject.put("state", FriendRelationship.FRIEND_CONFIRMED.getValue());

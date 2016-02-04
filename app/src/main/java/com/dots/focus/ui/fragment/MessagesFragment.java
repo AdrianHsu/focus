@@ -56,9 +56,8 @@ public class MessagesFragment extends Fragment {
     ParseUser user = ParseUser.getCurrentUser();
     String name = user.getString("user_name");
     profileTextView.setText(name);
-    String url ="https://graph.facebook.com/" + String.valueOf( user.getLong
-                            ("user_id") )+
-                            "/picture?type=large";
+    String url ="https://graph.facebook.com/" + String.valueOf(user.getLong
+                            ("user_id") ) + "/picture?type=large";
     Picasso.with(context).load(url).into(profileImageView);
 
     final ArrayList<JSONObject> messages = new ArrayList<>();
@@ -72,7 +71,7 @@ public class MessagesFragment extends Fragment {
     messages.addAll(GetKickResponseService.kickResponseList);
     Log.v(TAG, "friendKickRequestList.size() == " + GetKickRequestService.friendKickRequestList
       .size());
-    messagesRecyclerViewAdapter = new MessagesRecyclerViewAdapter( messages, context);
+    messagesRecyclerViewAdapter = new MessagesRecyclerViewAdapter(messages, context);
     linearLayoutManager = new LinearLayoutManager(context);
 
     mRecyclerView.setLayoutManager(linearLayoutManager);
