@@ -55,9 +55,8 @@ public class GetKickedService extends Service {
     }
 
     public static void queryKicked() {
-        ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
-        query.whereEqualTo("user_id_kicked", currentUser.getLong("user_id"));
+        query.whereEqualTo("user_id_kicked", ParseUser.getCurrentUser().getLong("user_id"));
         query.whereEqualTo("state", KickState.KICK_NOT_DOWNLOADED.getValue());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
