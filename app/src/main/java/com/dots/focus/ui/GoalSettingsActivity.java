@@ -1,11 +1,5 @@
 package com.dots.focus.ui;
 
-
-
-/**
- * Created by AdrianHsu on 2015/12/13.
- */
-
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -16,12 +10,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.util.SettingsUtil;
 
 public class GoalSettingsActivity extends BaseActivity {
 
   private Button doneBtn;
   private SeekBar seekBar;
   private TextView textView;
+
+  private int progress;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +30,8 @@ public class GoalSettingsActivity extends BaseActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle("目標設定");
     seekBar = (SeekBar) findViewById(R.id.seekBar1);
+    progress = SettingsUtil.getInt("goal");
+    seekBar.setProgress(progress);
     textView = (TextView) findViewById(R.id.textView1);
     doneBtn =(Button) findViewById(R.id.button);
 
@@ -40,11 +39,11 @@ public class GoalSettingsActivity extends BaseActivity {
     textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
 
     seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-      int progress = 120;
 
       @Override
       public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
         progress = progresValue;
+        textView.setText("Covered: " + progress + "/" + seekBar.getMax());
         Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
       }
 
@@ -63,6 +62,7 @@ public class GoalSettingsActivity extends BaseActivity {
     doneBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        SettingsUtil.put("goal", progress);
         onBackPressed();
       }
     });
