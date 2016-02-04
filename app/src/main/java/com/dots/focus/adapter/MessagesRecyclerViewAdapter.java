@@ -175,9 +175,7 @@ public class MessagesRecyclerViewAdapter extends
           @Override
           public void onClick(View v) {
             Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition()
-                                    , Toast
-                                    .LENGTH_SHORT)
-                                    .show();
+                                    , Toast.LENGTH_SHORT).show();
             Intent intent;
             intent = new Intent(mContext, KickHistoryActivity.class);
             intent.putExtra("user_name", name);
@@ -232,7 +230,7 @@ public class MessagesRecyclerViewAdapter extends
             @Override
             public void done(ParseObject kickHistory, ParseException e) {
               if (e == null && kickHistory != null) {
-                kickHistory.put("state", 4);
+                kickHistory.put("state", KickState.READED.getValue());
                 Log.d(TAG, "kickResponse known");
               } else if (e != null) {
                 Log.d(TAG, e.getMessage());

@@ -55,6 +55,7 @@ public class KickUtil {
             kickHistory.put("content3", content);
             kickHistory.put("state", KickState.RESPONSE_NOT_DOWNLOADED.getValue());
             kickHistory.saveEventually();
+            kickHistory.put("state", KickState.READED.getValue());
           } else if (e != null) {
             Log.d(TAG, e.getMessage());
           }

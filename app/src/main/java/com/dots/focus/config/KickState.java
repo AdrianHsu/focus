@@ -6,7 +6,8 @@ public enum KickState {
     KICK_NOT_DOWNLOADED(2),
     KICK_DOWNLOADED(3),
     RESPONSE_NOT_DOWNLOADED(4),
-    RESPONSE_DOWNLOADED(5);
+    RESPONSE_DOWNLOADED(5),
+    READED(6);
     private final int value;
 
     KickState(int value) {
