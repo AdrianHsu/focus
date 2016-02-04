@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GetKickRequestService extends Service {
     private final IBinder mBinder = new GetKickRequestBinder();
@@ -28,9 +30,17 @@ public class GetKickRequestService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickRequestService start...");
-        queryKickRequest();
+        checkLocal();
+        Timer timer = new Timer();
+        timer.schedule(new CheckKickRequest(), 0, 60000);
 
         return 0;
+    }
+
+    class CheckKickRequest extends TimerTask {
+        public void run() {
+            queryKickRequest();
+        }
     }
 
     public class GetKickRequestBinder extends Binder {
@@ -45,8 +55,6 @@ public class GetKickRequestService extends Service {
     }
 
     public static void queryKickRequest() {
-        checkLocal();
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
@@ -76,7 +84,7 @@ public class GetKickRequestService extends Service {
                         }
                     }
                     try {
-                        ParseObject.saveAll(objects);
+                        ParseObject.saveAllInBackground(objects);
                         ParseObject.pinAll(objects);
                     } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
                 }
@@ -85,8 +93,6 @@ public class GetKickRequestService extends Service {
     }
 
     private static void checkLocal() {
-        friendKickRequestList.clear();
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
@@ -96,6 +102,7 @@ public class GetKickRequestService extends Service {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null && objects != null && !objects.isEmpty()) {
+                    friendKickRequestList.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickMessage = new JSONObject();
                         ParseObject object = objects.get(i);

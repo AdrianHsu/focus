@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GetKickedService extends Service {
     private final IBinder mBinder = new GetKickedBinder();
@@ -27,9 +29,17 @@ public class GetKickedService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickedService start...");
-        queryKicked();
+        checkLocal();
+        Timer timer = new Timer();
+        timer.schedule(new CheckKicked(), 0, 60000);
 
         return 0;
+    }
+
+    class CheckKicked extends TimerTask {
+        public void run() {
+            queryKicked();
+        }
     }
 
     public class GetKickedBinder extends Binder {
@@ -44,8 +54,6 @@ public class GetKickedService extends Service {
     }
 
     public static void queryKicked() {
-        checkLocal();
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicked", currentUser.getLong("user_id"));
@@ -53,10 +61,7 @@ public class GetKickedService extends Service {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null) {
-                    if (objects.isEmpty())  return;
-
-                    kickedList.clear();
+                if (e == null && objects != null && !objects.isEmpty()) {
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         objects.get(i).put("state", KickState.KICK_DOWNLOADED.getValue());
                         JSONObject kickMessage = new JSONObject();
@@ -80,19 +85,15 @@ public class GetKickedService extends Service {
                         }
                     }
                     try {
-                        ParseObject.saveAll(objects);
+                        ParseObject.saveAllInBackground(objects);
                         ParseObject.pinAll(objects);
                     } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
-                    // refresh the content
-
                 }
             }
         });
     }
 
     private static void checkLocal() {
-        kickedList.clear();
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicked", currentUser.getLong("user_id"));
@@ -101,9 +102,7 @@ public class GetKickedService extends Service {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null) {
-                    if (objects.isEmpty()) return;
-
+                if (e == null && objects != null && !objects.isEmpty()) {
                     kickedList.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickMessage = new JSONObject();

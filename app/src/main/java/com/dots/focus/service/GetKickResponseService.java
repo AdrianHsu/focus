@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GetKickResponseService extends Service {
     private final IBinder mBinder = new GetKickedBinder();
@@ -27,9 +29,17 @@ public class GetKickResponseService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickResponseService start...");
-        queryKickResponse();
+        checkLocal();
+        Timer timer = new Timer();
+        timer.schedule(new CheckKickResponse(), 0, 60000);
 
         return 0;
+    }
+
+    class CheckKickResponse extends TimerTask {
+        public void run() {
+            queryKickResponse();
+        }
     }
 
     public class GetKickedBinder extends Binder {
@@ -44,8 +54,6 @@ public class GetKickResponseService extends Service {
     }
 
     public static void queryKickResponse() {
-        checkLocal();
-
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
 
         query.whereEqualTo("user_id_kicking", ParseUser.getCurrentUser().getLong("user_id"));
@@ -54,9 +62,7 @@ public class GetKickResponseService extends Service {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null) {
-                    if (objects.isEmpty())  return;
-
+                if (e == null && objects != null && !objects.isEmpty()) {
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         objects.get(i).put("state", KickState.REQUEST_DOWNLOADED.getValue());
                         JSONObject kickResponse = new JSONObject();
@@ -82,7 +88,7 @@ public class GetKickResponseService extends Service {
                         }
                     }
                     try {
-                        ParseObject.saveAll(objects);
+                        ParseObject.saveAllInBackground(objects);
                         ParseObject.pinAll(objects);
                     } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
                 }
@@ -90,16 +96,14 @@ public class GetKickResponseService extends Service {
         });
     }
     private static void checkLocal() {
-        kickResponseList.clear();
-
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", ParseUser.getCurrentUser().getLong("user_id"));
         query.whereEqualTo("state", KickState.RESPONSE_DOWNLOADED.getValue());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null) {
-                    if (objects.isEmpty())  return;
+                if (e == null && objects != null && !objects.isEmpty()) {
+                    kickResponseList.clear();
 
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickResponse = new JSONObject();

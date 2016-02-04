@@ -31,10 +31,16 @@ public class GetFriendConfirmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        updateList();
+        checkLocal();
         Timer timer = new Timer();
         timer.schedule(new CheckFriendConfirmation(), 0, 60000);
         return 0;
+    }
+
+    class CheckFriendConfirmation extends TimerTask {
+        public void run() {
+            refresh();
+        }
     }
 
     public class GetFriendConfirmBinder extends Binder {
@@ -61,6 +67,9 @@ public class GetFriendConfirmService extends Service {
               try {
                 Long id = inviteList.get(i).getLong("user_id_invited");
                 String name = inviteList.get(i).getString("user_name_invited");
+
+                FetchFriendUtil.checkRemoveMIFL(id);
+
                 jsonObject.put("id", id);
                 jsonObject.put("name", name);
                 jsonObject.put("time", inviteList.get(i).getLong("time"));
@@ -77,16 +86,12 @@ public class GetFriendConfirmService extends Service {
         }
       });
     }
-    class CheckFriendConfirmation extends TimerTask {
-        public void run() {
-            refresh();
-        }
-    }
-    public static void updateList() {
+
+    public static void checkLocal() {
         friendRepliedList.clear();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
-        query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("user_id"));
+        query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("user_id"));
         query.fromLocalDatastore();
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> inviteList, ParseException e) {
@@ -95,10 +100,7 @@ public class GetFriendConfirmService extends Service {
                     for (int i = 0, size = inviteList.size(); i < size; ++i) {
                         JSONObject jsonObject = new JSONObject();
                         long id = inviteList.get(i).getLong("user_id_inviting");
-
                         try {
-                            FetchFriendUtil.checkRemoveMIFL(id);
-
                             jsonObject.put("id", id);
                             jsonObject.put("name", inviteList.get(i).getString("user_name_inviting"));
                             jsonObject.put("time", inviteList.get(i).getLong("time"));

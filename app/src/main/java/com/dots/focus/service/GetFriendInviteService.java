@@ -29,7 +29,7 @@ public class GetFriendInviteService extends Service {
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
-    updateList(); // friendWaitingReplyList.clear();
+    checkLocal(); // friendWaitingReplyList.clear();
     Timer timer = new Timer();
     timer.schedule(new CheckFriendInvitation(), 0, 60000);
     return 0;
@@ -94,7 +94,7 @@ public class GetFriendInviteService extends Service {
     }
   }
 
-  public static void updateList() {
+  public static void checkLocal() {
     friendWaitingReplyList.clear();
 
     ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
