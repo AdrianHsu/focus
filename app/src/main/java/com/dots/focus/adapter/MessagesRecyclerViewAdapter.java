@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import com.dots.focus.R;
 import com.dots.focus.config.KickState;
+import com.dots.focus.ui.KickHistoryActivity;
 import com.dots.focus.ui.KickRequestActivity;
+import com.dots.focus.ui.KickResponseActivity;
 import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
@@ -177,7 +179,7 @@ public class MessagesRecyclerViewAdapter extends
                                     .LENGTH_SHORT)
                                     .show();
             Intent intent;
-            intent = new Intent(mContext, KickRequestActivity.class);
+            intent = new Intent(mContext, KickHistoryActivity.class);
             intent.putExtra("user_name", name);
             intent.putExtra("objectId", objectId);
             intent.putExtra("user_id", id);
@@ -251,7 +253,7 @@ public class MessagesRecyclerViewAdapter extends
                                     .LENGTH_SHORT)
                                     .show();
             Intent intent;
-            intent = new Intent(mContext, KickRequestActivity.class);
+            intent = new Intent(mContext, KickResponseActivity.class);
             intent.putExtra("user_name", name);
             intent.putExtra("objectId", objectId);
             intent.putExtra("user_id", id);

@@ -64,7 +64,7 @@ public class GetKickResponseService extends Service {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null && objects != null && !objects.isEmpty()) {
                     for (int i = 0, size = objects.size(); i < size; ++i) {
-                        objects.get(i).put("state", KickState.REQUEST_DOWNLOADED.getValue());
+                        objects.get(i).put("state", KickState.RESPONSE_DOWNLOADED.getValue());
                         JSONObject kickResponse = new JSONObject();
                         ParseObject object = objects.get(i);
                         long id = object.getLong("user_id_kicked");
