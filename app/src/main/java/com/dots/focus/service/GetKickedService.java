@@ -91,8 +91,6 @@ public class GetKickedService extends Service {
     }
 
     private static void checkLocal() {
-        kickedList.clear();
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicked", currentUser.getLong("user_id"));
@@ -101,9 +99,7 @@ public class GetKickedService extends Service {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null) {
-                    if (objects.isEmpty()) return;
-
+                if (e == null && objects != null && !objects.isEmpty()) {
                     kickedList.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickMessage = new JSONObject();

@@ -85,8 +85,6 @@ public class GetKickRequestService extends Service {
     }
 
     private static void checkLocal() {
-        friendKickRequestList.clear();
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
@@ -96,6 +94,7 @@ public class GetKickRequestService extends Service {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null && objects != null && !objects.isEmpty()) {
+                    friendKickRequestList.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickMessage = new JSONObject();
                         ParseObject object = objects.get(i);
