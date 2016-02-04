@@ -41,6 +41,14 @@
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".ui.KickHistoryActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".ui.KickResponseActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait">
+        </activity>
 
         <activity android:name=".ui.WeeklyAppUsageChartActivity"
                   android:label="@string/app_name"
