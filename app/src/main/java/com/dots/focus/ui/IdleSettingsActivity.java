@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
+import com.dots.focus.util.SettingsUtil;
 
 public class IdleSettingsActivity extends BaseActivity {
 
@@ -24,6 +25,8 @@ public class IdleSettingsActivity extends BaseActivity {
   private Button pickAppBtn;
   private SeekBar seekBar;
   private TextView textView;
+
+  private int progress;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class IdleSettingsActivity extends BaseActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle("耍廢條件設定");
     seekBar = (SeekBar) findViewById(R.id.seekBar1);
+    progress = SettingsUtil.getInt("idle");
+    seekBar.setProgress(progress);
     // Adrian: 連續要改掉..
     textView = (TextView) findViewById(R.id.textView1);
     doneBtn = (Button) findViewById(R.id.button);
@@ -51,11 +56,10 @@ public class IdleSettingsActivity extends BaseActivity {
     textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
 
     seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-      int progress = 120;
-
       @Override
       public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
         progress = progresValue;
+        textView.setText("Covered: " + progress + "/" + seekBar.getMax());
         Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
       }
 
@@ -74,6 +78,7 @@ public class IdleSettingsActivity extends BaseActivity {
     doneBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        SettingsUtil.put("idle", progress);
         onBackPressed();
       }
     });

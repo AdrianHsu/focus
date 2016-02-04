@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
+import com.dots.focus.util.SettingsUtil;
 
 public class LockSettingsActivity extends BaseActivity {
 
@@ -26,6 +27,8 @@ public class LockSettingsActivity extends BaseActivity {
   private SeekBar seekBar;
   private TextView textView;
   private TextView typeTextView;
+
+  private int progress = 0;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,9 @@ public class LockSettingsActivity extends BaseActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle("鎖屏設定");
     seekBar = (SeekBar) findViewById(R.id.seekBar1);
+    final int temp = SettingsUtil.getInt("lock");
+    progress = temp;
+    seekBar.setProgress(temp);
     textView = (TextView) findViewById(R.id.textView1);
     typeTextView = (TextView) findViewById(R.id.type);
     doneBtn =(Button) findViewById(R.id.button);
@@ -47,11 +53,11 @@ public class LockSettingsActivity extends BaseActivity {
     textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
 
     seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-      int progress = 120;
 
       @Override
       public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
         progress = progresValue;
+        textView.setText("Covered: " + progress + "/" + seekBar.getMax());
         Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
       }
 
@@ -70,6 +76,7 @@ public class LockSettingsActivity extends BaseActivity {
     doneBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        SettingsUtil.put("lock", progress);
         onBackPressed();
       }
     });
@@ -102,8 +109,7 @@ public class LockSettingsActivity extends BaseActivity {
                                 return true;
                               }
                             })
-                            .positiveText("完成")
-                            .show();
+                            .positiveText("完成").show();
   }
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
