@@ -170,6 +170,9 @@ public class FetchFriendUtil {
         Log.d(TAG, "getFriendConfirm...");
 
         mConfirmingFriendList.remove(id);
+        try {
+            checkRemoveMIFL(id);
+        } catch(JSONException e) { Log.d(TAG, e.getMessage()); }
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");

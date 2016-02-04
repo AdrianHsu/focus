@@ -68,8 +68,6 @@ public class GetFriendConfirmService extends Service {
                 Long id = inviteList.get(i).getLong("user_id_invited");
                 String name = inviteList.get(i).getString("user_name_invited");
 
-                FetchFriendUtil.checkRemoveMIFL(id);
-
                 jsonObject.put("id", id);
                 jsonObject.put("name", name);
                 jsonObject.put("time", inviteList.get(i).getLong("time"));

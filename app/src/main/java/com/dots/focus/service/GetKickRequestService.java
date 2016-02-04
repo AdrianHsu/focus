@@ -75,9 +75,9 @@ public class GetKickRequestService extends Service {
                             kickMessage.put("state", object.getLong("state"));
                             kickMessage.put("LimitType", object.getInt("LimitType"));
                             kickMessage.put("period", object.getInt("period"));
-                            kickMessage.put("time1", object.getLong("time"));
-                            kickMessage.put("content1", objects.get(i).getString("content1"));
-                            kickMessage.put("objectId", objects.get(i).getObjectId());
+                            kickMessage.put("time1", object.getLong("time1"));
+                            kickMessage.put("content1", object.getString("content1"));
+                            kickMessage.put("objectId", object.getObjectId());
                             friendKickRequestList.add(kickMessage);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
@@ -115,8 +115,8 @@ public class GetKickRequestService extends Service {
                             kickMessage.put("LimitType", object.getInt("LimitType"));
                             kickMessage.put("period", object.getInt("period"));
                             kickMessage.put("time", object.getLong("time1"));
-                            kickMessage.put("content", objects.get(i).getString("content1"));
-                            kickMessage.put("objectId", objects.get(i).getObjectId());
+                            kickMessage.put("content", object.getString("content1"));
+                            kickMessage.put("objectId", object.getObjectId());
                             friendKickRequestList.add(kickMessage);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
