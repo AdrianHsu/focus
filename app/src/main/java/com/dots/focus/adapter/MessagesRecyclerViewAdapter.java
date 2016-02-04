@@ -36,8 +36,8 @@ public class MessagesRecyclerViewAdapter extends
   private Context mContext;
 
   private static final int KICK_REQUEST_ITEM = KickState.REQUEST_DOWNLOADED.getValue();
-  private static final int KICK_HISTORY_ITEM = KickState.REQUEST_DOWNLOADED.getValue();
-  private static final int KICK_RESPONSE_ITEM = KickState.REQUEST_DOWNLOADED.getValue();
+  private static final int KICK_HISTORY_ITEM = KickState.KICK_DOWNLOADED.getValue();
+  private static final int KICK_RESPONSE_ITEM = KickState.RESPONSE_DOWNLOADED.getValue();
   //
 
   private static final String TAG = "Messages";
