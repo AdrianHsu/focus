@@ -78,9 +78,10 @@ public class FetchAppUtil {
     }
 
     public static void printApps() {
-        Log.d(TAG, "printing, apps.size(): " + apps.size());
+        int size = apps.size();
+        Log.d(TAG, "printing, apps.size(): " + size);
         if (searching) Log.d(TAG, "still searching...");
-        for (int i = 0; i < apps.size(); i++) {
+        for (int i = 0; i < size; i++) {
             Log.d(TAG, "i: " + i);
             Log.d(TAG, apps.get(i).getName() + "," + apps.get(i).getPackageName() + "," + apps.get(i).getCategory());
         }

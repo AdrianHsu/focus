@@ -16,10 +16,12 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphRequestBatch;
 import com.facebook.GraphResponse;
+import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,7 +45,21 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         if (LoginController.hasLoggedIn()) {
+            ParseUser currentUser = ParseUser.getCurrentUser();
             Log.d(TAG, "Already Login...");
+            if (currentUser.has("user_id"))
+                Log.d(TAG, "" + currentUser.getLong("user_id"));
+            if (currentUser.has("user_name"))
+                Log.d(TAG, "" + currentUser.getString("user_name"));
+            currentUser.saveEventually(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null)
+                        Log.d(TAG, "save succeeded.");
+                    else
+                        Log.d(TAG, e.getMessage());
+                }
+            });
             showSetInfoActivity();
 //          showMainActivity();
 //      Parse.enableLocalDatastore(this); //Exception not yet resolved

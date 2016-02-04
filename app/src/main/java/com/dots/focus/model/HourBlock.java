@@ -20,8 +20,8 @@ public class HourBlock extends ParseObject {
 
     public HourBlock(final long hourInLong, final int h, final int index) {
 
-        List<Integer> appLength = new ArrayList<>();
         int size = FetchAppUtil.getSize();
+        List<Integer> appLength = new ArrayList<>(size);
         for(int i = 0; i < size; ++i)
             appLength.add(0);
 

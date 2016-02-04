@@ -154,8 +154,8 @@ public class TrackAccessibilityService extends AccessibilityService {
             storeInDatabase(startHour + TrackAccessibilityUtil.anHour);
             startTime = startHour = startHour + TrackAccessibilityUtil.anHour;
         }
-        storeInDatabase(now);
         Log.d(TAG, "appIndex: " + appIndex);
+        storeInDatabase(now);
 
         startTime = now;
         previousPackageName = tempPackageName;
@@ -198,12 +198,23 @@ public class TrackAccessibilityService extends AccessibilityService {
             user.put("AppIndex", AppIndex);
 
         List<Integer> appLength = hour.getList("appLength");
+        int size = appLength.size();
+        while (size <= appIndex) {
+            appLength.add(0);
+            ++size;
+        }
         Log.d(TAG, "hour appLength.get: " + appLength.get(appIndex) + ", duration: " + duration);
         appLength.set(appIndex, appLength.get(appIndex) + duration);
         hour.put("appLength", appLength);
         Log.d(TAG, "Hour appLength.get: " + hour.getList("appLength").get(appIndex));
 
         appLength = day.getList("appLength");
+        size = appLength.size();
+        while (size <= appIndex) {
+            appLength.add(0);
+            ++size;
+        }
+
         Log.d(TAG, "day appLength.get: " + appLength.get(appIndex) + ", duration: " + duration);
         appLength.set(appIndex, appLength.get(appIndex) + duration);
         day.put("appLength", appLength);

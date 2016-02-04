@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GetKickResponseService extends Service {
     private final IBinder mBinder = new GetKickedBinder();
@@ -27,9 +29,17 @@ public class GetKickResponseService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickResponseService start...");
-        queryKickResponse();
+        checkLocal();
+        Timer timer = new Timer();
+        timer.schedule(new CheckKickResponse(), 0, 60000);
 
         return 0;
+    }
+
+    class CheckKickResponse extends TimerTask {
+        public void run() {
+            queryKickResponse();
+        }
     }
 
     public class GetKickedBinder extends Binder {
@@ -44,8 +54,6 @@ public class GetKickResponseService extends Service {
     }
 
     public static void queryKickResponse() {
-        checkLocal();
-
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
 
         query.whereEqualTo("user_id_kicking", ParseUser.getCurrentUser().getLong("user_id"));
@@ -80,7 +88,7 @@ public class GetKickResponseService extends Service {
                         }
                     }
                     try {
-                        ParseObject.saveAll(objects);
+                        ParseObject.saveAllInBackground(objects);
                         ParseObject.pinAll(objects);
                     } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
                 }
