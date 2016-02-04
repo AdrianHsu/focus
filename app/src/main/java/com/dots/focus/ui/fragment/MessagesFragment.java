@@ -38,6 +38,7 @@ public class MessagesFragment extends Fragment {
   private MessagesRecyclerViewAdapter messagesRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
   private static String TAG = "MessagesFragment";
+  private ArrayList<JSONObject> messages;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,12 +61,10 @@ public class MessagesFragment extends Fragment {
                             ("user_id") ) + "/picture?type=large";
     Picasso.with(context).load(url).into(profileImageView);
 
-    final ArrayList<JSONObject> messages = new ArrayList<>();
-
     GetKickRequestService.queryKickRequest();
     GetKickedService.queryKicked();
     GetKickResponseService.queryKickResponse();
-
+    messages = new ArrayList<>();
     messages.addAll(GetKickRequestService.friendKickRequestList);
     messages.addAll(GetKickedService.kickedList);
     messages.addAll(GetKickResponseService.kickResponseList);
@@ -86,17 +85,21 @@ public class MessagesFragment extends Fragment {
 
             messages.clear();
             mRecyclerView.getAdapter().notifyDataSetChanged();
-            Log.v(TAG, "friendKickRequestList.size() == " + GetKickRequestService.friendKickRequestList
+            Log.v(TAG, "(before)friendKickRequestList.size() == " + GetKickRequestService
+                                    .friendKickRequestList
                                     .size());
             GetKickRequestService.queryKickRequest();
             GetKickedService.queryKicked();
             GetKickResponseService.queryKickResponse();
-
+            Log.v(TAG, "(after)friendKickRequestList.size() == " + GetKickRequestService
+                                    .friendKickRequestList
+                                    .size());
             messages.addAll(GetKickRequestService.friendKickRequestList);
             messages.addAll(GetKickedService.kickedList);
             messages.addAll(GetKickResponseService.kickResponseList);
 
             mRecyclerView.getAdapter().notifyDataSetChanged();
+            Log.v("Messages", "adapter size: " + mRecyclerView.getAdapter().getItemCount());
             mRecyclerView.setRefreshing(false);
           }
         }, 1000);
@@ -105,6 +108,4 @@ public class MessagesFragment extends Fragment {
 
     return v;
   }
-
-
 }
