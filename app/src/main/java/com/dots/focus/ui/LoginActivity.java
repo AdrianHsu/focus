@@ -39,10 +39,11 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        Log.d(TAG, "LoginActivity onCreate...");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         if (LoginController.hasLoggedIn()) {
+            Log.d(TAG, "Already Login...");
             showSetInfoActivity();
 //          showMainActivity();
 //      Parse.enableLocalDatastore(this); //Exception not yet resolved

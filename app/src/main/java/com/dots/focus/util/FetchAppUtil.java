@@ -17,6 +17,10 @@ public class FetchAppUtil {
     private static boolean searching = false;
     private static String TAG = "FetchAppUtil";
 
+    static {
+        loadParseApps();
+    }
+
     public static int getSize(){
         return apps.size();
     }

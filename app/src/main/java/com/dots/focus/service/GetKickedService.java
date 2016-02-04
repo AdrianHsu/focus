@@ -44,6 +44,8 @@ public class GetKickedService extends Service {
     }
 
     public static void queryKicked() {
+        checkLocal();
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicked", currentUser.getLong("user_id"));

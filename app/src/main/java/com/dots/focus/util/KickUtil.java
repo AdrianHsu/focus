@@ -21,6 +21,7 @@ public class KickUtil {
         kickRequest.put("period", period);
         kickRequest.put("time", time);
         kickRequest.put("content", content);
+        kickRequest.put("state", KickState.REQUEST_NOT_DOWNLOADED.getValue());
         kickRequest.put("userId", ParseUser.getCurrentUser().getObjectId());
 
         kickRequest.saveEventually();

@@ -3,6 +3,7 @@ package com.dots.focus.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.dots.focus.R;
 import com.github.paolorotolo.appintro.AppIntro2;
@@ -52,6 +53,7 @@ public class IntroActivity extends AppIntro2 {
     showLoginActivity();
   }
   private void showLoginActivity() {
+    Log.d(TAG, "IntroActivity Login...");
     Intent intent = new Intent(this, LoginActivity.class);
     startActivity(intent);
   }
