@@ -53,7 +53,7 @@ public class KickUtil {
           if (e == null && kickHistory != null) {
             kickHistory.put("time3", System.currentTimeMillis());
             kickHistory.put("content3", content);
-            kickHistory.put("state", 2);
+            kickHistory.put("state", KickState.RESPONSE_NOT_DOWNLOADED.getValue());
             kickHistory.saveEventually();
           } else if (e != null) {
             Log.d(TAG, e.getMessage());

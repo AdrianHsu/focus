@@ -137,18 +137,24 @@ public class MessagesRecyclerViewAdapter extends
           holder) {
     try {
 
-      final long id = jsonObject.getLong("user_id");
       final String name = jsonObject.getString("user_name");
-      String content = jsonObject.getString("content2");
+      final String objectId = jsonObject.getString("objectId");
+      final long id = jsonObject.getLong("user_id");
+      Log.v(TAG, "id in adapter: " + id);
+      Log.v(TAG, "name in adapter: " + name);
+      final int period = jsonObject.getInt("period");
+      final long time1 = jsonObject.getLong("time1");
+      final long time2 = jsonObject.getLong("time2");
+      final String content1 = jsonObject.getString("content1");
+      final String content2 = jsonObject.getString("content2");
       final String mContent = "謝謝你踢我！";
 
       holder.textViewSample.setText(name);
-      holder.kickHistoryContentTextView.setText(content);
+      holder.kickHistoryContentTextView.setText(content2);
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
 
-      final String objectId = jsonObject.getString("objectId");
       Log.v(TAG, "ready to setOnClickListener, with objectId: " + objectId);
 
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
@@ -162,42 +168,57 @@ public class MessagesRecyclerViewAdapter extends
             remove(index);
         }
       });
-
+      if (holder.item_view != null) {
+        holder.item_view.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition()
+                                    , Toast
+                                    .LENGTH_SHORT)
+                                    .show();
+            Intent intent;
+            intent = new Intent(mContext, KickRequestActivity.class);
+            intent.putExtra("user_name", name);
+            intent.putExtra("objectId", objectId);
+            intent.putExtra("user_id", id);
+//          intent.putExtra("LimitType", limitType);
+            intent.putExtra("period", period);
+            intent.putExtra("time1", time1);
+            intent.putExtra("content1", content1);
+            intent.putExtra("time2", time2);
+            intent.putExtra("content2", content2);
+            mContext.startActivity(intent);
+          }
+        });
+      }
     } catch (JSONException e) {
       Log.v(TAG, e.getMessage());
-    }
-    if (holder.item_view != null) {
-      holder.item_view.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition()
-                                  , Toast
-                                  .LENGTH_SHORT)
-                                  .show();
-//          Intent intent;
-//          intent = new Intent(mContext, KickRequestActivity.class);
-//          mContext.startActivity(intent);
-        }
-      });
     }
   }
 
   public void KickResponseBindItem(final JSONObject jsonObject, final KickResponseAdapterViewHolder
                           holder) {
     try {
-      holder.textViewSample.setText(jsonObject.getString("user_name"));
 
-      final long id = jsonObject.getLong("user_id");
       final String name = jsonObject.getString("user_name");
-      String content = jsonObject.getString("content");
+      final String objectId = jsonObject.getString("objectId");
+      final long id = jsonObject.getLong("user_id");
+      Log.v(TAG, "id in adapter: " + id);
+      Log.v(TAG, "name in adapter: " + name);
+      final int period = jsonObject.getInt("period");
+      final long time1 = jsonObject.getLong("time1");
+      final long time2 = jsonObject.getLong("time2");
+      final long time3 = jsonObject.getLong("time3");
+      final String content1 = jsonObject.getString("content1");
+      final String content2 = jsonObject.getString("content2");
+      final String content3 = jsonObject.getString("content3");
 
       holder.textViewSample.setText(name);
-      holder.kickResponseContentTextView.setText(content);
+      holder.kickResponseContentTextView.setText(content3);
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
                               "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
 
-      final String objectId = jsonObject.getString("objectId");
       Log.v(TAG, "ready to setOnClickListener, with objectId: " + objectId );
 
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +242,31 @@ public class MessagesRecyclerViewAdapter extends
             remove(index);
         }
       });
-
+      if (holder.item_view != null) {
+        holder.item_view.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition()
+                                    , Toast
+                                    .LENGTH_SHORT)
+                                    .show();
+            Intent intent;
+            intent = new Intent(mContext, KickRequestActivity.class);
+            intent.putExtra("user_name", name);
+            intent.putExtra("objectId", objectId);
+            intent.putExtra("user_id", id);
+//          intent.putExtra("LimitType", limitType);
+            intent.putExtra("period", period);
+            intent.putExtra("time1", time1);
+            intent.putExtra("content1", content1);
+            intent.putExtra("time2", time2);
+            intent.putExtra("content2", content2);
+            intent.putExtra("time2", time3);
+            intent.putExtra("content2", content3);
+            mContext.startActivity(intent);
+          }
+        });
+      }
     } catch (JSONException e) {
       Log.v(TAG, e.getMessage());
     }

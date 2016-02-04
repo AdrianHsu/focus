@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/itemview"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardCornerRadius="0dp"
+        card_view:contentPadding="4dp">
+
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/profile_image"
+                android:src="@drawable/adrian"
+                android:layout_width="48dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_height="48dp" android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="許秉鈞"
+                android:textSize="14sp"
+                android:layout_toEndOf="@+id/profile_image"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingTop="5dip"
+                android:text="是您的好友。"
+                android:textSize="10sp"
+                android:layout_below="@+id/profile_name"
+                android:layout_toEndOf="@+id/profile_image"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="升級權限"
+                android:id="@+id/button"
+                android:layout_alignTop="@+id/profile_name"
+                android:layout_alignParentEnd="true"/>
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/discuss_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itemview"
+        android:layout_above="@+id/form">
+    </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/form"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal" >
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_height="0.5dp"
+            android:background="@color/divider_semi_black"/>
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:ems="10"
+            android:inputType="text" />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:id="@+id/send_btn"
+            android:background="@drawable/btn_send_messages"
+            android:backgroundTint="@color/yellow"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

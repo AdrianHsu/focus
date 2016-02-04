@@ -4,18 +4,15 @@ package com.dots.focus.ui;
  * Created by AdrianHsu on 2016/1/21.
  */
 
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
-import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +25,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class KickRequestActivity extends BaseActivity {
+import java.util.ArrayList;
+
+public class KickHistoryActivity extends BaseActivity {
 
   private EditText editText1;
   private ImageView sendBtn;
@@ -39,9 +38,11 @@ public class KickRequestActivity extends BaseActivity {
   private String objectId;
   private long id;
   private int period;
-  private long time;
-  private String content;
-  private static final String TAG = "KickRequest";
+  private long time1;
+  private String content1;
+  private long time2;
+  private String content2;
+  private static final String TAG = "KickHistory";
 
   private UltimateRecyclerView mRecyclerView;
   private DiscussRecyclerViewAdapter discussRecyclerViewAdapter = null;
@@ -51,7 +52,7 @@ public class KickRequestActivity extends BaseActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_kick_request);
+    setContentView(R.layout.activity_kick_history);
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -95,8 +96,10 @@ public class KickRequestActivity extends BaseActivity {
       objectId = extras.getString("objectId");
       id = extras.getLong("user_id");
       period = extras.getInt("period");
-      time = extras.getLong("time");
-      content = extras.getString("content");
+      time1 = extras.getLong("time1");
+      content1 = extras.getString("content1");
+      time2 = extras.getLong("time2");
+      content2 = extras.getString("content2");
     }
 
     String url = "https://graph.facebook.com/" + String.valueOf(id) +
@@ -104,14 +107,22 @@ public class KickRequestActivity extends BaseActivity {
     Picasso.with(this).load(url).into(profileImage);
     profileNameTv.setText(name);
 
-    JSONObject mRequest = new JSONObject();
+    JSONObject mRequest1 = new JSONObject();
     try {
-      mRequest.put("content", content);
-      mRequest.put("time", time);
+      mRequest1.put("content", content1);
+      mRequest1.put("time", time1);
     } catch(JSONException e) {
       Log.v(TAG, e.getMessage());
     }
-    messages.add(mRequest);
+    JSONObject mRequest2 = new JSONObject();
+    try {
+      mRequest2.put("content", content2);
+      mRequest2.put("time", time2);
+    } catch(JSONException e) {
+      Log.v(TAG, e.getMessage());
+    }
+    messages.add(mRequest1);
+    messages.add(mRequest2);
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.discuss_recycler_view);
     discussRecyclerViewAdapter = new DiscussRecyclerViewAdapter( messages, this);
     linearLayoutManager = new LinearLayoutManager(this);
@@ -139,7 +150,7 @@ public class KickRequestActivity extends BaseActivity {
     messages.add(tmp);
     mRecyclerView.getAdapter().notifyItemInserted(messages.size() - 1);
     mRecyclerView.scrollVerticallyToPosition(messages.size() - 1);
-    KickUtil.kick(text, objectId);
+    KickUtil.kickResponse(text, objectId);
 
     editText1.setText("");
     sendBtn.setEnabled(false);
