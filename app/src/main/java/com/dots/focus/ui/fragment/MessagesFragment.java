@@ -1,6 +1,7 @@
 package com.dots.focus.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -10,17 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
-import com.dots.focus.config.LimitType;
+import com.dots.focus.service.GetFriendInviteService;
 import com.dots.focus.service.GetKickRequestService;
 import com.dots.focus.service.GetKickResponseService;
 import com.dots.focus.service.GetKickedService;
-import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
@@ -45,6 +44,10 @@ public class MessagesFragment extends Fragment {
     super.onCreateView(inflater, container, savedInstanceState);
 
     context = getActivity();
+    context.startService(new Intent(context, GetKickRequestService.class));
+    context.startService(new Intent(context, GetKickedService.class));
+    context.startService(new Intent(context, GetKickResponseService.class));
+
     View v = inflater.inflate(R.layout.fragment_messages, container, false);
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.messages_recycler_view);

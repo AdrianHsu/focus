@@ -7,16 +7,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.dots.focus.R;
-import com.dots.focus.controller.DashboardController;
-import com.dots.focus.controller.LoginController;
 
 import com.dots.focus.service.GetAppsService;
-import com.dots.focus.util.CreateInfoUtil;
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphRequestBatch;
-import com.facebook.GraphResponse;
-import com.parse.GetCallback;
+import com.dots.focus.util.DashboardUtil;
+import com.dots.focus.util.LoginUtil;
 import com.parse.LogInCallback;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseException;
@@ -25,10 +19,6 @@ import com.parse.SaveCallback;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "LoginActivity onCreate...");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        if (LoginController.hasLoggedIn()) {
+        if (LoginUtil.hasLoggedIn()) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             Log.d(TAG, "Already Login...");
             if (currentUser.has("user_id"))
@@ -76,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
 
         super.onResume();
-        if (LoginController.checkPreviousLogin(this)) {
+        if (LoginUtil.checkPreviousLogin(this)) {
             showIntroActivity();
         }
     }
@@ -101,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("FBUser", "user == currentUser: " + (user == currentUser));
                     if ((currentUser != null) && currentUser.isAuthenticated()) {
                         Log.d("FBUser", "makeMeRequest...");
-                        DashboardController.makeMeRequest();
+                        DashboardUtil.makeMeRequest();
                     }
                     showSetInfoActivity();
 //                    showMainActivity();
@@ -111,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("FBUser", "user == currentUser: " + (user == currentUser));
                     if ((currentUser != null) && currentUser.isAuthenticated()) {
                         Log.d("FBUser", "makeMeRequest...");
-                        DashboardController.makeMeRequest();
+                        DashboardUtil.makeMeRequest();
                     }
                     showSetInfoActivity();
 //                    showMainActivity();

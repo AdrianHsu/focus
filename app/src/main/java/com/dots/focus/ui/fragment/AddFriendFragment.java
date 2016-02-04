@@ -39,6 +39,9 @@ public class AddFriendFragment extends Fragment {
     super.onCreateView(inflater, container, savedInstanceState);
 
     context = getActivity();
+    context.startService(new Intent(context, GetFriendInviteService.class));
+    context.startService(new Intent(context, GetFriendConfirmService.class));
+
     View v = inflater.inflate(R.layout.fragment_add_friend, container, false);
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.add_friend_recycler_view);

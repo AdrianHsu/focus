@@ -31,9 +31,10 @@ public class GetKickRequestService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickRequestService start...");
         checkLocal();
+        /*
         Timer timer = new Timer();
         timer.schedule(new CheckKickRequest(), 0, 60000);
-
+        */
         return 0;
     }
 

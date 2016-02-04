@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.dots.focus.R;
 import com.dots.focus.config.KickState;
-import com.dots.focus.ui.KickMessagesActivity;
+import com.dots.focus.ui.KickRequestActivity;
 import com.dots.focus.util.KickUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
@@ -87,11 +87,14 @@ public class MessagesRecyclerViewAdapter extends
       final String name = jsonObject.getString("user_name");
       final String objectId = jsonObject.getString("objectId");
       final long id = jsonObject.getLong("user_id");
+      Log.v(TAG, "id in adapter: " + id);
+      Log.v(TAG, "name in adapter: " + name);
       final int period = jsonObject.getInt("period");
-      final long time = jsonObject.getLong("time");
-      final String content = jsonObject.getString("content");
+      final long time = jsonObject.getLong("time1");
+      final String content = jsonObject.getString("content1");
 
       holder.textViewSample.setText(name);
+      holder.contentTv.setText(content);
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
@@ -112,7 +115,7 @@ public class MessagesRecyclerViewAdapter extends
                                   .LENGTH_SHORT)
                                   .show();
           Intent intent;
-          intent = new Intent(mContext, KickMessagesActivity.class);
+          intent = new Intent(mContext, KickRequestActivity.class);
           intent.putExtra("user_name", name);
           intent.putExtra("objectId", objectId);
           intent.putExtra("user_id", id);
@@ -125,7 +128,7 @@ public class MessagesRecyclerViewAdapter extends
       });
 
     } catch (JSONException e) {
-      e.printStackTrace();
+      Log.v(TAG, e.getMessage());
     }
 
     }
@@ -172,7 +175,7 @@ public class MessagesRecyclerViewAdapter extends
                                   .LENGTH_SHORT)
                                   .show();
 //          Intent intent;
-//          intent = new Intent(mContext, KickMessagesActivity.class);
+//          intent = new Intent(mContext, KickRequestActivity.class);
 //          mContext.startActivity(intent);
         }
       });
@@ -233,7 +236,7 @@ public class MessagesRecyclerViewAdapter extends
                                   .LENGTH_SHORT)
                                   .show();
 //          Intent intent;
-//          intent = new Intent(mContext, KickMessagesActivity.class);
+//          intent = new Intent(mContext, KickRequestActivity.class);
 //          mContext.startActivity(intent);
         }
       });
@@ -396,6 +399,7 @@ public class MessagesRecyclerViewAdapter extends
   public class KickRequestAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
     TextView textViewSample;
+    TextView contentTv;
     ImageView imageViewSample;
     Button buttonSample;
     View item_view;
@@ -406,6 +410,7 @@ public class MessagesRecyclerViewAdapter extends
       if (isItem) {
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
+        contentTv = (TextView) itemView.findViewById(R.id.kick_request_content1);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         buttonSample = (Button) itemView.findViewById(R.id.button_kick);
 

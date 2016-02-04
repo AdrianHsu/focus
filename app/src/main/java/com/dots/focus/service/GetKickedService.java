@@ -30,9 +30,10 @@ public class GetKickedService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickedService start...");
         checkLocal();
+        /*
         Timer timer = new Timer();
         timer.schedule(new CheckKicked(), 0, 60000);
-
+        */
         return 0;
     }
 

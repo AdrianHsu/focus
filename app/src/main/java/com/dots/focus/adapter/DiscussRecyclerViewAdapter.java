@@ -2,6 +2,7 @@ package com.dots.focus.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,10 +58,10 @@ public class DiscussRecyclerViewAdapter extends
       String text = "";
       String time = "";
       try {
-        text = messagesList.get(position).getString("messages");
+        text = messagesList.get(position).getString("content");
         time = messagesList.get(position).getString("time");
       } catch (JSONException e) {
-        e.printStackTrace();
+        Log.v(TAG, e.getMessage());
       }
 
       holder.mTextView.setText(text);

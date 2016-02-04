@@ -28,7 +28,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class KickMessagesActivity extends BaseActivity {
+public class KickRequestActivity extends BaseActivity {
 
   private EditText editText1;
   private ImageView sendBtn;
@@ -41,7 +41,7 @@ public class KickMessagesActivity extends BaseActivity {
   private int period;
   private long time;
   private String content;
-  private static final String TAG = "KickMessages";
+  private static final String TAG = "KickRequest";
 
   private UltimateRecyclerView mRecyclerView;
   private DiscussRecyclerViewAdapter discussRecyclerViewAdapter = null;
@@ -51,7 +51,7 @@ public class KickMessagesActivity extends BaseActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_kick_messages);
+    setContentView(R.layout.activity_kick_request);
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -91,7 +91,7 @@ public class KickMessagesActivity extends BaseActivity {
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
-      name = extras.getString("name");
+      name = extras.getString("user_name");
       objectId = extras.getString("objectId");
       id = extras.getLong("user_id");
       period = extras.getInt("period");
@@ -109,7 +109,7 @@ public class KickMessagesActivity extends BaseActivity {
       mRequest.put("content", content);
       mRequest.put("time", time);
     } catch(JSONException e) {
-      e.printStackTrace();
+      Log.v(TAG, e.getMessage());
     }
     messages.add(mRequest);
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.discuss_recycler_view);

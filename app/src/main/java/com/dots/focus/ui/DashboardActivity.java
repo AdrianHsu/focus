@@ -6,13 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.dots.focus.controller.DashboardController;
-
 
 import com.dots.focus.R;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
-import com.dots.focus.util.FetchAppUtil;
+import com.dots.focus.util.DashboardUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -114,7 +112,7 @@ public class DashboardActivity extends BaseActivity {
         //Fetch Facebook user info if it is logged
         ParseUser currentUser = ParseUser.getCurrentUser();
         if ((currentUser != null) && currentUser.isAuthenticated()) {
-            DashboardController.makeMeRequest();
+            DashboardUtil.makeMeRequest();
         }
     }
 
