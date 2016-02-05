@@ -97,7 +97,8 @@ public class LockSettingsActivity extends BaseActivity {
     new MaterialDialog.Builder(this)
                             .title("選擇您欲使用的鎖屏監護")
                             .items(R.array.lockConditionList)
-                            .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                            .itemsCallbackMultiChoice(null,new MaterialDialog
+                                                    .ListCallbackMultiChoice() {
                               @Override
                               public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
                                 /**
