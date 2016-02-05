@@ -14,9 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
@@ -48,6 +50,11 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
   private String[] timeIntervalArray = {"分段", "累計"};
   public static View topThreeCardHourlyView;
   public static int day = 0;
+  private TextView daySwitchTv;
+  private Button daySwitchLeftBtn;
+  private Button daySwitchRightBtn;
+  private int CURRENT_DAY;
+  private boolean IS_ACCUMULATE;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +68,43 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     getSupportActionBar().setTitle("每日使用時段趨勢");
     topThreeCardHourlyView = findViewById(R.id.top_three_card_hourly);
 
+    daySwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+    String day = TrackAccessibilityUtil.dayString(0);
+    daySwitchTv.setText(day);
+
+    daySwitchLeftBtn = (Button) findViewById(R.id.day_switch_left_btn);
+    daySwitchLeftBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+
+        CURRENT_DAY++;
+        daySwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+        String day = TrackAccessibilityUtil.dayString(CURRENT_DAY);
+        daySwitchTv.setText(day);
+        ArrayList<Entry> val = setData(CURRENT_DAY, IS_ACCUMULATE);
+        drawChart(val, IS_ACCUMULATE);
+        daySwitchRightBtn.setEnabled(true);
+//        daySwitchLeftBtn.setEnabled(false);
+      }
+    });
+    daySwitchRightBtn = (Button) findViewById(R.id.day_switch_right_btn);
+    daySwitchRightBtn.setEnabled(false);
+    daySwitchRightBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+
+        CURRENT_DAY--;
+        daySwitchTv = (TextView) findViewById(R.id.day_switch_textview);
+        String day = TrackAccessibilityUtil.dayString(CURRENT_DAY);
+        daySwitchTv.setText(day);
+        ArrayList<Entry> val = setData(CURRENT_DAY, IS_ACCUMULATE);
+        drawChart(val, IS_ACCUMULATE);
+        if (CURRENT_DAY == 0)
+          daySwitchRightBtn.setEnabled(false);
+        daySwitchLeftBtn.setEnabled(true);
+      }
+    });
+
 //    DEBUG: W/System.err: java.lang.RuntimeException: Can't create handler inside thread that has
 // not called Looper.prepare()
     spinner = (Spinner)findViewById(R.id.spinner);
@@ -72,14 +116,12 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (i == 0) { // separate by default
-          // add data
-          ArrayList<Entry> val = setData(0, false);
-          drawChart(val, false);
+          IS_ACCUMULATE = false;
         } else if (i == 1) {
-          // add data
-          ArrayList<Entry> val = setData(0, true);
-          drawChart(val, false);
+          IS_ACCUMULATE = true;
         }
+        ArrayList<Entry> val = setData(CURRENT_DAY, IS_ACCUMULATE);
+        drawChart(val, IS_ACCUMULATE);
       }
 
       @Override
@@ -91,7 +133,7 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     mChart = (LineChart) findViewById(R.id.chart1);
 
     // add data
-    ArrayList<Entry> val = setData(day, false);
+    ArrayList<Entry> val = setData(CURRENT_DAY, false);
     drawChart(val, false);
   }
 
