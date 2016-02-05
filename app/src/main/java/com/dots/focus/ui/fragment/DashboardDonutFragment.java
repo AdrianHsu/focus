@@ -78,7 +78,7 @@ public class DashboardDonutFragment extends SampleFragment {
   @Override
   protected void createTracks() {
 
-    int [][] data = TrackAccessibilityUtil.getFirstThreeAppToday();
+    int [][] data = TrackAccessibilityUtil.getDayFirstThreeApp(0);
 
     initData(data);
     setDemoFinished(false);
