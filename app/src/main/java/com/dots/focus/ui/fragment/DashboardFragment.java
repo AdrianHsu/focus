@@ -44,7 +44,7 @@ public class DashboardFragment extends Fragment {
 
     }
     daySwitchTv = (TextView) v.findViewById(R.id.day_switch_textview);
-    String day = TrackAccessibilityUtil.dayString(0);
+    String day = TrackAccessibilityUtil.dayString(CURRENT_DAY);
     daySwitchTv.setText(day);
 
     daySwitchLeftBtn = (Button) v.findViewById(R.id.day_switch_left_btn);
