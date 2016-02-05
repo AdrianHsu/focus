@@ -159,34 +159,44 @@ public class TrackAccessibilityUtil {
         if (localDay != currentDay.getLong("time"))
             newDay(localDay);
     }
-    public static int[][] getFirstThreeAppToday() {
+    public static int[][] getDayFirstThreeApp(int day) {
         int[][] x = new int[4][2];
         for (int i = 0; i < 4; ++i)
             for (int j = 0; j < 2; ++j)
                 x[i][j] = 0;
 
-        long now = System.currentTimeMillis();
-        List<Integer> appLength = getCurrentDay(now).getAppLength();
-
-        for (int i = 0, s = appLength.size(); i < s; ++i) {
-            int length = appLength.get(i);
-            boolean flag = true;
-            for (int j = 0; j < 3; ++j) {
-                if (length > x[j][1]) {
-                    x[3][1] += x[2][1];
-                    for (int k = 2; k != j; --k) {
-                        x[k][0] = x[k - 1][0];
-                        x[k][1] = x[k - 1][1];
-                    }
-                    x[j][0] = i;
-                    x[j][1] = length;
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag)   x[3][1] += length;
+        long time = aDay * (System.currentTimeMillis() / aDay - day);
+        DayBlock dayBlock = null;
+        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        query.whereEqualTo("time", time);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            dayBlock = query.getFirst();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
         }
+        if (dayBlock != null) {
+            List<Integer> appLength = dayBlock.getAppLength();
 
+            for (int i = 0, s = appLength.size(); i < s; ++i) {
+                int length = appLength.get(i);
+                boolean flag = true;
+                for (int j = 0; j < 3; ++j) {
+                    if (length > x[j][1]) {
+                        x[3][1] += x[2][1];
+                        for (int k = 2; k != j; --k) {
+                            x[k][0] = x[k - 1][0];
+                            x[k][1] = x[k - 1][1];
+                        }
+                        x[j][0] = i;
+                        x[j][1] = length;
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) x[3][1] += length;
+            }
+        }
         return x;
     }
 
