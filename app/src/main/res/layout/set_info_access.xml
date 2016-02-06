@@ -8,59 +8,34 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingLeft="32dp"
-        android:layout_weight="3"
-        android:fontFamily="sans-serif-thin"
         android:textColor="#ffffff"
-        android:paddingRight="32dp"
-        android:textSize="28sp"
-        android:text="Create Your Profile"/>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_weight="5">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:src="@drawable/ic_slide1"/>
-
-    </LinearLayout>
+        android:padding="32dp"
+        android:textSize="26sp"
+        android:text="授權背景偵測與裝置管理員"/>
 
     <Button
-        android:id="@+id/button_setting"
+        android:id="@+id/acc_button_setting"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingLeft="64dp"
         android:paddingRight="64dp"
         android:textSize="12sp"
-        android:background="#1E88E5"
-        android:text="   Accessibility Settings   "/>
-    <TextView
+        android:text="背景偵測設定"/>
+    <Button
+        android:id="@+id/device_button_setting"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textColor="#ffffff"
         android:paddingLeft="64dp"
         android:paddingRight="64dp"
-        android:textSize="16sp"
-        android:text="First you need to enable accessibility service. Click on it!"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="64dp"/>
+        android:textSize="12sp"
+        android:text="裝置管理員設定"/>
 
 </LinearLayout>

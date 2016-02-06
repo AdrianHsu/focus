@@ -61,7 +61,6 @@ public class DashboardDonutFragment extends SampleFragment {
   private SeriesItem seriesItem3;
   private SeriesItem seriesItem4; // top 1
   private SeriesItem arcBackTrack;
-  private int mStyleIndex;
 
   private static final String TAG = "donut";
 
@@ -78,7 +77,7 @@ public class DashboardDonutFragment extends SampleFragment {
   @Override
   protected void createTracks() {
 
-    int [][] data = TrackAccessibilityUtil.getDayFirstThreeApp(0);
+    int [][] data = TrackAccessibilityUtil.getDayFirstThreeApp(DashboardFragment.CURRENT_DAY);
 
     initData(data);
     setDemoFinished(false);

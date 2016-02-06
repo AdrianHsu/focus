@@ -19,12 +19,13 @@ public class CreateInfoActivity extends AppIntro2 {
   @Override
   public void init(Bundle savedInstanceState) {
 
-    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_access));
-    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_email));
-    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_gender));
-    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_birth));
-    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_occupation));
-    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_welcome));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_access, this));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_info_basic, this));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_goal, this));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_idle, this));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_lock, this));
+    addSlide(CreateInfoSlide.newInstance(R.layout.set_done, this));
+
 
     // Hide Skip/Done button
 //    showSkipButton(false);
