@@ -79,7 +79,7 @@ public class TrackAccessibilityUtil {
     //helper functions
     private static long getLocalDay(long time) {
         Calendar rightNow = Calendar.getInstance();
-        rightNow.setTimeInMillis(24 * anHour * ((time + anHour * getTimeOffset()) / (24 * anHour)));
+        rightNow.setTimeInMillis(aDay * ((time + anHour * getTimeOffset()) / aDay));
          // shift to local time
         //rightNow.set(rightNow.get(Calendar.YEAR), rightNow.get(Calendar.MONTH),
         //        rightNow.get(Calendar.DAY_OF_MONTH), 0, 0); // discard hours
@@ -164,8 +164,12 @@ public class TrackAccessibilityUtil {
         for (int i = 0; i < 4; ++i)
             for (int j = 0; j < 2; ++j)
                 x[i][j] = 0;
+        int offset = getTimeOffset();
+        long time = aDay * ((System.currentTimeMillis() + offset * anHour) / aDay - day) - offset *
+                anHour;
+        Log.d(TAG, "time: " + time + ", currentDay: " + getCurrentDay(System.currentTimeMillis())
+                .getTime());
 
-        long time = aDay * (System.currentTimeMillis() / aDay - day);
         DayBlock dayBlock = null;
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
         query.whereEqualTo("time", time);
@@ -177,7 +181,6 @@ public class TrackAccessibilityUtil {
         }
         if (dayBlock != null) {
             List<Integer> appLength = dayBlock.getAppLength();
-
             for (int i = 0, s = appLength.size(); i < s; ++i) {
                 int length = appLength.get(i);
                 boolean flag = true;
