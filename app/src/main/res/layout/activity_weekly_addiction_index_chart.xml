@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12月7日 - 12月13日"
+                android:text=""
                 android:textSize="16dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
@@ -73,14 +73,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:text="FOCUS貼心小提醒："
+                    android:text="@string/focus_reminder"
                     android:textColor="@color/semi_white"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:textSize="24dp"
-                    android:text="本週有 3 天達到重度上癮、以及 2 天達到中度上癮，提醒您、讓眼睛多休息！"
+                    android:text="@string/addiction_advice"
                     android:textColor="@color/semi_white"/>
             </LinearLayout>
 

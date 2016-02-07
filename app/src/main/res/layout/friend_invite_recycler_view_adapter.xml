@@ -39,14 +39,14 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:paddingTop="5dip"
-            android:text="已經註冊、但尚未建立關係。"
+            android:text="@string/already_signed_up"
             android:textSize="10sp"
             android:layout_below="@+id/profile_name"
             android:layout_toEndOf="@+id/profile_image"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="寄出邀請"
+            android:text="@string/send_invitation"
             android:id="@+id/button"
             android:layout_alignTop="@+id/profile_name"
             android:layout_alignParentEnd="true"/>

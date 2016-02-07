@@ -15,10 +15,6 @@
     <string name="user_birth">1995</string>
     <string name="user_occupation">Undergraduate</string>
 
-    <string name="test1_button">test1</string>
-    <string name="test2_button">test2</string>
-
-
     <string-array name="custom_weekdays">
         <item>日</item>
         <item>ㄧ</item>
@@ -43,4 +39,98 @@
         <item>NOV</item>
         <item>DEC</item>
     </string-array>
+    <!--AdvancedSettingsActivity-->
+    <string name="device_admin">裝置管理</string>
+    <string name="device_admin_settings">裝置管理員設定</string>
+    <string name="device_accessibility">存取資料</string>
+    <string name="device_accessibility_settings">可存取使用情形資料設定</string>
+    <string name="account_permissions">帳號權限</string>
+    <string name="reset_data">重設資料</string>
+    <string name="delete_account">刪除帳號</string>
+    <!--AppLeaderBoardActivity-->
+    <!--DailyAppUsageChartActivity-->
+    <string name="app_usage_top_three">應用軟體用量前三名</string>
+    <!--DailyReportChartActivity-->
+    <!--FocusCommunityActivity-->
+    <!--FocusCommunityCommentActivity-->
+    <!--FriendListActivity-->
+    <!--GoalSettingsActivity-->
+    <string name="usage_limit_today">今日使用上限</string>
+    <string name="focus_reminder">FOCUS小提醒</string>
+    <string name="description_addiction">根據Yahoo!的Flurry Report，本應用軟體將定義上癮程度如下（單位為點擊應用軟體次數/天）</string>
+    <string name="done">完成</string>
+    <!--IdleSettingsActivity-->
+    <string name="descrpition_conti_total_used">某應用軟體連續使用時間超過：</string>
+    <string name="excluded_app">排除在外應用軟體</string>
+    <string name="modify">修改</string>
+    <!--KickHistoryActivity-->
+    <string name="is_your_friend">是您的好友。</string>
+    <string name="upgrade_permissions">升級權限</string>
+    <!--KickRequestActivity-->
+    <!--KickResponseActivity-->
+    <!--LockSettingsActivity-->
+    <string name="lock_time_upper_bound">鎖定時間長度上限</string>
+    <string name="lock_settings">鎖屏功能設定</string>
+    <string name="lock_self_to_self">自己鎖自己</string>
+    <string name="cancel">取消</string>
+    <!--LoginActivity-->
+    <!--MainActivity-->
+    <!--NotificationSettingsActivity-->
+    <string name="daily_report_settings">每日報表設定</string>
+    <string name="daily_report_notif">每日報表推播</string>
+    <string name="notif_time">通知時間</string>
+    <string name="notif_way">通知方式</string>
+    <string name="sound">聲音</string>
+    <string name="vibrate">震動</string>
+    <string name="message_display">訊息顯示</string>
+    <string name="while_screen_is_on">螢幕開啟時</string>
+    <string name="while_screen_is_off">螢幕關閉時</string>
+    <!--ProfileActivity-->
+    <!--RadarChartActivity-->
+    <string name="radar_chart_result_text">測驗結果：您是一個社交狂人！（每日平均使用手機 2 小時以上，社群類應用軟體佔總時間80%）</string>
+    <!--TimePiggyBankActivity-->
+    <!--TopThreeAppUsageChartActivity-->
+    <string name="settings">設定</string>
+    <!--WeeklyAddictionIndexChartActivity-->
+    <string name="addiction_advice">本週有 3 天達到重度上癮、以及 2 天達到中度上癮，提醒您、讓眼睛多休息！</string>
+    <!--WeeklyAppUsageChartActivity-->
+    <string name="exceed_limit_usage">超過目標用量 (天)</string>
+    <string name="total_usage_hour">使用總時數 (小時)</string>
+    <!--AppLeaderBoardRecyclerViewAdapter-->
+    <!--ChartMarkerView-->
+    <!--CommunityCommentRecyclerViewAdapter-->
+    <!--DailyChartMarkerView-->
+    <!--FocusCommunityRecyclerViewAdapter-->
+    <string name="points">Points</string>
+    <string name="comments"> 則留言</string>
+    <!--AddFriendFragment-->
+    <!--DashboardFragment-->
+    <string name="mobile_addiction_index">手機上癮指標</string>
+    <!--DashboardDonutFragment-->
+    <string name="today_total_usage_text">已使用時間</string>
+    <string name="dashboard_reminder">您有點太沈迷於手機囉！去外面走走吧！</string>
+    <!--MessagesFragment-->
+    <string name="reset">重設</string>
+    <!--MoreFragment-->
+    <string name="view_your_profile">查看你的個人檔案</string>
+    <!--OverviewFragment-->
+    <!--GlobalPiggyBankFragment-->
+    <string name="focus_saved_for_globe">FOCUS已經為全世界省下的總時數（小時）</string>
+    <string name="trans_rate">等值轉換比率（相當於）</string>
+    <!--TotalPiggyBankFragment-->
+    <string name="focus_saved_total">FOCUS總共已經為您省下（小時）</string>
+    <string name="pr">全球百分等級(Percentile Rank)</string>
+    <string name="your_rank">位 FOCUS 使用者中，您是第</string>
+    <string name="rank_text">名</string>
+    <!--WeeklyPiggyBankFragment-->
+    <string name="focus_saved_for_weekly">本週目前累計時數</string>
+    <string name="single_day_indivi_usage">單日分別累計時數</string>
+    <!--FriendConfirmRecyclerViewAdapter-->
+    <string name="send_you_friend_request">寄了好友邀請給您。</string>
+    <string name="accept">確認</string>
+    <!--FriendConfirmedRecyclerViewAdapter-->
+    <string name="become_your_friend">已經成為您的好友。</string>
+    <!--FriendInviteRecyclerViewAdapter-->
+    <string name="already_signed_up">已經註冊、但尚未建立關係。</string>
+    <string name="send_invitation">寄出邀請</string>
 </resources>

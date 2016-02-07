@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="許秉鈞"
+                android:text=""
                 android:textSize="14sp"
                 android:layout_toEndOf="@+id/profile_image"/>
             <TextView
@@ -51,14 +51,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:paddingTop="5dip"
-                android:text="是您的好友。"
+                android:text="@string/is_your_friend"
                 android:textSize="10sp"
                 android:layout_below="@+id/profile_name"
                 android:layout_toEndOf="@+id/profile_image"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="升級權限"
+                android:text="@string/upgrade_permissions"
                 android:id="@+id/button"
                 android:layout_alignTop="@+id/profile_name"
                 android:layout_alignParentEnd="true"/>
@@ -74,38 +74,5 @@
         android:layout_below="@+id/itemview"
         android:layout_above="@+id/form">
     </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
-
-    <!--<RelativeLayout-->
-        <!--android:id="@+id/form"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:orientation="horizontal" >-->
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_marginBottom="15dp"-->
-            <!--android:layout_height="0.5dp"-->
-            <!--android:background="@color/divider_semi_black"/>-->
-        <!--<com.rengwuxian.materialedittext.MaterialEditText-->
-            <!--android:id="@+id/editText1"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_marginRight="40dp"-->
-            <!--android:ems="10"-->
-            <!--android:inputType="text" />-->
-        <!--<ImageView-->
-            <!--android:layout_width="30dp"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:layout_margin="5dp"-->
-            <!--android:id="@+id/send_btn"-->
-            <!--android:background="@drawable/btn_send_messages"-->
-            <!--android:backgroundTint="@color/yellow"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_alignParentEnd="true"/>-->
-
-    <!--</RelativeLayout>-->
 
 </RelativeLayout>

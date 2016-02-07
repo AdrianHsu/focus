@@ -22,7 +22,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2015年12月6日"
+                android:text=""
                 android:textSize="16dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="手機上癮指標"
+                    android:text="@string/mobile_addiction_index"
                     android:textColor="@color/semi_black"
                     android:id="@+id/textAddictIndexTitle"
                     android:textSize="16dp"

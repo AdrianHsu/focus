@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
-                android:text="View your profile"
+                android:text="@string/view_your_profile"
                 android:textSize="12sp"
                 />
 

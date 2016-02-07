@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12月7日 - 12月13日"
+                android:text=""
                 android:textSize="16dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"

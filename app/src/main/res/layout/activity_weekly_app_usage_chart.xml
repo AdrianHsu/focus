@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12月7日 - 12月13日"
+                android:text=""
                 android:textSize="16dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
@@ -88,7 +88,7 @@
                         android:layout_gravity="center"/>
                     <TextView
                         android:id="@+id/textview1"
-                        android:text="超過目標用量 (days)"
+                        android:text="@string/exceed_limit_usage"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -122,7 +122,7 @@
                         android:layout_gravity="center"/>
                     <TextView
                         android:id="@+id/textview2"
-                        android:text="使用總時數 (hrs)"
+                        android:text="@string/total_usage_hour"
                         android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="裝置管理"
+        android:text="@string/device_admin"
         android:layout_margin="15dp"/>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="裝置管理員設定"
+            android:text="@string/device_admin_settings"
             android:layout_margin="10dp"/>
 
         <Switch
@@ -37,7 +37,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="存取資料"
+        android:text="@string/device_accessibility"
         android:layout_margin="15dp"/>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="可存取使用情形資料設定"
+            android:text="@string/device_accessibility_settings"
             android:layout_margin="10dp"/>
 
         <Switch
@@ -61,7 +61,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="帳號權限"
+        android:text="@string/account_permissions"
         android:layout_margin="15dp"/>
     <RelativeLayout
     android:layout_width="match_parent"
@@ -69,7 +69,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="重設資料"
+        android:text="@string/reset_data"
         android:textColor="@color/red"
         android:layout_margin="10dp"/>
     </RelativeLayout>
@@ -79,10 +79,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="刪除帳號"
+            android:text="@string/delete_account"
             android:textColor="@color/red"
             android:layout_margin="10dp"/>
-
     </RelativeLayout>
     
 </LinearLayout>

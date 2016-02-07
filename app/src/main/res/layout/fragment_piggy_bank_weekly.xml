@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textSize="16sp"
-            android:text="本週目前累計時數"
+            android:text="@string/focus_saved_for_weekly"
             android:layout_below="@id/week_switch_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="3dp"/>
@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:text="單日分別累計時數"
+        android:text="@string/single_day_indivi_usage"
         android:layout_below="@id/relative_layout"
         android:layout_marginTop="3dp"
         android:layout_gravity="center_horizontal"/>

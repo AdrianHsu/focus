@@ -32,9 +32,9 @@ public class DashboardFragment extends Fragment {
     mContext = getActivity();
     final View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
     topThreeCardView = v.findViewById(R.id.top_three_card);
+    mSampleFitFragment = new DashboardDonutFragment();
 
     if (savedInstanceState == null){
-      mSampleFitFragment = new DashboardDonutFragment();
 
       //add child fragment
       getChildFragmentManager()
@@ -47,6 +47,9 @@ public class DashboardFragment extends Fragment {
     String day = TrackAccessibilityUtil.dayString(CURRENT_DAY);
     daySwitchTv.setText(day);
 
+    // DEBUG:
+    // java.lang.IllegalStateException: Failure saving state:
+    // active DashboardDonutFragment{21d40e50} has cleared index: -1
     daySwitchLeftBtn = (Button) v.findViewById(R.id.day_switch_left_btn);
     daySwitchLeftBtn.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -58,7 +61,11 @@ public class DashboardFragment extends Fragment {
         daySwitchTv.setText(day);
         daySwitchRightBtn.setEnabled(true);
 //        daySwitchLeftBtn.setEnabled(false);
-
+        getChildFragmentManager()
+                                .beginTransaction()
+                                .detach(mSampleFitFragment)
+                                .attach(mSampleFitFragment)
+                                .commit();
       }
     });
     daySwitchRightBtn = (Button) v.findViewById(R.id.day_switch_right_btn);
@@ -75,6 +82,11 @@ public class DashboardFragment extends Fragment {
           daySwitchRightBtn.setEnabled(false);
         daySwitchLeftBtn.setEnabled(true);
 
+        getChildFragmentManager()
+                                .beginTransaction()
+                                .detach(mSampleFitFragment)
+                                .attach(mSampleFitFragment)
+                                .commit();
       }
     });
 

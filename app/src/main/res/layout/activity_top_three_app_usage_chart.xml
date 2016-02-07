@@ -38,7 +38,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12月7日 - 12月13日"
+                        android:text=""
                         android:textSize="16dp"
                         android:paddingLeft="2dp"
                         android:paddingRight="2dp"
@@ -90,7 +90,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
-                            android:text="應用軟體用量前三名  "
+                            android:text="@string/app_usage_top_three"
                             android:textColor="@color/semi_white"/>
                         <TextView
                             android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="50dp"
-                            android:text="設定"
+                            android:text="@string/settings"
                             />
                     </LinearLayout>
 

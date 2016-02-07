@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="每日報表設定"
+        android:text="@string/daily_report_settings"
         android:layout_margin="15dp"/>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="每日報表推播"
+            android:text="@string/daily_report_notif"
             android:layout_margin="10dp"/>
 
         <Switch
@@ -40,13 +40,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="通知時間"
+            android:text="@string/notif_time"
             android:layout_margin="10dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10:00 早上"
+            android:text=""
             android:id="@+id/noti_time_textview"
             android:layout_gravity="right"
             android:layout_alignParentTop="true"
@@ -56,7 +56,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="通知方式"
+        android:text="@string/notif_way"
         android:layout_margin="15dp"/>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="聲音"
+            android:text="@string/sound"
             android:layout_margin="10dp"/>
 
         <Switch
@@ -83,7 +83,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="震動"
+            android:text="@string/vibrate"
             android:layout_margin="10dp"/>
 
         <Switch
@@ -99,7 +99,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="訊息顯示"
+        android:text="@string/message_display"
         android:layout_margin="15dp"/>
     <RelativeLayout
     android:layout_width="match_parent"
@@ -107,7 +107,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="螢幕開啟時"
+        android:text="@string/while_screen_is_on"
         android:layout_margin="10dp"/>
 
     <Switch
@@ -126,7 +126,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="螢幕關閉時"
+            android:text="@string/while_screen_is_off"
             android:layout_margin="10dp"/>
 
         <Switch

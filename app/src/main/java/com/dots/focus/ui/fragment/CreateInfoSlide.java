@@ -32,6 +32,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 public class CreateInfoSlide extends Fragment {
 
@@ -45,9 +46,9 @@ public class CreateInfoSlide extends Fragment {
   private static Context mContext;
   public static Integer[] defaultMultiChoice;
   public static Integer[] pickedMultiChoice;
-  private int progressGoal = SettingsUtil.getInt("goal");
-  private int progressIdle = SettingsUtil.getInt("idle");
-  private int progressLock = SettingsUtil.getInt("lock");
+  private int progressGoal;
+  private int progressIdle;
+  private int progressLock;
   private int layoutResId;
 
   private int APP_LENGTH = 0;
@@ -78,7 +79,9 @@ public class CreateInfoSlide extends Fragment {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
     View view = inflater.inflate(layoutResId, container, false);
-
+    progressGoal = SettingsUtil.getInt("goal");
+    progressLock = SettingsUtil.getInt("lock");
+    progressIdle = SettingsUtil.getInt("idle");
     switch(layoutResId){
       case R.layout.set_info_access:
         accessBtn = (Button) view.findViewById(R.id.acc_button_setting);

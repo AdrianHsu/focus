@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ranking_text_view"
-        android:text="1"
+        android:text=""
         android:textSize="12dp"
         android:layout_margin="5dp"/>
     <ImageView
@@ -18,7 +18,8 @@
         android:layout_width="48dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:layout_height="48dp" android:layout_centerVertical="true"/>
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"/>
 
     <TextView
         android:layout_toRightOf="@id/imageview"

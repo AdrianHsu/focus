@@ -39,14 +39,14 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:paddingTop="5dip"
-            android:text="寄了好友邀請給您。"
+            android:text="@string/send_you_friend_request"
             android:textSize="10sp"
             android:layout_below="@+id/profile_name"
             android:layout_toEndOf="@+id/profile_image"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="確認"
+            android:text="@string/accept"
             android:id="@+id/button"
             android:layout_alignTop="@+id/profile_name"
             android:layout_alignParentEnd="true"/>

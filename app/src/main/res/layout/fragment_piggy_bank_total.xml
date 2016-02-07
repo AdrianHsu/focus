@@ -9,7 +9,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="FOCUS總共已經為您省下"
+            android:text="@string/focus_saved_total"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"/>
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:text="全球百分等級(Percentile Rank)"
+        android:text="@string/pr"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"/>
@@ -35,18 +35,40 @@
         android:layout_gravity="center_horizontal"
         android:textSize="80sp"
         android:text="2%"/>
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="在 2281740 位 FOCUS 使用者中，您是第"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"/>
-    <TextView
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text=" 2281740 "
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/your_rank"
+            android:layout_marginTop="10dp"
+            />
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="80sp"
-        android:text="2882名"/>
+        android:layout_gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="80sp"
+            android:text="2882"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="80sp"
+            android:text="@string/rank_text"/>
+    </LinearLayout>
 </LinearLayout>
