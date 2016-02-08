@@ -6,7 +6,7 @@
               android:orientation="vertical">
 
     <TextView
-        android:text="今日使用上限"
+        android:text="@string/usage_limit_today"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_marginTop="14dp" />
 
     <TextView
-        android:text="FOCUS 小提醒"
+        android:text="@string/focus_reminder"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="14dp"
         android:textSize="24dp"
-        android:text="根據Yahoo!的Flurry Report，本應用軟體將定義上癮程度如下（單位為點擊應用軟體次數/天）"/>
+        android:text="@string/description_addiction"/>
 
     <Button
         android:layout_width="wrap_content"

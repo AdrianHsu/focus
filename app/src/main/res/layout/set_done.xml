@@ -6,7 +6,7 @@
               android:orientation="vertical">
 
     <TextView
-        android:text="DONE!"
+        android:text="@string/set_explore_focus"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

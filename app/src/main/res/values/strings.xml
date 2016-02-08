@@ -133,4 +133,27 @@
     <!--FriendInviteRecyclerViewAdapter-->
     <string name="already_signed_up">已經註冊、但尚未建立關係。</string>
     <string name="send_invitation">寄出邀請</string>
+    <!--FriendRecyclerViewAdapter-->
+    <!--GlobalPiggyBankRecyclerViewAdapter-->
+    <string name="unit_reading_book">閱讀這麼多數量的書（本）</string>
+    <string name="unit_playing_soccer">足球賽的賽事時間長度（場）</string>
+    <!--KickHistoryRecyclerViewAdapter-->
+    <string name="kick_action_reply">回覆</string>
+    <!--KickRequestRecyclerViewAdapter-->
+    <string name="kick_action">戳</string>
+    <!--KickResponseRecyclerViewAdapter-->
+    <string name="kick_action_response">知道了</string>
+    <!--MessagesRecyclerViewAdapter-->
+    <!--MoreRecyclerViewAdapter-->
+    <!--OverviewRecyclerViewAdapter-->
+    <!--ProfileRecyclerViewAdapter-->
+    <string name="profile_click_modify">點擊以修改</string>
+    <!--CreateInfoSlide-->
+    <string name="set_explore_focus">恭喜您完成設定！歡迎您探索Focus，找回失去的專注！</string>
+    <string name="description_device_admin_and_access">授權背景偵測與裝置管理員</string>
+    <string name="basic_info_settings">基本資料設定</string>
+    <!--DailyTopThreeAppUsageAdapter-->
+    <!--TopThreeAppUsageDashboardAdapter-->
+    <!--TopThreeChartMarkerView-->
+    <!--WeeklyPiggyBankRecyclerViewAdapter-->
 </resources>

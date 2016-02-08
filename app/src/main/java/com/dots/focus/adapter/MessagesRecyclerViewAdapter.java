@@ -476,7 +476,6 @@ public class MessagesRecyclerViewAdapter extends
                                 .kick_history_content_textview);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         buttonSample = (Button) itemView.findViewById(R.id.button_reply);
-        buttonSample.setText("回覆");
 
         item_view = itemView.findViewById(R.id.itemview);
       }
@@ -510,7 +509,6 @@ public class MessagesRecyclerViewAdapter extends
                                 .kick_response_content_textview);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         buttonSample = (Button) itemView.findViewById(R.id.button_end);
-        buttonSample.setText("知道了");
 
         item_view = itemView.findViewById(R.id.itemview);
       }

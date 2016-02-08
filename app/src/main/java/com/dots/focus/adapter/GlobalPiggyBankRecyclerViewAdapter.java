@@ -43,7 +43,8 @@ public class GlobalPiggyBankRecyclerViewAdapter extends
 //      try {
 //        holder.textViewSample.setText(tmp.getString("duration"));
         if(position % 2 == 1) {
-          holder.textViewSample.setText("場足球賽的賽事時間長度");
+          String str = mContext.getResources().getString(R.string.unit_reading_book);
+          holder.textViewSample.setText(str);
           holder.timeTextViewSample.setText("239.5");
           Picasso.with(mContext).load(R.drawable.soccer).into(holder.imageViewSample);
         }

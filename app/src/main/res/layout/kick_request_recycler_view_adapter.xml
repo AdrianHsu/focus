@@ -49,7 +49,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="踢"
+            android:text="@string/kick_action"
             android:id="@+id/button_kick"
             android:layout_alignTop="@+id/textview"
             android:layout_alignParentEnd="true"/>

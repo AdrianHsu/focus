@@ -37,7 +37,7 @@
             android:layout_centerHorizontal="true"/>
         <TextView
             android:id="@+id/modify"
-            android:text="點擊以修改"
+            android:text="@strin/profile_click_modify"
             android:textSize="12sp"
             android:textColor="@color/semi_black"
             android:layout_width="wrap_content"

@@ -15,7 +15,7 @@
         android:textColor="#ffffff"
         android:padding="32dp"
         android:textSize="26sp"
-        android:text="授權背景偵測與裝置管理員"/>
+        android:text="@string/description_device_admin_and_access"/>
 
     <Button
         android:id="@+id/acc_button_setting"
@@ -26,7 +26,7 @@
         android:paddingLeft="64dp"
         android:paddingRight="64dp"
         android:textSize="12sp"
-        android:text="背景偵測設定"/>
+        android:text="@string/device_accessibility"/>
     <Button
         android:id="@+id/device_button_setting"
         android:layout_width="wrap_content"
@@ -36,6 +36,6 @@
         android:paddingLeft="64dp"
         android:paddingRight="64dp"
         android:textSize="12sp"
-        android:text="裝置管理員設定"/>
+        android:text="@string/device_admin"/>
 
 </LinearLayout>

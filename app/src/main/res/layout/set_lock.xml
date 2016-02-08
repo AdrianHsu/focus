@@ -6,7 +6,7 @@
               android:orientation="vertical">
 
     <TextView
-        android:text="鎖定時間長度上限："
+        android:text="@string/lock_time_upper_bound"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_marginTop="14dp" />
 
     <TextView
-        android:text="鎖屏功能設定"
+        android:text="@string/lock_settings"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         android:orientation="horizontal">
     <TextView
         android:id="@+id/type"
-        android:text="自己鎖自己"
+        android:text="@string/lock_self_to_self"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="修改"
+        android:text="@string/modify"
         android:id="@+id/lock_condition_button"/>
         </LinearLayout>
 
@@ -65,12 +65,12 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="取消"
+            android:text="@string/cancel"
             android:id="@+id/cancel_button"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="完成"
+            android:text="@string/done"
             android:id="@+id/button"/>
     </LinearLayout>
 

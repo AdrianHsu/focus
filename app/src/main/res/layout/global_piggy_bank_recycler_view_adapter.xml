@@ -29,6 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="閱讀這麼多數量（本）的書"/>
+            android:text="@string/unit_reading_book"/>
     </LinearLayout>
 </LinearLayout>
