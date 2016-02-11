@@ -51,7 +51,7 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("常用應用程式排行榜");
+        getSupportActionBar().setTitle(getResources().getString(R.string.title_app_leader_board_overview));
 
         weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(0);

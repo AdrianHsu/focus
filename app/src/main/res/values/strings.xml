@@ -113,7 +113,23 @@
     <string name="reset">重設</string>
     <!--MoreFragment-->
     <string name="view_your_profile">查看你的個人檔案</string>
+    <string name="title_goal_setting">目標設定</string>
+    <string name="title_idle_setting">耍廢條件設定</string>
+    <string name="title_lock_setting">鎖屏功能設定</string>
+    <string name="title_notif_setting">通知設定</string>
+    <string name="title_focus_community">FOCUS發燒友</string>
+    <string name="title_parental_control">家長監護</string>
+    <string name="title_advanced_setting">進階設定</string>
+    <string name="title_logout">登出</string>
     <!--OverviewFragment-->
+    <string name="title_weekly_app_usage_overview">每週總時數趨勢</string>
+    <string name="title_daily_app_usage_overview">每日使用時段趨勢</string>
+    <string name="title_addiction_index_overview">上癮程度趨勢</string>
+    <string name="title_top_three_app_usage_overview">前三應用軟體使用趨勢</string>
+    <string name="title_app_leader_board_overview">應用程式排行榜</string>
+    <string name="title_my_daily_report_overview">我的每日報表</string>
+    <string name="title_my_radar_chart_overview">個人特質雷達圖</string>
+    <string name="title_my_piggy_bank_overview">我的時間存錢筒</string>
     <!--GlobalPiggyBankFragment-->
     <string name="focus_saved_for_globe">FOCUS已經為全世界省下的總時數（小時）</string>
     <string name="trans_rate">等值轉換比率（相當於）</string>
@@ -138,6 +154,7 @@
     <string name="unit_reading_book">閱讀這麼多數量的書（本）</string>
     <string name="unit_playing_soccer">足球賽的賽事時間長度（場）</string>
     <!--KickHistoryRecyclerViewAdapter-->
+    <string name="title_kick_messages">戳朋友一下</string>
     <string name="kick_action_reply">回覆</string>
     <!--KickRequestRecyclerViewAdapter-->
     <string name="kick_action">戳</string>

@@ -38,9 +38,7 @@ public class RadarChartActivity extends OverviewChartActivity {
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    ParseUser user = ParseUser.getCurrentUser();
-    String name = user.getString("user_name");
-    getSupportActionBar().setTitle( name +"'s 個人特質雷達圖");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_my_radar_chart_overview));
 
     mChart = (RadarChart) findViewById(R.id.chart1);
 

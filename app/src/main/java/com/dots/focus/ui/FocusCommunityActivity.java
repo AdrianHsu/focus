@@ -47,7 +47,7 @@ public class FocusCommunityActivity extends BaseActivity {
 //    String name = user.getString("name");
 //    collapsingToolbarLayout.setTitle(name);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    collapsingToolbarLayout.setTitle("FOCUS 發燒友");
+    collapsingToolbarLayout.setTitle(getResources().getString(R.string.title_focus_community));
     collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
     collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
 

@@ -60,7 +60,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("上癮程度趨勢");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_addiction_index_overview));
 
     weekSwitchTv = (TextView) findViewById(R.id.week_switch_textview);
     String week = TrackAccessibilityUtil.weekPeriodString(0);

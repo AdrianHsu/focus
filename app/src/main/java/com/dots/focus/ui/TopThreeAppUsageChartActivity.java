@@ -87,7 +87,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("前三應用軟體用量趨勢");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_top_three_app_usage_overview));
 
     weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
     String week = TrackAccessibilityUtil.weekPeriodString(0);

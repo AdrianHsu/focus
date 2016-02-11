@@ -42,7 +42,7 @@ public class DailyReportChartActivity extends OverviewChartActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("許秉鈞's 每日報表");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_my_daily_report_overview));
 
     AlertDialog.Builder alert = new AlertDialog.Builder(
                             this);

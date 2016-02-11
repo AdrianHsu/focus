@@ -28,7 +28,7 @@ public class GoalSettingsActivity extends BaseActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("目標設定");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_goal_setting));
     seekBar = (SeekBar) findViewById(R.id.seekBar1);
     progress = SettingsUtil.getInt("goal");
     seekBar.setProgress(progress);

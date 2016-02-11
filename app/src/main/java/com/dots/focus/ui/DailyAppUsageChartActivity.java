@@ -65,7 +65,7 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("每日使用時段趨勢");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_daily_app_usage_overview));
     topThreeCardHourlyView = findViewById(R.id.top_three_card_hourly);
 
     daySwitchTv = (TextView) findViewById(R.id.day_switch_textview);

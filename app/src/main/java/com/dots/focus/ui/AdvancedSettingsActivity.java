@@ -23,7 +23,7 @@ public class AdvancedSettingsActivity extends BaseActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("進階設定");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_advanced_setting));
 
   }
   @Override

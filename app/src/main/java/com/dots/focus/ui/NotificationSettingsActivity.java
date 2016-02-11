@@ -33,7 +33,7 @@ public class NotificationSettingsActivity extends BaseActivity implements
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("通知設定");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_notif_setting));
 
     notiTimeTextView = (TextView) findViewById(R.id.noti_time_textview);
     notiTimeTextView.setOnClickListener(new View.OnClickListener() {

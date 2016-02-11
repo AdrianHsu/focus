@@ -70,14 +70,14 @@ public class MoreFragment extends Fragment {
 
     final List<String> stringList = new ArrayList<>();
 
-    stringList.add("目標設定");
-    stringList.add("耍廢條件設定");
-    stringList.add("鎖屏功能設定");
-    stringList.add("通知設定");
-    stringList.add("FOCUS發燒友");
-    stringList.add("家長監護（PREMIUM）");
-    stringList.add("進階設定");
-    stringList.add("登出");
+    stringList.add(getResources().getString(R.string.title_goal_setting));
+    stringList.add(getResources().getString(R.string.title_idle_setting));
+    stringList.add(getResources().getString(R.string.title_lock_setting));
+    stringList.add(getResources().getString(R.string.title_notif_setting));
+    stringList.add(getResources().getString(R.string.title_focus_community));
+    stringList.add(getResources().getString(R.string.title_parental_control));
+    stringList.add(getResources().getString(R.string.title_advanced_setting));
+    stringList.add(getResources().getString(R.string.title_logout));
     simpleRecyclerViewAdapter = new MoreRecyclerViewAdapter(stringList);
     linearLayoutManager = new LinearLayoutManager(context);
 

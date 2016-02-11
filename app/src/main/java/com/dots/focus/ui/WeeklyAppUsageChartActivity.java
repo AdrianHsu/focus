@@ -59,7 +59,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("每週總時數趨勢");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_weekly_app_usage_overview));
 
 //    DEBUG: W/System.err: java.lang.RuntimeException: Can't create handler inside thread that has
 // not called Looper.prepare()

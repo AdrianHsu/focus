@@ -38,7 +38,7 @@ public class LockSettingsActivity extends BaseActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("鎖屏設定");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_lock_setting));
     seekBar = (SeekBar) findViewById(R.id.seekBar1);
     final int temp = SettingsUtil.getInt("lock");
     progress = temp;

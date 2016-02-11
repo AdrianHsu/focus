@@ -25,9 +25,8 @@ public class TimePiggyBankActivity extends OverviewChartActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    ParseUser user = ParseUser.getCurrentUser();
-    String name = user.getString("user_name");
-    getSupportActionBar().setTitle(name + "'s 時間存錢筒");
+
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_my_piggy_bank_overview));
 
     TimePiggyBankTabPagerAdapter adapter = new TimePiggyBankTabPagerAdapter
                             (getSupportFragmentManager());

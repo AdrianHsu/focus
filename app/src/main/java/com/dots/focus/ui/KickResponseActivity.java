@@ -59,7 +59,7 @@ public class KickResponseActivity extends BaseActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("戳朋友一下");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_kick_messages));
     toolbar.bringToFront();
 
 //    editText1 = (EditText) findViewById(R.id.editText1);

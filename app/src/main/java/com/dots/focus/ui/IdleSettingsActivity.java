@@ -36,7 +36,7 @@ public class IdleSettingsActivity extends BaseActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("耍廢條件設定");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_idle_setting));
     seekBar = (SeekBar) findViewById(R.id.seekBar1);
     progress = SettingsUtil.getInt("idle");
     seekBar.setProgress(progress);
