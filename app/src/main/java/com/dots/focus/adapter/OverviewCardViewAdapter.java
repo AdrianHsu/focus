@@ -4,12 +4,16 @@ package com.dots.focus.adapter;
  * Created by AdrianHsu on 2015/12/12.
  */
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,8 @@ import com.dots.focus.ui.WeeklyAddictionIndexChartActivity;
 import com.dots.focus.ui.WeeklyAppUsageChartActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -44,15 +50,42 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
 
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
 
-      if (mDragStartListener != null) {
-
-        holder.item_view.setOnTouchListener(new View.OnTouchListener() {
-          @Override
-          public boolean onTouch(View v, MotionEvent event) {
-            return false;
-          }
-        });
+      LinearLayout mLayout = (LinearLayout) holder.item_view;
+      Context mContext = mLayout.getContext();
+      if(position == 0) {
+        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_0,
+                                mContext.getTheme()));
+      } else if (position == 1) {
+        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_1,
+                                mContext.getTheme()));
+      } else if (position == 2) {
+        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_2,
+                                mContext.getTheme()));
+      } else if (position == 3) {
+        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_3,
+                                mContext.getTheme()));
+      } else if (position == 4) {
+        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_4,
+                                mContext.getTheme()));
+      } else if (position == 5) {
+        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_5,
+                                mContext.getTheme()));
+      } else if (position == 6) {
+        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_6,
+                                mContext.getTheme()));
+      } else if (position == 7) {
+        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_7,
+                                mContext.getTheme()));
+      } else {
+        //
       }
+
+      mLayout.setOnTouchListener(new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+          return false;
+        }
+      });
     }
 
   }
@@ -80,23 +113,23 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
           .LENGTH_SHORT)
           .show();
         Intent intent = null;
-        if(vh.getAdapterPosition() == 0)
+        if(vh.getAdapterPosition() == 0) {
           intent = new Intent(v.getContext(), WeeklyAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 1)
+        } else if (vh.getAdapterPosition() == 1) {
           intent = new Intent(v.getContext(), DailyAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 2)
+        } else if (vh.getAdapterPosition() == 2) {
           intent = new Intent(v.getContext(), WeeklyAddictionIndexChartActivity.class);
-        else if (vh.getAdapterPosition() == 3)
+        } else if (vh.getAdapterPosition() == 3) {
           intent = new Intent(v.getContext(), TopThreeAppUsageChartActivity.class);
-        else if (vh.getAdapterPosition() == 4)
+        } else if (vh.getAdapterPosition() == 4) {
           intent = new Intent(v.getContext(), AppLeaderBoardChartActivity.class);
-        else if (vh.getAdapterPosition() == 5)
+        } else if (vh.getAdapterPosition() == 5) {
           intent = new Intent(v.getContext(), DailyReportChartActivity.class);
-        else if (vh.getAdapterPosition() == 6)
+        } else if (vh.getAdapterPosition() == 6) {
           intent = new Intent(v.getContext(), RadarChartActivity.class);
-        else if (vh.getAdapterPosition() == 7)
+        } else if (vh.getAdapterPosition() == 7) {
           intent = new Intent(v.getContext(), TimePiggyBankActivity.class);
-        else {
+        } else {
           intent = null;
         }
 

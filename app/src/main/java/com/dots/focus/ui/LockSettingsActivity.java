@@ -97,16 +97,17 @@ public class LockSettingsActivity extends BaseActivity {
     new MaterialDialog.Builder(this)
                             .title("選擇您欲使用的鎖屏監護")
                             .items(R.array.lockConditionList)
-                            .itemsCallbackMultiChoice(null,new MaterialDialog
-                                                    .ListCallbackMultiChoice() {
+                            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                               @Override
-                              public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                              public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 /**
-                                 * If you use alwaysCallMultiChoiceCallback(), which is discussed below,
-                                 * returning false here won't allow the newly selected check box to actually be selected.
-                                 * See the limited multi choice dialog example in the sample project for details.
+                                 * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                                 * returning false here won't allow the newly selected radio button to actually be selected.
                                  **/
-                                typeTextView.setText(text.toString());
+                                if (typeTextView != null && text != null) {
+                                  String temp = text.toString();
+                                  typeTextView.setText(temp);
+                                }
                                 return true;
                               }
                             })

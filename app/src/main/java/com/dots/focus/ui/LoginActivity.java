@@ -2,6 +2,7 @@ package com.dots.focus.ui;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,11 +29,13 @@ public class LoginActivity extends AppCompatActivity {
 
     static final String TAG = "LoginActivity";
     private Dialog progressDialog;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "LoginActivity onCreate...");
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_login);
         if (LoginUtil.hasLoggedIn()) {
             ParseUser currentUser = ParseUser.getCurrentUser();
@@ -72,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginClick(View v) {
-        progressDialog = ProgressDialog.show(LoginActivity.this, "", "Logging in...", true);
+        progressDialog = ProgressDialog.show(context, "", "Logging in...", true);
 
         List<String> permissions = Arrays.asList("public_profile", "user_friends");
         // NOTE: for extended permissions, like "user_about_me", your app must be reviewed by the Facebook team

@@ -43,6 +43,21 @@ public class CreateInfoSlide extends Fragment {
   private Button birthBtn;
   private Button occupationBtn;
   private EditText emailEdt;
+  private SeekBar seekBar1;
+  private TextView textView1;
+  private Button doneBtn1;
+  private SeekBar seekBar2;
+  private TextView textView2;
+  private TextView appPickedTv;
+  private Button doneBtn2;
+  private Button pickAppBtn;
+  private TextView textView3;
+  private TextView typeTextView;
+  private Button doneBtn3;
+  private Button cancelBtn3;
+  private Button lockBtn3;
+  private SeekBar seekBar3;
+
   private static Context mContext;
   public static Integer[] defaultMultiChoice;
   public static Integer[] pickedMultiChoice;
@@ -136,10 +151,10 @@ public class CreateInfoSlide extends Fragment {
         break;
       case R.layout.set_goal:
 
-        final SeekBar seekBar1 = (SeekBar) view.findViewById(R.id.seekBar1);
+        seekBar1 = (SeekBar) view.findViewById(R.id.seekBar1);
+        textView1 = (TextView) view.findViewById(R.id.textView1);
+        doneBtn1 =(Button) view.findViewById(R.id.button);
         seekBar1.setProgress(progressGoal);
-        final TextView textView1 = (TextView) view.findViewById(R.id.textView1);
-        final Button doneBtn1 =(Button) view.findViewById(R.id.button);
 
         // Initialize the textview with '0'.
         textView1.setText(seekBar1.getProgress() + "/" + seekBar1.getMax() + " (以分鐘計)");
@@ -174,14 +189,14 @@ public class CreateInfoSlide extends Fragment {
         });
         break;
       case R.layout.set_idle:
-        final SeekBar seekBar2 = (SeekBar) view.findViewById(R.id.seekBar1);
+        seekBar2 = (SeekBar) view.findViewById(R.id.seekBar1);
+        textView2 = (TextView) view.findViewById(R.id.textView1);
+        appPickedTv = (TextView) view.findViewById(R.id.app_picked);
+        doneBtn2 = (Button) view.findViewById(R.id.button);
+        pickAppBtn = (Button) view.findViewById(R.id.pick_app_button);
         progressIdle = SettingsUtil.getInt("idle");
         seekBar2.setProgress(progressIdle);
         // Adrian: 連續要改掉..
-        final TextView textView2 = (TextView) view.findViewById(R.id.textView1);
-        final TextView appPickedTv = (TextView) view.findViewById(R.id.app_picked);
-        final Button doneBtn2 = (Button) view.findViewById(R.id.button);
-        final Button pickAppBtn = (Button) view.findViewById(R.id.pick_app_button);
 
         final int length = FetchAppUtil.getSize();
         APP_LENGTH = length;
@@ -229,15 +244,15 @@ public class CreateInfoSlide extends Fragment {
         break;
 
       case R.layout.set_lock:
-        final SeekBar seekBar3 = (SeekBar) view.findViewById(R.id.seekBar1);
+        seekBar3 = (SeekBar) view.findViewById(R.id.seekBar1);
         final int temp = SettingsUtil.getInt("lock");
         progressLock = temp;
         seekBar3.setProgress(temp);
-        final TextView textView3 = (TextView) view.findViewById(R.id.textView1);
-        final TextView typeTextView = (TextView) view.findViewById(R.id.type);
-        final Button doneBtn3 =(Button) view.findViewById(R.id.button);
-        final Button cancelBtn3 = (Button) view.findViewById(R.id.cancel_button);
-        final Button lockBtn3 = (Button) view.findViewById(R.id.lock_condition_button);
+        textView3 = (TextView) view.findViewById(R.id.textView1);
+        typeTextView = (TextView) view.findViewById(R.id.type);
+        doneBtn3 =(Button) view.findViewById(R.id.button);
+        cancelBtn3 = (Button) view.findViewById(R.id.cancel_button);
+        lockBtn3 = (Button) view.findViewById(R.id.lock_condition_button);
 
         // Initialize the textview with '0'.
         textView3.setText(seekBar3.getProgress() + "/" + seekBar3.getMax() + " (以分鐘計)");
@@ -277,7 +292,7 @@ public class CreateInfoSlide extends Fragment {
         lockBtn3.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            createLockConditionDialog(typeTextView);
+            createLockConditionDialog();
           }
         });
       break;
@@ -285,19 +300,21 @@ public class CreateInfoSlide extends Fragment {
 
     return view;
   }
-  private void createLockConditionDialog(final TextView typeTextView) {
+  private void createLockConditionDialog() {
     new MaterialDialog.Builder(mContext)
                             .title("選擇您欲使用的鎖屏監護")
                             .items(R.array.lockConditionList)
-                            .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                               @Override
-                              public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                              public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 /**
-                                 * If you use alwaysCallMultiChoiceCallback(), which is discussed below,
-                                 * returning false here won't allow the newly selected check box to actually be selected.
-                                 * See the limited multi choice dialog example in the sample project for details.
+                                 * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                                 * returning false here won't allow the newly selected radio button to actually be selected.
                                  **/
-                                typeTextView.setText(text.toString());
+                                if (typeTextView != null && text != null) {
+                                  String temp = text.toString();
+                                  typeTextView.setText(temp);
+                                }
                                 return true;
                               }
                             })
