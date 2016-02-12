@@ -198,18 +198,11 @@ public class CreateInfoSlide extends Fragment {
         seekBar2.setProgress(progressIdle);
         // Adrian: 連續要改掉..
 
-        final int length = FetchAppUtil.getSize();
-        APP_LENGTH = length;
-        final String [] appNameArray = new String [length];
-        defaultMultiChoice = new Integer[length];
-        pickedMultiChoice = new Integer[length];
-        for(int i = 0; i < length; i++) {
-          appNameArray[i] = FetchAppUtil.getApp(i).getName();
-        }
         pickAppBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            createPickAppDialog(appNameArray, appPickedTv);
+            Log.d(TAG, "pickAppBtn clicked...");
+            createPickAppDialog(appPickedTv);
           }
         });
         // Initialize the textview with '0'.
@@ -320,11 +313,22 @@ public class CreateInfoSlide extends Fragment {
                             })
                             .positiveText("完成").show();
   }
-  private void createPickAppDialog(final String[] appNameList, final TextView appPickedTv) {
+  private void createPickAppDialog(final TextView appPickedTv) {
+    Log.d(TAG, "createPickAppDialog state 0...");
+
+    final int length = FetchAppUtil.getSize();
+    final String [] appNameList = new String [length];
+    defaultMultiChoice = new Integer[length];
+    pickedMultiChoice = new Integer[length];
+    for(int i = 0; i < length; i++)
+      appNameList[i] = FetchAppUtil.getApp(i).getName();
+
+    Log.d(TAG, "createPickAppDialog state 1...");
+
     new MaterialDialog.Builder(mContext)
                             .title("選擇您欲排除的應用軟體")
                             .items(appNameList)
-                            .itemsCallbackMultiChoice( defaultMultiChoice, new MaterialDialog
+                            .itemsCallbackMultiChoice(defaultMultiChoice, new MaterialDialog
                                                     .ListCallbackMultiChoice() {
                               @Override
                               public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
