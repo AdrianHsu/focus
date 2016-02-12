@@ -9,16 +9,13 @@ package com.dots.focus.ui;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.CommunityPostCardViewAdapter;
-import com.dots.focus.adapter.ProfileCardViewAdapter;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
 import org.json.JSONException;

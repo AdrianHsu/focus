@@ -84,7 +84,8 @@ public class AddFriendRecyclerViewAdapter extends
 
       if(jsonObject.getInt("state") == FRIEND_INVITING_ITEM) {
         holder.mButton.setEnabled(false);
-        holder.mButton.setText("等待回覆");
+        String str = mContext.getResources().getString(R.string.wait_for_reply);
+        holder.mButton.setText(str);
       } else {
         holder.mButton.setOnClickListener(new View.OnClickListener() {
           @Override
