@@ -317,13 +317,16 @@ public class CreateInfoSlide extends Fragment {
     Log.d(TAG, "createPickAppDialog state 0...");
 
     final int length = FetchAppUtil.getSize();
+    APP_LENGTH = length;
     final String [] appNameList = new String [length];
     defaultMultiChoice = new Integer[length];
     pickedMultiChoice = new Integer[length];
-    for(int i = 0; i < length; i++)
+    for(int i = 0; i < length; i++) {
       appNameList[i] = FetchAppUtil.getApp(i).getName();
+      Log.d(TAG, "appName " + i + ": " + appNameList[i]);
+    }
 
-    Log.d(TAG, "createPickAppDialog state 1...");
+    Log.d(TAG, "APP_LENGTH: " + APP_LENGTH);
 
     new MaterialDialog.Builder(mContext)
                             .title("選擇您欲排除的應用軟體")
