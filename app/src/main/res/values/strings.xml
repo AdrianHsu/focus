@@ -45,7 +45,7 @@
     <string name="intro_0_des">「您有手機上癮症嗎？」
 根據Yahoo! Flurry Analytics(2015年)的統計，
 全球有2.8億的用戶已經手機上癮。
-Focus是您最好的生產力工具。透過自我管理、好友的相互激勵，
+Focus將是您最好的生產力工具。透過自我管理、好友的相互激勵，
 讓低頭族改善使用智慧型裝置的習慣。</string>
     <string name="intro_1">跨裝置的用量報表</string>
     <string name="intro_1_des">「用量資料分析」讓您迅速認識自己的用量健康狀況。
@@ -53,9 +53,9 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
 以貼近使用者的角度出發，Focus整合所有裝置的用量報表，
 從桌上型電腦到智慧型手機，提供資訊流的最佳體驗。</string>
     <string name="intro_2">「戳好友一下」與社群競賽</string>
-    <string name="intro_2_des">好友間互相打氣，是Focus在時間管理上的獨特功能。
-藉由即時的好友提醒和監督，Focus讓您有意識地掌握自己的時間，提升生產力。
-不僅如此，社群競賽讓好友與您的手機用量進行比較、進而排名。
+    <string name="intro_2_des">好友間互相打氣，是本生產力工具的獨特功能。
+藉由即時的好友提醒，Focus讓您有意識地提升生產力。
+不僅如此，社群競賽讓好友與您的手機用量比較、進而排名。
 您也可觀看全世界的用量平均，以及Focus為全世界省下多少時間。</string>
     <string name="intro_3">遠端監控與家長監護</string>
     <string name="intro_3_des">「時間警察」可短暫鎖屏委託人的手機畫面，達到小小警惕的效果。
@@ -173,6 +173,7 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--FriendInviteRecyclerViewAdapter-->
     <string name="already_signed_up">已經註冊、但尚未建立關係。</string>
     <string name="send_invitation">寄出邀請</string>
+    <string name="wait_for_reply">等待回覆</string>
     <!--FriendRecyclerViewAdapter-->
     <!--GlobalPiggyBankRecyclerViewAdapter-->
     <string name="unit_reading_book">閱讀這麼多數量的書（本）</string>
@@ -188,6 +189,10 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--MoreRecyclerViewAdapter-->
     <!--OverviewRecyclerViewAdapter-->
     <!--ProfileRecyclerViewAdapter-->
+    <string name="profile_birth_text">出生年份</string>
+    <string name="profile_friend_num_text">好友總數</string>
+    <string name="profile_total_time_saved_text">省下總小時數</string>
+
     <string name="profile_click_modify">點擊以修改</string>
     <!--CreateInfoSlide-->
     <string name="set_explore_focus">恭喜您完成設定！歡迎您探索Focus，找回失去的專注！</string>

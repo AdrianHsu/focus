@@ -5,7 +5,6 @@ package com.dots.focus.adapter;
  */
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,22 +15,19 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
-import com.dots.focus.util.CreateInfoUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 
-public class ProfileCardViewAdapter extends UltimateViewAdapter<ProfileCardViewAdapter
+public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyclerViewAdapter
   .SimpleAdapterViewHolder> {
 
   private List<String> stringList;
   private Context mContext;
 
-  public ProfileCardViewAdapter(List<String> stringList, Context context) {
+  public ProfileRecyclerViewAdapter(List<String> stringList, Context context) {
     this.stringList = stringList;
     this.mContext = context;
   }
@@ -43,12 +39,17 @@ public class ProfileCardViewAdapter extends UltimateViewAdapter<ProfileCardViewA
 
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
 
-      if(position == 4)
-        holder.textViewContent.setText("出生年份");
-      else if (position == 5)
-        holder.textViewContent.setText("好友總數");
-      else if (position == 6)
-        holder.textViewContent.setText("FOCUS省下總時數");
+      String str = "";
+      if(position == 4) {
+        str = mContext.getResources().getString(R.string.profile_birth_text);
+      }
+      else if (position == 5) {
+        str = mContext.getResources().getString(R.string.profile_friend_num_text);
+      }
+      else if (position == 6) {
+        str = mContext.getResources().getString(R.string.profile_total_time_saved_text);
+      }
+      holder.textViewContent.setText(str);
 
       if (mDragStartListener != null) {
 
