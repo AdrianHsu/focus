@@ -164,7 +164,7 @@ public class CreateInfoSlide extends Fragment {
           @Override
           public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
             progressGoal = progresValue;
-            textView1.setText("Covered: " + progressGoal + "/" + seekBar.getMax());
+            textView1.setText(seekBar1.getProgress() + "/" + seekBar1.getMax() + " (以分鐘計)");
             Toast.makeText(mContext, "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
           }
 
@@ -175,7 +175,7 @@ public class CreateInfoSlide extends Fragment {
 
           @Override
           public void onStopTrackingTouch(SeekBar seekBar) {
-            textView1.setText("Covered: " + progressGoal + "/" + seekBar.getMax());
+            textView1.setText(seekBar1.getProgress() + "/" + seekBar1.getMax() + " (以分鐘計)");
             Toast.makeText(mContext, "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
           }
         });
@@ -212,7 +212,7 @@ public class CreateInfoSlide extends Fragment {
           @Override
           public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
             progressIdle = progresValue;
-            textView2.setText("Covered: " + progressIdle + "/" + seekBar.getMax());
+            textView2.setText(seekBar2.getProgress() + "/" + seekBar2.getMax() + " (以分鐘計)");
             Toast.makeText(mContext, "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
           }
 
@@ -223,7 +223,7 @@ public class CreateInfoSlide extends Fragment {
 
           @Override
           public void onStopTrackingTouch(SeekBar seekBar) {
-            textView2.setText("Covered: " + progressIdle + "/" + seekBar.getMax());
+            textView2.setText(seekBar2.getProgress() + "/" + seekBar2.getMax() + " (以分鐘計)");
             Toast.makeText(mContext, "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
           }
         });
@@ -255,7 +255,7 @@ public class CreateInfoSlide extends Fragment {
           @Override
           public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
             progressLock = progresValue;
-            textView3.setText("Covered: " + progressLock + "/" + seekBar.getMax());
+            textView3.setText(seekBar3.getProgress() + "/" + seekBar3.getMax() + " (以分鐘計)");
             Toast.makeText(mContext, "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
           }
 
@@ -266,7 +266,7 @@ public class CreateInfoSlide extends Fragment {
 
           @Override
           public void onStopTrackingTouch(SeekBar seekBar) {
-            textView3.setText("Covered: " + progressLock + "/" + seekBar.getMax());
+            textView3.setText(seekBar3.getProgress() + "/" + seekBar3.getMax() + " (以分鐘計)");
             Toast.makeText(mContext, "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
           }
         });
