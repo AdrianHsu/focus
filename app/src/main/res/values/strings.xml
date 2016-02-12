@@ -4,6 +4,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="login_intro">Check out your Facebook profile by logging in with the button below!</string>
+    <string name="login_time_thief_text">揪出您的時間小偷！</string>
     <string name="gender">Gender</string>
     <string name="email">Email</string>
     <string name="dashboard">Dashboard</string>
@@ -39,6 +40,29 @@
         <item>NOV</item>
         <item>DEC</item>
     </string-array>
+    <!--IntroActivity-->
+    <string name="intro_0">歡迎</string>
+    <string name="intro_0_des">「您有手機上癮症嗎？」
+根據Yahoo! Flurry Analytics(2015年)的統計，
+全球有2.8億的用戶已經手機上癮。
+Focus是您最好的生產力工具。透過自我管理、好友的相互激勵，
+讓低頭族改善使用智慧型裝置的習慣。</string>
+    <string name="intro_1">跨裝置的用量報表</string>
+    <string name="intro_1_des">「用量資料分析」讓您迅速認識自己的用量健康狀況。
+Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升生產力。
+以貼近使用者的角度出發，Focus整合所有裝置的用量報表，
+從桌上型電腦到智慧型手機，提供資訊流的最佳體驗。</string>
+    <string name="intro_2">「戳好友一下」與社群競賽</string>
+    <string name="intro_2_des">好友間互相打氣，是Focus在時間管理上的獨特功能。
+藉由即時的好友提醒和監督，Focus讓您有意識地掌握自己的時間，提升生產力。
+不僅如此，社群競賽讓好友與您的手機用量進行比較、進而排名。
+您也可觀看全世界的用量平均，以及Focus為全世界省下多少時間。</string>
+    <string name="intro_3">遠端監控與家長監護</string>
+    <string name="intro_3_des">「時間警察」可短暫鎖屏委託人的手機畫面，達到小小警惕的效果。
+您可委託最信任的 2 位摯友，成為您的時間警察；
+不僅如此，針對 6-12 歲的孩童，Focus提供「家長監護」功能。
+您可即時獲得孩童在學校的手機動態行為、進而規範使用時間與鎖屏。</string>
+
     <!--AdvancedSettingsActivity-->
     <string name="device_admin">裝置管理</string>
     <string name="device_admin_settings">裝置管理員設定</string>
