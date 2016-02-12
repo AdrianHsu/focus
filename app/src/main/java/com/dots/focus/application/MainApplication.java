@@ -9,6 +9,8 @@ import android.app.Application;
 import com.dots.focus.config.Config;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
+import com.dots.focus.util.FetchAppUtil;
+import com.dots.focus.util.FetchFriendUtil;
 import com.dots.focus.util.SettingsUtil;
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
@@ -37,6 +39,7 @@ public class MainApplication extends Application {
   }
   private void initialize() {
     SettingsUtil.searchSettings();
+    FetchAppUtil.loadParseApps();
   }
 }
 

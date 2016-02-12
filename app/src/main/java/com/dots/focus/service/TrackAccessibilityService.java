@@ -11,18 +11,13 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.dots.focus.config.LimitType;
-import com.dots.focus.model.AppInfo;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.KickUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
-import com.parse.GetCallback;
-import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +31,6 @@ public class TrackAccessibilityService extends AccessibilityService {
     public static long startHour = 0;
     public static final String TAG = "TrackService";
     public static List<String> ignore = new ArrayList<>();
-    private static ParseObject currentApp;
     private static int appIndex = -1;
     private static int[] appsUsage = {0, 0, 0, 0, 0, 0};
     private static long blockTime = 0;
@@ -55,17 +49,7 @@ public class TrackAccessibilityService extends AccessibilityService {
     @Override
     public void onCreate() {
         super.onCreate();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("CurrentApp");
-        query.fromLocalDatastore();
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
-                if (e == null && object != null) {
-                    currentApp = object;
-                } else {
-                    Log.d(TAG, "Cannot find the currentApp...");
-                }
-            }
-        });
+
         IntentFilter filter = new IntentFilter();
         filter.addAction("HourReceiver_broadcast_an_hour");
 
@@ -162,9 +146,7 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         if (!checkIndex(tempPackageName)) {
             startTime = now;
-            if (appIndex == -2) updateApp(false);
         }
-        else    updateApp(true);
     }
     // helper functions
     private void storeInDatabase (long now) {
@@ -247,9 +229,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         if (appIndex == -1) {
             ignore.add(previousPackageName);
             appIndex = -2;
-            updateApp(false);
         }
-        else updateApp(true);
 
         long now = System.currentTimeMillis();
         HourBlock hourBlock = TrackAccessibilityUtil.getCurrentHour(now);
@@ -284,52 +264,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         setServiceInfo(config);
     }
 
-    private static ParseObject getCurrentApp() throws com.parse.ParseException {
-        if (currentApp == null) {
-            Log.d(TAG, "new currentApp...");
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            currentApp = new ParseObject("CurrentApp");
-            currentApp.put("user_id", currentUser.getLong("user_id"));
-            currentApp.put("user_name", currentUser.getString("user_name"));
-            currentApp.saveEventually();
-        }
-        return currentApp;
-    }
 
-    private static void updateApp(boolean valid) {
-        try {
-            if (valid) {
-                final AppInfo appInfo = FetchAppUtil.getApp(previousPackageName);
-                if (appInfo != null) {
-                    getCurrentApp().put("AppName", appInfo.getName());
-                    getCurrentApp().put("AppPackageName", appInfo.getPackageName());
-                    getCurrentApp().put("time", startTime);
-                    getCurrentApp().saveEventually(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                try {
-                                    Log.d(TAG, "updateApp: " + getCurrentApp().getString("AppName"));
-                                } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
-                            } else
-                                Log.d(TAG, e.getMessage());
-                        }
-                    });
-                    return;
-                }
-            }
-            getCurrentApp().put("AppName", "");
-            getCurrentApp().put("AppPackageName", "");
-            getCurrentApp().saveEventually(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null)
-                        Log.d(TAG, "updateApp: Empty...");
-                    else
-                        Log.d(TAG, e.getMessage());
-                }
-            });
-        } catch (com.parse.ParseException e) { Log.d(TAG, e.getMessage()); }
-    }
+
 
 }

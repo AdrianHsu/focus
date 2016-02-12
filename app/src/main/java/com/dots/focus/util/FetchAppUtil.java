@@ -3,6 +3,7 @@ package com.dots.focus.util;
 import android.util.Log;
 
 import com.dots.focus.model.AppInfo;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -49,6 +50,12 @@ public class FetchAppUtil {
         return true;
     }
 
+    public static void setUser() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null && ParseApps != null)
+            ParseApps.put("User", currentUser);
+    }
+
     public static void addApp(AppInfo app) {
         apps.add(app);
         Log.d(TAG, "app: " + app.getPackageName() + ", apps.size(): " + apps.size());
@@ -88,6 +95,7 @@ public class FetchAppUtil {
     }
 
     public static void loadParseApps() {
+        /*
         Log.d(TAG, "checking currentUser...");
         try {
             boolean shouldWait = false;
@@ -104,40 +112,42 @@ public class FetchAppUtil {
         } catch(Exception e) {
             Log.d(TAG, e.getMessage());
         }
+        */
 
         Log.d(TAG, "start loading");
-        if (ParseApps == null) {
-            searching = true;
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Apps");
-            query.fromLocalDatastore();
+        if (ParseApps != null) return;
+        searching = true;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Apps");
+        query.fromLocalDatastore();
 
-            ParseObject object = null;
 
-            try {
-                Log.d("GetAppsService", "getting first");
-                object = query.getFirst();
-            } catch(ParseException e) {
-                loadExceptionOrNull();
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if (e == null &&object != null) {
+                    ParseApps = object;
+                    ParseApps.put("User", ParseUser.getCurrentUser());
+                    mergeApps();
+
+                    searching = false;
+                    printApps();
+                }
+                else {
+                    if (e != null)
+                        Log.d(TAG, e.getMessage());
+                    loadExceptionOrNull();
+                }
             }
-            if (object == null) {
-                loadExceptionOrNull();
-            } else {
-                Log.d("GetAppsService", "loading");
-                ParseApps = object;
-                ParseApps.put("User", ParseUser.getCurrentUser());
-                mergeApps();
-
-                searching = false;
-                printApps();
-            }
-        }
+        });
     }
 
     // helper functions
     private static void loadExceptionOrNull() {
         Log.d("GetAppsService", "database is empty.");
         ParseApps = new ParseObject("Apps");
-        ParseApps.put("User", ParseUser.getCurrentUser());
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null)
+            ParseApps.put("User", currentUser);
         List<String> name = new ArrayList<>(), packageName = new ArrayList<>(), category = new ArrayList<>();
         for(int i = 0; i < apps.size(); ++i) {
             name.add(apps.get(i).getName());

@@ -231,7 +231,7 @@ public class DashboardDonutFragment extends SampleFragment {
     float [] separableOutput = new float [4];
 
     for(int i = 0; i < 4; i ++) {
-      separableOutput[i] = (data[i][1]/total) * seriesMax;
+      separableOutput[i] = (data[i][1] / total) * seriesMax;
     }
     accumulateOutput[3] = separableOutput[0] + separableOutput[1] + separableOutput[2] +
                             separableOutput[3];

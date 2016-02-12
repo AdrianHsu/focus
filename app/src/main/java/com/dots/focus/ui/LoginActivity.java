@@ -11,6 +11,7 @@ import com.dots.focus.R;
 
 import com.dots.focus.service.GetAppsService;
 import com.dots.focus.util.DashboardUtil;
+import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.LoginUtil;
 import com.parse.LogInCallback;
 import com.parse.ParseFacebookUtils;
@@ -123,6 +124,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 //
     private void showSetInfoActivity() {
+        FetchAppUtil.setUser();
+
         Intent intent = new Intent(this, CreateInfoActivity.class);
         startActivity(intent);
     }

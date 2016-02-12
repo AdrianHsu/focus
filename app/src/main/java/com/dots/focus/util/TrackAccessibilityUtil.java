@@ -199,7 +199,11 @@ public class TrackAccessibilityUtil {
                 }
                 if (flag) x[3][1] += length;
             }
+            Log.d(TAG, "data:");
+            for (int i = 0; i < 4; ++i)
+                Log.d(TAG, i + ", " + x[i][0] + ", " + x[i][1]);
         }
+
         return x;
     }
 
