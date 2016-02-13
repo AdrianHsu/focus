@@ -6,8 +6,10 @@ package com.dots.focus.ui;
  * Created by AdrianHsu on 2015/12/13.
  */
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
+import com.dots.focus.ui.fragment.CreateInfoSlide;
+import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.SettingsUtil;
 
 public class IdleSettingsActivity extends BaseActivity {
@@ -25,8 +29,12 @@ public class IdleSettingsActivity extends BaseActivity {
   private Button pickAppBtn;
   private SeekBar seekBar;
   private TextView textView;
+  public static Integer[] defaultMultiChoice = null;
+  private static Integer[] pickedMultiChoice = null;
 
   private int progress;
+
+  private static String TAG = "IdleSettingsActivity";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -84,22 +92,41 @@ public class IdleSettingsActivity extends BaseActivity {
     });
   }
   private void createPickAppDialog() {
+    final int length = FetchAppUtil.getSize();
+    final String [] appNameList = new String [length];
+    for (int i = 0; i < length; ++i)
+      appNameList[i] = FetchAppUtil.getApp(i).getName();
+
+    pickedMultiChoice = defaultMultiChoice;
+
+    CreateInfoSlide.getExcludedApps(appNameList, defaultMultiChoice, length);
     new MaterialDialog.Builder(this)
-                            .title("選擇您欲排除的應用軟體")
-                            .items(R.array.testAppList)
-                            .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
-                              @Override
-                              public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                /**
-                                 * If you use alwaysCallMultiChoiceCallback(), which is discussed below,
-                                 * returning false here won't allow the newly selected check box to actually be selected.
-                                 * See the limited multi choice dialog example in the sample project for details.
-                                 **/
-                                return true;
-                              }
-                            })
-                            .positiveText("完成")
-                            .show();
+        .title("選擇您欲排除的應用軟體")
+        .items(appNameList)
+        .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+          @Override
+          public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+            pickedMultiChoice = which;
+            return true;
+          }
+        })
+        .dismissListener(new DialogInterface.OnDismissListener() {
+          @Override
+          public void onDismiss(DialogInterface dialogInterface) {
+            Log.v(TAG, "on dismiss");
+            defaultMultiChoice = pickedMultiChoice;
+            // appPickedTv.setText(getExcludedApps(appNameList, defaultMultiChoice, length));
+          }
+        })
+
+        .cancelListener(new DialogInterface.OnCancelListener() {
+          @Override
+          public void onCancel(DialogInterface dialogInterface) {
+            pickedMultiChoice = defaultMultiChoice;
+          }
+        })
+        .positiveText("完成")
+        .show();
   }
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {

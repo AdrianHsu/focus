@@ -25,6 +25,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.dots.focus.service.GetAppsService;
+import com.dots.focus.ui.IdleSettingsActivity;
 import com.dots.focus.util.CreateInfoUtil;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.SettingsUtil;
@@ -324,6 +325,9 @@ public class CreateInfoSlide extends Fragment {
     for (int i = 0; i < length; ++i)
       appNameList[i] = FetchAppUtil.getApp(i).getName();
 
+    defaultMultiChoice = IdleSettingsActivity.defaultMultiChoice;
+    pickedMultiChoice = defaultMultiChoice;
+
     appPickedTv.setText(getExcludedApps(appNameList, defaultMultiChoice, length));
 
     new MaterialDialog.Builder(mContext)
@@ -353,6 +357,8 @@ public class CreateInfoSlide extends Fragment {
                 Log.v(TAG, "on dismiss");
                 defaultMultiChoice = pickedMultiChoice;
                 appPickedTv.setText(getExcludedApps(appNameList, defaultMultiChoice, length));
+
+                IdleSettingsActivity.defaultMultiChoice = defaultMultiChoice;
               }
             })
 
@@ -430,7 +436,7 @@ public class CreateInfoSlide extends Fragment {
       .positiveText("Done")
       .show();
   }
-  private String getExcludedApps(String[] appNameList, Integer[] defaultMultiChoice,
+  public static String getExcludedApps(String[] appNameList, Integer[] defaultMultiChoice,
                        int length) {
     boolean flag = false;
     String text = "";
