@@ -19,13 +19,15 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.dots.focus.util.SettingsUtil;
 
+import org.w3c.dom.Text;
+
 public class IdleSettingsActivity extends BaseActivity {
 
   private Button doneBtn;
   private Button pickAppBtn;
   private SeekBar seekBar;
   private TextView textView;
-
+  private TextView appPickedTv;
   private int progress;
 
   @Override
@@ -38,6 +40,7 @@ public class IdleSettingsActivity extends BaseActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle(getResources().getString(R.string.title_idle_setting));
     seekBar = (SeekBar) findViewById(R.id.seekBar1);
+    appPickedTv = (TextView) findViewById(R.id.app_picked);
     progress = SettingsUtil.getInt("idle");
     seekBar.setProgress(progress);
     // Adrian: 連續要改掉..
