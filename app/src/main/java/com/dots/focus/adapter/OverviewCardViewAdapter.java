@@ -52,33 +52,33 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
 
       LinearLayout mLayout = (LinearLayout) holder.item_view;
       Context mContext = mLayout.getContext();
-      if(position == 0) {
-        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_0,
-                                mContext.getTheme()));
-      } else if (position == 1) {
-        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_1,
-                                mContext.getTheme()));
-      } else if (position == 2) {
-        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_2,
-                                mContext.getTheme()));
-      } else if (position == 3) {
-        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_3,
-                                mContext.getTheme()));
-      } else if (position == 4) {
-        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_4,
-                                mContext.getTheme()));
-      } else if (position == 5) {
-        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_5,
-                                mContext.getTheme()));
-      } else if (position == 6) {
-        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_6,
-                                mContext.getTheme()));
-      } else if (position == 7) {
-        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_7,
-                                mContext.getTheme()));
-      } else {
-        //
-      }
+//      if(position == 0) {
+//        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_0,
+//                                mContext.getTheme()));
+//      } else if (position == 1) {
+//        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_1,
+//                                mContext.getTheme()));
+//      } else if (position == 2) {
+//        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_2,
+//                                mContext.getTheme()));
+//      } else if (position == 3) {
+//        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_3,
+//                                mContext.getTheme()));
+//      } else if (position == 4) {
+//        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_4,
+//                                mContext.getTheme()));
+//      } else if (position == 5) {
+//        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_5,
+//                                mContext.getTheme()));
+//      } else if (position == 6) {
+//        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_6,
+//                                mContext.getTheme()));
+//      } else if (position == 7) {
+//        mLayout.setBackground(mContext.getResources().getDrawable(R.drawable.overview_bg_7,
+//                                mContext.getTheme()));
+//      } else {
+//        //
+//      }
 
       mLayout.setOnTouchListener(new View.OnTouchListener() {
         @Override

@@ -144,7 +144,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.CreateInfoActivity"></activity>
-
+        <activity
+            android:name=".ui.CustomDialogActivity"
+            android:label="@string/title_activity_custom_dialog"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
         <activity android:name="com.facebook.FacebookActivity"
                   android:configChanges=
                       "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -188,7 +195,8 @@
         </service>
 
         <service android:name="com.parse.PushService" />
-        <receiver android:name="com.parse.ParsePushBroadcastReceiver"
+        <receiver android:name="com.dots.focus.receiver.MainParseReceiver"
+                  android:permission="com.google.android.c2dm.permission.SEND"
                   android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />

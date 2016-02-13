@@ -72,6 +72,8 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="reset_data">重設資料</string>
     <string name="delete_account">刪除帳號</string>
     <!--AppLeaderBoardActivity-->
+    <!--CustomDialogActivity-->
+    <string name="title_activity_custom_dialog">朋友戳了你一下</string>
     <!--DailyAppUsageChartActivity-->
     <string name="app_usage_top_three">應用軟體用量前三名</string>
     <!--DailyReportChartActivity-->
@@ -202,4 +204,5 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--TopThreeAppUsageDashboardAdapter-->
     <!--TopThreeChartMarkerView-->
     <!--WeeklyPiggyBankRecyclerViewAdapter-->
+
 </resources>

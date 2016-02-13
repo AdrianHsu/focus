@@ -59,7 +59,7 @@ public class IdleSettingsActivity extends BaseActivity {
       @Override
       public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
         progress = progresValue;
-        textView.setText("Covered: " + progress + "/" + seekBar.getMax());
+        textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
         Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
       }
 
@@ -70,7 +70,7 @@ public class IdleSettingsActivity extends BaseActivity {
 
       @Override
       public void onStopTrackingTouch(SeekBar seekBar) {
-        textView.setText("Covered: " + progress + "/" + seekBar.getMax());
+        textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
         Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
       }
     });
