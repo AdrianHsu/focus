@@ -230,13 +230,18 @@ public class TrackAccessibilityService extends AccessibilityService {
             ignore.add(previousPackageName);
             appIndex = -2;
         }
+        else {
+            resizeAppLength();
+        }
+    }
 
+    private static void resizeAppLength() {
         long now = System.currentTimeMillis();
         HourBlock hourBlock = TrackAccessibilityUtil.getCurrentHour(now);
         DayBlock  dayBlock  = TrackAccessibilityUtil.getCurrentDay(now);
 
         List<Integer> appLength1 = hourBlock.getAppLength(),
-                      appLength2 = dayBlock.getAppLength();
+                appLength2 = dayBlock.getAppLength();
         int size = FetchAppUtil.getSize();
         if (appLength1.size() < size) {
             for (int i = appLength1.size(); i < size; ++i)

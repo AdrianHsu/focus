@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
+import com.dots.focus.service.GetAppsService;
 import com.dots.focus.util.CreateInfoUtil;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.SettingsUtil;
@@ -59,8 +61,8 @@ public class CreateInfoSlide extends Fragment {
   private SeekBar seekBar3;
 
   private static Context mContext;
-  public static Integer[] defaultMultiChoice;
-  public static Integer[] pickedMultiChoice;
+  public static Integer[] defaultMultiChoice = null;
+  public static Integer[] pickedMultiChoice = null;
   private int progressGoal;
   private int progressIdle;
   private int progressLock;
@@ -202,7 +204,7 @@ public class CreateInfoSlide extends Fragment {
           @Override
           public void onClick(View view) {
             Log.d(TAG, "pickAppBtn clicked...");
-            createPickAppDialog(appPickedTv);
+            createPickAppDialog();
           }
         });
         // Initialize the textview with '0'.
@@ -313,58 +315,58 @@ public class CreateInfoSlide extends Fragment {
                             })
                             .positiveText("完成").show();
   }
-  private void createPickAppDialog(final TextView appPickedTv) {
+  private void createPickAppDialog() {
     Log.d(TAG, "createPickAppDialog state 0...");
 
     final int length = FetchAppUtil.getSize();
     APP_LENGTH = length;
     final String [] appNameList = new String [length];
-    defaultMultiChoice = new Integer[length];
-    pickedMultiChoice = new Integer[length];
-    for(int i = 0; i < length; i++) {
+    for (int i = 0; i < length; ++i)
       appNameList[i] = FetchAppUtil.getApp(i).getName();
-      Log.d(TAG, "appName " + i + ": " + appNameList[i]);
-    }
 
-    Log.d(TAG, "APP_LENGTH: " + APP_LENGTH);
+    appPickedTv.setText(getExcludedApps(appNameList, defaultMultiChoice, length));
 
     new MaterialDialog.Builder(mContext)
-                            .title("選擇您欲排除的應用軟體")
-                            .items(appNameList)
-                            .itemsCallbackMultiChoice(defaultMultiChoice, new MaterialDialog
-                                                    .ListCallbackMultiChoice() {
-                              @Override
-                              public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                for(int i = 0 ; i < APP_LENGTH; i++) {
-                                  if(i < which.length) {
-                                    Log.v(TAG, "test on Selection: " + i + ", which.length: " +
-                                                            which.length);
-                                    pickedMultiChoice[i] = which[i];
-                                  }
-                                  else
-                                    pickedMultiChoice[i] = null;
-                                }
-                                return true;
-                              }
-                            })
-                            .dismissListener(new DialogInterface.OnDismissListener() {
-                              @Override
-                              public void onDismiss(DialogInterface dialogInterface) {
-                                Log.v(TAG, "on dismiss");
-                                defaultMultiChoice = pickedMultiChoice;
-                                appPickedTv.setText(Arrays.toString(appNameList));
+            .title("選擇您欲排除的應用軟體")
+            .items(appNameList)
+            .itemsCallbackMultiChoice(defaultMultiChoice,
+                    new MaterialDialog.ListCallbackMultiChoice() {
+              @Override
+              public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                Integer[] selected = dialog.getSelectedIndices();
+                if (selected != null) {
+                  for (int i = 0, length = selected.length; i < length; ++i)
+                    Log.d(TAG, "selected[i]: " + selected[i]);
+                }
+                for (int i = 0, length = which.length; i < length; ++i)
+                  Log.d(TAG, "which[i]: " + which[i]);
+                for (int i = 0, length = text.length; i < length; ++i)
+                  Log.d(TAG, "text[i] " + text[i].toString());
 
-                              }
-                            })
-                            .cancelListener(new DialogInterface.OnCancelListener() {
-                              @Override
-                              public void onCancel(DialogInterface dialogInterface) {
-                              }
-                            })
-                            .positiveText("完成")
-                            .alwaysCallMultiChoiceCallback() // the callback will always be
-                                                    // called, to check if selection is still allowed
-                            .show();
+                pickedMultiChoice = which;
+                return true;
+              }
+            })
+            .dismissListener(new DialogInterface.OnDismissListener() {
+              @Override
+              public void onDismiss(DialogInterface dialogInterface) {
+                Log.v(TAG, "on dismiss");
+                defaultMultiChoice = pickedMultiChoice;
+                appPickedTv.setText(getExcludedApps(appNameList, defaultMultiChoice, length));
+              }
+            })
+
+            .cancelListener(new DialogInterface.OnCancelListener() {
+              @Override
+              public void onCancel(DialogInterface dialogInterface) {
+                pickedMultiChoice = defaultMultiChoice;
+              }
+            })
+
+            .positiveText("完成")
+            .alwaysCallMultiChoiceCallback() // the callback will always be
+                                    // called, to check if selection is still allowed
+            .show();
   }
   private void createGenderDialog() {
     new MaterialDialog.Builder(getActivity())
@@ -427,5 +429,20 @@ public class CreateInfoSlide extends Fragment {
       })
       .positiveText("Done")
       .show();
+  }
+  private String getExcludedApps(String[] appNameList, Integer[] defaultMultiChoice,
+                       int length) {
+    boolean flag = false;
+    String text = "";
+    if (defaultMultiChoice == null) return text;
+    for (int i = 0, size = defaultMultiChoice.length; i < size; ++i) {
+      Log.d(TAG, "defaultMultiChoice[i]: " + defaultMultiChoice[i]);
+      if (defaultMultiChoice[i] < length) {
+        if (flag) text += ", ";
+        text += appNameList[defaultMultiChoice[i]];
+        flag = true;
+      }
+    }
+    return text;
   }
 }
