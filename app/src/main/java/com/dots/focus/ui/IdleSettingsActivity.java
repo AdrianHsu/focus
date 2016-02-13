@@ -23,6 +23,8 @@ import com.dots.focus.ui.fragment.CreateInfoSlide;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.SettingsUtil;
 
+import org.w3c.dom.Text;
+
 public class IdleSettingsActivity extends BaseActivity {
 
   private Button doneBtn;
@@ -32,6 +34,7 @@ public class IdleSettingsActivity extends BaseActivity {
   public static Integer[] defaultMultiChoice = null;
   private static Integer[] pickedMultiChoice = null;
 
+  private TextView appPickedTv;
   private int progress;
 
   private static String TAG = "IdleSettingsActivity";
@@ -46,12 +49,20 @@ public class IdleSettingsActivity extends BaseActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle(getResources().getString(R.string.title_idle_setting));
     seekBar = (SeekBar) findViewById(R.id.seekBar1);
+    appPickedTv = (TextView) findViewById(R.id.app_picked);
     progress = SettingsUtil.getInt("idle");
     seekBar.setProgress(progress);
     // Adrian: 連續要改掉..
     textView = (TextView) findViewById(R.id.textView1);
     doneBtn = (Button) findViewById(R.id.button);
     pickAppBtn = (Button) findViewById(R.id.pick_app_button);
+
+    final int length = FetchAppUtil.getSize();
+    final String [] appNameList = new String [length];
+    for (int i = 0; i < length; ++i)
+      appNameList[i] = FetchAppUtil.getApp(i).getName();
+    pickedMultiChoice = defaultMultiChoice;
+    appPickedTv.setText(CreateInfoSlide.getExcludedApps(appNameList, defaultMultiChoice, length));
 
     pickAppBtn.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -99,11 +110,11 @@ public class IdleSettingsActivity extends BaseActivity {
 
     pickedMultiChoice = defaultMultiChoice;
 
-    CreateInfoSlide.getExcludedApps(appNameList, defaultMultiChoice, length);
+    appPickedTv.setText(CreateInfoSlide.getExcludedApps(appNameList, defaultMultiChoice, length));
     new MaterialDialog.Builder(this)
         .title("選擇您欲排除的應用軟體")
         .items(appNameList)
-        .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+        .itemsCallbackMultiChoice(defaultMultiChoice, new MaterialDialog.ListCallbackMultiChoice() {
           @Override
           public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
             pickedMultiChoice = which;
@@ -115,7 +126,8 @@ public class IdleSettingsActivity extends BaseActivity {
           public void onDismiss(DialogInterface dialogInterface) {
             Log.v(TAG, "on dismiss");
             defaultMultiChoice = pickedMultiChoice;
-            // appPickedTv.setText(getExcludedApps(appNameList, defaultMultiChoice, length));
+            appPickedTv.setText(CreateInfoSlide.getExcludedApps(appNameList, defaultMultiChoice,
+                    length));
           }
         })
 

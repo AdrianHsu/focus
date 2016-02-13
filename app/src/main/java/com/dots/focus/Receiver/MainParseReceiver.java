@@ -20,7 +20,7 @@ public class MainParseReceiver extends ParsePushBroadcastReceiver {
     super.onPushReceive(context, intent);
     Log.d(TAG, "onPushReceive");
 
-    Intent mIntent = new Intent( context,CustomDialogActivity.class);
+    Intent mIntent = new Intent(context,CustomDialogActivity.class);
     mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(mIntent);
   }
@@ -35,7 +35,7 @@ public class MainParseReceiver extends ParsePushBroadcastReceiver {
   protected void onPushOpen(Context context, Intent intent) {
     super.onPushOpen(context, intent);
     Log.d(TAG, "onPushOpen");
-    Intent mIntent = new Intent( context, MainActivity.class);
+    Intent mIntent = new Intent(context, MainActivity.class);
     mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(mIntent);
   }

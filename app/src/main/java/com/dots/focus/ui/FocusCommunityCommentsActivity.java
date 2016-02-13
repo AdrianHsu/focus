@@ -47,7 +47,7 @@ public class FocusCommunityCommentsActivity extends BaseActivity {
 //    String name = user.getString("name");
 //    collapsingToolbarLayout.setTitle(name);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("FOCUS 發燒友");
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_focus_community));
 
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.focus_community_recycler_view);
     linearLayoutManager = new LinearLayoutManager(this);
