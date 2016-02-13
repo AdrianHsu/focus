@@ -51,7 +51,7 @@ public class DailyReportChartActivity extends OverviewChartActivity {
 
     WebView wv = new WebView(this);
     wv.getSettings().setJavaScriptEnabled(true);
-    wv.loadUrl("http://adrianhsu.github.io");
+    wv.loadUrl("http://stay-focused.herokuapp.com");
     wv.setWebViewClient(new WebViewClient() {
       @Override
       public boolean shouldOverrideUrlLoading(WebView view,

@@ -53,4 +53,4 @@ public class CustomDialogActivity extends Activity {
       }
     });
   }
-}g
+}
