@@ -19,7 +19,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
 
 public class GetKickedService extends Service {
@@ -84,10 +83,8 @@ public class GetKickedService extends Service {
                             e1.printStackTrace();
                         }
                     }
-                    try {
-                        ParseObject.saveAllInBackground(objects);
-                        ParseObject.pinAll(objects);
-                    } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
+                    ParseObject.saveAllInBackground(objects);
+                    ParseObject.pinAllInBackground(objects);
                 }
             }
         });

@@ -87,10 +87,8 @@ public class GetKickResponseService extends Service {
                             e1.printStackTrace();
                         }
                     }
-                    try {
-                        ParseObject.saveAllInBackground(objects);
-                        ParseObject.pinAll(objects);
-                    } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
+                    ParseObject.saveAllInBackground(objects);
+                    ParseObject.pinAllInBackground(objects);
                 }
             }
         });

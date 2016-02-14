@@ -1,5 +1,6 @@
 package com.dots.focus.service;
 
+import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -31,16 +32,16 @@ public class GetKickRequestService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickRequestService start...");
         checkLocal();
-        /*
-        Timer timer = new Timer();
-        timer.schedule(new CheckKickRequest(), 0, 60000);
-        */
+
+//        Timer timer = new Timer();
+//        timer.schedule(new CheckKickRequest(), 0, 60000);
+
         return 0;
     }
 
     class CheckKickRequest extends TimerTask {
         public void run() {
-            queryKickRequest();
+
         }
     }
 
@@ -84,10 +85,8 @@ public class GetKickRequestService extends Service {
                             e1.printStackTrace();
                         }
                     }
-                    try {
-                        ParseObject.saveAllInBackground(objects);
-                        ParseObject.pinAll(objects);
-                    } catch (ParseException e1) { Log.d(TAG, e1.getMessage()); }
+                    ParseObject.saveAllInBackground(objects);
+                    ParseObject.pinAllInBackground(objects);
                 }
             }
         });
