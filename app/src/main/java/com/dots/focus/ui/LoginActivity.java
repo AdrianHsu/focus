@@ -13,6 +13,7 @@ import com.dots.focus.service.GetAppsService;
 import com.dots.focus.util.DashboardUtil;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.LoginUtil;
+import com.dots.focus.util.TimePoliceUtil;
 import com.parse.LogInCallback;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseException;
@@ -124,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 //
     private void showSetInfoActivity() {
-        FetchAppUtil.setUser();
+        afterLoginInitialize();
 
         Intent intent = new Intent(this, CreateInfoActivity.class);
         startActivity(intent);
@@ -136,6 +137,11 @@ public class LoginActivity extends AppCompatActivity {
     private void showMainActivity() {
       Intent intent = new Intent(this, MainActivity.class);
       startActivity(intent);
+    }
+
+    private void afterLoginInitialize() {
+        FetchAppUtil.setUser();
+        TimePoliceUtil.afterLoginInitialize();
     }
 //
 //

@@ -26,18 +26,6 @@ public class TimePoliceUtil {
     public static ArrayList<JSONObject> timePoliceInvitingList = new ArrayList<>();
     public static int timePoliceStateOffset = 100;
 
-    static {
-        JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
-        for (int i = 0, length = friends.length(); i < length; ++i) {
-            try {
-                if (friends.getJSONObject(i).getBoolean("timeLocked"))
-                    ++policeNum;
-            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
-        }
-        if (policeNum > policeNumLimit)
-            Log.d(TAG, "policeNum " + policeNum + " exceeds limit: " + policeNumLimit);
-    }
-
     public static void initialize() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("TimePoliceInvitation");
         query.fromLocalDatastore();
@@ -67,6 +55,18 @@ public class TimePoliceUtil {
                 }
             }
         });
+    }
+
+    public static void afterLoginInitialize() {
+        JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
+        for (int i = 0, length = friends.length(); i < length; ++i) {
+            try {
+                if (friends.getJSONObject(i).getBoolean("timeLocked"))
+                    ++policeNum;
+            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+        }
+        if (policeNum > policeNumLimit)
+            Log.d(TAG, "policeNum " + policeNum + " exceeds limit: " + policeNumLimit);
     }
 
     public static boolean timePoliceInvite(Long id, String name, int lock_time) {
