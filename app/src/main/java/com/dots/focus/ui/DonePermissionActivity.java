@@ -2,12 +2,12 @@ package com.dots.focus.ui;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.dots.focus.R;
@@ -21,27 +21,27 @@ import org.json.JSONObject;
 /**
  * Created by AdrianHsu on 2016/2/15.
  */
-public class ReplyPermissionActivity extends BaseActivity {
+public class DonePermissionActivity extends BaseActivity {
 
   private Toolbar toolbar;
   private String name;
   private Long id;
-  private String objectId;
   private ImageView profileImage;
   private TextView profileNameTv;
   private TextView friendStateTv;
-  private Button rejectBtn;
+  private Button cancelBtn;
   private Button sendBtn;
-  private Boolean originalTimeLocked;
-  private Boolean originalTimeLock;
   private CheckBox getNotifBtn;
   private CheckBox timeLockedBtn;
   private CheckBox timeLockBtn;
+  private Boolean originalTimeLocked;
+  private Boolean originalTimeLock;
+  private static final String TAG = "Permission";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_reply_permission);
+    setContentView(R.layout.activity_done_permission);
 
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -50,14 +50,13 @@ public class ReplyPermissionActivity extends BaseActivity {
     profileImage = (ImageView) findViewById(R.id.profile_image);
     profileNameTv = (TextView) findViewById(R.id.profile_name);
     friendStateTv = (TextView) findViewById(R.id.content);
-    rejectBtn = (Button)findViewById(R.id.reject);
+    cancelBtn = (Button)findViewById(R.id.cancel);
     sendBtn = (Button)findViewById(R.id.send);
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
       name = extras.getString("user_name");
       id = extras.getLong("user_id");
-      objectId = extras.getString("objectId");
     }
 
     String url = "https://graph.facebook.com/" + String.valueOf(id) +
@@ -67,7 +66,6 @@ public class ReplyPermissionActivity extends BaseActivity {
 
     JSONObject friend = FetchFriendUtil.getFriendById(id);
     initFriendState(friend);
-
     friendStateTv.setText(getFriendRelation(friend));
 //    timeLockedBtn.setOnClickListener(new View.OnClickListener() {
 //      @Override
@@ -83,19 +81,19 @@ public class ReplyPermissionActivity extends BaseActivity {
 //    timeLockBtn.setOnClickListener(new View.OnClickListener() {
 //      @Override
 //      public void onClick(View view) {
-//        if (timeLockBtn.isChecked() == originalTimeLocked
-//                                && timeLockedBtn.isChecked() == originalTimeLock)
+//        if(timeLockBtn.isChecked() == originalTimeLocked
+//        && timeLockedBtn.isChecked() == originalTimeLock)
 //          sendBtn.setEnabled(false);
 //        else
 //          sendBtn.setEnabled(true);
 //      }
 //    });
-    rejectBtn.setOnClickListener(new View.OnClickListener() {
+
+    cancelBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-
-        TimePoliceUtil.timePoliceReply(false, objectId);
         onBackPressed();
+
       }
     });
     sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +101,6 @@ public class ReplyPermissionActivity extends BaseActivity {
       public void onClick(View view) {
 
         FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
-        TimePoliceUtil.timePoliceReply(timeLockBtn.isChecked(), objectId);
         onBackPressed();
       }
     });
@@ -117,18 +114,17 @@ public class ReplyPermissionActivity extends BaseActivity {
 
     try {
       originalTimeLocked = friend.getBoolean("timeLocked");
-//      originalTimeLock = friend.getBoolean("timeLock");
+      originalTimeLock = friend.getBoolean("timeLock");
       getNotifBtn.setChecked(friend.getBoolean("pop-up"));
       timeLockedBtn.setEnabled(false);
       timeLockedBtn.setChecked(originalTimeLocked);
       timeLockBtn.setEnabled(false);
-      timeLockBtn.setChecked(true);
+      timeLockBtn.setChecked(originalTimeLock);
 
     } catch(JSONException e) {
       e.printStackTrace();
     }
   }
-
   private String getFriendRelation(JSONObject friend) {
 
     Boolean timeLocked = false;
@@ -137,7 +133,7 @@ public class ReplyPermissionActivity extends BaseActivity {
       timeLocked = friend.getBoolean("timeLocked");
       timeLock = friend.getBoolean("timeLock");
     } catch (JSONException e) {
-      e.printStackTrace();
+      Log.d(TAG, e.getMessage());
     }
     if(timeLocked && timeLock)
       return getResources().getString(R.string.relation_both);

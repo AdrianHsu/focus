@@ -17,7 +17,9 @@ import com.dots.focus.R;
 import com.dots.focus.config.FriendRelationship;
 import com.dots.focus.config.TimePoliceState;
 import com.dots.focus.service.GetFriendConfirmService;
+import com.dots.focus.service.GetTimePoliceCancelOrDeleteService;
 import com.dots.focus.service.GetTimePoliceReplyService;
+import com.dots.focus.ui.DonePermissionActivity;
 import com.dots.focus.ui.KickRequestActivity;
 import com.dots.focus.ui.ModifyPermissionActivity;
 import com.dots.focus.ui.ReplyPermissionActivity;
@@ -47,6 +49,10 @@ public class AddFriendRecyclerViewAdapter extends
   private static final int TP_REPLY_ITEM = TimePoliceState.REPLY_DOWNLOADED.getValue() +
                           TimePoliceUtil.timePoliceStateOffset;
   private static final int TP_INVITING_ITEM = TimePoliceState.INVITING.getValue() +
+                          TimePoliceUtil.timePoliceStateOffset;
+  private static final int TP_CANCEL_ITEM = TimePoliceState.CANCEL.getValue() +
+                          TimePoliceUtil.timePoliceStateOffset;
+  private static final int TP_DELETE_ITEM = TimePoliceState.DELETE.getValue() +
                           TimePoliceUtil.timePoliceStateOffset;
 
   private static final String TAG = "AddFriend";
@@ -82,6 +88,10 @@ public class AddFriendRecyclerViewAdapter extends
         TPReplyBindItem(jsonObject, (TimePoliceReplyAdapterViewHolder) holder);
       } else if (holder instanceof TimePoliceInvitingAdapterViewHolder){
         TPInvitingBindItem(jsonObject, (TimePoliceInvitingAdapterViewHolder) holder);
+      } else if (holder instanceof TimePoliceCancelAdapterViewHolder){
+        TPCancelBindItem(jsonObject, (TimePoliceCancelAdapterViewHolder) holder);
+      } else if (holder instanceof TimePoliceDeleteAdapterViewHolder){
+        TPDeleteBindItem(jsonObject, (TimePoliceDeleteAdapterViewHolder) holder);
       }
     }
   }
@@ -268,7 +278,9 @@ public class AddFriendRecyclerViewAdapter extends
         @Override
         public void onClick(View v) {
           Intent intent;
-          intent = new Intent(mContext, ModifyPermissionActivity.class);
+          GetTimePoliceReplyService.removeReplyList(id, objectId);
+
+          intent = new Intent(mContext, DonePermissionActivity.class);
 
           intent.putExtra("user_name", name);
           intent.putExtra("user_id", id);
@@ -308,6 +320,86 @@ public class AddFriendRecyclerViewAdapter extends
         public void onClick(View v) {
           Intent intent;
           intent = new Intent(mContext, ModifyPermissionActivity.class);
+
+          intent.putExtra("user_name", name);
+          intent.putExtra("user_id", id);
+          mContext.startActivity(intent);
+        }
+      });
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+  public void TPCancelBindItem(final JSONObject jsonObject, TimePoliceCancelAdapterViewHolder
+                          holder) {
+    try {
+
+      final long id = jsonObject.getLong("id");
+      final String name = jsonObject.getString("name");
+      final String objectId = jsonObject.getString("objectId");
+
+      holder.mProfileNameTextView.setText(name);
+
+      String url = "https://graph.facebook.com/" + String.valueOf(id) +
+                              "/picture?type=large";
+      Picasso.with(mContext).load(url).into(holder.mProfileImageView);
+      holder.mButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          Log.d(TAG, "time police cancel done");
+          GetTimePoliceCancelOrDeleteService.removeCancelList(id, objectId);
+          int index = indexOf(jsonObject);
+          if (index != -1)
+            remove(index);
+        }
+      });
+      holder.item_view.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Intent intent;
+          intent = new Intent(mContext, DonePermissionActivity.class);
+          GetTimePoliceCancelOrDeleteService.removeCancelList(id, objectId);
+
+          intent.putExtra("user_name", name);
+          intent.putExtra("user_id", id);
+          mContext.startActivity(intent);
+        }
+      });
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+  public void TPDeleteBindItem(final JSONObject jsonObject, TimePoliceDeleteAdapterViewHolder
+                          holder) {
+    try {
+
+      final long id = jsonObject.getLong("id");
+      final String name = jsonObject.getString("name");
+      final String objectId = jsonObject.getString("objectId");
+
+      holder.mProfileNameTextView.setText(name);
+
+      String url = "https://graph.facebook.com/" + String.valueOf(id) +
+                              "/picture?type=large";
+      Picasso.with(mContext).load(url).into(holder.mProfileImageView);
+      holder.mButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          Log.d(TAG, "time police cancel done");
+          GetTimePoliceCancelOrDeleteService.removeDeleteList(id, objectId);
+          int index = indexOf(jsonObject);
+          if (index != -1)
+            remove(index);
+        }
+      });
+      holder.item_view.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Intent intent;
+          GetTimePoliceCancelOrDeleteService.removeDeleteList(id, objectId);
+          intent = new Intent(mContext, DonePermissionActivity.class);
 
           intent.putExtra("user_name", name);
           intent.putExtra("user_id", id);
@@ -435,12 +527,44 @@ public class AddFriendRecyclerViewAdapter extends
 //        });
       }
       return vh;
-    }else if (i == TP_INVITING_ITEM) {
+    } else if (i == TP_INVITING_ITEM) {
       v = LayoutInflater.from(parent.getContext())
                               .inflate(R.layout.time_police_inviting_recycler_view_adapter, parent,
                                                       false);
       final TimePoliceInvitingAdapterViewHolder vh = new TimePoliceInvitingAdapterViewHolder(v,
                               true);
+      if (v != null) {
+//        v.setOnClickListener(new View.OnClickListener() {
+//          @Override
+//          public void onClick(View v) {
+//            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+//                                    .LENGTH_SHORT)
+//                                    .show();
+//          }
+//        });
+      }
+      return vh;
+    } else if (i == TP_CANCEL_ITEM) {
+      v = LayoutInflater.from(parent.getContext())
+                              .inflate(R.layout.time_police_cancel_recycler_view_adapter, parent,
+                                                      false);
+      final TimePoliceCancelAdapterViewHolder vh = new TimePoliceCancelAdapterViewHolder(v, true);
+      if (v != null) {
+//        v.setOnClickListener(new View.OnClickListener() {
+//          @Override
+//          public void onClick(View v) {
+//            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+//                                    .LENGTH_SHORT)
+//                                    .show();
+//          }
+//        });
+      }
+      return vh;
+    } else if (i == TP_DELETE_ITEM) {
+      v = LayoutInflater.from(parent.getContext())
+                              .inflate(R.layout.time_police_delete_recycler_view_adapter, parent,
+                                                      false);
+      final TimePoliceDeleteAdapterViewHolder vh = new TimePoliceDeleteAdapterViewHolder(v, true);
       if (v != null) {
 //        v.setOnClickListener(new View.OnClickListener() {
 //          @Override
@@ -723,6 +847,70 @@ public class AddFriendRecyclerViewAdapter extends
                                 R.id.profile_name);
         mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
         mButton = (Button) itemView.findViewById(R.id.button);
+
+        item_view = itemView.findViewById(R.id.itemview);
+      }
+    }
+
+    @Override
+    public void onItemSelected() {
+//      itemView.setBackgroundColor(Color.DKGRAY);
+    }
+
+    @Override
+    public void onItemClear() {
+//      itemView.setBackgroundColor(0);
+    }
+  }
+  public class TimePoliceCancelAdapterViewHolder extends UltimateRecyclerviewViewHolder {
+
+    TextView mProfileNameTextView;
+    ImageView mProfileImageView;
+    Button mButton;
+    View item_view;
+
+
+    public TimePoliceCancelAdapterViewHolder(View itemView, boolean isItem) {
+      super(itemView);
+      if (isItem) {
+        Log.v(TAG, "TimePoliceCancelAdapterViewHolder Created");
+        mProfileNameTextView = (TextView) itemView.findViewById(
+                                R.id.profile_name);
+        mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
+        mButton = (Button) itemView.findViewById(R.id.button);
+
+
+        item_view = itemView.findViewById(R.id.itemview);
+      }
+    }
+
+    @Override
+    public void onItemSelected() {
+//      itemView.setBackgroundColor(Color.DKGRAY);
+    }
+
+    @Override
+    public void onItemClear() {
+//      itemView.setBackgroundColor(0);
+    }
+  }
+  public class TimePoliceDeleteAdapterViewHolder extends UltimateRecyclerviewViewHolder {
+
+    TextView mProfileNameTextView;
+    ImageView mProfileImageView;
+    Button mButton;
+    View item_view;
+
+
+    public TimePoliceDeleteAdapterViewHolder(View itemView, boolean isItem) {
+      super(itemView);
+      if (isItem) {
+        Log.v(TAG, "TimePoliceCancelAdapterViewHolder Created");
+        mProfileNameTextView = (TextView) itemView.findViewById(
+                                R.id.profile_name);
+        mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
+        mButton = (Button) itemView.findViewById(R.id.button);
+
 
         item_view = itemView.findViewById(R.id.itemview);
       }

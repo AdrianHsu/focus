@@ -16,6 +16,7 @@ import com.dots.focus.R;
 import com.dots.focus.adapter.AddFriendRecyclerViewAdapter;
 import com.dots.focus.service.GetFriendConfirmService;
 import com.dots.focus.service.GetFriendInviteService;
+import com.dots.focus.service.GetTimePoliceCancelOrDeleteService;
 import com.dots.focus.service.GetTimePoliceInviteService;
 import com.dots.focus.service.GetTimePoliceReplyService;
 import com.dots.focus.util.FetchFriendUtil;
@@ -54,7 +55,7 @@ public class AddFriendFragment extends Fragment {
     GetFriendConfirmService.refresh();
     GetTimePoliceInviteService.refresh();
     GetTimePoliceReplyService.refresh();
-//    FetchFriendUtil.waitFriendConfirm();
+    GetTimePoliceCancelOrDeleteService.refresh();
 
     final ArrayList<JSONObject> friendProfileList = new ArrayList<>();
 
@@ -63,6 +64,8 @@ public class AddFriendFragment extends Fragment {
     friendProfileList.addAll(TimePoliceUtil.timePoliceInvitingList);
     friendProfileList.addAll(GetTimePoliceInviteService.timePoliceInviteList);
     friendProfileList.addAll(GetTimePoliceReplyService.timePoliceReplyList);
+    friendProfileList.addAll(GetTimePoliceCancelOrDeleteService.timePoliceCancelList);
+    friendProfileList.addAll(GetTimePoliceCancelOrDeleteService.timePoliceDeleteList);
     friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
     friendProfileList.addAll(GetFriendConfirmService.friendRepliedList);
 
@@ -85,6 +88,7 @@ public class AddFriendFragment extends Fragment {
             GetFriendConfirmService.refresh();
             GetTimePoliceInviteService.refresh();
             GetTimePoliceReplyService.refresh();
+            GetTimePoliceCancelOrDeleteService.refresh();
 
             friendProfileList.clear();
             mRecyclerView.getAdapter().notifyDataSetChanged();
@@ -107,7 +111,9 @@ public class AddFriendFragment extends Fragment {
             friendProfileList.addAll(GetTimePoliceReplyService.timePoliceReplyList);
             Log.v(TAG, "timePoliceReplyList.size() == " + GetTimePoliceReplyService
                                     .timePoliceReplyList.size
-                                    ());
+                                                            ());
+            friendProfileList.addAll(GetTimePoliceCancelOrDeleteService.timePoliceCancelList);
+            friendProfileList.addAll(GetTimePoliceCancelOrDeleteService.timePoliceDeleteList);
             friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
             Log.v(TAG, "friendWaitingReplyList.size() == " + GetFriendInviteService
               .friendWaitingReplyList.size());
