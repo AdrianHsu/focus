@@ -117,4 +117,15 @@ public class GetTimePoliceReplyService extends Service {
         });
     }
 
+    public static void removeReplyList(Long id) {
+        for (int i = 0, length = timePoliceReplyList.size(); i < length; ++i) {
+            try {
+                if (timePoliceReplyList.get(i).getLong("id") == id) {
+                    timePoliceReplyList.remove(i);
+                    return;
+                }
+            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+        }
+        Log.d(TAG, "removeReplyList: cannot find id: " + id);
+    }
 }

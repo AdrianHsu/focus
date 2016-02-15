@@ -3,6 +3,7 @@ package com.dots.focus.util;
 import android.util.Log;
 
 import com.dots.focus.config.TimePoliceState;
+import com.dots.focus.service.GetTimePoliceInviteService;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -24,18 +25,6 @@ public class TimePoliceUtil {
     public static ArrayList<Long> invitedIdList = new ArrayList<>();
     public static ArrayList<JSONObject> timePoliceInvitingList = new ArrayList<>();
     public static int timePoliceStateOffset = 100;
-
-    static {
-        JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
-        for (int i = 0, length = friends.length(); i < length; ++i) {
-            try {
-                if (friends.getJSONObject(i).getBoolean("timeLocked"))
-                    ++policeNum;
-            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
-        }
-        if (policeNum > policeNumLimit)
-            Log.d(TAG, "policeNum " + policeNum + " exceeds limit: " + policeNumLimit);
-    }
 
     public static void initialize() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("TimePoliceInvitation");
@@ -68,6 +57,18 @@ public class TimePoliceUtil {
         });
     }
 
+    public static void afterLoginInitialize() {
+        JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
+        for (int i = 0, length = friends.length(); i < length; ++i) {
+            try {
+                if (friends.getJSONObject(i).getBoolean("timeLocked"))
+                    ++policeNum;
+            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+        }
+        if (policeNum > policeNumLimit)
+            Log.d(TAG, "policeNum " + policeNum + " exceeds limit: " + policeNumLimit);
+    }
+
     public static boolean timePoliceInvite(Long id, String name, int lock_time) {
         if (policeNum >= policeNumLimit)    return false;
 
@@ -95,6 +96,7 @@ public class TimePoliceUtil {
         invite.put("state", TimePoliceState.INVITE_NOT_DOWNLOADED.getValue());
 
         invite.saveEventually();
+        invite.pinInBackground();
 
         return true;
     }
@@ -107,10 +109,12 @@ public class TimePoliceUtil {
                 if (e == null && invite != null) {
                     Long id = invite.getLong("user_id_inviting");
                     invitedIdList.remove(id);
+                    GetTimePoliceInviteService.removeInviteList(id);
 
                     invite.put("reply", reply);
                     invite.put("state", TimePoliceState.REPLY_NOT_DOWNLOADED.getValue());
                     invite.saveEventually();
+                    invite.unpinInBackground();
 
                     if (reply) {
                         ParseUser currentUser = ParseUser.getCurrentUser();
