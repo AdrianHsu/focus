@@ -147,7 +147,9 @@ public class FetchFriendUtil {
         newFriend.put("user_name", name);
         newFriend.put("pop-up", false);
         newFriend.put("timeLock", false);
+        newFriend.put("timeLockPeriod", 0);
         newFriend.put("timeLocked", false);
+        newFriend.put("timeLockedPeriod", 0);
         newFriend.put("numKick", 0);
 
         friends.put(newFriend);
@@ -183,7 +185,9 @@ public class FetchFriendUtil {
         newFriend.put("user_name", name);
         newFriend.put("pop-up", false);
         newFriend.put("timeLock", false);
+        newFriend.put("timeLockPeriod", 0);
         newFriend.put("timeLocked", false);
+        newFriend.put("timeLockedPeriod", 0);
         newFriend.put("numKick", 0);
 
         friends.put(newFriend);
@@ -261,6 +265,24 @@ public class FetchFriendUtil {
             } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
         }
         return null;
+    }
+
+    public static void modifyPopUp(Long id, boolean verify) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        JSONArray friends = currentUser.getJSONArray("Friends");
+        for (int i = 0, length = friends.length(); i < length; ++i) {
+            try {
+                JSONObject object = friends.getJSONObject(i);
+                if (object.getLong("id") == id) {
+                    object.put("pop-up", verify);
+                    friends.put(i, object);
+                    currentUser.put("Friends", friends);
+
+                    return;
+                }
+            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+        }
+        Log.d(TAG, "modifyPopUp: cannot find friend whose id is " + id);
     }
 }
 
