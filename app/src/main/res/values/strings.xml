@@ -190,6 +190,7 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="accept">確認</string>
     <!--FriendConfirmedRecyclerViewAdapter-->
     <string name="become_your_friend">已經成為您的好友。</string>
+    <string name="understand">知道了</string>
     <!--FriendInviteRecyclerViewAdapter-->
     <string name="already_signed_up">已經註冊、但尚未建立關係。</string>
     <string name="send_invitation">寄出邀請</string>
@@ -225,6 +226,10 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--TimePoliceReplyRecyclerViewAdapter-->
     <string name="time_police_reply">已經成為您的時間警察。</string>
     <string name="time_police_roger_that">知道了</string>
+    <!--TimePoliceCancelRecyclerViewAdapter-->
+    <string name="time_police_locked">已經撤回您的時間警察權限。</string>
+    <!--TimePoliceDeleteRecyclerViewAdapter-->
+    <string name="time_police_lock">已經放棄他的時間警察權限。</string>
     <!--TopThreeAppUsageDashboardAdapter-->
     <!--TopThreeChartMarkerView-->
     <!--WeeklyPiggyBankRecyclerViewAdapter-->

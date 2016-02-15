@@ -39,14 +39,14 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:paddingTop="5dip"
-            android:text="@string/become_your_friend"
+            android:text="@string/time_police_lock"
             android:textSize="10sp"
             android:layout_below="@+id/profile_name"
             android:layout_toEndOf="@+id/profile_image"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/understand"
+            android:text="@string/time_police_roger_that"
             android:id="@+id/button"
             android:layout_alignTop="@+id/profile_name"
             android:layout_alignParentEnd="true"/>

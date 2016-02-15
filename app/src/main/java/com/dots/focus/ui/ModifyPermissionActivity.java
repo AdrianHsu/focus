@@ -20,6 +20,8 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Time;
+
 /**
  * Created by AdrianHsu on 2016/2/15.
  */
@@ -72,8 +74,8 @@ public class ModifyPermissionActivity extends BaseActivity {
     timeLockedBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if(timeLockBtn.isChecked() == originalTimeLocked
-        && timeLockedBtn.isChecked() == originalTimeLock)
+        if (timeLockBtn.isChecked() == originalTimeLocked
+                                && timeLockedBtn.isChecked() == originalTimeLock)
           sendBtn.setEnabled(false);
         else
           sendBtn.setEnabled(true);
@@ -91,6 +93,7 @@ public class ModifyPermissionActivity extends BaseActivity {
       }
     });
 
+    sendBtn.setEnabled(false);
     cancelBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -107,11 +110,11 @@ public class ModifyPermissionActivity extends BaseActivity {
         if(timeLockedBtn.isChecked())
           TimePoliceUtil.timePoliceInvite(id, name, 10);
         else {
-//          cancel
+          TimePoliceUtil.timePoliceCancel(id);
         }
         if(timeLockBtn.isEnabled()) {
           if(!timeLockBtn.isChecked()) {
-           // 放棄監控委託人的權限
+            TimePoliceUtil.timePoliceDelete(id);
           }
         }
         onBackPressed();
@@ -144,7 +147,7 @@ public class ModifyPermissionActivity extends BaseActivity {
 //      timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
       timeLockBtn.setEnabled(originalTimeLock);
       if(timeLockBtn.isEnabled())
-        timeLockBtn.setChecked(true);
+        timeLockBtn.setChecked(originalTimeLock);
 
     } catch(JSONException e) {
       e.printStackTrace();
