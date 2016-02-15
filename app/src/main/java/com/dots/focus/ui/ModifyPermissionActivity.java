@@ -100,19 +100,19 @@ public class ModifyPermissionActivity extends BaseActivity {
 
     try {
       getNotifBtn.setChecked(friend.getBoolean("pop-up"));
-//      if(< 2位時間警察) {
-//        timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
-//
-//      } else if (== 2位時間警察) {
-//        if(timeLocked == true) // 此人已經是您的時間警察
-//          timeLockedBtn.setEnabled(true);
-//        else
-//          timeLockedBtn.setEnabled(false);
-//        if(timeLockedBtn.isEnabled()) {
-//          timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
-//        }
-//      }
-      timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
+      if(TimePoliceUtil.policeNum < 2) {
+        timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
+
+      } else if (TimePoliceUtil.policeNum == 2) {
+        if(friend.getBoolean("timeLocked")) // 此人已經是您的時間警察
+          timeLockedBtn.setEnabled(true);
+        else
+          timeLockedBtn.setEnabled(false);
+        if(timeLockedBtn.isEnabled()) {
+          timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
+        }
+      }
+//      timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
       timeLockBtn.setEnabled(friend.getBoolean("timeLock"));
       if(timeLockBtn.isEnabled())
         timeLockBtn.setChecked(true);

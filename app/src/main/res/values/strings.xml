@@ -164,7 +164,7 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="title_addiction_index_overview">上癮程度趨勢</string>
     <string name="title_top_three_app_usage_overview">前三應用軟體使用趨勢</string>
     <string name="title_app_leader_board_overview">應用程式排行榜</string>
-    <!--<string name="title_my_daily_report_overview">我的每日報表</string>-->
+    <string name="title_my_daily_report_overview">我的每日報表</string>
     <string name="title_my_radar_chart_overview">個人特質雷達圖</string>
     <string name="title_my_piggy_bank_overview">我的時間存錢筒</string>
     <!--GlobalPiggyBankFragment-->
