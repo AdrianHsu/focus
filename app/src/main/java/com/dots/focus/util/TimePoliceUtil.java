@@ -193,6 +193,7 @@ public class TimePoliceUtil {
         }
         Log.d(TAG, "timePoliceInvitation confirmed while cannot find the friend: " + name);
     }
+
     public static void timePoliceCancel(Long id) { // The friend is my time police
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");

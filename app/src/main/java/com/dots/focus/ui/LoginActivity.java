@@ -10,6 +10,8 @@ import android.view.View;
 import com.dots.focus.R;
 
 import com.dots.focus.service.GetAppsService;
+import com.dots.focus.service.GetFriendConfirmService;
+import com.dots.focus.service.GetFriendInviteService;
 import com.dots.focus.util.DashboardUtil;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.LoginUtil;
@@ -127,6 +129,8 @@ public class LoginActivity extends AppCompatActivity {
     private void showSetInfoActivity() {
         afterLoginInitialize();
 
+        startServices();
+
         Intent intent = new Intent(this, CreateInfoActivity.class);
         startActivity(intent);
     }
@@ -142,6 +146,11 @@ public class LoginActivity extends AppCompatActivity {
     private void afterLoginInitialize() {
         FetchAppUtil.setUser();
         TimePoliceUtil.afterLoginInitialize();
+    }
+
+    private void startServices() {
+        startService(new Intent(this, GetFriendInviteService.class));
+        startService(new Intent(this, GetFriendConfirmService.class));
     }
 //
 //

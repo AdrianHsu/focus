@@ -42,8 +42,12 @@ public class AddFriendFragment extends Fragment {
     super.onCreateView(inflater, container, savedInstanceState);
 
     context = getActivity();
-    context.startService(new Intent(context, GetFriendInviteService.class));
-    context.startService(new Intent(context, GetFriendConfirmService.class));
+//    context.startService(new Intent(context, GetFriendInviteService.class));
+//    context.startService(new Intent(context, GetFriendConfirmService.class));
+    GetFriendInviteService.checkLocal();
+    GetFriendConfirmService.checkLocal();
+    GetTimePoliceInviteService.checkLocal();
+    GetTimePoliceReplyService.checkLocal();
 
     View v = inflater.inflate(R.layout.fragment_add_friend, container, false);
 
@@ -138,10 +142,6 @@ public class AddFriendFragment extends Fragment {
   @Override
   public void onStart() {
     Log.d(TAG, "onStart");
-
-
-    Intent intent = new Intent(context, GetFriendInviteService.class);
-    context.startService(intent);
 
     super.onStart();
   }

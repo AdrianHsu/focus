@@ -161,9 +161,10 @@ public class TrackAccessibilityUtil {
     }
     public static int[][] getDayFirstThreeApp(int day) {
         int[][] x = new int[4][2];
-        for (int i = 0; i < 4; ++i)
-            for (int j = 0; j < 2; ++j)
-                x[i][j] = 0;
+        for (int i = 0; i < 4; ++i) {
+            x[i][0] = -1;
+            x[i][1] = 0;
+        }
         int offset = getTimeOffset();
         long time = aDay * ((System.currentTimeMillis() + offset * anHour) / aDay - day) - offset *
                 anHour;
