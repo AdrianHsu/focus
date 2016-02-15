@@ -21,7 +21,7 @@ import org.json.JSONObject;
 /**
  * Created by AdrianHsu on 2016/2/15.
  */
-public class ModifyPermissionActivity extends BaseActivity {
+public class ReplyPermissionActivity extends BaseActivity {
 
   private Toolbar toolbar;
   private String name;
@@ -38,7 +38,7 @@ public class ModifyPermissionActivity extends BaseActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_modify_permission);
+    setContentView(R.layout.activity_reply_permission);
 
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -78,7 +78,7 @@ public class ModifyPermissionActivity extends BaseActivity {
         FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
 
         if(timeLockedBtn.isChecked())
-          TimePoliceUtil.timePoliceInvite(id, name, 10);
+          TimePoliceUtil.timePoliceInvite(id, name);
 
         if(timeLockBtn.isEnabled()) {
           if(!timeLockBtn.isChecked()) {

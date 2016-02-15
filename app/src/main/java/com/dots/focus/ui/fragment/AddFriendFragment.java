@@ -58,6 +58,7 @@ public class AddFriendFragment extends Fragment {
 
     friendProfileList.addAll(FetchFriendUtil.mFriendList);
     friendProfileList.addAll(FetchFriendUtil.mInvitingFriendList);
+    friendProfileList.addAll(TimePoliceUtil.timePoliceInvitingList);
     friendProfileList.addAll(GetTimePoliceInviteService.timePoliceInviteList);
 //    friendProfileList.addAll(FetchFriendUtil.mConfirmedFriendList);
     friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
@@ -93,7 +94,13 @@ public class AddFriendFragment extends Fragment {
             friendProfileList.addAll(FetchFriendUtil.mInvitingFriendList);
             Log.v(TAG, "mInvitingFriendList.size() == " + FetchFriendUtil.mInvitingFriendList.size
                                     ());
+            friendProfileList.addAll(TimePoliceUtil.timePoliceInvitingList);
+            Log.v(TAG, "timePoliceInvitingList.size() == " + TimePoliceUtil.timePoliceInvitingList
+                                    .size());
+
             friendProfileList.addAll(GetTimePoliceInviteService.timePoliceInviteList);
+            Log.v(TAG, "timePoliceInviteList.size() == " + GetTimePoliceInviteService.timePoliceInviteList.size
+                                    ());
 
             friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
             Log.v(TAG, "friendWaitingReplyList.size() == " + GetFriendInviteService
