@@ -39,7 +39,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(action.equals("HourReceiver_broadcast_an_hour")){
+            if (action.equals("HourReceiver_broadcast_an_hour")) {
                 Log.d(TAG, "Get HourReceiver's broadcast...");
                 checkWindowState(previousPackageName, intent.getExtras().getLong("time"));
             }

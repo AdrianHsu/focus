@@ -109,6 +109,7 @@ public class GetTimePoliceReplyService extends Service {
                             invitation.put("reply", object.getBoolean("reply"));
                             invitation.put("state", TimePoliceState.REPLY_DOWNLOADED.getValue()
                                     + TimePoliceUtil.timePoliceStateOffset);
+                            invitation.put("objectId", object.getObjectId());
                             timePoliceReplyList.add(invitation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
@@ -125,9 +126,9 @@ public class GetTimePoliceReplyService extends Service {
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
           @Override
           public void done(ParseObject parseObject, ParseException e) {
-            if (e == null && parseObject != null) {
+            if (e == null && parseObject != null)
               parseObject.unpinInBackground();
-            }
+
             else if (e != null)
               Log.d(TAG, "Cannot find TimePoliceInvitation whose objectId is : " + objectId);
           }
