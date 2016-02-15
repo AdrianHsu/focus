@@ -126,9 +126,9 @@ public class GetTimePoliceReplyService extends Service {
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
           @Override
           public void done(ParseObject parseObject, ParseException e) {
-            if (e == null && parseObject != null) {
+            if (e == null && parseObject != null)
               parseObject.unpinInBackground();
-            }
+
             else if (e != null)
               Log.d(TAG, "Cannot find TimePoliceInvitation whose objectId is : " + objectId);
           }

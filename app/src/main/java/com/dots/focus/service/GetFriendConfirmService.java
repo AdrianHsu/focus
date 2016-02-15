@@ -9,6 +9,7 @@ import android.util.Log;
 import com.dots.focus.config.FriendRelationship;
 import com.dots.focus.util.FetchFriendUtil;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -22,12 +23,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class GetFriendConfirmService extends Service {
     private final IBinder mBinder = new GetFriendConfirmBinder();
     private static final String TAG = "GetFriendConfirmService";
     public static ArrayList<JSONObject> friendRepliedList = new ArrayList<>();
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -88,7 +87,7 @@ public class GetFriendConfirmService extends Service {
     }
 
     public static void checkLocal() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendConfirmation");
         query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("user_id"));
         query.fromLocalDatastore();
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -111,6 +110,21 @@ public class GetFriendConfirmService extends Service {
                         }
                     }
                 }
+            }
+        });
+    }
+
+    public static void removeRepliedList(final String objectId) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendConfirmation");
+        query.fromLocalDatastore();
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null && parseObject != null)
+                    parseObject.unpinInBackground();
+
+                else if (e != null)
+                    Log.d(TAG, "Cannot find FriendConfirmation whose objectId is : " + objectId);
             }
         });
     }
