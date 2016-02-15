@@ -20,6 +20,7 @@ public class TimePoliceUtil {
     private static final int policeNumLimit = 2;
     public static ArrayList<Long> invitingIdList = new ArrayList<>();
     public static ArrayList<Long> invitedIdList = new ArrayList<>();
+    public static ArrayList<JSONObject> invitingList = new ArrayList<>();
 
     static {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
@@ -34,16 +35,25 @@ public class TimePoliceUtil {
     }
 
     public static void timePoliceInvite(Long id, String name, int lock_time) {
-        invitedIdList.add(id);
+        invitingIdList.add(id);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
+        Long time = System.currentTimeMillis();
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", id);
+            jsonObject.put("name", name);
+            jsonObject.put("time", time);
+            jsonObject.put("lock_time", lock_time);
 
+            invitingList.add(jsonObject);
+        } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
         ParseObject invite = new ParseObject("TimePoliceInvitation");
         invite.put("user_id_inviting", currentUser.getLong("user_id"));
         invite.put("user_name_inviting", currentUser.getString("user_name"));
         invite.put("user_id_invited", id);
         invite.put("user_name_invited", name);
-        invite.put("time", System.currentTimeMillis());
+        invite.put("time", time);
         invite.put("lock_time", lock_time);
         invite.put("state", TimePoliceState.INVITE_NOT_DOWNLOADED.getValue());
 
@@ -110,4 +120,28 @@ public class TimePoliceUtil {
         if (!found)
             Log.d(TAG, "timePoliceInvitation confirmed while cannot find the friend: " + name);
     }
+    public static void timePoliceCancel(Long id) { // The friend is my time police
+
+    }
+
+    public static void timePoliceDelete() { // I'm his/her time police
+
+    }
+
+    public static void getReply(Long id) {
+        invitingIdList.remove(id);
+        for (int i = 0, length = invitingList.size(); i < length; ++i) {
+            try {
+                if (invitingList.get(i).getLong("id") == id) {
+                    invitingList.remove(i);
+                    break;
+                }
+            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+        }
+    }
+
+    public static boolean isInvitng(Long id) {
+        return invitedIdList.contains(id);
+    }
+
 }
