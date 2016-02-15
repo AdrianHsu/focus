@@ -116,9 +116,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-        Intent intent = new Intent(this, GetAppsService.class);
-        startService(intent);
     }
 
     private void showIntroActivity() {
@@ -149,6 +146,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startServices() {
+        startService(new Intent(this, GetAppsService.class));
+
         startService(new Intent(this, GetFriendInviteService.class));
         startService(new Intent(this, GetFriendConfirmService.class));
     }
