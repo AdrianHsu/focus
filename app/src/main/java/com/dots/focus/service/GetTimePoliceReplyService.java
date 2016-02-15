@@ -58,17 +58,18 @@ public class GetTimePoliceReplyService extends Service {
                         boolean reply = object.getBoolean("reply");
                         Long id = object.getLong("user_id_invited");
                         String name = object.getString("user_name_invited");
+                        int lock_time = object.getInt("lock_time");
 
-                        TimePoliceUtil.invitingIdList.remove(id);
+                        TimePoliceUtil.getReply(id);
                         if (reply)
-                            TimePoliceUtil.timePoliceConfirm(id, name);
+                            TimePoliceUtil.timePoliceConfirm(id, name, lock_time);
 
                         object.put("state", TimePoliceState.REPLY_DOWNLOADED.getValue());
                         try {
                             invitation.put("id", id);
                             invitation.put("name", name);
                             invitation.put("time", object.getLong("time"));
-                            invitation.put("lock_time", object.getLong("lock_time"));
+                            invitation.put("lock_time", lock_time);
                             invitation.put("reply", reply);
                             timePoliceReplyList.add(invitation);
                         } catch (JSONException e1) {

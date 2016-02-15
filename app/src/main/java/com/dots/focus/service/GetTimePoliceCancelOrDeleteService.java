@@ -23,7 +23,8 @@ import java.util.List;
 public class GetTimePoliceCancelOrDeleteService extends Service {
     private final IBinder mBinder = new GetTimePoliceCancelOrDeleteBinder();
     private static String TAG = "GetTimePoliceCancelOrDeleteService";
-    public static ArrayList<JSONObject> timePoliceReplyList = new ArrayList<>();
+    public static ArrayList<JSONObject> timePoliceCancelList = new ArrayList<>();
+    public static ArrayList<JSONObject> timePoliceDeleteList = new ArrayList<>();
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetTimePoliceCancelOrDeleteService start...");
@@ -52,23 +53,19 @@ public class GetTimePoliceCancelOrDeleteService extends Service {
                 if (e == null && cancelList != null && !cancelList.isEmpty()) {
                     for (int i = 0, size = cancelList.size(); i < size; ++i) {
                         ParseObject object = cancelList.get(i);
-                        JSONObject invitation = new JSONObject();
+                        JSONObject cancellation = new JSONObject();
                         boolean reply = object.getBoolean("reply");
-                        Long id = object.getLong("user_id_invited");
-                        String name = object.getString("user_name_invited");
+                        Long id = object.getLong("user_id_cancelling");
+                        String name = object.getString("user_name_cancelling");
 
                         TimePoliceUtil.invitingIdList.remove(id);
-                        if (reply)
-                            TimePoliceUtil.timePoliceConfirm(id, name);
 
                         object.put("state", TimePoliceState.REPLY_DOWNLOADED.getValue());
                         try {
-                            invitation.put("id", id);
-                            invitation.put("name", name);
-                            invitation.put("time", object.getLong("time"));
-                            invitation.put("lock_time", object.getLong("lock_time"));
-                            invitation.put("reply", reply);
-                            timePoliceReplyList.add(invitation);
+                            cancellation.put("id", id);
+                            cancellation.put("name", name);
+                            cancellation.put("time", object.getLong("time"));
+                            timePoliceCancelList.add(cancellation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
                         }
