@@ -85,8 +85,6 @@ public class ModifyPermissionActivity extends BaseActivity {
            // 放棄監控委託人的權限
           }
         }
-
-
       }
     });
   }
