@@ -107,6 +107,7 @@ public class GetTimePoliceReplyService extends Service {
                             invitation.put("reply", object.getBoolean("reply"));
                             invitation.put("state", TimePoliceState.REPLY_DOWNLOADED.getValue()
                                     + TimePoliceUtil.timePoliceStateOffset);
+                            invitation.put("objectId", object.getObjectId());
                             timePoliceReplyList.add(invitation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();

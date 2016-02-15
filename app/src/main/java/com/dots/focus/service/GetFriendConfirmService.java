@@ -62,16 +62,18 @@ public class GetFriendConfirmService extends Service {
         public void done(List<ParseObject> inviteList, ParseException e) {
           if (e == null && inviteList != null) {
             for (int i = 0, size = inviteList.size(); i < size; ++i) {
-              inviteList.get(i).put("downloaded", true);
+              ParseObject invite = inviteList.get(i);
+              invite.put("downloaded", true);
               JSONObject jsonObject = new JSONObject();
               try {
-                Long id = inviteList.get(i).getLong("user_id_invited");
-                String name = inviteList.get(i).getString("user_name_invited");
+                Long id = invite.getLong("user_id_invited");
+                String name = invite.getString("user_name_invited");
 
                 jsonObject.put("id", id);
                 jsonObject.put("name", name);
-                jsonObject.put("time", inviteList.get(i).getLong("time"));
+                jsonObject.put("time", invite.getLong("time"));
                 jsonObject.put("state", FriendRelationship.FRIEND_CONFIRMED.getValue());
+                jsonObject.put("objectId", invite.getObjectId());
                 friendRepliedList.add(jsonObject);
 
                 FetchFriendUtil.getFriendConfirm(id, name);
@@ -86,26 +88,24 @@ public class GetFriendConfirmService extends Service {
     }
 
     public static void checkLocal() {
-        friendRepliedList.clear();
-
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
         query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("user_id"));
         query.fromLocalDatastore();
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> inviteList, ParseException e) {
-
-                if (e == null && inviteList != null) {
+                if (e == null && inviteList != null && !inviteList.isEmpty()) {
+                    friendRepliedList.clear();
                     for (int i = 0, size = inviteList.size(); i < size; ++i) {
                         JSONObject jsonObject = new JSONObject();
-                        long id = inviteList.get(i).getLong("user_id_inviting");
+                        ParseObject invite = inviteList.get(i);
+                        long id = invite.getLong("user_id_inviting");
                         try {
                             jsonObject.put("id", id);
-                            jsonObject.put("name", inviteList.get(i).getString("user_name_inviting"));
-                            jsonObject.put("time", inviteList.get(i).getLong("time"));
+                            jsonObject.put("name", invite.getString("user_name_inviting"));
+                            jsonObject.put("time", invite.getLong("time"));
                             jsonObject.put("state", FriendRelationship.FRIEND_CONFIRMED.getValue());
-
+                            jsonObject.put("objectId", invite.getObjectId());
                             friendRepliedList.add(jsonObject);
-
                         } catch (JSONException e1) {
                             e1.printStackTrace();
                         }
