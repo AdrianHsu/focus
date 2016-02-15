@@ -69,8 +69,9 @@ public class ReplyPermissionActivity extends BaseActivity {
     rejectBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        onBackPressed();
 
+        TimePoliceUtil.timePoliceReply(false, objectId);
+        onBackPressed();
       }
     });
     sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -79,8 +80,8 @@ public class ReplyPermissionActivity extends BaseActivity {
 
         FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
 
-        if(timeLockBtn.isChecked())
-          TimePoliceUtil.timePoliceReply(true, objectId);
+        TimePoliceUtil.timePoliceReply(timeLockBtn.isChecked(), objectId);
+
         onBackPressed();
       }
     });
