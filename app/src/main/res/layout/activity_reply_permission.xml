@@ -88,8 +88,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:id="@+id/cancel"
+            android:text="@string/reject"
+            android:id="@+id/reject"
             android:layout_gravity="left"/>
         <Button
             android:layout_width="wrap_content"

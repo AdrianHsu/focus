@@ -68,6 +68,7 @@ public class GetTimePoliceInviteService extends Service {
                             invitation.put("lock_time", object.getInt("lock_time"));
                             invitation.put("state", TimePoliceState.INVITE_DOWNLOADED.getValue()
                                     + TimePoliceUtil.timePoliceStateOffset);
+                            invitation.put("objectId", object.getObjectId());
                             timePoliceInviteList.add(invitation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
@@ -102,6 +103,7 @@ public class GetTimePoliceInviteService extends Service {
                             invitation.put("lock_time", object.getLong("lock_time"));
                             invitation.put("state", TimePoliceState.INVITE_DOWNLOADED.getValue()
                                     + TimePoliceUtil.timePoliceStateOffset);
+                            invitation.put("objectId", object.getObjectId());
                             timePoliceInviteList.add(invitation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();

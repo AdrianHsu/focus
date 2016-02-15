@@ -79,12 +79,15 @@ public class ModifyPermissionActivity extends BaseActivity {
 
         if(timeLockedBtn.isChecked())
           TimePoliceUtil.timePoliceInvite(id, name, 10);
-
+        else {
+//          cancel
+        }
         if(timeLockBtn.isEnabled()) {
           if(!timeLockBtn.isChecked()) {
            // 放棄監控委託人的權限
           }
         }
+        onBackPressed();
       }
     });
   }
