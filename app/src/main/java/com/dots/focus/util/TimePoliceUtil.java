@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.dots.focus.config.TimePoliceState;
 import com.dots.focus.service.GetTimePoliceInviteService;
+import com.dots.focus.service.GetTimePoliceReplyService;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -26,7 +27,10 @@ public class TimePoliceUtil {
     public static ArrayList<JSONObject> timePoliceInvitingList = new ArrayList<>();
     public static int timePoliceStateOffset = 100;
 
-    public static void initialize() {
+    public static void afterLoginInitialize() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        final Long id = currentUser.getLong("user_id");
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("TimePoliceInvitation");
         query.fromLocalDatastore();
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -35,18 +39,46 @@ public class TimePoliceUtil {
                 if (e == null && list != null && !list.isEmpty()) {
                     for (int i = 0, length = list.size(); i < length; ++i) {
                         ParseObject invite = list.get(i);
-                        try {
-                            JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("id", invite.getLong("id"));
-                            jsonObject.put("name", invite.getString("name"));
-                            jsonObject.put("time", invite.getLong("time"));
-                            jsonObject.put("lock_time", invite.getInt("lock_time"));
-                            jsonObject.put("state", TimePoliceState.INVITING.getValue() +
-                                    timePoliceStateOffset);
 
-                            timePoliceInvitingList.add(jsonObject);
-                        } catch (JSONException e1) {
-                            Log.d(TAG, e1.getMessage());
+                        if (invite.getLong("user_id_inviting") == id) {
+                            try {
+                                int state = invite.getInt("state");
+
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("id", id);
+                                jsonObject.put("name", invite.getString("user_name_inviting"));
+                                jsonObject.put("time", invite.getLong("time"));
+                                jsonObject.put("lock_time", invite.getInt("lock_time"));
+                                jsonObject.put("state", state + timePoliceStateOffset);
+
+                                if (state == TimePoliceState.INVITING.getValue())
+                                    timePoliceInvitingList.add(jsonObject);
+                                else if (state == TimePoliceState.REPLY_DOWNLOADED.getValue())
+                                    GetTimePoliceReplyService.timePoliceReplyList.add(jsonObject);
+                                else
+                                    Log.d(TAG, "Weird state: " + state);
+                            } catch (JSONException e1) {
+                                Log.d(TAG, e1.getMessage());
+                            }
+                        }
+                        else if (invite.getLong("user_id_invited") == id) {
+                            try {
+                                int state = invite.getInt("state");
+
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("id", id);
+                                jsonObject.put("name", invite.getString("user_name_invited"));
+                                jsonObject.put("time", invite.getLong("time"));
+                                jsonObject.put("lock_time", invite.getInt("lock_time"));
+                                jsonObject.put("state", state + timePoliceStateOffset);
+
+                                if (state == TimePoliceState.INVITE_DOWNLOADED.getValue())
+                                    GetTimePoliceInviteService.timePoliceInviteList.add(jsonObject);
+                                else
+                                    Log.d(TAG, "Weird state: " + state);
+                            } catch (JSONException e1) {
+                                Log.d(TAG, e1.getMessage());
+                            }
                         }
                     }
                 }
@@ -55,10 +87,9 @@ public class TimePoliceUtil {
                 }
             }
         });
-    }
 
-    public static void afterLoginInitialize() {
-        JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
+        JSONArray friends = currentUser.getJSONArray("Friends");
+        if (friends == null)    return;
         for (int i = 0, length = friends.length(); i < length; ++i) {
             try {
                 if (friends.getJSONObject(i).getBoolean("timeLocked"))
@@ -185,7 +216,6 @@ public class TimePoliceUtil {
                         cancellation.put("user_id_cancelled", id);
                         cancellation.put("user_name_cancelled", object.getString("user_name"));
                         cancellation.put("time", System.currentTimeMillis());
-                        cancellation.put("state", TimePoliceState.INVITE_NOT_DOWNLOADED.getValue());
 
                         cancellation.saveEventually();
                     }
@@ -234,6 +264,15 @@ public class TimePoliceUtil {
                         friends.put(i, object);
                         currentUser.put("Friends", friends);
                         currentUser.saveEventually();
+
+                        ParseObject deletion = new ParseObject("TimePoliceCancellation");
+                        deletion.put("user_id_deleting", currentUser.getLong("user_id"));
+                        deletion.put("user_name_deleting", currentUser.getString("user_name"));
+                        deletion.put("user_id_deleted", id);
+                        deletion.put("user_name_deleted", object.getString("user_name"));
+                        deletion.put("time", System.currentTimeMillis());
+
+                        deletion.saveEventually();
                     }
                     return;
                 }
