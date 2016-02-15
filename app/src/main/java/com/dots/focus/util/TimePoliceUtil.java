@@ -107,25 +107,23 @@ public class TimePoliceUtil {
             }
         });
     }
-    public static void timePoliceConfirm(Long id, String name) {
+    public static void timePoliceConfirm(Long id, String name, int lock_time) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         JSONArray friends = currentUser.getJSONArray("Friends");
-        boolean found = false;
         for (int i = 0, length = friends.length(); i < length; ++i) {
             try {
                 JSONObject object = friends.getJSONObject(i);
                 if (object.getLong("user_id") == id) {
-                    found = true;
                     object.put("timeLocked", true);
+                    object.put("timeLockedPeriod", lock_time);
                     friends.put(i, object);
                     currentUser.put("Friends", friends);
                     currentUser.saveEventually();
-                    break;
+                    return;
                 }
             } catch (JSONException e1) { Log.d(TAG, e1.getMessage()); }
         }
-        if (!found)
-            Log.d(TAG, "timePoliceInvitation confirmed while cannot find the friend: " + name);
+        Log.d(TAG, "timePoliceInvitation confirmed while cannot find the friend: " + name);
     }
     public static void timePoliceCancel(Long id) { // The friend is my time police
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -153,13 +151,34 @@ public class TimePoliceUtil {
 
                         cancellation.saveEventually();
                     }
+                    return;
                 }
             } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
         }
+        Log.d(TAG, "timePoliceCancel: cannot find the friend whose id is " + id);
     }
 
     public static void getTimePoliceCancel(Long id) {
-
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        JSONArray friends = currentUser.getJSONArray("Friends");
+        for (int i = 0, length = friends.length(); i < length; ++i) {
+            try {
+                JSONObject object = friends.getJSONObject(i);
+                if (object.getLong("user_id") == id) {
+                    if (!object.getBoolean("timeLock"))
+                        Log.d(TAG, "getTimePoliceCancel, I'm not id: " + id + ", name: " +
+                                object.getString("user_name") + " 's time police...");
+                    else {
+                        object.put("timeLock", false);
+                        friends.put(i, object);
+                        currentUser.put("Friends", friends);
+                        currentUser.saveEventually();
+                    }
+                    return;
+                }
+            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+        }
+        Log.d(TAG, "getTimePoliceCancel: cannot find the friend whose id is " + id);
     }
 
     public static void timePoliceDelete(Long id) { // I'm his/her time police
@@ -177,20 +196,35 @@ public class TimePoliceUtil {
                         friends.put(i, object);
                         currentUser.put("Friends", friends);
                         currentUser.saveEventually();
-
-                        ParseObject deletion = new ParseObject("TimePoliceDeletion");
-                        deletion.put("user_id_deleting", currentUser.getLong("user_id"));
-                        deletion.put("user_name_deleting", currentUser.getString("user_name"));
-                        deletion.put("user_id_deleted", id);
-                        deletion.put("user_name_deleted", object.getString("user_name"));
-                        deletion.put("time", System.currentTimeMillis());
-                        deletion.put("state", TimePoliceState.INVITE_NOT_DOWNLOADED.getValue());
-
-                        deletion.saveEventually();
                     }
+                    return;
                 }
             } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
         }
+        Log.d(TAG, "timePoliceDelete: cannot find the friend whose id is " + id);
+    }
+
+    public static void getTimePoliceDelete(Long id) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        JSONArray friends = currentUser.getJSONArray("Friends");
+        for (int i = 0, length = friends.length(); i < length; ++i) {
+            try {
+                JSONObject object = friends.getJSONObject(i);
+                if (object.getLong("user_id") == id) {
+                    if (!object.getBoolean("timeLocked"))
+                        Log.d(TAG, "getTimePoliceCancel, id: " + id + ", name: " +
+                                object.getString("user_name") + " is not my time police...");
+                    else {
+                        object.put("timeLocked", false);
+                        friends.put(i, object);
+                        currentUser.put("Friends", friends);
+                        currentUser.saveEventually();
+                    }
+                    return;
+                }
+            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+        }
+        Log.d(TAG, "getTimePoliceDelete: cannot find the friend whose id is " + id);
     }
 
     public static void getReply(Long id) {

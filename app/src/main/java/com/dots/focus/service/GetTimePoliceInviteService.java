@@ -20,7 +20,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class GetTimePoliceInviteService extends Service {
     private final IBinder mBinder = new GetTimePoliceInviteBinder();
     private static String TAG = "GetTimePoliceInviteService";
@@ -66,7 +65,7 @@ public class GetTimePoliceInviteService extends Service {
                             invitation.put("id", id);
                             invitation.put("name", object.getString("user_name_inviting"));
                             invitation.put("time", object.getLong("time"));
-                            invitation.put("lock_time", object.getLong("lock_time"));
+                            invitation.put("lock_time", object.getInt("lock_time"));
                             timePoliceInviteList.add(invitation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
