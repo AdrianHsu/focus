@@ -71,6 +71,8 @@ public class GetTimePoliceReplyService extends Service {
                             invitation.put("time", object.getLong("time"));
                             invitation.put("lock_time", lock_time);
                             invitation.put("reply", reply);
+                            invitation.put("state", TimePoliceState.REPLY_DOWNLOADED.getValue()
+                                    + TimePoliceUtil.timePoliceStateOffset);
                             timePoliceReplyList.add(invitation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
@@ -103,6 +105,8 @@ public class GetTimePoliceReplyService extends Service {
                             invitation.put("time", object.getLong("time"));
                             invitation.put("lock_time", object.getLong("lock_time"));
                             invitation.put("reply", object.getBoolean("reply"));
+                            invitation.put("state", TimePoliceState.REPLY_DOWNLOADED.getValue()
+                                    + TimePoliceUtil.timePoliceStateOffset);
                             timePoliceReplyList.add(invitation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();

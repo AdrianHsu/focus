@@ -66,6 +66,8 @@ public class GetTimePoliceInviteService extends Service {
                             invitation.put("name", object.getString("user_name_inviting"));
                             invitation.put("time", object.getLong("time"));
                             invitation.put("lock_time", object.getInt("lock_time"));
+                            invitation.put("state", TimePoliceState.INVITE_DOWNLOADED.getValue()
+                                    + TimePoliceUtil.timePoliceStateOffset);
                             timePoliceInviteList.add(invitation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
@@ -95,10 +97,11 @@ public class GetTimePoliceInviteService extends Service {
                         // add to kickedList
                         try {
                             invitation.put("id", object.getLong("user_id_inviting"));
-                            invitation.put("name", object.getString
-                                    ("user_name_inviting"));
+                            invitation.put("name", object.getString("user_name_inviting"));
                             invitation.put("time", object.getLong("time"));
                             invitation.put("lock_time", object.getLong("lock_time"));
+                            invitation.put("state", TimePoliceState.INVITE_DOWNLOADED.getValue()
+                                    + TimePoliceUtil.timePoliceStateOffset);
                             timePoliceInviteList.add(invitation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();

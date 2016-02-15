@@ -3,6 +3,7 @@ package com.dots.focus.util;
 import android.util.Log;
 
 import com.dots.focus.config.TimePoliceState;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -13,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TimePoliceUtil {
     private static String TAG = "TimePoliceUtil";
@@ -21,6 +23,7 @@ public class TimePoliceUtil {
     public static ArrayList<Long> invitingIdList = new ArrayList<>();
     public static ArrayList<Long> invitedIdList = new ArrayList<>();
     public static ArrayList<JSONObject> timePoliceInvitingList = new ArrayList<>();
+    public static int timePoliceStateOffset = 100;
 
     static {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
@@ -34,7 +37,38 @@ public class TimePoliceUtil {
             Log.d(TAG, "policeNum " + policeNum + " exceeds limit: " + policeNumLimit);
     }
 
-    public static boolean timePoliceInvite(Long id, String name) {
+    public static void initialize() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("TimePoliceInvitation");
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null && list != null && !list.isEmpty()) {
+                    for (int i = 0, length = list.size(); i < length; ++i) {
+                        ParseObject invite = list.get(i);
+                        try {
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("id", invite.getLong("id"));
+                            jsonObject.put("name", invite.getString("name"));
+                            jsonObject.put("time", invite.getLong("time"));
+                            jsonObject.put("lock_time", invite.getInt("lock_time"));
+                            jsonObject.put("state", TimePoliceState.INVITING.getValue() +
+                                    timePoliceStateOffset);
+
+                            timePoliceInvitingList.add(jsonObject);
+                        } catch (JSONException e1) {
+                            Log.d(TAG, e1.getMessage());
+                        }
+                    }
+                }
+                else if (e != null) {
+                    Log.d(TAG, e.getMessage());
+                }
+            }
+        });
+    }
+
+    public static boolean timePoliceInvite(Long id, String name, int lock_time) {
         if (policeNum >= policeNumLimit)    return false;
 
         invitingIdList.add(id);
@@ -46,7 +80,8 @@ public class TimePoliceUtil {
             jsonObject.put("id", id);
             jsonObject.put("name", name);
             jsonObject.put("time", time);
-            jsonObject.put("lock_time", 0);
+            jsonObject.put("lock_time", lock_time);
+            jsonObject.put("state", TimePoliceState.INVITING.getValue() + timePoliceStateOffset);
 
             timePoliceInvitingList.add(jsonObject);
         } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
@@ -56,14 +91,14 @@ public class TimePoliceUtil {
         invite.put("user_id_invited", id);
         invite.put("user_name_invited", name);
         invite.put("time", time);
-        invite.put("lock_time", 0);
+        invite.put("lock_time", lock_time);
         invite.put("state", TimePoliceState.INVITE_NOT_DOWNLOADED.getValue());
 
         invite.saveEventually();
 
         return true;
     }
-    public static void timePoliceReply(final boolean reply, final int lock_time, String objectId) {
+    public static void timePoliceReply(final boolean reply, String objectId) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("TimePoliceInvitation");
         query.fromLocalDatastore();
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
@@ -74,7 +109,6 @@ public class TimePoliceUtil {
                     invitedIdList.remove(id);
 
                     invite.put("reply", reply);
-                    invite.put("lock_time", lock_time);
                     invite.put("state", TimePoliceState.REPLY_NOT_DOWNLOADED.getValue());
                     invite.saveEventually();
 

@@ -1,17 +1,13 @@
 package com.dots.focus.application;
 
-/**
- * Created by AdrianHsu on 15/8/14.
- */
-
 import android.app.Application;
 
 import com.dots.focus.config.Config;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.dots.focus.util.FetchAppUtil;
-import com.dots.focus.util.FetchFriendUtil;
 import com.dots.focus.util.SettingsUtil;
+import com.dots.focus.util.TimePoliceUtil;
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
@@ -40,6 +36,8 @@ public class MainApplication extends Application {
   private void initialize() {
     SettingsUtil.searchSettings();
     FetchAppUtil.loadParseApps();
+
+    TimePoliceUtil.initialize();
   }
 }
 
