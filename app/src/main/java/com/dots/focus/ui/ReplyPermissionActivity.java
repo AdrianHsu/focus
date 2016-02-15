@@ -32,6 +32,8 @@ public class ReplyPermissionActivity extends BaseActivity {
   private TextView friendStateTv;
   private Button rejectBtn;
   private Button sendBtn;
+  private Boolean originalTimeLocked;
+  private Boolean originalTimeLock;
   private CheckBox getNotifBtn;
   private CheckBox timeLockedBtn;
   private CheckBox timeLockBtn;
@@ -67,6 +69,27 @@ public class ReplyPermissionActivity extends BaseActivity {
     initFriendState(friend);
 
     friendStateTv.setText(getFriendRelation(friend));
+    timeLockedBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if (timeLockBtn.isChecked() == originalTimeLocked
+                                && timeLockedBtn.isChecked() == originalTimeLock)
+          sendBtn.setEnabled(false);
+        else
+          sendBtn.setEnabled(true);
+
+      }
+    });
+    timeLockBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if (timeLockBtn.isChecked() == originalTimeLocked
+                                && timeLockedBtn.isChecked() == originalTimeLock)
+          sendBtn.setEnabled(false);
+        else
+          sendBtn.setEnabled(true);
+      }
+    });
     rejectBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -80,9 +103,7 @@ public class ReplyPermissionActivity extends BaseActivity {
       public void onClick(View view) {
 
         FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
-
         TimePoliceUtil.timePoliceReply(timeLockBtn.isChecked(), objectId);
-
         onBackPressed();
       }
     });
@@ -95,8 +116,10 @@ public class ReplyPermissionActivity extends BaseActivity {
     timeLockBtn = (CheckBox)findViewById(R.id.timeLockBtn);
 
     try {
+      originalTimeLocked = friend.getBoolean("timeLocked");
+      originalTimeLock = friend.getBoolean("timeLock");
       getNotifBtn.setChecked(friend.getBoolean("pop-up"));
-      timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
+      timeLockedBtn.setChecked(originalTimeLocked);
       timeLockedBtn.setEnabled(false);
       timeLockBtn.setChecked(true);
 
