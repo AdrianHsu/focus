@@ -21,15 +21,16 @@ import org.json.JSONObject;
 /**
  * Created by AdrianHsu on 2016/2/15.
  */
-public class ModifyPermissionActivity extends BaseActivity {
+public class ReplyPermissionActivity extends BaseActivity {
 
   private Toolbar toolbar;
   private String name;
   private Long id;
+  private String objectId;
   private ImageView profileImage;
   private TextView profileNameTv;
   private TextView friendStateTv;
-  private Button cancelBtn;
+  private Button rejectBtn;
   private Button sendBtn;
   private RadioButton getNotifBtn;
   private CheckBox timeLockedBtn;
@@ -38,7 +39,7 @@ public class ModifyPermissionActivity extends BaseActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_modify_permission);
+    setContentView(R.layout.activity_reply_permission);
 
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -47,13 +48,14 @@ public class ModifyPermissionActivity extends BaseActivity {
     profileImage = (ImageView) findViewById(R.id.profile_image);
     profileNameTv = (TextView) findViewById(R.id.profile_name);
     friendStateTv = (TextView) findViewById(R.id.content);
-    cancelBtn = (Button)findViewById(R.id.cancel);
+    rejectBtn = (Button)findViewById(R.id.reject);
     sendBtn = (Button)findViewById(R.id.send);
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
       name = extras.getString("user_name");
       id = extras.getLong("user_id");
+      objectId = extras.getString("objectId");
     }
 
     String url = "https://graph.facebook.com/" + String.valueOf(id) +
@@ -64,11 +66,12 @@ public class ModifyPermissionActivity extends BaseActivity {
     JSONObject friend = FetchFriendUtil.getFriendById(id);
     initFriendState(friend);
     friendStateTv.setText(getFriendRelation(friend));
-    cancelBtn.setOnClickListener(new View.OnClickListener() {
+    rejectBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        onBackPressed();
 
+        TimePoliceUtil.timePoliceReply(false, objectId);
+        onBackPressed();
       }
     });
     sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -77,16 +80,8 @@ public class ModifyPermissionActivity extends BaseActivity {
 
         FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
 
-        if(timeLockedBtn.isChecked())
-          TimePoliceUtil.timePoliceInvite(id, name, 10);
-        else {
-//          cancel
-        }
-        if(timeLockBtn.isEnabled()) {
-          if(!timeLockBtn.isChecked()) {
-           // 放棄監控委託人的權限
-          }
-        }
+        TimePoliceUtil.timePoliceReply(timeLockBtn.isChecked(), objectId);
+
         onBackPressed();
       }
     });
@@ -100,22 +95,9 @@ public class ModifyPermissionActivity extends BaseActivity {
 
     try {
       getNotifBtn.setChecked(friend.getBoolean("pop-up"));
-//      if(< 2位時間警察) {
-//        timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
-//
-//      } else if (== 2位時間警察) {
-//        if(timeLocked == true) // 此人已經是您的時間警察
-//          timeLockedBtn.setEnabled(true);
-//        else
-//          timeLockedBtn.setEnabled(false);
-//        if(timeLockedBtn.isEnabled()) {
-//          timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
-//        }
-//      }
       timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
-      timeLockBtn.setEnabled(friend.getBoolean("timeLock"));
-      if(timeLockBtn.isEnabled())
-        timeLockBtn.setChecked(true);
+      timeLockedBtn.setEnabled(false);
+      timeLockBtn.setChecked(true);
 
     } catch(JSONException e) {
       e.printStackTrace();

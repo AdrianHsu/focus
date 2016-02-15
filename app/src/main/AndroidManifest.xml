@@ -39,7 +39,12 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".ui.ModifyPermissionActivity"
+        android:name=".ui.ModifyPermissionActivity"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".ui.ReplyPermissionActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>

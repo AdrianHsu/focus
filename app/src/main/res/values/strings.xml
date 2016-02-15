@@ -122,6 +122,8 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--ProfileActivity-->
     <!--RadarChartActivity-->
     <string name="radar_chart_result_text">測驗結果：您是一個社交狂人！（每日平均使用手機 2 小時以上，社群類應用軟體佔總時間80%）</string>
+    <!--ReplyPermissionActivity-->
+    <string name="reject">拒絕</string>
     <!--TimePiggyBankActivity-->
     <!--TopThreeAppUsageChartActivity-->
     <string name="settings">設定</string>
@@ -210,6 +212,11 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="description_device_admin_and_access">授權背景偵測與裝置管理員</string>
     <string name="basic_info_settings">基本資料設定</string>
     <!--DailyTopThreeAppUsageAdapter-->
+    <!--TimePoliceInviteRecyclerViewAdapter-->
+    <string name="time_police_invite">委託您成為他的時間警察。</string>
+    <!--TimePoliceReplyRecyclerViewAdapter-->
+    <string name="time_police_reply">已經成為您的時間警察。</string>
+    <string name="time_police_roger_that">知道了</string>
     <!--TopThreeAppUsageDashboardAdapter-->
     <!--TopThreeChartMarkerView-->
     <!--WeeklyPiggyBankRecyclerViewAdapter-->

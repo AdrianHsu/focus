@@ -17,6 +17,7 @@ import com.dots.focus.adapter.AddFriendRecyclerViewAdapter;
 import com.dots.focus.service.GetFriendConfirmService;
 import com.dots.focus.service.GetFriendInviteService;
 import com.dots.focus.service.GetTimePoliceInviteService;
+import com.dots.focus.service.GetTimePoliceReplyService;
 import com.dots.focus.util.FetchFriendUtil;
 import com.dots.focus.util.TimePoliceUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
@@ -58,7 +59,9 @@ public class AddFriendFragment extends Fragment {
 
     friendProfileList.addAll(FetchFriendUtil.mFriendList);
     friendProfileList.addAll(FetchFriendUtil.mInvitingFriendList);
+    friendProfileList.addAll(TimePoliceUtil.timePoliceInvitingList);
     friendProfileList.addAll(GetTimePoliceInviteService.timePoliceInviteList);
+    friendProfileList.addAll(GetTimePoliceReplyService.timePoliceReplyList);
 //    friendProfileList.addAll(FetchFriendUtil.mConfirmedFriendList);
     friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
     friendProfileList.addAll(GetFriendConfirmService.friendRepliedList);
@@ -94,7 +97,16 @@ public class AddFriendFragment extends Fragment {
             Log.v(TAG, "mInvitingFriendList.size() == " + FetchFriendUtil.mInvitingFriendList.size
                                     ());
             friendProfileList.addAll(TimePoliceUtil.timePoliceInvitingList);
+            Log.v(TAG, "timePoliceInvitingList.size() == " + TimePoliceUtil.timePoliceInvitingList
+                                    .size());
 
+            friendProfileList.addAll(GetTimePoliceInviteService.timePoliceInviteList);
+            Log.v(TAG, "timePoliceInviteList.size() == " + GetTimePoliceInviteService.timePoliceInviteList.size
+                                    ());
+            friendProfileList.addAll(GetTimePoliceReplyService.timePoliceReplyList);
+            Log.v(TAG, "timePoliceReplyList.size() == " + GetTimePoliceReplyService
+                                    .timePoliceReplyList.size
+                                    ());
             friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
             Log.v(TAG, "friendWaitingReplyList.size() == " + GetFriendInviteService
               .friendWaitingReplyList.size());
