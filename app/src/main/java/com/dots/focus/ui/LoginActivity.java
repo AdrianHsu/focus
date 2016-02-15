@@ -12,6 +12,12 @@ import com.dots.focus.R;
 import com.dots.focus.service.GetAppsService;
 import com.dots.focus.service.GetFriendConfirmService;
 import com.dots.focus.service.GetFriendInviteService;
+import com.dots.focus.service.GetKickRequestService;
+import com.dots.focus.service.GetKickResponseService;
+import com.dots.focus.service.GetKickedService;
+import com.dots.focus.service.GetTimePoliceCancelOrDeleteService;
+import com.dots.focus.service.GetTimePoliceInviteService;
+import com.dots.focus.service.GetTimePoliceReplyService;
 import com.dots.focus.util.DashboardUtil;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.LoginUtil;
@@ -150,6 +156,14 @@ public class LoginActivity extends AppCompatActivity {
 
         startService(new Intent(this, GetFriendInviteService.class));
         startService(new Intent(this, GetFriendConfirmService.class));
+
+        startService(new Intent(this, GetKickRequestService.class));
+        startService(new Intent(this, GetKickedService.class));
+        startService(new Intent(this, GetKickResponseService.class));
+
+        startService(new Intent(this, GetTimePoliceInviteService.class));
+        startService(new Intent(this, GetTimePoliceReplyService.class));
+        startService(new Intent(this, GetTimePoliceCancelOrDeleteService.class));
     }
 //
 //

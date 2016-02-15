@@ -81,6 +81,7 @@ public class GetFriendConfirmService extends Service {
               }
             }
             ParseObject.deleteAllInBackground(inviteList);
+            ParseObject.pinAllInBackground(inviteList);
           }
         }
       });
@@ -114,7 +115,7 @@ public class GetFriendConfirmService extends Service {
         });
     }
 
-    public static void removeRepliedList(final String objectId) {
+    public static void removeRepliedList(Long id, final String objectId) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendConfirmation");
         query.fromLocalDatastore();
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
@@ -127,5 +128,15 @@ public class GetFriendConfirmService extends Service {
                     Log.d(TAG, "Cannot find FriendConfirmation whose objectId is : " + objectId);
             }
         });
+
+        for (int i = 0, length = friendRepliedList.size(); i < length; ++i) {
+            try {
+                if (friendRepliedList.get(i).getLong("id") == id) {
+                    friendRepliedList.remove(i);
+                    return;
+                }
+            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+        }
+        Log.d(TAG, "removeRepliedList: cannot find id : " + id);
     }
 }

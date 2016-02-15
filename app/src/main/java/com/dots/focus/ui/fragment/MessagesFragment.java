@@ -44,9 +44,12 @@ public class MessagesFragment extends Fragment {
     super.onCreateView(inflater, container, savedInstanceState);
 
     context = getActivity();
-    context.startService(new Intent(context, GetKickRequestService.class));
-    context.startService(new Intent(context, GetKickedService.class));
-    context.startService(new Intent(context, GetKickResponseService.class));
+//    context.startService(new Intent(context, GetKickRequestService.class));
+//    context.startService(new Intent(context, GetKickedService.class));
+//    context.startService(new Intent(context, GetKickResponseService.class));
+    GetKickRequestService.checkLocal();
+    GetKickedService.checkLocal();
+    GetKickResponseService.checkLocal();
 
     View v = inflater.inflate(R.layout.fragment_messages, container, false);
 

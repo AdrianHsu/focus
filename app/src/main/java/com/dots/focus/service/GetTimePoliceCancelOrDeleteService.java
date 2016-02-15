@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GetTimePoliceCancelOrDeleteService extends Service {
     private final IBinder mBinder = new GetTimePoliceCancelOrDeleteBinder();
@@ -29,9 +31,17 @@ public class GetTimePoliceCancelOrDeleteService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetTimePoliceCancelOrDeleteService start...");
-        refresh();
+
+        Timer timer = new Timer();
+        timer.schedule(new CheckTimeCancelOrDelete(), 0, 60000);
 
         return 0;
+    }
+
+    class CheckTimeCancelOrDelete extends TimerTask {
+        public void run() {
+            refresh();
+        }
     }
 
     public class GetTimePoliceCancelOrDeleteBinder extends Binder {

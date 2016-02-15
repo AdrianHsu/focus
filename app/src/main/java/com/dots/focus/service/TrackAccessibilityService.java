@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.dots.focus.config.LimitType;
+import com.dots.focus.model.AppInfo;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.dots.focus.util.FetchAppUtil;
@@ -34,6 +35,7 @@ public class TrackAccessibilityService extends AccessibilityService {
     private static int appIndex = -1;
     private static int[] appsUsage = {0, 0, 0, 0, 0, 0};
     private static long blockTime = 0;
+    public static int[] categoryClickToday = {0, 0, 0, 0, 0, 0, 0};
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -133,7 +135,7 @@ public class TrackAccessibilityService extends AccessibilityService {
             return;
         }
 
-
+        clickCount(appIndex);
         while (now > startHour + TrackAccessibilityUtil.anHour) {
             storeInDatabase(startHour + TrackAccessibilityUtil.anHour);
             startTime = startHour = startHour + TrackAccessibilityUtil.anHour;
@@ -202,7 +204,16 @@ public class TrackAccessibilityService extends AccessibilityService {
         day.put("appLength", appLength);
         Log.d(TAG, "Hour appLength.get: " + hour.getList("appLength").get(appIndex));
 
-        Log.d(TAG, "appName: " + previousPackageName + ", startTime: " + startTime + ", duration: " + duration);
+        Log.d(TAG, "appName: " + previousPackageName + ", startTime: " + startTime + ", duration: "
+                + duration);
+    }
+
+    private void clickCount(int i) {
+        AppInfo appInfo = FetchAppUtil.getApp(i);
+        if (appInfo == null)    return;
+        int index = TrackAccessibilityUtil.getCategoryUnion(appInfo.getCategory());
+        if (index != -1)
+            ++categoryClickToday[index];
     }
 
     private boolean checkIndex(String currentPackageName) {

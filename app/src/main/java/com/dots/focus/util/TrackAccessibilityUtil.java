@@ -3,6 +3,7 @@ package com.dots.focus.util;
 
 import android.util.Log;
 
+import com.dots.focus.model.AppInfo;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.parse.GetCallback;
@@ -422,62 +423,64 @@ public class TrackAccessibilityUtil {
         }
 
         for (int i = 0; i < size; ++i) {
-            switch (FetchAppUtil.getApp(i).getCategory()) {
-                case "Social":
-                case "Communication":
-                    data[0] += appLength.get(i);
-                    break;
-                case "Productivity":
-                case "Finance":
-                case "Business":
-                    data[1] += appLength.get(i);
-                    break;
-
-                case "Education":
-                case "News & Magazines":
-                case "Books & Reference":
-                    data[2] += appLength.get(i);
-                    break;
-
-                case "Weather":
-                case "Lifestyle":
-                case "Transportation":
-                case "Family":
-                case "Travel & Local":
-                case "Health & Fitness":
-                case "Sports":
-                case "Shopping":
-                case "Medical":
-                    data[3] += appLength.get(i);
-                    break;
-
-                case "Game":
-                case "Comics":
-                    data[4] += appLength.get(i);
-                    break;
-
-                case "Media & Video":
-                case "Music & Audio":
-                case "Entertainment":
-                case "Photography":
-                    data[5] += appLength.get(i);
-                    break;
-
-                case "Android Wear":
-                case "Libraries & Demo":
-                case "Live Wallpaper":
-                case "Personalization":
-                case "Tools":
-                case "Widgets":
-                    data[6] += appLength.get(i);
-                    break;
-
-                default:
-                    Log.d(TAG, "No such category: " + FetchAppUtil.getApp(i).getCategory());
-                    break;
-            }
+            AppInfo appInfo = FetchAppUtil.getApp(i);
+            if (appInfo == null)    continue;
+            int index = getCategoryUnion(appInfo.getCategory());
+            if (index != -1)
+                data[index] += appLength.get(i);
         }
         return data;
+    }
+
+    public static int getCategoryUnion(String category) {
+        switch (category) {
+            case "Social":
+            case "Communication":
+                return 0;
+
+            case "Productivity":
+            case "Finance":
+            case "Business":
+                return 1;
+
+            case "Education":
+            case "News & Magazines":
+            case "Books & Reference":
+                return 2;
+
+            case "Weather":
+            case "Lifestyle":
+            case "Transportation":
+            case "Family":
+            case "Travel & Local":
+            case "Health & Fitness":
+            case "Sports":
+            case "Shopping":
+            case "Medical":
+                return 3;
+
+            case "Game":
+            case "Comics":
+                return 4;
+
+            case "Media & Video":
+            case "Music & Audio":
+            case "Entertainment":
+            case "Photography":
+                return 5;
+
+            case "Android Wear":
+            case "Libraries & Demo":
+            case "Live Wallpaper":
+            case "Personalization":
+            case "Tools":
+            case "Widgets":
+                return 6;
+
+            default:
+                Log.d(TAG, "No such category: " + category);
+                return -1;
+        }
     }
 
     public static long getPrevXWeek(int week) { // 0: current week

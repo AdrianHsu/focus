@@ -9,6 +9,7 @@ import android.util.Log;
 import com.dots.focus.config.FriendRelationship;
 import com.dots.focus.util.FetchFriendUtil;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -62,20 +63,21 @@ public class GetFriendInviteService extends Service {
       public void done(List<ParseObject> inviteList, ParseException e) {
         if (e == null && inviteList != null && !inviteList.isEmpty()) {
           for (int i = 0, size = inviteList.size(); i < size; ++i) {
-            long id = inviteList.get(i).getLong("user_id_inviting");
-            String name = inviteList.get(i).getString("user_name_inviting");
+            ParseObject invite = inviteList.get(i);
+            long id = invite.getLong("user_id_inviting");
+            String name = invite.getString("user_name_inviting");
 
             if (!FetchFriendUtil.mConfirmingFriendList.contains(id))
               FetchFriendUtil.mConfirmingFriendList.add(id);
 
-            inviteList.get(i).put("downloaded", true);
+            invite.put("downloaded", true);
             JSONObject jsonObject = new JSONObject();
             try {
               FetchFriendUtil.checkRemoveMFL(id);
 
               jsonObject.put("id", id);
               jsonObject.put("name", name);
-              jsonObject.put("time", inviteList.get(i).getLong("time"));
+              jsonObject.put("time", invite.getLong("time"));
               jsonObject.put("state", FriendRelationship.FRIEND_INVITED.getValue());
               friendWaitingReplyList.add(jsonObject);
 
@@ -83,38 +85,32 @@ public class GetFriendInviteService extends Service {
               e1.printStackTrace();
             }
           }
-          try {
-            ParseObject.saveAll(inviteList);
-            ParseObject.pinAll(inviteList);
-          } catch (ParseException e1) {
-            Log.d(TAG, e1.getMessage());
-          }
+          ParseObject.saveAllInBackground(inviteList);
+          ParseObject.pinAllInBackground(inviteList);
         }
       }
     });
   }
 
   public static void checkLocal() {
-    friendWaitingReplyList.clear();
-
     ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendInvitation");
     query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("user_id"));
     query.fromLocalDatastore();
     query.findInBackground(new FindCallback<ParseObject>() {
       public void done(List<ParseObject> inviteList, ParseException e) {
 
-        if (e == null && inviteList != null) {
+        if (e == null && inviteList != null && !inviteList.isEmpty()) {
+          friendWaitingReplyList.clear();
           for (int i = 0, size = inviteList.size(); i < size; ++i) {
             JSONObject jsonObject = new JSONObject();
-
+            ParseObject invite = inviteList.get(i);
+            Log.d(TAG, "checkLocal id: " + invite.getLong("user_id_inviting"));
             try {
-              jsonObject.put("id", inviteList.get(i).getLong("user_id_inviting"));
-              jsonObject.put("name", inviteList.get(i).getString("user_name_inviting"));
-              jsonObject.put("time", inviteList.get(i).getLong("time"));
+              jsonObject.put("id", invite.getLong("user_id_inviting"));
+              jsonObject.put("name", invite.getString("user_name_inviting"));
+              jsonObject.put("time", invite.getLong("time"));
               jsonObject.put("state", FriendRelationship.FRIEND_INVITED.getValue());
-
               friendWaitingReplyList.add(jsonObject);
-
             } catch (JSONException e1) {
               e1.printStackTrace();
             }
@@ -122,5 +118,31 @@ public class GetFriendInviteService extends Service {
         }
       }
     });
+  }
+  public static void removeWaitingReplyList(Long id) {
+    /*
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendConfirmation");
+    query.fromLocalDatastore();
+    query.getInBackground(objectId, new GetCallback<ParseObject>() {
+      @Override
+      public void done(ParseObject parseObject, ParseException e) {
+        if (e == null && parseObject != null)
+          parseObject.unpinInBackground();
+
+        else if (e != null)
+          Log.d(TAG, "Cannot find FriendConfirmation whose objectId is : " + objectId);
+      }
+    });
+    */
+
+    for (int i = 0, length = friendWaitingReplyList.size(); i < length; ++i) {
+      try {
+        if (friendWaitingReplyList.get(i).getLong("id") == id) {
+          friendWaitingReplyList.remove(i);
+          return;
+        }
+      } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+    }
+    Log.d(TAG, "removeRepliedList: cannot find id : " + id);
   }
 }
