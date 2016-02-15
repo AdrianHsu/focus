@@ -265,7 +265,7 @@ public class TimePoliceUtil {
                         currentUser.put("Friends", friends);
                         currentUser.saveEventually();
 
-                        ParseObject deletion = new ParseObject("TimePoliceCancellation");
+                        ParseObject deletion = new ParseObject("TimePoliceDeletion");
                         deletion.put("user_id_deleting", currentUser.getLong("user_id"));
                         deletion.put("user_name_deleting", currentUser.getString("user_name"));
                         deletion.put("user_id_deleted", id);
