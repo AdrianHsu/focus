@@ -3,6 +3,7 @@ package com.dots.focus.util;
 import android.util.Log;
 
 import com.dots.focus.config.TimePoliceState;
+import com.dots.focus.service.GetTimePoliceInviteService;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -95,6 +96,7 @@ public class TimePoliceUtil {
         invite.put("state", TimePoliceState.INVITE_NOT_DOWNLOADED.getValue());
 
         invite.saveEventually();
+        invite.pinInBackground();
 
         return true;
     }
@@ -107,10 +109,12 @@ public class TimePoliceUtil {
                 if (e == null && invite != null) {
                     Long id = invite.getLong("user_id_inviting");
                     invitedIdList.remove(id);
+                    GetTimePoliceInviteService.removeInviteList(id);
 
                     invite.put("reply", reply);
                     invite.put("state", TimePoliceState.REPLY_NOT_DOWNLOADED.getValue());
                     invite.saveEventually();
+                    invite.unpinInBackground();
 
                     if (reply) {
                         ParseUser currentUser = ParseUser.getCurrentUser();

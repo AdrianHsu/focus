@@ -111,4 +111,16 @@ public class GetTimePoliceInviteService extends Service {
             }
         });
     }
+
+    public static void removeInviteList(Long id) {
+        for (int i = 0, length = timePoliceInviteList.size(); i < length; ++i) {
+            try {
+                if (timePoliceInviteList.get(i).getLong("id") == id) {
+                    timePoliceInviteList.remove(i);
+                    return;
+                }
+            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+        }
+        Log.d(TAG, "removeInviteList: cannot find id: " + id);
+    }
 }
