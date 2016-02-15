@@ -81,7 +81,9 @@ public class FetchAppUtil {
     }
 
     public static AppInfo getApp(int index) {
-        return apps.get(index);
+        if (index >= 0 && index < apps.size())
+          return apps.get(index);
+        return null;
     }
 
     public static void printApps() {
