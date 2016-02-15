@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.dots.focus.R;
 import com.dots.focus.config.FriendRelationship;
 import com.dots.focus.ui.KickRequestActivity;
+import com.dots.focus.ui.ModifyPermissionActivity;
 import com.dots.focus.util.FetchFriendUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
@@ -68,6 +69,9 @@ public class FriendRecyclerViewAdapter extends
       final long id = jsonObject.getLong("id");
       final String name = jsonObject.getString("name");
       holder.mProfileNameTextView.setText(name);
+      JSONObject friend = FetchFriendUtil.getFriendById(id);
+      holder.friendStateTv.setText(getFriendRelation(friend));
+
 
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?type=large";
@@ -76,7 +80,7 @@ public class FriendRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
           Intent intent;
-          intent = new Intent(mContext, KickRequestActivity.class);
+          intent = new Intent(mContext, ModifyPermissionActivity.class);
           intent.putExtra("user_name", name);
           intent.putExtra("user_id", id);
 
@@ -248,6 +252,7 @@ public class FriendRecyclerViewAdapter extends
 
     TextView mProfileNameTextView;
     ImageView mProfileImageView;
+    TextView friendStateTv;
     Button mButton;
     View item_view;
 
@@ -258,6 +263,7 @@ public class FriendRecyclerViewAdapter extends
         mProfileNameTextView = (TextView) itemView.findViewById(
           R.id.profile_name);
         mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
+        friendStateTv = (TextView) itemView.findViewById(R.id.content);
         mButton = (Button) itemView.findViewById(R.id.button);
 
         item_view = itemView.findViewById(R.id.itemview);
@@ -273,5 +279,24 @@ public class FriendRecyclerViewAdapter extends
     public void onItemClear() {
 //      itemView.setBackgroundColor(0);
     }
+  }
+  private String getFriendRelation(JSONObject friend) {
+
+    Boolean timeLocked = false;
+    Boolean timeLock = false;
+    try {
+      timeLocked = friend.getBoolean("timeLocked");
+      timeLock = friend.getBoolean("timeLock");
+    } catch (JSONException e) {
+      Log.d(TAG, e.getMessage());
+    }
+    if(timeLocked && timeLock)
+      return mContext.getResources().getString(R.string.relation_both);
+    else if (timeLocked)
+      return mContext.getResources().getString(R.string.relation_is_your_tp);
+    else if (timeLock)
+      return mContext.getResources().getString(R.string.relation_you_are_tp);
+    else
+      return mContext.getResources().getString(R.string.relation_just_friend);
   }
 }

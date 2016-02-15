@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:paddingTop="5dip"
-                android:text="@string/is_your_friend"
+                android:text="null"
                 android:textSize="10sp"
                 android:layout_below="@+id/profile_name"
                 android:layout_toEndOf="@+id/profile_image"/>
@@ -58,10 +58,10 @@
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
-    <RadioButton
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="好友耍廢時，您可收到他的即時推播。"
+        android:text="@string/notif_descrpition"
         android:id="@+id/getNotifBtn"
         android:padding="10dp"
         android:checked="false"/>
@@ -69,14 +69,14 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="時間警察所擁有的權限：\n您耍廢時，時間警察可對您即時鎖屏。"
+        android:text="@string/time_locked_description"
         android:id="@+id/timeLockedBtn"
         android:padding="10dp"
         android:checked="false"/>
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="您所擁有的時間警察權限：\n委託人耍廢時，您可對委託人即時鎖屏。"
+        android:text="@string/time_lock_description"
         android:id="@+id/timeLockBtn"
         android:padding="10dp"
         android:checked="false"/>

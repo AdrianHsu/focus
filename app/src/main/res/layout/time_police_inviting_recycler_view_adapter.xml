@@ -39,15 +39,16 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:paddingTop="5dip"
-            android:text="@string/time_police_reply"
+            android:text="@string/time_police_inviting"
             android:textSize="10sp"
             android:layout_below="@+id/profile_name"
             android:layout_toEndOf="@+id/profile_image"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/time_police_roger_that"
+            android:text="@string/wait_for_reply"
             android:id="@+id/button"
+            android:enabled="false"
             android:layout_alignTop="@+id/profile_name"
             android:layout_alignParentEnd="true"/>
 

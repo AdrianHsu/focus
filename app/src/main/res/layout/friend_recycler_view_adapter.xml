@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:paddingTop="5dip"
-            android:text="@string/is_your_friend"
+            android:text="null"
             android:textSize="10sp"
             android:layout_below="@+id/profile_name"
             android:layout_toEndOf="@+id/profile_image"/>

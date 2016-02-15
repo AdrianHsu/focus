@@ -2,6 +2,7 @@ package com.dots.focus.ui;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -31,9 +32,10 @@ public class ModifyPermissionActivity extends BaseActivity {
   private TextView friendStateTv;
   private Button cancelBtn;
   private Button sendBtn;
-  private RadioButton getNotifBtn;
+  private CheckBox getNotifBtn;
   private CheckBox timeLockedBtn;
   private CheckBox timeLockBtn;
+  private static final String TAG = "Permission";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -94,25 +96,25 @@ public class ModifyPermissionActivity extends BaseActivity {
 
   private void initFriendState(JSONObject friend) {
 
-    getNotifBtn = (RadioButton) findViewById(R.id.getNotifBtn);
+    getNotifBtn = (CheckBox) findViewById(R.id.getNotifBtn);
     timeLockedBtn = (CheckBox) findViewById(R.id.timeLockedBtn);
     timeLockBtn = (CheckBox)findViewById(R.id.timeLockBtn);
 
     try {
       getNotifBtn.setChecked(friend.getBoolean("pop-up"));
-//      if(< 2位時間警察) {
-//        timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
-//
-//      } else if (== 2位時間警察) {
-//        if(timeLocked == true) // 此人已經是您的時間警察
-//          timeLockedBtn.setEnabled(true);
-//        else
-//          timeLockedBtn.setEnabled(false);
-//        if(timeLockedBtn.isEnabled()) {
-//          timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
-//        }
-//      }
-      timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
+      if(TimePoliceUtil.policeNum < 2) {
+        timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
+
+      } else if (TimePoliceUtil.policeNum == 2) {
+        if(friend.getBoolean("timeLocked")) // 此人已經是您的時間警察
+          timeLockedBtn.setEnabled(true);
+        else
+          timeLockedBtn.setEnabled(false);
+        if(timeLockedBtn.isEnabled()) {
+          timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
+        }
+      }
+//      timeLockedBtn.setChecked(friend.getBoolean("timeLocked"));
       timeLockBtn.setEnabled(friend.getBoolean("timeLock"));
       if(timeLockBtn.isEnabled())
         timeLockBtn.setChecked(true);
@@ -121,7 +123,6 @@ public class ModifyPermissionActivity extends BaseActivity {
       e.printStackTrace();
     }
   }
-
   private String getFriendRelation(JSONObject friend) {
 
     Boolean timeLocked = false;
@@ -130,16 +131,16 @@ public class ModifyPermissionActivity extends BaseActivity {
       timeLocked = friend.getBoolean("timeLocked");
       timeLock = friend.getBoolean("timeLock");
     } catch (JSONException e) {
-      e.printStackTrace();
+      Log.d(TAG, e.getMessage());
     }
     if(timeLocked && timeLock)
-      return "是您的時間警察與委託人";
+      return getResources().getString(R.string.relation_both);
     else if (timeLocked)
-      return "是您的時間警察";
+      return getResources().getString(R.string.relation_is_your_tp);
     else if (timeLock)
-      return "是您的委託人";
+      return getResources().getString(R.string.relation_you_are_tp);
     else
-      return "是您的好友";
+      return getResources().getString(R.string.relation_just_friend);
   }
 
   @Override

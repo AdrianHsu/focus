@@ -32,7 +32,7 @@ public class ReplyPermissionActivity extends BaseActivity {
   private TextView friendStateTv;
   private Button rejectBtn;
   private Button sendBtn;
-  private RadioButton getNotifBtn;
+  private CheckBox getNotifBtn;
   private CheckBox timeLockedBtn;
   private CheckBox timeLockBtn;
 
@@ -65,6 +65,7 @@ public class ReplyPermissionActivity extends BaseActivity {
 
     JSONObject friend = FetchFriendUtil.getFriendById(id);
     initFriendState(friend);
+
     friendStateTv.setText(getFriendRelation(friend));
     rejectBtn.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -89,7 +90,7 @@ public class ReplyPermissionActivity extends BaseActivity {
 
   private void initFriendState(JSONObject friend) {
 
-    getNotifBtn = (RadioButton) findViewById(R.id.getNotifBtn);
+    getNotifBtn = (CheckBox) findViewById(R.id.getNotifBtn);
     timeLockedBtn = (CheckBox) findViewById(R.id.timeLockedBtn);
     timeLockBtn = (CheckBox)findViewById(R.id.timeLockBtn);
 
@@ -115,13 +116,13 @@ public class ReplyPermissionActivity extends BaseActivity {
       e.printStackTrace();
     }
     if(timeLocked && timeLock)
-      return "是您的時間警察與委託人";
+      return getResources().getString(R.string.relation_both);
     else if (timeLocked)
-      return "是您的時間警察";
+      return getResources().getString(R.string.relation_is_your_tp);
     else if (timeLock)
-      return "是您的委託人";
+      return getResources().getString(R.string.relation_you_are_tp);
     else
-      return "是您的好友";
+      return getResources().getString(R.string.relation_just_friend);
   }
 
   @Override

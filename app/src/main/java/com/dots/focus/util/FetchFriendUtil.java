@@ -273,7 +273,7 @@ public class FetchFriendUtil {
         for (int i = 0, length = friends.length(); i < length; ++i) {
             try {
                 JSONObject object = friends.getJSONObject(i);
-                if (object.getLong("id") == id) {
+                if (object.getLong("user_id") == id) {
                     object.put("pop-up", verify);
                     friends.put(i, object);
                     currentUser.put("Friends", friends);

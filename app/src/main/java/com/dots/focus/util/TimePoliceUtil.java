@@ -87,7 +87,6 @@ public class TimePoliceUtil {
                 }
             }
         });
-
         JSONArray friends = currentUser.getJSONArray("Friends");
         if (friends == null)    return;
         for (int i = 0, length = friends.length(); i < length; ++i) {
@@ -154,7 +153,7 @@ public class TimePoliceUtil {
                         for (int i = 0, length = friends.length(); i < length; ++i) {
                             try {
                                 JSONObject object = friends.getJSONObject(i);
-                                if (object.getLong("id") == id) {
+                                if (object.getLong("user_id") == id) {
                                     found = true;
                                     object.put("timeLock", true);
                                     friends.put(i, object);
