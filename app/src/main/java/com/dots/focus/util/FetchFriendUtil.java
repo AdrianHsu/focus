@@ -250,5 +250,17 @@ public class FetchFriendUtil {
 //            }
 //        });
 //    }
+
+    public static JSONObject getFriendById(Long id) {
+        JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
+        for (int i = 0, length = friends.length(); i < length; ++i) {
+            try {
+                JSONObject object = friends.getJSONObject(i);
+                if (object.getLong("user_id") == id)
+                    return object;
+            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+        }
+        return null;
+    }
 }
 

@@ -396,12 +396,15 @@ public class TrackAccessibilityUtil {
     }
 
     public static int[] getCategory() {
+        int offset = getTimeOffset() * anHour;
+        Long time = aDay * ((System.currentTimeMillis() + offset) / aDay - 1) + offset;
         int[] data = new int[] {0, 0, 0, 0, 0, 0, 0};
-        List<DayBlock> dayBlocks = new ArrayList<>();
+        DayBlock dayBlock = null;
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        query.whereEqualTo("time", time);
         query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
         try {
-            dayBlocks = query.find();
+            dayBlock = query.getFirst();
         } catch (ParseException e) {
             Log.d(TAG, e.getMessage());
         }
@@ -411,10 +414,10 @@ public class TrackAccessibilityUtil {
         for (int i = 0; i < size; ++i)
             appLength.add(0);
 
-        for (int i = 0, n = dayBlocks.size(); i < n; ++i) {
-            List<Integer> appLength1 = dayBlocks.get(i).getAppLength();
-            for (int j = 0, temp = appLength1.size(); j < temp && j < size; ++j)
-                appLength.set(j, appLength.get(j) + appLength1.get(j));
+        if (dayBlock != null) {
+            List<Integer> appLength1 = dayBlock.getAppLength();
+            for (int i = 0, temp = appLength1.size(); i < temp && i < size; ++i)
+                appLength.set(i, appLength.get(i) + appLength1.get(i));
         }
 
         for (int i = 0; i < size; ++i) {
