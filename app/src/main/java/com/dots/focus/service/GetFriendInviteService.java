@@ -29,10 +29,16 @@ public class GetFriendInviteService extends Service {
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
-    checkLocal(); // friendWaitingReplyList.clear();
     Timer timer = new Timer();
     timer.schedule(new CheckFriendInvitation(), 0, 60000);
     return 0;
+  }
+
+  class CheckFriendInvitation extends TimerTask {
+    public void run() {
+      Log.d(TAG, "checkCycle...");
+      refresh();
+    }
   }
 
   public class GetFriendInviteBinder extends Binder {
@@ -86,12 +92,6 @@ public class GetFriendInviteService extends Service {
         }
       }
     });
-  }
-
-  class CheckFriendInvitation extends TimerTask {
-    public void run() {
-      refresh();
-    }
   }
 
   public static void checkLocal() {

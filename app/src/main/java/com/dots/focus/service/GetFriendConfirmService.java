@@ -30,7 +30,6 @@ public class GetFriendConfirmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        checkLocal();
         Timer timer = new Timer();
         timer.schedule(new CheckFriendConfirmation(), 0, 60000);
         return 0;
@@ -38,6 +37,7 @@ public class GetFriendConfirmService extends Service {
 
     class CheckFriendConfirmation extends TimerTask {
         public void run() {
+            Log.d(TAG, "checkCycle...");
             refresh();
         }
     }
