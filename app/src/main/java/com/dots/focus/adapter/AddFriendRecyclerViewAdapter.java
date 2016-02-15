@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.dots.focus.R;
 import com.dots.focus.config.FriendRelationship;
 import com.dots.focus.config.TimePoliceState;
+import com.dots.focus.service.GetTimePoliceReplyService;
 import com.dots.focus.ui.KickRequestActivity;
 import com.dots.focus.ui.ModifyPermissionActivity;
 import com.dots.focus.ui.ReplyPermissionActivity;
@@ -176,6 +177,7 @@ public class AddFriendRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
           Log.d(TAG, "I've known clicked.");
+
           int index = indexOf(jsonObject);
           if (index != -1)
             remove(index);
@@ -242,7 +244,7 @@ public class AddFriendRecyclerViewAdapter extends
 
       final long id = jsonObject.getLong("id");
       final String name = jsonObject.getString("name");
-//      final String objectId = jsonObject.getString("objectId");
+      final String objectId = jsonObject.getString("objectId");
 
       holder.mProfileNameTextView.setText(name);
 
@@ -253,6 +255,7 @@ public class AddFriendRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
           Log.d(TAG, "time police reply done");
+          GetTimePoliceReplyService.removeReplyList(id, objectId);
           int index = indexOf(jsonObject);
           if (index != -1)
             remove(index);

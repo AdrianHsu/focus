@@ -46,10 +46,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/send_invitation"
+            android:text="@string/wait_for_reply"
             android:id="@+id/button"
-            android:backgroundTint="@color/blue"
-            android:textColor="@color/white"
             android:enabled="false"
             android:layout_alignTop="@+id/profile_name"
             android:layout_alignParentEnd="true"/>

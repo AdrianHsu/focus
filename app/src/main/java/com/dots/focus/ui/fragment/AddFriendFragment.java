@@ -53,6 +53,7 @@ public class AddFriendFragment extends Fragment {
     GetFriendInviteService.refresh();
     GetFriendConfirmService.refresh();
     GetTimePoliceInviteService.refresh();
+    GetTimePoliceReplyService.refresh();
 //    FetchFriendUtil.waitFriendConfirm();
 
     final ArrayList<JSONObject> friendProfileList = new ArrayList<>();
@@ -83,6 +84,7 @@ public class AddFriendFragment extends Fragment {
             GetFriendInviteService.refresh();
             GetFriendConfirmService.refresh();
             GetTimePoliceInviteService.refresh();
+            GetTimePoliceReplyService.refresh();
 
             friendProfileList.clear();
             mRecyclerView.getAdapter().notifyDataSetChanged();

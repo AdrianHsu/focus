@@ -9,6 +9,7 @@ import android.util.Log;
 import com.dots.focus.config.TimePoliceState;
 import com.dots.focus.util.TimePoliceUtil;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -27,7 +28,7 @@ public class GetTimePoliceReplyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetTimePoliceReplyService start...");
-//        checkLocal();
+        checkLocal();
 
         return 0;
     }
@@ -47,7 +48,7 @@ public class GetTimePoliceReplyService extends Service {
         Log.d(TAG, "start GetTimePoliceReplyService run...");
         ParseQuery<ParseObject> query = ParseQuery.getQuery("TimePoliceInvitation");
         query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("user_id"));
-        query.whereEqualTo("state", TimePoliceState.INVITE_NOT_DOWNLOADED.getValue());
+        query.whereEqualTo("state", TimePoliceState.REPLY_NOT_DOWNLOADED.getValue());
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> inviteList, ParseException e) {
@@ -73,6 +74,7 @@ public class GetTimePoliceReplyService extends Service {
                             invitation.put("reply", reply);
                             invitation.put("state", TimePoliceState.REPLY_DOWNLOADED.getValue()
                                     + TimePoliceUtil.timePoliceStateOffset);
+                            invitation.put("objectId", object.getObjectId());
                             timePoliceReplyList.add(invitation);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
@@ -117,7 +119,20 @@ public class GetTimePoliceReplyService extends Service {
         });
     }
 
-    public static void removeReplyList(Long id) {
+    public static void removeReplyList(Long id, final String objectId) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("TimePoliceInvitation");
+        query.fromLocalDatastore();
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+          @Override
+          public void done(ParseObject parseObject, ParseException e) {
+            if (e == null && parseObject != null) {
+              parseObject.unpinInBackground();
+            }
+            else if (e != null)
+              Log.d(TAG, "Cannot find TimePoliceInvitation whose objectId is : " + objectId);
+          }
+        });
+
         for (int i = 0, length = timePoliceReplyList.size(); i < length; ++i) {
             try {
                 if (timePoliceReplyList.get(i).getLong("id") == id) {
