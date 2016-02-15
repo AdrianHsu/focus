@@ -34,13 +34,14 @@ public class OverviewFragment extends Fragment {
 
     final List<String> stringList = new ArrayList<>();
 
+    stringList.add(getResources().getString(R.string.title_my_radar_chart_overview));
     stringList.add(getResources().getString(R.string.title_weekly_app_usage_overview));
     stringList.add(getResources().getString(R.string.title_daily_app_usage_overview));
     stringList.add(getResources().getString(R.string.title_addiction_index_overview));
     stringList.add(getResources().getString(R.string.title_top_three_app_usage_overview));
     stringList.add(getResources().getString(R.string.title_app_leader_board_overview));
-    stringList.add(getResources().getString(R.string.title_my_daily_report_overview));
-    stringList.add(getResources().getString(R.string.title_my_radar_chart_overview));
+    stringList.add(getResources().getString(R.string.title_ads_overview));
+//    stringList.add(getResources().getString(R.string.title_my_daily_report_overview));
     stringList.add(getResources().getString(R.string.title_my_piggy_bank_overview));
     mOverviewCardViewAdapter = new OverviewCardViewAdapter(stringList);
     layoutManager = new GridLayoutManager(mContext, GRID_COLUMN);

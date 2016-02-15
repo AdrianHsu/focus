@@ -38,6 +38,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".ui.ModifyPermissionActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".ui.KickRequestActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">

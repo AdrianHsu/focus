@@ -2,12 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="15dp"
                 android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/layoutActivities">
+        android:layout_height="350dp"
+        android:id="@+id/decoView">
 
         <com.hookedonplay.decoviewlib.DecoView
             android:layout_width="match_parent"
@@ -42,15 +43,15 @@
             />
 
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text=""
-        android:id="@+id/textRemaining"
-        android:layout_below="@+id/textPercentage"
-        android:textSize="12dp"
-        android:layout_centerHorizontal="true"
-        android:maxWidth="200dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="textRemaining"
+            android:id="@+id/textRemaining"
+            android:layout_below="@+id/textPercentage"
+            android:textSize="12dp"
+            android:layout_centerHorizontal="true"
+            android:maxWidth="200dp" />
 
         <!--<TextView-->
         <!--android:layout_width="wrap_content"-->
@@ -68,6 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/layoutActivities"
+        android:layout_below="@+id/decoView"
         android:padding="4dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -87,25 +89,25 @@
             android:layout_centerHorizontal="true"
             android:maxWidth="200dp" />
         <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/imageActivity1"-->
-            <!--android:src="@drawable/ic_activity1"-->
-            <!--android:background="@drawable/circle_activity1"-->
-            <!--android:contentDescription="@string/fit_cycling"-->
-            <!--android:padding="16dp" />-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/imageActivity1"-->
+        <!--android:src="@drawable/ic_activity1"-->
+        <!--android:background="@drawable/circle_activity1"-->
+        <!--android:contentDescription="@string/fit_cycling"-->
+        <!--android:padding="16dp" />-->
 
         <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/imageActivity2"-->
-            <!--android:src="@drawable/ic_activity2"-->
-            <!--android:background="@drawable/circle_activity2"-->
-            <!--android:padding="16dp"-->
-            <!--android:contentDescription="@string/fit_running"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentEnd="true" />-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/imageActivity2"-->
+        <!--android:src="@drawable/ic_activity2"-->
+        <!--android:background="@drawable/circle_activity2"-->
+        <!--android:padding="16dp"-->
+        <!--android:contentDescription="@string/fit_running"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true" />-->
 
     </RelativeLayout>
 

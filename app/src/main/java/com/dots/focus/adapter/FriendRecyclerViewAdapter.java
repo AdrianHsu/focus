@@ -1,6 +1,7 @@
 package com.dots.focus.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.dots.focus.R;
 import com.dots.focus.config.FriendRelationship;
+import com.dots.focus.ui.KickRequestActivity;
 import com.dots.focus.util.FetchFriendUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
@@ -73,7 +75,12 @@ public class FriendRecyclerViewAdapter extends
       holder.mButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+          Intent intent;
+          intent = new Intent(mContext, KickRequestActivity.class);
+          intent.putExtra("user_name", name);
+          intent.putExtra("user_id", id);
 
+          mContext.startActivity(intent);
         }
       });
 

@@ -39,7 +39,7 @@ public class FriendListActivity extends BaseActivity {
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setTitle("好友清單");
+    getSupportActionBar().setTitle(getResources().getString(R.string.friend_list_text));
 
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.friend_recycler_view);
     FetchFriendUtil.refresh();
