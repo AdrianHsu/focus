@@ -93,7 +93,7 @@ public class AddFriendFragment extends Fragment {
             friendProfileList.addAll(FetchFriendUtil.mInvitingFriendList);
             Log.v(TAG, "mInvitingFriendList.size() == " + FetchFriendUtil.mInvitingFriendList.size
                                     ());
-            friendProfileList.addAll(TimePoliceUtil.timePoliceInvitingList);
+            friendProfileList.addAll(GetTimePoliceInviteService.timePoliceInviteList);
 
             friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
             Log.v(TAG, "friendWaitingReplyList.size() == " + GetFriendInviteService
