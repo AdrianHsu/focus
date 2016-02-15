@@ -326,20 +326,19 @@ public class DashboardDonutFragment extends SampleFragment {
       TextView appNameTv = (TextView) itemViewArray[i].findViewById(R.id.app_name);
       TextView appTimeTv = (TextView) itemViewArray[i].findViewById(R.id.app_time);
       ImageView appIconIv = (ImageView) itemViewArray[i].findViewById(R.id.imageview);
-      Drawable mIcon = mAppInfo.getIcon();
 
-      if(i != 3) {
-        if(mAppInfo == null) {
-          appNameTv.setText("");
-          appIconIv.setImageDrawable(null);
-
-        } else {
+      if(mAppInfo == null) {
+        appNameTv.setText("");
+        appIconIv.setImageDrawable(null);
+      } else {
+        Drawable mIcon = mAppInfo.getIcon();
+        if(i != 3) {
           appNameTv.setText(mAppInfo.getName());
           appIconIv.setImageDrawable(mIcon);
+        } else {
+          appNameTv.setText("其他應用軟體");
+          appIconIv.setImageDrawable(null);
         }
-      } else {
-        appNameTv.setText("其他應用軟體");
-        appIconIv.setImageDrawable(null);
       }
       switch(i) {
         case 0:
