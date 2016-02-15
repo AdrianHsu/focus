@@ -37,7 +37,6 @@ public class MainApplication extends Application {
     SettingsUtil.searchSettings();
     FetchAppUtil.loadParseApps();
 
-    TimePoliceUtil.initialize();
   }
 }
 

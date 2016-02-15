@@ -5,7 +5,9 @@ public enum TimePoliceState {
     INVITE_DOWNLOADED(1),
     REPLY_NOT_DOWNLOADED(2),
     REPLY_DOWNLOADED(3),
-    INVITING(4);
+    INVITING(4),
+    Cancel(5),
+    Delete(6);
 
     private final int value;
 
