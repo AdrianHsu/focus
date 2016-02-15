@@ -20,7 +20,7 @@ public class TimePoliceUtil {
     private static final int policeNumLimit = 2;
     public static ArrayList<Long> invitingIdList = new ArrayList<>();
     public static ArrayList<Long> invitedIdList = new ArrayList<>();
-    public static ArrayList<JSONObject> invitingList = new ArrayList<>();
+    public static ArrayList<JSONObject> timePoliceInvitingList = new ArrayList<>();
 
     static {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
@@ -48,7 +48,7 @@ public class TimePoliceUtil {
             jsonObject.put("time", time);
             jsonObject.put("lock_time", 0);
 
-            invitingList.add(jsonObject);
+            timePoliceInvitingList.add(jsonObject);
         } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
         ParseObject invite = new ParseObject("TimePoliceInvitation");
         invite.put("user_id_inviting", currentUser.getLong("user_id"));
@@ -229,10 +229,10 @@ public class TimePoliceUtil {
 
     public static void getReply(Long id) {
         invitingIdList.remove(id);
-        for (int i = 0, length = invitingList.size(); i < length; ++i) {
+        for (int i = 0, length = timePoliceInvitingList.size(); i < length; ++i) {
             try {
-                if (invitingList.get(i).getLong("id") == id) {
-                    invitingList.remove(i);
+                if (timePoliceInvitingList.get(i).getLong("id") == id) {
+                    timePoliceInvitingList.remove(i);
                     break;
                 }
             } catch (JSONException e) { Log.d(TAG, e.getMessage()); }

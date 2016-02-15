@@ -50,19 +50,19 @@ public class MainActivity extends BaseActivity {
       public void onPageSelected(int position) {
         switch (position) {
           case 0:
-            toolbar.setTitle("資訊主頁");
+            toolbar.setTitle(getResources().getString(R.string.main_title_dashboard));
             break;
           case 1:
-            toolbar.setTitle("好友邀請");
+            toolbar.setTitle(getResources().getString(R.string.main_title_add_friend));
             break;
           case 2:
-            toolbar.setTitle("訊息");
+            toolbar.setTitle(getResources().getString(R.string.main_title_message));
             break;
           case 3:
-            toolbar.setTitle("總覽");
+            toolbar.setTitle(getResources().getString(R.string.main_title_overview));
             break;
           case 4:
-            toolbar.setTitle("更多");
+            toolbar.setTitle(getResources().getString(R.string.main_title_more));
             break;
         }
       }

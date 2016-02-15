@@ -114,19 +114,19 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
           .show();
         Intent intent = null;
         if(vh.getAdapterPosition() == 0) {
-          intent = new Intent(v.getContext(), WeeklyAppUsageChartActivity.class);
-        } else if (vh.getAdapterPosition() == 1) {
-          intent = new Intent(v.getContext(), DailyAppUsageChartActivity.class);
-        } else if (vh.getAdapterPosition() == 2) {
-          intent = new Intent(v.getContext(), WeeklyAddictionIndexChartActivity.class);
-        } else if (vh.getAdapterPosition() == 3) {
-          intent = new Intent(v.getContext(), TopThreeAppUsageChartActivity.class);
-        } else if (vh.getAdapterPosition() == 4) {
-          intent = new Intent(v.getContext(), AppLeaderBoardChartActivity.class);
-        } else if (vh.getAdapterPosition() == 5) {
-          intent = new Intent(v.getContext(), DailyReportChartActivity.class);
-        } else if (vh.getAdapterPosition() == 6) {
           intent = new Intent(v.getContext(), RadarChartActivity.class);
+        } else if(vh.getAdapterPosition() == 1) {
+          intent = new Intent(v.getContext(), WeeklyAppUsageChartActivity.class);
+        } else if (vh.getAdapterPosition() == 2) {
+          intent = new Intent(v.getContext(), DailyAppUsageChartActivity.class);
+        } else if (vh.getAdapterPosition() == 3) {
+          intent = new Intent(v.getContext(), WeeklyAddictionIndexChartActivity.class);
+        } else if (vh.getAdapterPosition() == 4) {
+          intent = new Intent(v.getContext(), TopThreeAppUsageChartActivity.class);
+        } else if (vh.getAdapterPosition() == 5) {
+          intent = new Intent(v.getContext(), AppLeaderBoardChartActivity.class);
+        } else if (vh.getAdapterPosition() == 6) {
+//          intent = new Intent(v.getContext(), DailyReportChartActivity.class);
         } else if (vh.getAdapterPosition() == 7) {
           intent = new Intent(v.getContext(), TimePiggyBankActivity.class);
         } else {

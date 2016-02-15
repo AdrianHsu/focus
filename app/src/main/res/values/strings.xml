@@ -80,6 +80,7 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--FocusCommunityActivity-->
     <!--FocusCommunityCommentActivity-->
     <!--FriendListActivity-->
+    <string name="friend_list_text">好友清單</string>
     <!--GoalSettingsActivity-->
     <string name="usage_limit_today">今日使用上限</string>
     <string name="focus_reminder">FOCUS小提醒</string>
@@ -101,6 +102,13 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="cancel">取消</string>
     <!--LoginActivity-->
     <!--MainActivity-->
+    <string name="main_title_dashboard">資訊主頁</string>
+    <string name="main_title_add_friend">好友邀請</string>
+    <string name="main_title_message">訊息</string>
+    <string name="main_title_overview">總覽</string>
+    <string name="main_title_more">更多</string>
+    <!--ModifyPermissionActivity-->
+    <string name="modify_permission_text">修改權限</string>
     <!--NotificationSettingsActivity-->
     <string name="daily_report_settings">每日報表設定</string>
     <string name="daily_report_notif">每日報表推播</string>
@@ -148,12 +156,13 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="title_advanced_setting">進階設定</string>
     <string name="title_logout">登出</string>
     <!--OverviewFragment-->
+    <string name="title_ads_overview">這是廣告</string>
     <string name="title_weekly_app_usage_overview">每週總時數趨勢</string>
     <string name="title_daily_app_usage_overview">每日使用時段趨勢</string>
     <string name="title_addiction_index_overview">上癮程度趨勢</string>
     <string name="title_top_three_app_usage_overview">前三應用軟體使用趨勢</string>
     <string name="title_app_leader_board_overview">應用程式排行榜</string>
-    <string name="title_my_daily_report_overview">我的每日報表</string>
+    <!--<string name="title_my_daily_report_overview">我的每日報表</string>-->
     <string name="title_my_radar_chart_overview">個人特質雷達圖</string>
     <string name="title_my_piggy_bank_overview">我的時間存錢筒</string>
     <!--GlobalPiggyBankFragment-->

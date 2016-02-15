@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/itemview"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardCornerRadius="0dp"
+        card_view:contentPadding="4dp">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/profile_image"
+                android:src="@drawable/adrian"
+                android:layout_width="48dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_height="48dp" android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="姓名"
+                android:textSize="14sp"
+                android:layout_toEndOf="@+id/profile_image"/>
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingTop="5dip"
+                android:text="@string/is_your_friend"
+                android:textSize="10sp"
+                android:layout_below="@+id/profile_name"
+                android:layout_toEndOf="@+id/profile_image"/>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="好友耍廢時，您可收到他的即時推播。"
+        android:id="@+id/getNotifBtn"
+        android:padding="10dp"
+        android:checked="false"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="時間警察所擁有的權限：\n您耍廢時，時間警察可對您即時鎖屏。"
+        android:id="@+id/timeLockedBtn"
+        android:padding="10dp"
+        android:checked="false"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="您所擁有的時間警察權限：\n委託人耍廢時，您可對委託人即時鎖屏。"
+        android:id="@+id/timeLockBtn"
+        android:padding="10dp"
+        android:checked="false"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:id="@+id/cancel"
+            android:layout_gravity="left"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_invitation"
+            android:id="@+id/send"
+            />
+    </LinearLayout>
+</LinearLayout>
