@@ -62,7 +62,6 @@ public class AddFriendFragment extends Fragment {
     friendProfileList.addAll(TimePoliceUtil.timePoliceInvitingList);
     friendProfileList.addAll(GetTimePoliceInviteService.timePoliceInviteList);
     friendProfileList.addAll(GetTimePoliceReplyService.timePoliceReplyList);
-//    friendProfileList.addAll(FetchFriendUtil.mConfirmedFriendList);
     friendProfileList.addAll(GetFriendInviteService.friendWaitingReplyList);
     friendProfileList.addAll(GetFriendConfirmService.friendRepliedList);
 

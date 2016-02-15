@@ -59,6 +59,7 @@ public class TimePoliceUtil {
 
     public static void afterLoginInitialize() {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
+        if (friends == null)
         for (int i = 0, length = friends.length(); i < length; ++i) {
             try {
                 if (friends.getJSONObject(i).getBoolean("timeLocked"))

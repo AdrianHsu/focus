@@ -44,6 +44,8 @@ public class AddFriendRecyclerViewAdapter extends
                           TimePoliceUtil.timePoliceStateOffset;
   private static final int TP_REPLY_ITEM = TimePoliceState.REPLY_DOWNLOADED.getValue() +
                           TimePoliceUtil.timePoliceStateOffset;
+  private static final int TP_INVITING_ITEM = TimePoliceState.INVITING.getValue() +
+                          TimePoliceUtil.timePoliceStateOffset;
 
   private static final String TAG = "AddFriend";
 
@@ -76,6 +78,8 @@ public class AddFriendRecyclerViewAdapter extends
         TPInviteBindItem(jsonObject, (TimePoliceInviteAdapterViewHolder) holder);
       } else if (holder instanceof TimePoliceReplyAdapterViewHolder){
         TPReplyBindItem(jsonObject, (TimePoliceReplyAdapterViewHolder) holder);
+      } else if (holder instanceof TimePoliceInvitingAdapterViewHolder){
+        TPInvitingBindItem(jsonObject, (TimePoliceInvitingAdapterViewHolder) holder);
       }
     }
   }
@@ -238,7 +242,7 @@ public class AddFriendRecyclerViewAdapter extends
 
       final long id = jsonObject.getLong("id");
       final String name = jsonObject.getString("name");
-      final String objectId = jsonObject.getString("objectId");
+//      final String objectId = jsonObject.getString("objectId");
 
       holder.mProfileNameTextView.setText(name);
 
@@ -264,6 +268,44 @@ public class AddFriendRecyclerViewAdapter extends
           intent.putExtra("user_id", id);
           mContext.startActivity(intent);
 
+        }
+      });
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
+  public void TPInvitingBindItem(final JSONObject jsonObject, TimePoliceInvitingAdapterViewHolder
+                          holder) {
+    try {
+
+      final long id = jsonObject.getLong("id");
+      final String name = jsonObject.getString("name");
+
+      holder.mProfileNameTextView.setText(name);
+
+      String url = "https://graph.facebook.com/" + String.valueOf(id) +
+                              "/picture?type=large";
+      Picasso.with(mContext).load(url).into(holder.mProfileImageView);
+      holder.mButton.setEnabled(false);
+//      holder.mButton.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//          Log.d(TAG, "time police inviting");
+//          int index = indexOf(jsonObject);
+//          if (index != -1)
+//            remove(index);
+//        }
+//      });
+      holder.item_view.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Intent intent;
+          intent = new Intent(mContext, ModifyPermissionActivity.class);
+
+          intent.putExtra("user_name", name);
+          intent.putExtra("user_id", id);
+          mContext.startActivity(intent);
         }
       });
 
@@ -386,6 +428,24 @@ public class AddFriendRecyclerViewAdapter extends
 //          }
 //        });
       }
+      return vh;
+    }else if (i == TP_INVITING_ITEM) {
+      v = LayoutInflater.from(parent.getContext())
+                              .inflate(R.layout.time_police_inviting_recycler_view_adapter, parent,
+                                                      false);
+      final TimePoliceInvitingAdapterViewHolder vh = new TimePoliceInvitingAdapterViewHolder(v,
+                              true);
+      if (v != null) {
+//        v.setOnClickListener(new View.OnClickListener() {
+//          @Override
+//          public void onClick(View v) {
+//            Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+//                                    .LENGTH_SHORT)
+//                                    .show();
+//          }
+//        });
+      }
+      return vh;
     }
     return null;
   }
@@ -626,6 +686,37 @@ public class AddFriendRecyclerViewAdapter extends
         mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
         mButton = (Button) itemView.findViewById(R.id.button);
 
+
+        item_view = itemView.findViewById(R.id.itemview);
+      }
+    }
+
+    @Override
+    public void onItemSelected() {
+//      itemView.setBackgroundColor(Color.DKGRAY);
+    }
+
+    @Override
+    public void onItemClear() {
+//      itemView.setBackgroundColor(0);
+    }
+  }
+  public class TimePoliceInvitingAdapterViewHolder extends UltimateRecyclerviewViewHolder {
+
+    TextView mProfileNameTextView;
+    ImageView mProfileImageView;
+    Button mButton;
+    View item_view;
+
+
+    public TimePoliceInvitingAdapterViewHolder(View itemView, boolean isItem) {
+      super(itemView);
+      if (isItem) {
+        Log.v(TAG, "TimePoliceInvitingAdapterViewHolder Created");
+        mProfileNameTextView = (TextView) itemView.findViewById(
+                                R.id.profile_name);
+        mProfileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
+        mButton = (Button) itemView.findViewById(R.id.button);
 
         item_view = itemView.findViewById(R.id.itemview);
       }

@@ -109,6 +109,13 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="main_title_more">更多</string>
     <!--ModifyPermissionActivity-->
     <string name="modify_permission_text">修改權限</string>
+    <string name="relation_both">是您的時間警察與委託人。</string>
+    <string name="relation_is_your_tp">是您的時間警察。</string>
+    <string name="relation_you_are_tp">是您的委託人。</string>
+    <string name="relation_just_friend">是您的好友。</string>
+    <string name="notif_descrpition">好友耍廢時，您可收到他的即時推播。</string>
+    <string name="time_locked_description">時間警察所擁有的權限：\n您耍廢時，時間警察可對您即時鎖屏。</string>
+    <string name="time_lock_description">您所擁有的時間警察權限：\n委託人耍廢時，您可對委託人即時鎖屏。</string>
     <!--NotificationSettingsActivity-->
     <string name="daily_report_settings">每日報表設定</string>
     <string name="daily_report_notif">每日報表推播</string>
@@ -205,7 +212,6 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="profile_birth_text">出生年份</string>
     <string name="profile_friend_num_text">好友總數</string>
     <string name="profile_total_time_saved_text">省下總小時數</string>
-
     <string name="profile_click_modify">點擊以修改</string>
     <!--CreateInfoSlide-->
     <string name="set_explore_focus">恭喜您完成設定！歡迎您探索Focus，找回失去的專注！</string>
@@ -214,6 +220,8 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--DailyTopThreeAppUsageAdapter-->
     <!--TimePoliceInviteRecyclerViewAdapter-->
     <string name="time_police_invite">委託您成為他的時間警察。</string>
+    <!--TimePoliceInvitingRecyclerViewAdapter-->
+    <string name="time_police_inviting">已委託好友成為您的時間警察。</string>
     <!--TimePoliceReplyRecyclerViewAdapter-->
     <string name="time_police_reply">已經成為您的時間警察。</string>
     <string name="time_police_roger_that">知道了</string>
