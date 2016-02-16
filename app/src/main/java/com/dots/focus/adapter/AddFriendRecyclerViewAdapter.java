@@ -278,7 +278,6 @@ public class AddFriendRecyclerViewAdapter extends
         @Override
         public void onClick(View v) {
           Intent intent;
-          GetTimePoliceReplyService.removeReplyList(id, objectId);
 
           intent = new Intent(mContext, DonePermissionActivity.class);
 
@@ -359,7 +358,6 @@ public class AddFriendRecyclerViewAdapter extends
         public void onClick(View v) {
           Intent intent;
           intent = new Intent(mContext, DonePermissionActivity.class);
-          GetTimePoliceCancelOrDeleteService.removeCancelList(id, objectId);
 
           intent.putExtra("user_name", name);
           intent.putExtra("user_id", id);
@@ -398,7 +396,6 @@ public class AddFriendRecyclerViewAdapter extends
         @Override
         public void onClick(View v) {
           Intent intent;
-          GetTimePoliceCancelOrDeleteService.removeDeleteList(id, objectId);
           intent = new Intent(mContext, DonePermissionActivity.class);
 
           intent.putExtra("user_name", name);

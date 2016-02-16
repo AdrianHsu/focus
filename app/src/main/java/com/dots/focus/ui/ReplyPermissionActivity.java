@@ -93,7 +93,7 @@ public class ReplyPermissionActivity extends BaseActivity {
     rejectBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-
+        FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
         TimePoliceUtil.timePoliceReply(false, objectId);
         onBackPressed();
       }

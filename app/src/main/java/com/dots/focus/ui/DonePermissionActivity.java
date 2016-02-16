@@ -29,8 +29,7 @@ public class DonePermissionActivity extends BaseActivity {
   private ImageView profileImage;
   private TextView profileNameTv;
   private TextView friendStateTv;
-  private Button cancelBtn;
-  private Button sendBtn;
+  private Button backBtn;
   private CheckBox getNotifBtn;
   private CheckBox timeLockedBtn;
   private CheckBox timeLockBtn;
@@ -50,8 +49,7 @@ public class DonePermissionActivity extends BaseActivity {
     profileImage = (ImageView) findViewById(R.id.profile_image);
     profileNameTv = (TextView) findViewById(R.id.profile_name);
     friendStateTv = (TextView) findViewById(R.id.content);
-    cancelBtn = (Button)findViewById(R.id.cancel);
-    sendBtn = (Button)findViewById(R.id.send);
+    backBtn = (Button)findViewById(R.id.back);
 
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
@@ -89,19 +87,12 @@ public class DonePermissionActivity extends BaseActivity {
 //      }
 //    });
 
-    cancelBtn.setOnClickListener(new View.OnClickListener() {
+    backBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        onBackPressed();
-
-      }
-    });
-    sendBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-
         FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
         onBackPressed();
+
       }
     });
   }

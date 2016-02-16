@@ -77,6 +77,8 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--DailyAppUsageChartActivity-->
     <string name="app_usage_top_three">應用軟體用量前三名</string>
     <!--DailyReportChartActivity-->
+    <!--DonePermissionActivity-->
+    <string name="back">退回</string>
     <!--FocusCommunityActivity-->
     <!--FocusCommunityCommentActivity-->
     <!--FriendListActivity-->

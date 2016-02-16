@@ -97,6 +97,7 @@ public class ModifyPermissionActivity extends BaseActivity {
     cancelBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
         onBackPressed();
 
       }
