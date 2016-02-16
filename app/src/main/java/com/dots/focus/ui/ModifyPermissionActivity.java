@@ -25,22 +25,7 @@ import java.sql.Time;
 /**
  * Created by AdrianHsu on 2016/2/15.
  */
-public class ModifyPermissionActivity extends BaseActivity {
-
-  private Toolbar toolbar;
-  private String name;
-  private Long id;
-  private ImageView profileImage;
-  private TextView profileNameTv;
-  private TextView friendStateTv;
-  private Button cancelBtn;
-  private Button sendBtn;
-  private CheckBox getNotifBtn;
-  private CheckBox timeLockedBtn;
-  private CheckBox timeLockBtn;
-  private Boolean originalTimeLocked;
-  private Boolean originalTimeLock;
-  private static final String TAG = "Permission";
+public class ModifyPermissionActivity extends FriendPermissionActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -153,31 +138,6 @@ public class ModifyPermissionActivity extends BaseActivity {
     } catch(JSONException e) {
       e.printStackTrace();
     }
-  }
-  private String getFriendRelation(JSONObject friend) {
-
-    Boolean timeLocked = false;
-    Boolean timeLock = false;
-    try {
-      timeLocked = friend.getBoolean("timeLocked");
-      timeLock = friend.getBoolean("timeLock");
-    } catch (JSONException e) {
-      Log.d(TAG, e.getMessage());
-    }
-    if(timeLocked && timeLock)
-      return getResources().getString(R.string.relation_both);
-    else if (timeLocked)
-      return getResources().getString(R.string.relation_is_your_tp);
-    else if (timeLock)
-      return getResources().getString(R.string.relation_you_are_tp);
-    else
-      return getResources().getString(R.string.relation_just_friend);
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    onBackPressed();
-    return true;
   }
 
 }
