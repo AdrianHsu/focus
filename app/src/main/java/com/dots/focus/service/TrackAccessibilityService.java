@@ -212,8 +212,13 @@ public class TrackAccessibilityService extends AccessibilityService {
     private void clickCount(int i, DayBlock dayBlock) {
         AppInfo appInfo = FetchAppUtil.getApp(i);
         if (appInfo == null)    return;
+        Log.d(TAG, "clickCount category: " + appInfo.getCategory());
         int index = TrackAccessibilityUtil.getCategoryUnion(appInfo.getCategory());
         List<Integer> categoryClickToday = dayBlock.getCategoryClick();
+        Log.d(TAG, "clickCount index: " + index);
+        for (int j = 0, size = categoryClickToday.size(); j < size; ++j)
+            Log.d(TAG, "categoryClickToday.get(" + j + "): " + categoryClickToday.get(j));
+
         if (index >= 0 && index < categoryClickToday.size())
             categoryClickToday.set(index, categoryClickToday.get(index) + 1);
         dayBlock.setCategoryClick(categoryClickToday);

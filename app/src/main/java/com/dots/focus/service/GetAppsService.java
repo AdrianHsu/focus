@@ -28,14 +28,13 @@ import java.util.Locale;
 public class GetAppsService extends IntentService {
     //private List<AppInfo> applicationList = new ArrayList<AppInfo>();
 
-    public GetAppsService(){
+    public GetAppsService() {
         super("GetAppsService");
     }
+    private static String TAG = "GetAppsService";
 
     @Override
     public void onHandleIntent(Intent intent){
-        String TAG = "GetAppsService";
-
         JSONObject obj = new JSONObject(), apps = new JSONObject();
         JSONArray list = new JSONArray();
         boolean needToStore = false;
@@ -47,12 +46,12 @@ public class GetAppsService extends IntentService {
                 try {
                     getAppNameAndStoreIt(ri, list);
                 } catch (Exception e) {
-                    Log.d(TAG, e.getMessage());
+                    Log.d(TAG, "getAppNameAndStoreIt: " + e.getMessage());
                 }
             }
         }
 
-        HttpClient httpClient = new DefaultHttpClient(); //Deprecated
+        HttpClient httpClient = new DefaultHttpClient(); // Deprecated
         try {
             obj.put("packages", list);
 
@@ -73,6 +72,11 @@ public class GetAppsService extends IntentService {
                 String packageVal = appObj.optString("package", null);
                 String categoryVal = appObj.optString("category", null);
 
+                if (packageVal != null)
+                    Log.d(TAG, "packageVal: " + packageVal);
+                if (categoryVal != null)
+                    Log.d(TAG, "categoryVal: " + categoryVal);
+
                 if (packageVal == null || categoryVal == null)
                     continue;
                 apps.put(packageVal, categoryVal);
@@ -82,7 +86,7 @@ public class GetAppsService extends IntentService {
             for (int i = 0; i < all.length(); i++) {
                 Log.d("GetAppsService", all.getString(i) + ": " + apps.getString(all.getString(i)));
                 AppInfo temp = FetchAppUtil.getApp(all.getString(i));
-                if(temp != null)    temp.setCategory(apps.getString(all.getString(i)));
+                if (temp != null)    temp.setCategory(apps.getString(all.getString(i)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,7 +94,7 @@ public class GetAppsService extends IntentService {
             httpClient.getConnectionManager().shutdown();
         }
         FetchAppUtil.printApps();
-        if(needToStore) FetchAppUtil.loadParseApps();
+        if (needToStore) FetchAppUtil.loadParseApps();
 
         TrackAccessibilityService.updateAppIndex();
     }
@@ -101,7 +105,7 @@ public class GetAppsService extends IntentService {
         return getPackageManager().queryIntentActivities(mainIntent, 0);
     }
 
-    public void getAppNameAndStoreIt(ResolveInfo ri, JSONArray list) throws Exception{
+    public void getAppNameAndStoreIt(ResolveInfo ri, JSONArray list) throws Exception {
         String name;
         if (ri.activityInfo == null)    return;
 

@@ -122,11 +122,10 @@ public class FetchAppUtil {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Apps");
         query.fromLocalDatastore();
 
-
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
-                if (e == null &&object != null) {
+                if (e == null && object != null) {
                     ParseApps = object;
                     ParseApps.put("User", ParseUser.getCurrentUser());
                     mergeApps();
@@ -145,7 +144,7 @@ public class FetchAppUtil {
 
     // helper functions
     private static void loadExceptionOrNull() {
-        Log.d("GetAppsService", "database is empty.");
+        Log.d(TAG, "database is empty.");
         ParseApps = new ParseObject("Apps");
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null)
@@ -165,7 +164,7 @@ public class FetchAppUtil {
 
         searching = false;
         printApps();
-        Log.d("GetAppsService", "new database done.");
+        Log.d(TAG, "new database done.");
     }
     private static void mergeApps() {
         String localTAG = "mergeApps";
