@@ -41,11 +41,9 @@ import java.util.Random;
 public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity implements OnSeekBarChangeListener {
 
   private LineChart mChart;
-  private Spinner spinner;
   private TextView weekSwitchTv;
   private Button daySwitchLeftBtn;
   private Button daySwitchRightBtn;
-  private boolean IS_MINUTE = false;
   private int CURRENT_WEEK = 0;
 //  private ArrayAdapter<String> timeInterval;
 //  private String[] timeIntervalArray = {"小時", "分鐘"};
@@ -192,7 +190,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
     }
 
     ArrayList<Entry> vals1 = new ArrayList<>();
-    int[] addictionIndex = TrackAccessibilityUtil.dayCategryClicksInWeek(CURRENT_WEEK);
+    int[] addictionIndex = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK);
 
     for (int i = 0; i < 7; i ++) {
       vals1.add(new Entry(addictionIndex[i], i));

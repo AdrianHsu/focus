@@ -47,7 +47,7 @@ public class DashboardFragment extends Fragment {
     String day = TrackAccessibilityUtil.dayString(CURRENT_DAY);
     daySwitchTv.setText(day);
     addictionIndexTv = (TextView) v.findViewById(R.id.textAddictIndex);
-    setAddictionIndex(CURRENT_DAY);
+    setAddictionIndex();
 
     // DEBUG:
     // java.lang.IllegalStateException: Failure saving state:
@@ -62,6 +62,7 @@ public class DashboardFragment extends Fragment {
         String day = TrackAccessibilityUtil.dayString(CURRENT_DAY);
         daySwitchTv.setText(day);
         daySwitchRightBtn.setEnabled(true);
+        setAddictionIndex();
 //        daySwitchLeftBtn.setEnabled(false);
         getChildFragmentManager()
                                 .beginTransaction()
@@ -83,6 +84,7 @@ public class DashboardFragment extends Fragment {
         if (CURRENT_DAY == 0)
           daySwitchRightBtn.setEnabled(false);
         daySwitchLeftBtn.setEnabled(true);
+        setAddictionIndex();
 
         getChildFragmentManager()
                                 .beginTransaction()
@@ -95,9 +97,9 @@ public class DashboardFragment extends Fragment {
     return v;
   }
 
-  private void setAddictionIndex(int mDay) {
+  private void setAddictionIndex() {
 
-    int state = 0 = TrackAccessibilityUtil.dayCategoryClicks(mDay);
+    int state = TrackAccessibilityUtil.dayCategoryClicksLevel(CURRENT_DAY);
     if(state == 0) {
 
       addictionIndexTv.setText(getResources().getString(R.string.addict_0));
