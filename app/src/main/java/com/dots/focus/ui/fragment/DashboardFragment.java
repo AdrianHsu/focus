@@ -3,6 +3,7 @@ package com.dots.focus.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +38,9 @@ public class DashboardFragment extends Fragment {
     if (savedInstanceState == null){
 
       //add child fragment
-      getChildFragmentManager()
-        .beginTransaction()
-        .add(R.id.frameDashboardDonut, mSampleFitFragment, "tag")
+      FragmentTransaction initFr = getChildFragmentManager().beginTransaction();
+      initFr.add(R.id.frameDashboardDonut, mSampleFitFragment, "tag")
+        .addToBackStack(null)
         .commit();
 
     }
@@ -64,15 +65,16 @@ public class DashboardFragment extends Fragment {
         daySwitchRightBtn.setEnabled(true);
         setAddictionIndex();
 //        daySwitchLeftBtn.setEnabled(false);
-        getChildFragmentManager()
-                                .beginTransaction()
-                                .detach(mSampleFitFragment)
-                                .attach(mSampleFitFragment)
-                                .commit();
+        FragmentTransaction leftFr = getChildFragmentManager().beginTransaction();
+        mSampleFitFragment = new DashboardDonutFragment();
+        leftFr.replace(R.id.frameDashboardDonut, mSampleFitFragment);
+        leftFr.addToBackStack(null);
+        leftFr.commit();
       }
     });
     daySwitchRightBtn = (Button) v.findViewById(R.id.day_switch_right_btn);
-    daySwitchRightBtn.setEnabled(false);
+    if(CURRENT_DAY == 0)
+      daySwitchRightBtn.setEnabled(false);
     daySwitchRightBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -86,11 +88,11 @@ public class DashboardFragment extends Fragment {
         daySwitchLeftBtn.setEnabled(true);
         setAddictionIndex();
 
-        getChildFragmentManager()
-                                .beginTransaction()
-                                .detach(mSampleFitFragment)
-                                .attach(mSampleFitFragment)
-                                .commit();
+        FragmentTransaction rightFr = getChildFragmentManager().beginTransaction();
+        mSampleFitFragment = new DashboardDonutFragment();
+        rightFr.replace(R.id.frameDashboardDonut, mSampleFitFragment);
+        rightFr.addToBackStack(null);
+        rightFr.commit();
       }
     });
 

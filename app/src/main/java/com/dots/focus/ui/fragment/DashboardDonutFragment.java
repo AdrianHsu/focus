@@ -328,17 +328,17 @@ public class DashboardDonutFragment extends SampleFragment {
       ImageView appIconIv = (ImageView) itemViewArray[i].findViewById(R.id.imageview);
 
       if(mAppInfo == null) {
-        appNameTv.setText("");
-        appIconIv.setImageDrawable(null);
+
+        Drawable defaultIcon = getResources().getDrawable(R.drawable.ic_launcher_android);
+        appNameTv.setText("尚無資料");
+        appIconIv.setImageDrawable(defaultIcon);
+        if(i == 3) {
+          appNameTv.setText("其他應用軟體");
+        }
       } else {
         Drawable mIcon = mAppInfo.getIcon();
-        if(i != 3) {
-          appNameTv.setText(mAppInfo.getName());
-          appIconIv.setImageDrawable(mIcon);
-        } else {
-          appNameTv.setText("其他應用軟體");
-          appIconIv.setImageDrawable(null);
-        }
+        appNameTv.setText(mAppInfo.getName());
+        appIconIv.setImageDrawable(mIcon);
       }
       switch(i) {
         case 0:
@@ -362,6 +362,7 @@ public class DashboardDonutFragment extends SampleFragment {
           appTimeTv.setTextColor(COLOR_NEUTRAL);
           break;
       }
+
     }
   }
   private String timeToString(int seconds) {
