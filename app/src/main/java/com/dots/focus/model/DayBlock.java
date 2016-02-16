@@ -25,6 +25,9 @@ public class DayBlock extends ParseObject {
         List<String> hours = new ArrayList<>(24);
         for (int i = 0; i < 24; ++i)
             hours.add("");
+        List<Integer> categoryClick = new ArrayList<>(7);
+        for (int i = 0; i < 7; ++i)
+            categoryClick.add(0);
 
         setUser(ParseUser.getCurrentUser());
         setAppLength(appLength);
@@ -32,6 +35,7 @@ public class DayBlock extends ParseObject {
         setOffset(TrackAccessibilityUtil.getTimeOffset());
         setEnd(false);
         setHourBlocks(hours);
+        setCategoryClick(categoryClick);
     }
 
     public ParseUser getUser() {
@@ -69,6 +73,12 @@ public class DayBlock extends ParseObject {
     }
     public void setHourBlocks(List<String> hours) {
         put("hourBlocks", hours);
+    }
+    public List<Integer> getCategoryClick() {
+        return getList("categoryClick");
+    }
+    public void setCategoryClick(List<Integer> categoryClick) {
+        put("categoryClick", categoryClick);
     }
     public static ParseQuery<DayBlock> getQuery() {
         return ParseQuery.getQuery(DayBlock.class);

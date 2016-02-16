@@ -35,7 +35,7 @@ public class TrackAccessibilityService extends AccessibilityService {
     private static int appIndex = -1;
     private static int[] appsUsage = {0, 0, 0, 0, 0, 0};
     private static long blockTime = 0;
-    public static int[] categoryClickToday = {0, 0, 0, 0, 0, 0, 0};
+
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -135,7 +135,6 @@ public class TrackAccessibilityService extends AccessibilityService {
             return;
         }
 
-        clickCount(appIndex);
         while (now > startHour + TrackAccessibilityUtil.anHour) {
             storeInDatabase(startHour + TrackAccessibilityUtil.anHour);
             startTime = startHour = startHour + TrackAccessibilityUtil.anHour;
@@ -175,6 +174,8 @@ public class TrackAccessibilityService extends AccessibilityService {
         HourBlock hour = TrackAccessibilityUtil.getCurrentHour(startTime);
         DayBlock day = TrackAccessibilityUtil.getCurrentDay(startTime);
 
+        clickCount(appIndex, day);
+
         if (endIndex > AppIndex)    AppIndex = endIndex;
         ++AppIndex;
         hour.put("endIndex", AppIndex);
@@ -208,12 +209,14 @@ public class TrackAccessibilityService extends AccessibilityService {
                 + duration);
     }
 
-    private void clickCount(int i) {
+    private void clickCount(int i, DayBlock dayBlock) {
         AppInfo appInfo = FetchAppUtil.getApp(i);
         if (appInfo == null)    return;
         int index = TrackAccessibilityUtil.getCategoryUnion(appInfo.getCategory());
-        if (index != -1)
-            ++categoryClickToday[index];
+        List<Integer> categoryClickToday = dayBlock.getCategoryClick();
+        if (index >= 0 && index < categoryClickToday.size())
+            categoryClickToday.set(index, categoryClickToday.get(index) + 1);
+        dayBlock.setCategoryClick(categoryClickToday);
     }
 
     private boolean checkIndex(String currentPackageName) {

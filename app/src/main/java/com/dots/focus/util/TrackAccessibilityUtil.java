@@ -29,7 +29,7 @@ public class TrackAccessibilityUtil {
         return TimeZone.getDefault().getOffset(System.currentTimeMillis()) / anHour;
     }
 
-    public static DayBlock getCurrentDay(long time){
+    public static DayBlock getCurrentDay(long time) {
         long localDay = getLocalDay(time);
 
         if (currentDay == null) {
@@ -166,21 +166,10 @@ public class TrackAccessibilityUtil {
             x[i][0] = -1;
             x[i][1] = 0;
         }
-        int offset = getTimeOffset();
-        long time = aDay * ((System.currentTimeMillis() + offset * anHour) / aDay - day) - offset *
-                anHour;
-        Log.d(TAG, "time: " + time + ", currentDay: " + getCurrentDay(System.currentTimeMillis())
-                .getTime());
+        long time = getPrevXDayInMilli(day);
 
-        DayBlock dayBlock = null;
-        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
-        query.whereEqualTo("time", time);
-        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
-        try {
-            dayBlock = query.getFirst();
-        } catch (ParseException e) {
-            Log.d(TAG, e.getMessage());
-        }
+        DayBlock dayBlock = getDayBlockByTime(time);
+
         if (dayBlock != null) {
             List<Integer> appLength = dayBlock.getAppLength();
             for (int i = 0, s = appLength.size(); i < s; ++i) {
@@ -209,27 +198,13 @@ public class TrackAccessibilityUtil {
         return x;
     }
 
-    public static int[] weekUsage(long time0) {
+    public static int[] weekUsage(long time) {
         int[] x = new int[7];
-        ArrayList<Long> times = new ArrayList<>();
-        times.ensureCapacity(7);
-        List<DayBlock> dayBlocks = new ArrayList<>();
-        for (int i = 0; i < 7; ++i) {
-            x[i] = 0;
-            times.add(time0 + i * aDay);
-        }
 
-        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
-        query.whereContainedIn("time", times);
-        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
-        try {
-            dayBlocks = query.find();
-        } catch (ParseException e) {
-            Log.d(TAG, e.getMessage());
-        }
+        List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
 
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
-            int day = (int) ((dayBlocks.get(i).getLong("time") - time0) / aDay);
+            int day = (int) ((dayBlocks.get(i).getLong("time") - time) / aDay);
             List<Integer> appLength = dayBlocks.get(i).getAppLength();
 
             for (int j = 0, n = appLength.size(); j < n; ++j)
@@ -318,7 +293,7 @@ public class TrackAccessibilityUtil {
         }
         return x;
     }
-    public static List<List<Integer>> weekAppUsage(long time0) {
+    public static List<List<Integer>> weekAppUsage(long time) {
         List<List<Integer>> appLengths = new ArrayList<>(8);
         int temp = FetchAppUtil.getSize();
 
@@ -332,22 +307,10 @@ public class TrackAccessibilityUtil {
         for (int i = 0; i < temp; ++i)
             appLength.add(0);
 
-        ArrayList<Long> times = new ArrayList<>();
-        times.ensureCapacity(7);
-        List<DayBlock> dayBlocks = new ArrayList<>();
-        for (int i = 0; i < 7; ++i)
-            times.add(time0 + i * aDay);
+        List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
 
-        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
-        query.whereContainedIn("time", times);
-        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
-        try {
-            dayBlocks = query.find();
-        } catch (ParseException e) {
-            Log.d(TAG, e.getMessage());
-        }
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
-            int day = (int)((dayBlocks.get(i).getTime() - time0) / aDay);
+            int day = (int)((dayBlocks.get(i).getTime() - time) / aDay);
             List<Integer> appLength2 = dayBlocks.get(i).getAppLength();
             for (int j = 0, n = appLength2.size(); j < n && j < temp; ++j)
                 appLength.set(j, appLength.get(j) + appLength2.get(j));
@@ -397,19 +360,10 @@ public class TrackAccessibilityUtil {
         return x;
     }
 
-    public static int[] getCategory() {
-        int offset = getTimeOffset() * anHour;
-        Long time = aDay * ((System.currentTimeMillis() + offset) / aDay - 1) + offset;
+    public static int[] getCategory(int day) {
+        Long time = getPrevXDayInMilli(day);
         int[] data = new int[] {0, 0, 0, 0, 0, 0, 0};
-        DayBlock dayBlock = null;
-        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
-        query.whereEqualTo("time", time);
-        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
-        try {
-            dayBlock = query.getFirst();
-        } catch (ParseException e) {
-            Log.d(TAG, e.getMessage());
-        }
+        DayBlock dayBlock = getDayBlockByTime(time);
 
         int size = FetchAppUtil.getSize();
         List<Integer> appLength = new ArrayList<>(size);
@@ -483,16 +437,7 @@ public class TrackAccessibilityUtil {
         }
     }
 
-    public static long getPrevXWeek(int week) { // 0: current week
-      Calendar calendar = Calendar.getInstance();
-        long time = System.currentTimeMillis() + getTimeOffset() * anHour;
-        time = aDay * (time / aDay);
-        calendar.setTimeInMillis(time);
-        Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
-                (Calendar.DAY_OF_WEEK));
-        return (time - getTimeOffset() * anHour - 7 * aDay * week
-                - (calendar.get(Calendar.DAY_OF_WEEK) - 1) * aDay);
-    }
+
 
     public static String[] weekString(long time) {
         String[] theWeek = new String[7],
@@ -532,5 +477,92 @@ public class TrackAccessibilityUtil {
         return  ("" + calendar.get(Calendar.YEAR) + "年" +
                 (calendar.get(Calendar.MONTH) + 1)  + "月" +
                 calendar.get(Calendar.DAY_OF_MONTH) + "日");
+    }
+
+    public static int dayCategoryClicksLevel(int day) {
+        long time = getPrevXDayInMilli(day);
+        DayBlock dayBlock = getDayBlockByTime(time);
+        List<Integer> clicks = dayBlock.getCategoryClick();
+        int count = 0;
+        for (int i = 0, length = clicks.size(); i < length; ++i)
+            count += clicks.get(i);
+        count = (count + 19) / 20;
+        if (count > 3)  count = 3;
+        return count;
+    }
+
+    public static int[] dayCategoryClicks(int day) {
+        long time = getPrevXDayInMilli(day);
+        DayBlock dayBlock = getDayBlockByTime(time);
+        List<Integer> clicks = dayBlock.getCategoryClick();
+        int[] x = new int[7];
+        for (int i = 0; i < 7; ++i)
+            x[i] = clicks.get(i);
+
+        return x;
+    }
+
+    public static int[] dayCategoryClicksInWeek(int week) {
+        int[] x = {0, 0, 0, 0, 0, 0, 0};
+
+        Long time = getPrevXWeek(week);
+        List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
+
+        for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+            int day = (int) ((dayBlocks.get(i).getLong("time") - time) / aDay);
+            List<Integer> clicks = dayBlocks.get(i).getCategoryClick();
+
+            for (int j = 0, n = clicks.size(); j < n; ++j)
+                x[day] += clicks.get(j);
+        }
+        return x;
+    }
+
+    private static long getPrevXDayInMilli(int day) {
+        int offset = getTimeOffset() * anHour;
+        return aDay * ((System.currentTimeMillis() + offset) / aDay - day) - offset;
+    }
+
+    public static long getPrevXWeek(int week) { // 0: current week
+        Calendar calendar = Calendar.getInstance();
+        long time = System.currentTimeMillis() + getTimeOffset() * anHour;
+        time = aDay * (time / aDay);
+        calendar.setTimeInMillis(time);
+        Log.d("TrackAccessibilityUtil", "calendar.get(Calendar.DAY_OF_WEEK): " + calendar.get
+                (Calendar.DAY_OF_WEEK));
+        return (time - getTimeOffset() * anHour - 7 * aDay * week
+                - (calendar.get(Calendar.DAY_OF_WEEK) - 1) * aDay);
+    }
+
+    private static DayBlock getDayBlockByTime(Long time) {
+        DayBlock dayBlock = null;
+        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        query.whereEqualTo("time", time);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            dayBlock = query.getFirst();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+        return dayBlock;
+    }
+
+    private static List<DayBlock> getDayBlocksInWeek(Long time) {
+        ArrayList<Long> times = new ArrayList<>();
+        times.ensureCapacity(7);
+        List<DayBlock> dayBlocks = new ArrayList<>();
+        for (int i = 0; i < 7; ++i)
+            times.add(time + i * aDay);
+
+        ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        query.whereContainedIn("time", times);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            dayBlocks = query.find();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+        return dayBlocks;
     }
 }
