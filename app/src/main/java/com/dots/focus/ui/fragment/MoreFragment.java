@@ -70,6 +70,7 @@ public class MoreFragment extends Fragment {
 
     final List<String> stringList = new ArrayList<>();
 
+    stringList.add(getResources().getString(R.string.title_focus_mode));
     stringList.add(getResources().getString(R.string.title_goal_setting));
     stringList.add(getResources().getString(R.string.title_idle_setting));
     stringList.add(getResources().getString(R.string.title_lock_setting));

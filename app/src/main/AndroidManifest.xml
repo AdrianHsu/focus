@@ -13,6 +13,7 @@
     <permission android:protectionLevel="signature"
                 android:name="com.dots.focus.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.dots.focus.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <!--CreateInfoActivity-->
 
@@ -116,6 +117,11 @@
                   android:screenOrientation="portrait"
                   android:theme="@style/SecondaryAppTheme">
         </activity>
+        <activity android:name=".ui.FocusModeActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
         <activity android:name=".ui.GoalSettingsActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"
@@ -214,7 +220,7 @@
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
         </service>
-
+        <service android:name="com.dots.focus.service.FocusModeService"></service>
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.dots.focus.receiver.MainParseReceiver"
                   android:permission="com.google.android.c2dm.permission.SEND"
