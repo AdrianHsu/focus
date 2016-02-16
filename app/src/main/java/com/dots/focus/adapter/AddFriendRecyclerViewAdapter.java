@@ -17,6 +17,7 @@ import com.dots.focus.R;
 import com.dots.focus.config.FriendRelationship;
 import com.dots.focus.config.TimePoliceState;
 import com.dots.focus.service.GetFriendConfirmService;
+import com.dots.focus.service.GetFriendInviteService;
 import com.dots.focus.service.GetTimePoliceCancelOrDeleteService;
 import com.dots.focus.service.GetTimePoliceReplyService;
 import com.dots.focus.ui.DonePermissionActivity;
@@ -147,6 +148,7 @@ public class AddFriendRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
 //            FetchFriendUtil.friendInvite(id, name);
+          GetFriendInviteService.removeWaitingReplyList(id);
           try {
             FetchFriendUtil.friendConfirm(id, name);
           } catch (JSONException e) {
@@ -190,7 +192,7 @@ public class AddFriendRecyclerViewAdapter extends
         public void onClick(View view) {
           Log.d(TAG, "I've known clicked.");
 
-          GetFriendConfirmService.removeRepliedList(objectId);
+          GetFriendConfirmService.removeRepliedList(id, objectId);
           int index = indexOf(jsonObject);
           if (index != -1)
             remove(index);

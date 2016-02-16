@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 import java.util.TimerTask;
 
 public class GetKickedService extends Service {
@@ -28,11 +29,10 @@ public class GetKickedService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickedService start...");
-        checkLocal();
-        /*
+
         Timer timer = new Timer();
         timer.schedule(new CheckKicked(), 0, 60000);
-        */
+
         return 0;
     }
 
@@ -90,7 +90,7 @@ public class GetKickedService extends Service {
         });
     }
 
-    private static void checkLocal() {
+    public static void checkLocal() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicked", currentUser.getLong("user_id"));

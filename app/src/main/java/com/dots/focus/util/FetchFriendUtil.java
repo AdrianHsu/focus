@@ -199,7 +199,7 @@ public class FetchFriendUtil {
         Log.d(TAG, "finish getFriendConfirm...");
     }
 
-    public static void clearInvitation(Long id) {
+    public static void clearInvitation(final Long id) {
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery("FriendInvitation"),
                 query2 = ParseQuery.getQuery("FriendInvitation");
         query1.whereEqualTo("user_id_invited", id);
@@ -215,10 +215,11 @@ public class FetchFriendUtil {
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> inviteList, ParseException e) {
                 if (e == null && inviteList != null) {
-                    Log.d(TAG, "Delete FriendInvitation, size: " + inviteList.size());
+                    Log.d(TAG, "id: " + id + ", Delete FriendInvitation, size: " +
+                            inviteList.size());
                     ParseObject.deleteAllInBackground(inviteList);
+                    ParseObject.unpinAllInBackground(inviteList);
                 }
-
             }
         });
     }

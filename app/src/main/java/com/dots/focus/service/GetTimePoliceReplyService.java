@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GetTimePoliceReplyService extends Service {
     private final IBinder mBinder = new GetTimePoliceReplyBinder();
@@ -28,9 +30,17 @@ public class GetTimePoliceReplyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetTimePoliceReplyService start...");
-        checkLocal();
+
+        Timer timer = new Timer();
+        timer.schedule(new CheckTimePoliceReply(), 0, 60000);
 
         return 0;
+    }
+
+    class CheckTimePoliceReply extends TimerTask {
+        public void run() {
+            refresh();
+        }
     }
 
     public class GetTimePoliceReplyBinder extends Binder {

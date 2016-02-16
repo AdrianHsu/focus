@@ -31,17 +31,16 @@ public class GetKickRequestService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickRequestService start...");
-        checkLocal();
 
-//        Timer timer = new Timer();
-//        timer.schedule(new CheckKickRequest(), 0, 60000);
+        Timer timer = new Timer();
+        timer.schedule(new CheckKickRequest(), 0, 60000);
 
         return 0;
     }
 
     class CheckKickRequest extends TimerTask {
         public void run() {
-
+            queryKickRequest();
         }
     }
 
@@ -92,7 +91,7 @@ public class GetKickRequestService extends Service {
         });
     }
 
-    private static void checkLocal() {
+    public static void checkLocal() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));

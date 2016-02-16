@@ -29,11 +29,10 @@ public class GetKickResponseService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickResponseService start...");
-        checkLocal();
-        /*
+
         Timer timer = new Timer();
         timer.schedule(new CheckKickResponse(), 0, 60000);
-        */
+
         return 0;
     }
 
@@ -93,7 +92,7 @@ public class GetKickResponseService extends Service {
             }
         });
     }
-    private static void checkLocal() {
+    public static void checkLocal() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", ParseUser.getCurrentUser().getLong("user_id"));
         query.whereEqualTo("state", KickState.RESPONSE_DOWNLOADED.getValue());
