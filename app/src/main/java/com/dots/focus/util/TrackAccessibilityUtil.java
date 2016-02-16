@@ -203,6 +203,8 @@ public class TrackAccessibilityUtil {
 
         List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
 
+        if (dayBlocks == null)  return x;
+
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
             int day = (int) ((dayBlocks.get(i).getLong("time") - time) / aDay);
             List<Integer> appLength = dayBlocks.get(i).getAppLength();
@@ -309,12 +311,14 @@ public class TrackAccessibilityUtil {
 
         List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
 
-        for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
-            int day = (int)((dayBlocks.get(i).getTime() - time) / aDay);
-            List<Integer> appLength2 = dayBlocks.get(i).getAppLength();
-            for (int j = 0, n = appLength2.size(); j < n && j < temp; ++j)
-                appLength.set(j, appLength.get(j) + appLength2.get(j));
-            appLengths.set(day, appLength2);
+        if (dayBlocks != null) {
+            for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+                int day = (int) ((dayBlocks.get(i).getTime() - time) / aDay);
+                List<Integer> appLength2 = dayBlocks.get(i).getAppLength();
+                for (int j = 0, n = appLength2.size(); j < n && j < temp; ++j)
+                    appLength.set(j, appLength.get(j) + appLength2.get(j));
+                appLengths.set(day, appLength2);
+            }
         }
         appLengths.add(appLength);
 
@@ -482,23 +486,26 @@ public class TrackAccessibilityUtil {
     public static int dayCategoryClicksLevel(int day) {
         long time = getPrevXDayInMilli(day);
         DayBlock dayBlock = getDayBlockByTime(time);
-        List<Integer> clicks = dayBlock.getCategoryClick();
         int count = 0;
-        for (int i = 0, length = clicks.size(); i < length; ++i)
-            count += clicks.get(i);
-        count = (count + 19) / 20;
-        if (count > 3)  count = 3;
+        if (dayBlock != null) {
+            List<Integer> clicks = dayBlock.getCategoryClick();
+            for (int i = 0, length = clicks.size(); i < length; ++i)
+                count += clicks.get(i);
+            count = (count + 19) / 20;
+            if (count > 3) count = 3;
+        }
         return count;
     }
 
     public static int[] dayCategoryClicks(int day) {
         long time = getPrevXDayInMilli(day);
         DayBlock dayBlock = getDayBlockByTime(time);
-        List<Integer> clicks = dayBlock.getCategoryClick();
         int[] x = new int[7];
-        for (int i = 0; i < 7; ++i)
-            x[i] = clicks.get(i);
-
+        if (dayBlock != null) {
+            List<Integer> clicks = dayBlock.getCategoryClick();
+            for (int i = 0; i < 7; ++i)
+                x[i] = clicks.get(i);
+        }
         return x;
     }
 
@@ -507,6 +514,8 @@ public class TrackAccessibilityUtil {
 
         Long time = getPrevXWeek(week);
         List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
+
+        if (dayBlocks == null)  return x;
 
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
             int day = (int) ((dayBlocks.get(i).getLong("time") - time) / aDay);
