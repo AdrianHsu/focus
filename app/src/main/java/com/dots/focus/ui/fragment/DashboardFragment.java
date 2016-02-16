@@ -20,8 +20,8 @@ public class DashboardFragment extends Fragment {
   private Context mContext;
   private DashboardDonutFragment mSampleFitFragment;
   public static View topThreeCardView;
-  public static int day = 0;
   private TextView daySwitchTv;
+  private TextView addictionIndexTv;
   private Button daySwitchLeftBtn;
   private Button daySwitchRightBtn;
   public static int CURRENT_DAY;
@@ -46,6 +46,8 @@ public class DashboardFragment extends Fragment {
     daySwitchTv = (TextView) v.findViewById(R.id.day_switch_textview);
     String day = TrackAccessibilityUtil.dayString(CURRENT_DAY);
     daySwitchTv.setText(day);
+    addictionIndexTv = (TextView) v.findViewById(R.id.textAddictIndex);
+    setAddictionIndex(CURRENT_DAY);
 
     // DEBUG:
     // java.lang.IllegalStateException: Failure saving state:
@@ -91,5 +93,27 @@ public class DashboardFragment extends Fragment {
     });
 
     return v;
+  }
+
+  private void setAddictionIndex(int mDay) {
+
+    int state = 0 = TrackAccessibilityUtil.dayCategoryClicks(mDay);
+    if(state == 0) {
+
+      addictionIndexTv.setText(getResources().getString(R.string.addict_0));
+      addictionIndexTv.setTextColor(getResources().getColor(R.color.addict_0));
+    } else if (state == 1) {
+      addictionIndexTv.setText(getResources().getString(R.string.addict_1));
+      addictionIndexTv.setTextColor(getResources().getColor(R.color.addict_1));
+
+    } else if (state == 2) {
+      addictionIndexTv.setText(getResources().getString(R.string.addict_2));
+      addictionIndexTv.setTextColor(getResources().getColor(R.color.addict_2));
+
+    } else if (state == 3) {
+      addictionIndexTv.setText(getResources().getString(R.string.addict_3));
+      addictionIndexTv.setTextColor(getResources().getColor(R.color.addict_3));
+
+    }
   }
 }

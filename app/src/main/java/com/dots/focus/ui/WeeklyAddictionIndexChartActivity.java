@@ -74,7 +74,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
         CURRENT_WEEK++;
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
-//        ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);
+        setData();
         daySwitchRightBtn.setEnabled(true);
 //        daySwitchLeftBtn.setEnabled(false);
       }
@@ -88,7 +88,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
         CURRENT_WEEK--;
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
-//        ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);
+        setData();
         if (CURRENT_WEEK == 0)
           daySwitchRightBtn.setEnabled(false);
         daySwitchLeftBtn.setEnabled(true);
@@ -156,17 +156,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
     // set the marker to the chart
     mChart.setMarkerView(mv);
     // add data
-    setData(7, 5);
-
-    mChart.getLegend().setEnabled(false);
-
-    mChart.animateY(2000);
-    for (DataSet<?> set : mChart.getData().getDataSets()) {
-      set.setDrawValues(!set.isDrawValuesEnabled());
-    }
-    mChart.setNoDataText("No data Available");
-    // dont forget to refresh the drawing
-    mChart.invalidate();
+    setData();
   }
 
   @Override
@@ -194,28 +184,21 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
 
   }
 
-  private void setData(int count, float range) {
+  private void setData() {
 
     ArrayList<String> xVals = new ArrayList<>();
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < 7; i++) {
       xVals.add((i) + "");
     }
 
     ArrayList<Entry> vals1 = new ArrayList<>();
-    ArrayList<Entry> vals2 = new ArrayList<>();
+    int[] addictionIndex = TrackAccessibilityUtil.dayCategryClicksInWeek(CURRENT_WEEK);
 
-
-    for (int i = 0; i < count; i++) {
-      float mult = (range + 1);
-      float val = (float) (Math.random() * mult);// + (float)
-      // ((mult * 0.1) / 10);
-      vals1.add(new Entry(val, i));
-      vals2.add(new Entry((float) 0.8, i));
+    for (int i = 0; i < 7; i ++) {
+      vals1.add(new Entry(addictionIndex[i], i));
     }
-
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
-    LineDataSet limitSet = new LineDataSet(vals2, "Daily Limit");
     set1.setDrawCubic(true);
 //    set1.setCubicIntensity(0.2f);
     set1.setDrawFilled(true);
@@ -244,5 +227,14 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
     data.setDrawValues(true);
 
     mChart.setData(data);
+    mChart.getLegend().setEnabled(false);
+
+    mChart.animateY(2000);
+    for (DataSet<?> set : mChart.getData().getDataSets()) {
+      set.setDrawValues(!set.isDrawValuesEnabled());
+    }
+    mChart.setNoDataText("No data Available");
+    // dont forget to refresh the drawing
+    mChart.invalidate();
   }
 }

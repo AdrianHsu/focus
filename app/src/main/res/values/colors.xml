@@ -37,4 +37,11 @@
     <color name="top_three_third">#eca239</color>
     <color name="top_three_others">#FF999999</color>
 
+    <!--AddictionIndex-->
+    <color name="addict_0">#5d9bd6</color>
+    <color name="addict_1">#4AB471</color>
+    <color name="addict_2">#eca239</color>
+    <color name="addict_3">#c95f9d</color>
+
+
 </resources>

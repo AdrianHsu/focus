@@ -57,6 +57,8 @@ public class RadarChartActivity extends OverviewChartActivity {
     mChart.setRotationEnabled(true);
 
     setData();
+    mChart.setNoDataText("No data Available");
+
 
     XAxis xAxis = mChart.getXAxis();
     xAxis.setTextSize(9f);
@@ -85,7 +87,8 @@ public class RadarChartActivity extends OverviewChartActivity {
 
     ArrayList<Entry> yVals1 = new ArrayList<Entry>();
     ArrayList<Entry> yVals2 = new ArrayList<Entry>();
-    int[] categoryUsage = TrackAccessibilityUtil.getCategory();
+    int[] categoryUsage = TrackAccessibilityUtil.getCategory(1);
+    int[] categoryAddict = TrackAccessibilityUtil.dayCategoryClicks(1);
 
     // IMPORTANT: In a PieChart, no values (Entry) should have the same
     // xIndex (even if from different DataSets), since no values can be
@@ -94,9 +97,9 @@ public class RadarChartActivity extends OverviewChartActivity {
       yVals1.add(new Entry((float) categoryUsage[i], i));
     }
 
-//    for (int i = 0; i < cnt; i++) {
-//      yVals2.add(new Entry((float) (Math.random() * mult) + mult / 2, i));
-//    }
+    for (int i = 0; i < cnt; i++) {
+      yVals2.add(new Entry((float) categoryAddict[i], i));
+    }
 
     ArrayList<String> xVals = new ArrayList<String>();
 
@@ -108,14 +111,14 @@ public class RadarChartActivity extends OverviewChartActivity {
     set1.setDrawFilled(true);
     set1.setLineWidth(2f);
 
-//    RadarDataSet set2 = new RadarDataSet(yVals2, "上癮程度");
-//    set2.setColor(ContextCompat.getColor(this, R.color.top_three_second));
-//    set2.setDrawFilled(true);
-//    set2.setLineWidth(2f);
+    RadarDataSet set2 = new RadarDataSet(yVals2, "上癮程度");
+    set2.setColor(ContextCompat.getColor(this, R.color.top_three_second));
+    set2.setDrawFilled(true);
+    set2.setLineWidth(2f);
 
     ArrayList<RadarDataSet> sets = new ArrayList<>();
     sets.add(set1);
-//    sets.add(set2);
+    sets.add(set2);
 
     RadarData data = new RadarData(xVals, sets);
     data.setValueTextSize(8f);

@@ -151,6 +151,11 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--AddFriendFragment-->
     <!--DashboardFragment-->
     <string name="mobile_addiction_index">手機上癮指標</string>
+    <string name="addict_0">健康</string>
+    <string name="addict_1">輕微</string>
+    <string name="addict_2">中度</string>
+    <string name="addict_3">嚴重</string>
+
     <!--DashboardDonutFragment-->
     <string name="today_total_usage_text">已使用時間</string>
     <string name="dashboard_reminder">您有點太沈迷於手機囉！去外面走走吧！</string>
