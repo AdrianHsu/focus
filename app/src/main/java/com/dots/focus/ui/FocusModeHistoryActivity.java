@@ -63,7 +63,7 @@ public class FocusModeHistoryActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
       switch (item.getItemId()) {
 
-        case R.id.back:
+        case android.R.id.home:
           onBackPressed();
           break;
         case R.id.action_focus_mode:
