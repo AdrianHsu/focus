@@ -1,7 +1,9 @@
 package com.dots.focus.util;
 
 import android.util.Log;
+import android.widget.TextView;
 
+import com.dots.focus.R;
 import com.dots.focus.config.FriendRelationship;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;

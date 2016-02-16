@@ -21,22 +21,7 @@ import org.json.JSONObject;
 /**
  * Created by AdrianHsu on 2016/2/15.
  */
-public class ReplyPermissionActivity extends BaseActivity {
-
-  private Toolbar toolbar;
-  private String name;
-  private Long id;
-  private String objectId;
-  private ImageView profileImage;
-  private TextView profileNameTv;
-  private TextView friendStateTv;
-  private Button rejectBtn;
-  private Button sendBtn;
-  private Boolean originalTimeLocked;
-  private Boolean originalTimeLock;
-  private CheckBox getNotifBtn;
-  private CheckBox timeLockedBtn;
-  private CheckBox timeLockBtn;
+public class ReplyPermissionActivity extends FriendPermissionActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +35,7 @@ public class ReplyPermissionActivity extends BaseActivity {
     profileImage = (ImageView) findViewById(R.id.profile_image);
     profileNameTv = (TextView) findViewById(R.id.profile_name);
     friendStateTv = (TextView) findViewById(R.id.content);
-    rejectBtn = (Button)findViewById(R.id.reject);
+    cancelBtn = (Button)findViewById(R.id.reject);
     sendBtn = (Button)findViewById(R.id.send);
 
     Bundle extras = getIntent().getExtras();
@@ -90,7 +75,7 @@ public class ReplyPermissionActivity extends BaseActivity {
 //          sendBtn.setEnabled(true);
 //      }
 //    });
-    rejectBtn.setOnClickListener(new View.OnClickListener() {
+      cancelBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
@@ -128,31 +113,4 @@ public class ReplyPermissionActivity extends BaseActivity {
       e.printStackTrace();
     }
   }
-
-  private String getFriendRelation(JSONObject friend) {
-
-    Boolean timeLocked = false;
-    Boolean timeLock = false;
-    try {
-      timeLocked = friend.getBoolean("timeLocked");
-      timeLock = friend.getBoolean("timeLock");
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-    if(timeLocked && timeLock)
-      return getResources().getString(R.string.relation_both);
-    else if (timeLocked)
-      return getResources().getString(R.string.relation_is_your_tp);
-    else if (timeLock)
-      return getResources().getString(R.string.relation_you_are_tp);
-    else
-      return getResources().getString(R.string.relation_just_friend);
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    onBackPressed();
-    return true;
-  }
-
 }
