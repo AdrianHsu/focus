@@ -19,6 +19,7 @@ import com.dots.focus.R;
 import com.dots.focus.ui.AdvancedSettingsActivity;
 import com.dots.focus.ui.FocusCommunityActivity;
 import com.dots.focus.ui.FocusModeActivity;
+import com.dots.focus.ui.FocusModeHistoryActivity;
 import com.dots.focus.ui.GoalSettingsActivity;
 import com.dots.focus.ui.IdleSettingsActivity;
 import com.dots.focus.ui.LockSettingsActivity;
@@ -116,7 +117,7 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
         Intent intent = null;
         switch(vh.getAdapterPosition()) {
           case 0:
-            intent = new Intent(mContext, FocusModeActivity.class);
+            intent = new Intent(mContext, FocusModeHistoryActivity.class);
             break;
           case 1:
             intent = new Intent(mContext, GoalSettingsActivity.class);

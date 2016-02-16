@@ -79,6 +79,9 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="back">退回</string>
     <!--FocusCommunityActivity-->
     <!--FocusCommunityCommentActivity-->
+    <!--FocusModeActivity-->
+    <string name="title_new_focus_mode">開始專注</string>
+    <!--FocusModeHistoryActivity-->
     <!--FriendListActivity-->
     <string name="friend_list_text">好友清單</string>
     <!--GoalSettingsActivity-->

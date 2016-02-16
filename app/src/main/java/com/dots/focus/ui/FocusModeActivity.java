@@ -15,8 +15,7 @@ import com.dots.focus.service.FocusModeService;
 /**
  * Created by AdrianHsu on 2016/2/16.
  */
-public class FocusModeActivity extends BaseActivity
-{
+public class FocusModeActivity extends BaseActivity {
   private BaseActivity nowActivity;
 
   @Override
@@ -27,7 +26,7 @@ public class FocusModeActivity extends BaseActivity
     setContentView(R.layout.activity_focus_mode);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    getSupportActionBar().setTitle(getResources().getString(R.string.title_focus_mode));
+    getSupportActionBar().setTitle(getResources().getString(R.string.title_new_focus_mode));
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     nowActivity = FocusModeActivity.this;
