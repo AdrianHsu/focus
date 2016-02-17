@@ -10,17 +10,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="3dip"
-        android:background="@drawable/bubble_yellow"
         android:paddingLeft="10dip"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:text="Hello bubbles!"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:paddingLeft="15dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
         android:id="@+id/time"
         android:text="test time"/>
 </LinearLayout>

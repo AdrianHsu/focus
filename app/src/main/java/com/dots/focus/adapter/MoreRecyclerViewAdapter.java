@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.dots.focus.R;
 import com.dots.focus.ui.AdvancedSettingsActivity;
 import com.dots.focus.ui.FocusCommunityActivity;
+import com.dots.focus.ui.FocusModeActivity;
+import com.dots.focus.ui.FocusModeHistoryActivity;
 import com.dots.focus.ui.GoalSettingsActivity;
 import com.dots.focus.ui.IdleSettingsActivity;
 import com.dots.focus.ui.LockSettingsActivity;
@@ -47,27 +49,30 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
       switch(position) {
         case 0:
-          Picasso.with(mContext).load(R.drawable.more_goal_settings).into(holder.imageViewSample);
+          Picasso.with(mContext).load(R.drawable.more_focus_mode).into(holder.imageViewSample);
           break;
         case 1:
-          Picasso.with(mContext).load(R.drawable.more_kick_settings).into(holder.imageViewSample);
+          Picasso.with(mContext).load(R.drawable.more_goal_settings).into(holder.imageViewSample);
           break;
         case 2:
-          Picasso.with(mContext).load(R.drawable.more_lock_settings).into(holder.imageViewSample);
+          Picasso.with(mContext).load(R.drawable.more_kick_settings).into(holder.imageViewSample);
           break;
         case 3:
-          Picasso.with(mContext).load(R.drawable.more_noti_settings).into(holder.imageViewSample);
+          Picasso.with(mContext).load(R.drawable.more_lock_settings).into(holder.imageViewSample);
           break;
         case 4:
-          Picasso.with(mContext).load(R.drawable.more_focus_community).into(holder.imageViewSample);
+          Picasso.with(mContext).load(R.drawable.more_noti_settings).into(holder.imageViewSample);
           break;
         case 5:
-          Picasso.with(mContext).load(R.drawable.more_parental_control).into(holder.imageViewSample);
+          Picasso.with(mContext).load(R.drawable.more_focus_community).into(holder.imageViewSample);
           break;
         case 6:
-          Picasso.with(mContext).load(R.drawable.more_advanced_settings).into(holder.imageViewSample);
+          Picasso.with(mContext).load(R.drawable.more_parental_control).into(holder.imageViewSample);
           break;
         case 7:
+          Picasso.with(mContext).load(R.drawable.more_advanced_settings).into(holder.imageViewSample);
+          break;
+        case 8:
           Picasso.with(mContext).load(R.drawable.more_logout).into(holder.imageViewSample);
           break;
 
@@ -112,21 +117,24 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
         Intent intent = null;
         switch(vh.getAdapterPosition()) {
           case 0:
-            intent = new Intent(mContext, GoalSettingsActivity.class);
+            intent = new Intent(mContext, FocusModeHistoryActivity.class);
             break;
           case 1:
-            intent = new Intent(mContext, IdleSettingsActivity.class);
+            intent = new Intent(mContext, GoalSettingsActivity.class);
             break;
           case 2:
-            intent = new Intent(mContext, LockSettingsActivity.class);
+            intent = new Intent(mContext, IdleSettingsActivity.class);
             break;
           case 3:
-            intent = new Intent(mContext, NotificationSettingsActivity.class);
+            intent = new Intent(mContext, LockSettingsActivity.class);
             break;
           case 4:
+            intent = new Intent(mContext, NotificationSettingsActivity.class);
+            break;
+          case 5:
             intent = new Intent(mContext, FocusCommunityActivity.class);
             break;
-          case 6:
+          case 7:
             intent = new Intent(mContext, AdvancedSettingsActivity.class);
             break;
 

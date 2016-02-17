@@ -1,6 +1,7 @@
 package com.dots.focus.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -53,6 +54,9 @@ public class DiscussHistoryRecyclerViewAdapter extends
 
       holder.mTextView.setBackgroundResource(tmp == 1 ? R.drawable.bubble_yellow : R.drawable
                               .bubble_green);
+      int black = mContext.getResources().getColor(R.color.black);
+      int white = mContext.getResources().getColor(R.color.white);
+      holder.mTextView.setTextColor(tmp == 1 ?  black : white);
 
       String text = "";
       String time = "";

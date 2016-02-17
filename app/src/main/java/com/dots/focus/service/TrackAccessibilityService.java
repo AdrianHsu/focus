@@ -14,6 +14,8 @@ import com.dots.focus.config.LimitType;
 import com.dots.focus.model.AppInfo;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
+import com.dots.focus.ui.FocusModeActivity;
+import com.dots.focus.ui.FocusModeView;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.KickUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
@@ -36,6 +38,7 @@ public class TrackAccessibilityService extends AccessibilityService {
     private static int[] appsUsage = {0, 0, 0, 0, 0, 0};
     private static long blockTime = 0;
 
+    public static boolean inLockMode = false;
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -126,6 +129,14 @@ public class TrackAccessibilityService extends AccessibilityService {
     }
 
     public void checkWindowState(String tempPackageName, long now) {
+
+        if (inLockMode && !tempPackageName.equals(FocusModeView.callApp)
+                        && !tempPackageName.equals(FocusModeView.messageApp)) {
+            inLockMode = false;
+            Intent intent = new Intent(this, FocusModeActivity.class);
+            intent.setAction(FocusModeService.LOCK_ACTION);
+            startActivity(intent);
+        }
 
         if (startTime == 0 || previousPackageName.contentEquals("") || appIndex < 0) {
             startTime = now;

@@ -34,7 +34,7 @@ public class GetAppsService extends IntentService {
     private static String TAG = "GetAppsService";
 
     @Override
-    public void onHandleIntent(Intent intent){
+    public void onHandleIntent(Intent intent) {
         JSONObject obj = new JSONObject(), apps = new JSONObject();
         JSONArray list = new JSONArray();
         boolean needToStore = false;

@@ -18,7 +18,9 @@ import android.widget.TextView;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.DiscussHistoryRecyclerViewAdapter;
+import com.dots.focus.util.FetchFriendUtil;
 import com.dots.focus.util.KickUtil;
+import com.dots.focus.util.TrackAccessibilityUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +35,7 @@ public class KickHistoryActivity extends BaseActivity {
   private ImageView sendBtn;
   private ImageView profileImage;
   private TextView profileNameTv;
+  private TextView friendStateTv;
 
   private String name;
   private String objectId;
@@ -101,6 +104,9 @@ public class KickHistoryActivity extends BaseActivity {
       time2 = extras.getLong("time2");
       content2 = extras.getString("content2");
     }
+    friendStateTv = (TextView) findViewById(R.id.friend_state);
+    JSONObject friend = FetchFriendUtil.getFriendById(id);
+    friendStateTv.setText(getFriendRelation(friend));
 
     String url = "https://graph.facebook.com/" + String.valueOf(id) +
                             "/picture?process=large";
@@ -110,14 +116,16 @@ public class KickHistoryActivity extends BaseActivity {
     JSONObject mRequest1 = new JSONObject();
     try {
       mRequest1.put("content", content1);
-      mRequest1.put("time", time1);
+      String timeString = TrackAccessibilityUtil.getDateByMilli(time1);
+      mRequest1.put("time", timeString);
     } catch(JSONException e) {
       Log.v(TAG, e.getMessage());
     }
     JSONObject mRequest2 = new JSONObject();
     try {
       mRequest2.put("content", content2);
-      mRequest2.put("time", time2);
+      String timeString = TrackAccessibilityUtil.getDateByMilli(time2);
+      mRequest2.put("time", timeString);
     } catch(JSONException e) {
       Log.v(TAG, e.getMessage());
     }
@@ -155,5 +163,24 @@ public class KickHistoryActivity extends BaseActivity {
     editText1.setText("");
     sendBtn.setEnabled(false);
     onBackPressed();
+  }
+  protected String getFriendRelation(JSONObject friend) {
+
+    Boolean timeLocked = false;
+    Boolean timeLock = false;
+    try {
+      timeLocked = friend.getBoolean("timeLocked");
+      timeLock = friend.getBoolean("timeLock");
+    } catch (JSONException e) {
+      Log.d(TAG, e.getMessage());
+    }
+    if(timeLocked && timeLock)
+      return getResources().getString(R.string.relation_both);
+    else if (timeLocked)
+      return getResources().getString(R.string.relation_is_your_tp);
+    else if (timeLock)
+      return getResources().getString(R.string.relation_you_are_tp);
+    else
+      return getResources().getString(R.string.relation_just_friend);
   }
 }

@@ -64,8 +64,6 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
 您可即時獲得孩童在學校的手機動態行為、進而規範使用時間與鎖屏。</string>
 
     <!--AdvancedSettingsActivity-->
-    <string name="device_admin">裝置管理</string>
-    <string name="device_admin_settings">裝置管理員設定</string>
     <string name="device_accessibility">存取資料</string>
     <string name="device_accessibility_settings">可存取使用情形資料設定</string>
     <string name="account_permissions">帳號權限</string>
@@ -81,6 +79,9 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="back">退回</string>
     <!--FocusCommunityActivity-->
     <!--FocusCommunityCommentActivity-->
+    <!--FocusModeActivity-->
+    <string name="title_new_focus_mode">開始專注</string>
+    <!--FocusModeHistoryActivity-->
     <!--FriendListActivity-->
     <string name="friend_list_text">好友清單</string>
     <!--GoalSettingsActivity-->
@@ -163,6 +164,7 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="reset">重設</string>
     <!--MoreFragment-->
     <string name="view_your_profile">查看你的個人檔案</string>
+    <string name="title_focus_mode">專注模式</string>
     <string name="title_goal_setting">目標設定</string>
     <string name="title_idle_setting">耍廢條件設定</string>
     <string name="title_lock_setting">鎖屏功能設定</string>

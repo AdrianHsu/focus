@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    style="@style/CardView.Dark"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_marginTop="2dp"
+    card_view:cardCornerRadius="4dp"
+    card_view:contentPadding="4dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:src="@drawable/adrian"
+            android:layout_width="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="40dp" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:text="許秉鈞"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/profile_image"
+            android:layout_alignStart="@+id/content"/>
+        <TextView
+            android:id="@+id/time"
+            android:text="3天前"
+            android:textSize="12sp"
+            android:textColor="@color/semi_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/user_name"
+            android:layout_alignEnd="@+id/succeed_or_fail"/>
+        <TextView
+            android:id="@+id/content"
+            android:text="這是我的目標任務"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/user_name"
+            android:layout_toEndOf="@+id/profile_image"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="失敗"
+            android:id="@+id/succeed_or_fail"
+            android:textSize="30sp"
+            android:textColor="@color/red"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignTop="@+id/content"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="00:25:55"
+            android:textColor="@color/red"
+            android:id="@+id/exact_timing"
+            android:layout_alignTop="@+id/slash"
+            android:layout_toStartOf="@+id/slash"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="/"
+            android:textColor="@color/semi_white"
+            android:id="@+id/slash"
+            android:layout_alignTop="@+id/goal_timing"
+            android:layout_toStartOf="@+id/goal_timing"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="00:30:00"
+            android:textColor="@color/semi_white"
+            android:id="@+id/goal_timing"
+            android:layout_below="@+id/succeed_or_fail"
+            android:layout_alignEnd="@+id/succeed_or_fail"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/messages_bg">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -46,12 +47,12 @@
                 android:layout_toEndOf="@+id/profile_image"/>
             <TextView
                 android:layout_marginLeft="20dp"
-                android:id="@+id/content"
+                android:id="@+id/friend_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:paddingTop="5dip"
-                android:text="@string/is_your_friend"
+                android:text="null"
                 android:textSize="10sp"
                 android:layout_below="@+id/profile_name"
                 android:layout_toEndOf="@+id/profile_image"/>

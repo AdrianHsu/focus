@@ -13,6 +13,7 @@ import org.json.JSONArray;
 
 public class KickUtil {
     private static String TAG = "KickUtil";
+    public static long expire_period = 300000;
 
     public static void sendKickRequest(int limitType, int period, long time, String content) {
         ParseObject kickRequest = new ParseObject("KickRequest");

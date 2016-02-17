@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_focus_mode"
+    tools:context="com.dots.focus.ui.FocusModeActivity" >
+
+    <Button
+        android:id="@+id/btn_unlock_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="解鎖"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_tel"
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:background="@drawable/focus_mode_phone"
+        android:layout_marginBottom="43dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"/>
+
+    <Button
+        android:id="@+id/btn_mes"
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:background="@drawable/focus_mode_mes"
+        android:layout_alignTop="@+id/btn_tel"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"/>
+</RelativeLayout>
