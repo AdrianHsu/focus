@@ -8,6 +8,9 @@ import com.dots.focus.ui.CustomDialogActivity;
 import com.dots.focus.ui.MainActivity;
 import com.parse.ParsePushBroadcastReceiver;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by AdrianHsu on 2016/2/12.
  */
@@ -20,9 +23,41 @@ public class MainParseReceiver extends ParsePushBroadcastReceiver {
     super.onPushReceive(context, intent);
     Log.d(TAG, "onPushReceive");
 
-    Intent mIntent = new Intent(context,CustomDialogActivity.class);
-    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(mIntent);
+    JSONObject data;
+    String title = null;
+    String alert = null;
+    Boolean dialog = null;
+    Long id = null;
+
+    try {
+      data = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+
+      title = data.getString("title");
+      alert = data.getString("alert");
+      dialog = data.getBoolean("dialog");
+      id = data.getLong("id");
+
+      if (title != null)
+        Log.d(TAG, "title: " + title);
+      if (alert != null)
+        Log.d(TAG, "alert: " + alert);
+      if(dialog != null)
+        Log.d(TAG, "dialog: " + String.valueOf(alert));
+
+    } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+
+    if(dialog != null) {
+
+      if(dialog == true) {
+
+        Intent mIntent = new Intent(context, CustomDialogActivity.class);
+        mIntent.putExtra("title", title);
+        mIntent.putExtra("alert", alert);
+        mIntent.putExtra("id", id);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(mIntent);
+      }
+    }
   }
 
   @Override

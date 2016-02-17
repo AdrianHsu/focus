@@ -15,7 +15,7 @@
                     android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/imageview"
-            android:src="@drawable/adrian"
+            android:src="@drawable/more_icon"
             android:layout_width="48dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
@@ -38,11 +38,13 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="30dp"
             android:id="@+id/kick_request_content1"
-            android:layout_width="fill_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:paddingLeft="10dip"
             android:paddingTop="5dip"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:text="kick_request_content1"
             android:textSize="10sp" />
 

@@ -54,6 +54,9 @@ public class DiscussRecyclerViewAdapter extends
 
       holder.mTextView.setBackgroundResource(tmp == 0 ? R.drawable.bubble_yellow : R.drawable
                               .bubble_green);
+      int black = mContext.getResources().getColor(R.color.black);
+      int white = mContext.getResources().getColor(R.color.white);
+      holder.mTextView.setTextColor(tmp == 0 ? black : white);
 
       String text = "";
       String time = "";

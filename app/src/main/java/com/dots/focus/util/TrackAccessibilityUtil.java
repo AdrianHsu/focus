@@ -99,33 +99,33 @@ public class TrackAccessibilityUtil {
             currentDay.saveEventually();
         currentDay = new DayBlock(dayInLong);
         currentDay.saveEventually(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.d(TAG, "currentDay pin error: " + e.getMessage());
-                }
-                List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
-                if (hourBlocks == null) {
-                    Log.d(TAG, "hourBlocks is null.");
-                    return;
-                }
-                if (hourBlocks.size() < 24) {
-                    Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
-                    return;
-                }
-                for (int i = 0; i < 24; ++i) {
-                    if (!hourBlocks.get(i).equals("")) {
-                        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
-                        query.getInBackground(hourBlocks.get(i), new GetCallback<HourBlock>() {
-                            @Override
-                            public void done(HourBlock hourBlock, ParseException e) {
-                                if (hourBlock != null && e == null)
-                                    hourBlock.setDayBlock(getCurrentDay(dayInLong).getObjectId());
-                            }
-                        });
-                    }
-                }
+          @Override
+          public void done(ParseException e) {
+            if (e != null) {
+              Log.d(TAG, "currentDay pin error: " + e.getMessage());
             }
+            List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
+            if (hourBlocks == null) {
+              Log.d(TAG, "hourBlocks is null.");
+              return;
+            }
+            if (hourBlocks.size() < 24) {
+              Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
+              return;
+            }
+            for (int i = 0; i < 24; ++i) {
+              if (!hourBlocks.get(i).equals("")) {
+                ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
+                query.getInBackground(hourBlocks.get(i), new GetCallback<HourBlock>() {
+                  @Override
+                  public void done(HourBlock hourBlock, ParseException e) {
+                    if (hourBlock != null && e == null)
+                      hourBlock.setDayBlock(getCurrentDay(dayInLong).getObjectId());
+                  }
+                });
+              }
+            }
+          }
         });
         currentDay.pinInBackground();
     }
@@ -527,7 +527,7 @@ public class TrackAccessibilityUtil {
         return x;
     }
 
-    private static long getPrevXDayInMilli(int day) {
+    public static long getPrevXDayInMilli(int day) {
         int offset = getTimeOffset() * anHour;
         return aDay * ((System.currentTimeMillis() + offset) / aDay - day) - offset;
     }
@@ -573,5 +573,19 @@ public class TrackAccessibilityUtil {
             Log.d(TAG, e.getMessage());
         }
         return dayBlocks;
+    }
+    public static String getDateByMilli(long time) {
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTimeInMillis(time + TrackAccessibilityUtil.getTimeOffset() *
+                              TrackAccessibilityUtil.anHour);
+
+      int hr = calendar.get(Calendar
+                              .HOUR_OF_DAY);
+      int min = calendar.get(Calendar.MINUTE);
+      int sec = calendar.get(Calendar.SECOND);
+      String timeStr = String.format("%02d:%02d:%02d", hr, min, sec);
+      return calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月" +
+                              calendar.get(Calendar.DAY_OF_MONTH) + "日 " + timeStr;
+
     }
 }

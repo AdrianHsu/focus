@@ -38,11 +38,13 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
         android:id="@+id/kick_history_content_textview"
-        android:layout_width="fill_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:gravity="start"
         android:paddingLeft="10dip"
         android:paddingTop="5dip"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="test kick history content"
         android:textSize="10sp" />
 
