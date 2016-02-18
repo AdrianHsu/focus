@@ -95,7 +95,7 @@ public class MessagesRecyclerViewAdapter extends
       final long time = jsonObject.getLong("time1");
       final String content = jsonObject.getString("content1");
 
-      final long expire_time = System.currentTimeMillis() + KickUtil.expire_period;
+      final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
       final Boolean expire = (time > expire_time);
 
       holder.textViewSample.setText(name);

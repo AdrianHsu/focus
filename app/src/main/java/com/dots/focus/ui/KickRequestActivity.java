@@ -105,7 +105,7 @@ public class KickRequestActivity extends BaseActivity {
       time = extras.getLong("time");
       content = extras.getString("content");
     }
-    final long expire_time = System.currentTimeMillis() + KickUtil.expire_period;
+    final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
     final Boolean expire = (time > expire_time);
 
     expireTv = (TextView) findViewById(R.id.expire);
