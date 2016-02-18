@@ -106,13 +106,15 @@ public class KickRequestActivity extends BaseActivity {
       content = extras.getString("content");
     }
     final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
-    final Boolean expire = (time > expire_time);
+    final Boolean expire = (time < expire_time);
 
     expireTv = (TextView) findViewById(R.id.expire);
     if(!expire) {
       expireTv.setText("ONLINE");
       expireTv.setTextColor(getResources().getColor(R.color.red));
     } else {
+      expireTv.setText("EXPIRED");
+      expireTv.setTextColor(getResources().getColor(R.color.semi_black));
       sendBtn.setEnabled(false);
       editText1.setEnabled(false);
       editText1.setText("已經過期、無法傳送訊息。");

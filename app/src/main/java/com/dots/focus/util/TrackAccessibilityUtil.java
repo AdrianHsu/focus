@@ -576,8 +576,7 @@ public class TrackAccessibilityUtil {
     }
     public static String getDateByMilli(long time) {
       Calendar calendar = Calendar.getInstance();
-      calendar.setTimeInMillis(time + TrackAccessibilityUtil.getTimeOffset() *
-                              TrackAccessibilityUtil.anHour);
+      calendar.setTimeInMillis(time);
 
       int hr = calendar.get(Calendar
                               .HOUR_OF_DAY);
