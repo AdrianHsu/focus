@@ -8,18 +8,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnKeyListener;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dots.focus.R;
-import com.dots.focus.adapter.DiscussRecyclerViewAdapter;
+import com.dots.focus.adapter.DiscussFriendRecyclerViewAdapter;
+import com.dots.focus.adapter.DiscussSelfRecyclerViewAdapter;
 import com.dots.focus.util.FetchFriendUtil;
-import com.dots.focus.util.KickUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.squareup.picasso.Picasso;
@@ -47,10 +43,10 @@ public class KickResponseActivity extends BaseActivity {
   private String content2;
   private long time3;
   private String content3;
+  private Boolean is_me;
   private static final String TAG = "KickResponse";
 
   private UltimateRecyclerView mRecyclerView;
-  private DiscussRecyclerViewAdapter discussRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
   private final ArrayList<JSONObject> messages = new ArrayList<>();
 
@@ -108,6 +104,7 @@ public class KickResponseActivity extends BaseActivity {
       content2 = extras.getString("content2");
       time3 = extras.getLong("time3");
       content3 = extras.getString("content3");
+      is_me = extras.getBoolean("is_me");
     }
     friendStateTv = (TextView) findViewById(R.id.friend_state);
     JSONObject friend = FetchFriendUtil.getFriendById(id);
@@ -146,11 +143,20 @@ public class KickResponseActivity extends BaseActivity {
     messages.add(mRequest2);
     messages.add(mRequest3);
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.discuss_recycler_view);
-    discussRecyclerViewAdapter = new DiscussRecyclerViewAdapter( messages, this);
+    DiscussFriendRecyclerViewAdapter friendAdapter = null;
+    DiscussSelfRecyclerViewAdapter selfAdapter = null;
     linearLayoutManager = new LinearLayoutManager(this);
 
+    if(is_me) {
+      selfAdapter = new DiscussSelfRecyclerViewAdapter(messages, this);
+      mRecyclerView.setAdapter(selfAdapter);
+
+    } else {
+      friendAdapter = new DiscussFriendRecyclerViewAdapter(messages, this);
+      mRecyclerView.setAdapter(friendAdapter);
+
+    }
     mRecyclerView.setLayoutManager(linearLayoutManager);
-    mRecyclerView.setAdapter(discussRecyclerViewAdapter);
     mRecyclerView.scrollVerticallyToPosition(messages.size() - 1);
   }
   @Override

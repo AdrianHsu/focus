@@ -1,7 +1,6 @@
 package com.dots.focus.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,8 +20,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class DiscussHistoryRecyclerViewAdapter extends
-  UltimateViewAdapter<DiscussHistoryRecyclerViewAdapter.SimpleAdapterViewHolder> {
+public class DiscussSelfRecyclerViewAdapter extends
+  UltimateViewAdapter<DiscussSelfRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
   private ArrayList<JSONObject> messagesList;
   private Context mContext;
@@ -30,7 +29,7 @@ public class DiscussHistoryRecyclerViewAdapter extends
 
   private static final String TAG = "messages";
 
-  public DiscussHistoryRecyclerViewAdapter(ArrayList<JSONObject> _messagesList, Context context) {
+  public DiscussSelfRecyclerViewAdapter(ArrayList<JSONObject> _messagesList, Context context) {
     messagesList = _messagesList;
     mContext = context;
   }
@@ -52,11 +51,11 @@ public class DiscussHistoryRecyclerViewAdapter extends
 
       int tmp = position % 2;
 
-      holder.mTextView.setBackgroundResource(tmp == 1 ? R.drawable.bubble_yellow : R.drawable
+      holder.mTextView.setBackgroundResource(tmp == 0 ? R.drawable.bubble_yellow : R.drawable
                               .bubble_green);
       int black = mContext.getResources().getColor(R.color.black);
       int white = mContext.getResources().getColor(R.color.white);
-      holder.mTextView.setTextColor(tmp == 1 ?  black : white);
+      holder.mTextView.setTextColor(tmp == 0 ? black : white);
 
       String text = "";
       String time = "";
@@ -69,7 +68,7 @@ public class DiscussHistoryRecyclerViewAdapter extends
 
       holder.mTextView.setText(text);
       holder.mTimeTv.setText(time);
-      wrapper.setGravity(tmp == 1 ? Gravity.LEFT : Gravity.RIGHT);
+      wrapper.setGravity(tmp == 0 ? Gravity.LEFT : Gravity.RIGHT);
 
     }
   }
