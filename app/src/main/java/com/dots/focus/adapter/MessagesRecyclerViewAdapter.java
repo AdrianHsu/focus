@@ -96,7 +96,7 @@ public class MessagesRecyclerViewAdapter extends
       final String content = jsonObject.getString("content1");
 
       final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
-      final Boolean expire = (time > expire_time);
+      final Boolean expire = (time < expire_time);
 
       holder.textViewSample.setText(name);
       holder.contentTv.setText(content);
@@ -104,6 +104,9 @@ public class MessagesRecyclerViewAdapter extends
         holder.expireTv.setText("ONLINE");
         holder.expireTv.setTextColor(mContext.getResources().getColor(R.color.red));
       } else {
+        holder.expireTv.setText("EXPIRED");
+        holder.expireTv.setTextColor(mContext.getResources().getColor(R.color.semi_black));
+
         holder.buttonSample.setEnabled(false);
         holder.buttonSample.setText("移除");
       }
