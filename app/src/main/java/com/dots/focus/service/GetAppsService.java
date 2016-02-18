@@ -41,13 +41,17 @@ public class GetAppsService extends IntentService {
 
         List<ResolveInfo> ril = getAllAppsInDevice();
         for (ResolveInfo ri : ril) {
-            if (!FetchAppUtil.findApp(ri.activityInfo.packageName)) {
+            AppInfo appInfo = FetchAppUtil.getApp(ri.activityInfo.packageName);
+            if (appInfo == null) {
                 needToStore = true;
                 try {
                     getAppNameAndStoreIt(ri, list);
                 } catch (Exception e) {
                     Log.d(TAG, "getAppNameAndStoreIt: " + e.getMessage());
                 }
+            }
+            else if (appInfo.getIcon() == null) {
+                appInfo.setIcon(ri.loadIcon(getPackageManager()));
             }
         }
 
