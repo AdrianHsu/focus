@@ -15,9 +15,11 @@ import android.view.View.OnKeyListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dots.focus.R;
-import com.dots.focus.adapter.DiscussHistoryRecyclerViewAdapter;
+import com.dots.focus.adapter.DiscussFriendRecyclerViewAdapter;
+import com.dots.focus.adapter.DiscussSelfRecyclerViewAdapter;
 import com.dots.focus.util.FetchFriendUtil;
 import com.dots.focus.util.KickUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
@@ -45,10 +47,10 @@ public class KickHistoryActivity extends BaseActivity {
   private String content1;
   private long time2;
   private String content2;
+  private Boolean is_me;
   private static final String TAG = "KickHistory";
 
   private UltimateRecyclerView mRecyclerView;
-  private DiscussHistoryRecyclerViewAdapter discussHistoryRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
   private final ArrayList<JSONObject> messages = new ArrayList<>();
 
@@ -103,6 +105,7 @@ public class KickHistoryActivity extends BaseActivity {
       content1 = extras.getString("content1");
       time2 = extras.getLong("time2");
       content2 = extras.getString("content2");
+      is_me = extras.getBoolean("is_me");
     }
     friendStateTv = (TextView) findViewById(R.id.friend_state);
     JSONObject friend = FetchFriendUtil.getFriendById(id);
@@ -132,11 +135,24 @@ public class KickHistoryActivity extends BaseActivity {
     messages.add(mRequest1);
     messages.add(mRequest2);
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.discuss_recycler_view);
-    discussHistoryRecyclerViewAdapter = new DiscussHistoryRecyclerViewAdapter( messages, this);
+    DiscussFriendRecyclerViewAdapter friendAdapter = null;
+    DiscussSelfRecyclerViewAdapter selfAdapter = null;
     linearLayoutManager = new LinearLayoutManager(this);
 
+    if(is_me) {
+      selfAdapter = new DiscussSelfRecyclerViewAdapter(messages, this);
+      mRecyclerView.setAdapter(selfAdapter);
+
+    } else {
+      editText1.setEnabled(false);
+      editText1.setAllCaps(true);
+      editText1.setText("等待回覆中，無法輸入訊息。");
+      sendBtn.setEnabled(false);
+      friendAdapter = new DiscussFriendRecyclerViewAdapter(messages, this);
+      mRecyclerView.setAdapter(friendAdapter);
+
+    }
     mRecyclerView.setLayoutManager(linearLayoutManager);
-    mRecyclerView.setAdapter(discussHistoryRecyclerViewAdapter);
     mRecyclerView.scrollVerticallyToPosition(messages.size() - 1);
   }
   @Override
@@ -162,7 +178,8 @@ public class KickHistoryActivity extends BaseActivity {
 
     editText1.setText("");
     sendBtn.setEnabled(false);
-    onBackPressed();
+    editText1.setText("訊息已傳送！");
+    Toast.makeText(this, "訊息已傳送！", Toast.LENGTH_SHORT);
   }
   protected String getFriendRelation(JSONObject friend) {
 

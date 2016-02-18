@@ -80,6 +80,7 @@ public class GetKickResponseService extends Service {
                             kickResponse.put("content2", object.getString("content2"));
                             kickResponse.put("time3", object.getLong("time3"));
                             kickResponse.put("content3", object.getString("content3"));
+                            kickResponse.put("is_me", false);
                             kickResponse.put("objectId", object.getObjectId());
                             kickResponseList.add(kickResponse);
                         } catch (JSONException e1) {
@@ -120,7 +121,8 @@ public class GetKickResponseService extends Service {
                             kickResponse.put("content2", object.getString("content2"));
                             kickResponse.put("time3", object.getLong("time3"));
                             kickResponse.put("content3", object.getString("content3"));
-                            kickResponse.put("objectId", object.getObjectId());
+                          kickResponse.put("is_me", false);
+                          kickResponse.put("objectId", object.getObjectId());
                             kickResponseList.add(kickResponse);
                         } catch (JSONException e1) {
                             e1.printStackTrace();

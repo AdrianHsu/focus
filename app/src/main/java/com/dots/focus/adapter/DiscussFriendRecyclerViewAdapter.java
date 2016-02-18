@@ -17,12 +17,11 @@ import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class DiscussRecyclerViewAdapter extends
-  UltimateViewAdapter<DiscussRecyclerViewAdapter.SimpleAdapterViewHolder> {
+public class DiscussFriendRecyclerViewAdapter extends
+  UltimateViewAdapter<DiscussFriendRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
   private ArrayList<JSONObject> messagesList;
   private Context mContext;
@@ -30,7 +29,7 @@ public class DiscussRecyclerViewAdapter extends
 
   private static final String TAG = "messages";
 
-  public DiscussRecyclerViewAdapter(ArrayList<JSONObject> _messagesList, Context context) {
+  public DiscussFriendRecyclerViewAdapter(ArrayList<JSONObject> _messagesList, Context context) {
     messagesList = _messagesList;
     mContext = context;
   }
@@ -52,11 +51,11 @@ public class DiscussRecyclerViewAdapter extends
 
       int tmp = position % 2;
 
-      holder.mTextView.setBackgroundResource(tmp == 0 ? R.drawable.bubble_yellow : R.drawable
+      holder.mTextView.setBackgroundResource(tmp == 1 ? R.drawable.bubble_yellow : R.drawable
                               .bubble_green);
       int black = mContext.getResources().getColor(R.color.black);
       int white = mContext.getResources().getColor(R.color.white);
-      holder.mTextView.setTextColor(tmp == 0 ? black : white);
+      holder.mTextView.setTextColor(tmp == 1 ?  black : white);
 
       String text = "";
       String time = "";
@@ -69,7 +68,7 @@ public class DiscussRecyclerViewAdapter extends
 
       holder.mTextView.setText(text);
       holder.mTimeTv.setText(time);
-      wrapper.setGravity(tmp == 0 ? Gravity.LEFT : Gravity.RIGHT);
+      wrapper.setGravity(tmp == 1 ? Gravity.LEFT : Gravity.RIGHT);
 
     }
   }

@@ -5,8 +5,6 @@ package com.dots.focus.ui;
  */
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,9 +17,10 @@ import android.widget.EditText;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dots.focus.R;
-import com.dots.focus.adapter.DiscussRecyclerViewAdapter;
+import com.dots.focus.adapter.DiscussSelfRecyclerViewAdapter;
 import com.dots.focus.util.FetchFriendUtil;
 import com.dots.focus.util.KickUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
@@ -38,8 +37,11 @@ public class KickRequestActivity extends BaseActivity {
   private ImageView profileImage;
   private TextView profileNameTv;
   private TextView friendStateTv;
+  private TextView expireTv;
 
 
+
+  private Boolean expire;
   private String name;
   private String objectId;
   private long id;
@@ -49,7 +51,7 @@ public class KickRequestActivity extends BaseActivity {
   private static final String TAG = "KickRequest";
 
   private UltimateRecyclerView mRecyclerView;
-  private DiscussRecyclerViewAdapter discussRecyclerViewAdapter = null;
+  private DiscussSelfRecyclerViewAdapter discussRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
   private final ArrayList<JSONObject> messages = new ArrayList<>();
 
@@ -103,6 +105,19 @@ public class KickRequestActivity extends BaseActivity {
       time = extras.getLong("time");
       content = extras.getString("content");
     }
+    final long expire_time = System.currentTimeMillis() + KickUtil.expire_period;
+    final Boolean expire = (time > expire_time);
+
+    expireTv = (TextView) findViewById(R.id.expire);
+    if(!expire) {
+      expireTv.setText("ONLINE");
+      expireTv.setTextColor(getResources().getColor(R.color.red));
+    } else {
+      sendBtn.setEnabled(false);
+      editText1.setEnabled(false);
+      editText1.setText("已經過期、無法傳送訊息。");
+    }
+
     friendStateTv = (TextView) findViewById(R.id.friend_state);
     JSONObject friend = FetchFriendUtil.getFriendById(id);
     friendStateTv.setText(getFriendRelation(friend));
@@ -122,7 +137,7 @@ public class KickRequestActivity extends BaseActivity {
     }
     messages.add(mRequest);
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.discuss_recycler_view);
-    discussRecyclerViewAdapter = new DiscussRecyclerViewAdapter( messages, this);
+    discussRecyclerViewAdapter = new DiscussSelfRecyclerViewAdapter( messages, this);
     linearLayoutManager = new LinearLayoutManager(this);
 
     mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -152,7 +167,9 @@ public class KickRequestActivity extends BaseActivity {
 
     editText1.setText("");
     sendBtn.setEnabled(false);
-    onBackPressed();
+    editText1.setText("訊息已傳送！");
+    Toast.makeText(this, "訊息已傳送！", Toast.LENGTH_SHORT);
+
   }
   protected String getFriendRelation(JSONObject friend) {
 

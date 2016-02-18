@@ -34,7 +34,7 @@ public class MessagesFragment extends Fragment {
   private UltimateRecyclerView mRecyclerView;
   private View mStickyView;
   private Context context;
-  private MessagesRecyclerViewAdapter messagesRecyclerViewAdapter = null;
+  public MessagesRecyclerViewAdapter messagesRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
   private static String TAG = "MessagesFragment";
   private ArrayList<JSONObject> messages;
@@ -72,7 +72,9 @@ public class MessagesFragment extends Fragment {
     GetKickResponseService.queryKickResponse();
     messages = new ArrayList<>();
     messages.addAll(GetKickRequestService.friendKickRequestList);
+    messages.addAll(GetKickRequestService.friendWaitingKickResponse);
     messages.addAll(GetKickedService.kickedList);
+    messages.addAll(GetKickedService.respondList);
     messages.addAll(GetKickResponseService.kickResponseList);
     Log.v(TAG, "friendKickRequestList.size() == " + GetKickRequestService.friendKickRequestList
       .size());
@@ -101,7 +103,9 @@ public class MessagesFragment extends Fragment {
                                     .friendKickRequestList
                                     .size());
             messages.addAll(GetKickRequestService.friendKickRequestList);
+            messages.addAll(GetKickRequestService.friendWaitingKickResponse);
             messages.addAll(GetKickedService.kickedList);
+            messages.addAll(GetKickedService.respondList);
             messages.addAll(GetKickResponseService.kickResponseList);
 
             mRecyclerView.getAdapter().notifyDataSetChanged();

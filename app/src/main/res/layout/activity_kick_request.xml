@@ -56,6 +56,15 @@
                 android:textSize="10sp"
                 android:layout_below="@+id/profile_name"
                 android:layout_toEndOf="@+id/profile_image"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="EXPIRED"
+                android:id="@+id/expire"
+                android:layout_alignParentTop="true"
+                android:layout_margin="5dp"
+                android:layout_toStartOf="@+id/button"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

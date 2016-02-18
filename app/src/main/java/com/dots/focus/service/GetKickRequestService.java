@@ -1,6 +1,5 @@
 package com.dots.focus.service;
 
-import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -97,7 +96,6 @@ public class GetKickRequestService extends Service {
     }
 
     public static void checkLocal() {
-        final long expire_time = System.currentTimeMillis() + KickUtil.expire_period;
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
@@ -122,8 +120,8 @@ public class GetKickRequestService extends Service {
                             kickMessage.put("period", object.getInt("period"));
                             kickMessage.put("time1", time1);
                             kickMessage.put("content1", object.getString("content1"));
-                            kickMessage.put("expired", time1 > expire_time);
-                            kickMessage.put("objectId", object.getObjectId());
+                          kickMessage.put("is_me", true);
+                          kickMessage.put("objectId", object.getObjectId());
                             friendKickRequestList.add(kickMessage);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
@@ -153,11 +151,14 @@ public class GetKickRequestService extends Service {
                         try {
                             kickMessage.put("user_id", id);
                             kickMessage.put("user_name", FetchFriendUtil.getFriendName(id));
-                            kickMessage.put("state", object.getLong("state"));
-                            kickMessage.put("LimitType", object.getInt("LimitType"));
-                            kickMessage.put("period", object.getInt("period"));
-                            kickMessage.put("time1", object.getLong("time1"));
-                            kickMessage.put("content1", object.getString("content1"));
+                          kickMessage.put("state", object.getLong("state"));
+                          kickMessage.put("LimitType", object.getInt("LimitType"));
+                          kickMessage.put("period", object.getInt("period"));
+                          kickMessage.put("time1", object.getLong("time1"));
+                          kickMessage.put("time2", object.getLong("time2"));
+                          kickMessage.put("content1", object.getString("content1"));
+                          kickMessage.put("content2", object.getString("content2"));
+                            kickMessage.put("is_me", true);
                             kickMessage.put("objectId", object.getObjectId());
                             friendWaitingKickResponse.add(kickMessage);
                         } catch (JSONException e1) {

@@ -95,8 +95,18 @@ public class MessagesRecyclerViewAdapter extends
       final long time = jsonObject.getLong("time1");
       final String content = jsonObject.getString("content1");
 
+      final long expire_time = System.currentTimeMillis() + KickUtil.expire_period;
+      final Boolean expire = (time > expire_time);
+
       holder.textViewSample.setText(name);
       holder.contentTv.setText(content);
+      if(!expire) {
+        holder.expireTv.setText("ONLINE");
+        holder.expireTv.setTextColor(mContext.getResources().getColor(R.color.red));
+      } else {
+        holder.buttonSample.setEnabled(false);
+        holder.buttonSample.setText("移除");
+      }
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
@@ -149,6 +159,7 @@ public class MessagesRecyclerViewAdapter extends
       final long time2 = jsonObject.getLong("time2");
       final String content1 = jsonObject.getString("content1");
       final String content2 = jsonObject.getString("content2");
+      final Boolean is_me = jsonObject.getBoolean("is_me");
       final String mContent = "謝謝你踢我！";
 
       holder.textViewSample.setText(name);
@@ -187,6 +198,7 @@ public class MessagesRecyclerViewAdapter extends
             intent.putExtra("content1", content1);
             intent.putExtra("time2", time2);
             intent.putExtra("content2", content2);
+            intent.putExtra("is_me", is_me);
             mContext.startActivity(intent);
           }
         });
@@ -212,6 +224,8 @@ public class MessagesRecyclerViewAdapter extends
       final String content1 = jsonObject.getString("content1");
       final String content2 = jsonObject.getString("content2");
       final String content3 = jsonObject.getString("content3");
+      final Boolean is_me = jsonObject.getBoolean("is_me");
+
 
       holder.textViewSample.setText(name);
       holder.kickResponseContentTextView.setText(content3);
@@ -263,6 +277,7 @@ public class MessagesRecyclerViewAdapter extends
             intent.putExtra("content2", content2);
             intent.putExtra("time3", time3);
             intent.putExtra("content3", content3);
+            intent.putExtra("is_me", is_me);
             mContext.startActivity(intent);
           }
         });
@@ -429,6 +444,7 @@ public class MessagesRecyclerViewAdapter extends
 
     TextView textViewSample;
     TextView contentTv;
+    TextView expireTv;
     ImageView imageViewSample;
     Button buttonSample;
     View item_view;
@@ -440,6 +456,7 @@ public class MessagesRecyclerViewAdapter extends
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
         contentTv = (TextView) itemView.findViewById(R.id.kick_request_content1);
+        expireTv = (TextView) itemView.findViewById(R.id.expire);
         imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
         buttonSample = (Button) itemView.findViewById(R.id.button_kick);
 
