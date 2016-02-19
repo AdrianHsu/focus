@@ -176,21 +176,11 @@ public class MessagesRecyclerViewAdapter extends
       final long time2 = jsonObject.getLong("time2");
       final String content1 = jsonObject.getString("content1");
       final String content2 = jsonObject.getString("content2");
-      final Boolean is_me = jsonObject.getBoolean("is_me");
       final String mContent = SettingsUtil.getString("kickResponse");
 
       holder.textViewSample.setText(name);
-      if(is_me)
-        holder.kickHistoryContentTextView.setText("你：" + content2);
-      else
-        holder.kickHistoryContentTextView.setText(content2);
 
-      String url = "https://graph.facebook.com/" + String.valueOf(id) +
-        "/picture?process=large";
-      Picasso.with(mContext).load(url).into(holder.imageViewSample);
-
-      Log.v(TAG, "ready to setOnClickListener, with objectId: " + objectId);
-
+      holder.kickHistoryContentTextView.setText(content2);
       holder.buttonSample.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -202,6 +192,14 @@ public class MessagesRecyclerViewAdapter extends
             remove(index);
         }
       });
+
+      String url = "https://graph.facebook.com/" + String.valueOf(id) +
+        "/picture?process=large";
+      Picasso.with(mContext).load(url).into(holder.imageViewSample);
+
+      Log.v(TAG, "ready to setOnClickListener, with objectId: " + objectId);
+
+
       if (holder.item_view != null) {
         holder.item_view.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -219,7 +217,6 @@ public class MessagesRecyclerViewAdapter extends
             intent.putExtra("content1", content1);
             intent.putExtra("time2", time2);
             intent.putExtra("content2", content2);
-            intent.putExtra("is_me", is_me);
             mContext.startActivity(intent);
           }
         });
@@ -249,34 +246,60 @@ public class MessagesRecyclerViewAdapter extends
 
 
       holder.textViewSample.setText(name);
-      holder.kickResponseContentTextView.setText(content3);
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
                               "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
 
-      Log.v(TAG, "ready to setOnClickListener, with objectId: " + objectId );
+      Log.v(TAG, "ready to setOnClickListener, with objectId: " + objectId);
 
-      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
-          query.fromLocalDatastore();
-          query.getInBackground(objectId, new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject kickHistory, ParseException e) {
-              if (e == null && kickHistory != null) {
-                kickHistory.put("state", KickState.READED.getValue());
-                Log.d(TAG, "kickResponse known");
-              } else if (e != null) {
-                Log.d(TAG, e.getMessage());
+      if(is_me) {
+        holder.kickResponseContentTextView.setText("你：" + content3);
+        holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
+            query.fromLocalDatastore();
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+              @Override
+              public void done(ParseObject kickHistory, ParseException e) {
+                if (e == null && kickHistory != null) {
+                  kickHistory.put("state", KickState.READED.getValue());
+                  Log.d(TAG, "kickResponse known");
+                } else if (e != null) {
+                  Log.d(TAG, e.getMessage());
+                }
               }
-            }
-          });
-          int index = indexOf(jsonObject);
-          if (index != -1)
-            remove(index);
-        }
-      });
+            });
+            int index = indexOf(jsonObject);
+            if (index != -1)
+              remove(index);
+          }
+        });
+      } else {
+        holder.kickResponseContentTextView.setText(content3);
+        holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
+            query.fromLocalDatastore();
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+              @Override
+              public void done(ParseObject kickHistory, ParseException e) {
+                if (e == null && kickHistory != null) {
+                  kickHistory.put("state", KickState.READED.getValue());
+                  Log.d(TAG, "kickResponse known");
+                } else if (e != null) {
+                  Log.d(TAG, e.getMessage());
+                }
+              }
+            });
+            int index = indexOf(jsonObject);
+            if (index != -1)
+              remove(index);
+          }
+        });
+      }
+
       if (holder.item_view != null) {
         holder.item_view.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -338,6 +361,8 @@ public class MessagesRecyclerViewAdapter extends
     else if(process <= KICK_HISTORY_ITEM && process > KICK_REQUEST_ITEM)
       return KICK_HISTORY_ITEM;
     else if(process <= KICK_RESPONSE_ITEM && process > KICK_HISTORY_ITEM)
+      return KICK_RESPONSE_ITEM;
+    else if(process == KickState.READED.getValue())
       return KICK_RESPONSE_ITEM;
 
     return process; // error

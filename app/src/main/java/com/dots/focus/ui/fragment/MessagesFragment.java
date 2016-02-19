@@ -39,6 +39,8 @@ public class MessagesFragment extends Fragment {
   private View mStickyView;
   private Context context;
   private Button resetBtn;
+  public static TextView myKickRequestTv;
+
   public MessagesRecyclerViewAdapter messagesRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
   private static String TAG = "MessagesFragment";
@@ -64,7 +66,7 @@ public class MessagesFragment extends Fragment {
     ImageView profileImageView = (ImageView) mStickyView.findViewById(R.id.profile_image);
     TextView profileTextView = (TextView) mStickyView.findViewById(R.id.profile_name);
 
-    TextView myKickRequestTv = (TextView) mStickyView.findViewById(R.id.my_kick_request);
+    myKickRequestTv = (TextView) mStickyView.findViewById(R.id.my_kick_request);
     String myKickRequest = SettingsUtil.getString("kickRequest");
     myKickRequestTv.setText(myKickRequest);
 
@@ -89,7 +91,6 @@ public class MessagesFragment extends Fragment {
     GetKickResponseService.queryKickResponse();
     messages = new ArrayList<>();
     messages.addAll(GetKickRequestService.friendKickRequestList);
-    messages.addAll(GetKickRequestService.friendWaitingKickResponse);
     messages.addAll(GetKickedService.kickedList);
     messages.addAll(GetKickedService.respondList);
     messages.addAll(GetKickResponseService.kickResponseList);
@@ -119,14 +120,16 @@ public class MessagesFragment extends Fragment {
             Log.v(TAG, "(after)friendKickRequestList.size() == " + GetKickRequestService
                                     .friendKickRequestList
                                     .size());
+            Log.v(TAG, "friendWaitingKickResponse size: " + GetKickRequestService.friendWaitingKickResponse.size());
+
             messages.addAll(GetKickRequestService.friendKickRequestList);
-            messages.addAll(GetKickRequestService.friendWaitingKickResponse);
             messages.addAll(GetKickedService.kickedList);
             messages.addAll(GetKickedService.respondList);
+            Log.v(TAG, "respondList size: " + GetKickedService.respondList.size());
             messages.addAll(GetKickResponseService.kickResponseList);
 
             mRecyclerView.getAdapter().notifyDataSetChanged();
-            Log.v("Messages", "adapter size: " + mRecyclerView.getAdapter().getItemCount());
+            Log.v(TAG, "adapter size: " + mRecyclerView.getAdapter().getItemCount());
             mRecyclerView.setRefreshing(false);
           }
         }, 1000);

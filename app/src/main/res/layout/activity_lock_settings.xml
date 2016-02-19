@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
     <TextView
-        android:id="@+id/friend_lock"
+        android:id="@+id/type"
         android:text="TEST"
         android:textSize="14sp"
         android:layout_width="wrap_content"

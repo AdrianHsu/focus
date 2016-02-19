@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.dots.focus.R;
+import com.dots.focus.ui.fragment.MessagesFragment;
 import com.dots.focus.util.SettingsUtil;
 
 
@@ -94,6 +95,7 @@ public class CannedMessagesSettingsActivity extends BaseActivity {
         SettingsUtil.put("kickHistory", text2);
         SettingsUtil.put("kickResponse", text3);
 
+        MessagesFragment.myKickRequestTv.setText(text1);
         onBackPressed();
       }
     });
