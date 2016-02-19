@@ -7,6 +7,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -33,6 +34,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TrackAccessibilityService extends AccessibilityService {
+    public static TrackAccessibilityService service = null;
 
     public static String previousPackageName = "";
     public static long startTime = 0;
@@ -59,6 +61,7 @@ public class TrackAccessibilityService extends AccessibilityService {
     @Override
     public void onCreate() {
         super.onCreate();
+        service = this;
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("HourReceiver_broadcast_an_hour");
@@ -70,11 +73,14 @@ public class TrackAccessibilityService extends AccessibilityService {
 //        timer.schedule(new CheckLimitTask(), 0, 300000);
         timer.schedule(new CheckLimitTask(), 0, 15000); // 15 sec
     }
+
+
     class CheckLimitTask extends TimerTask {
         public void run() {
             checkLimit();
         }
     }
+
 
     public static void checkLimit() {
         int count = 0;
@@ -105,11 +111,14 @@ public class TrackAccessibilityService extends AccessibilityService {
             appsUsage[i] = appsUsage[i + 1];*/
         System.arraycopy(appsUsage, 1, appsUsage, 0, 5);
         appsUsage[5] = 0;
+
+
     }
 
     @Override
     public void onDestroy() {
         unregisterReceiver(receiver);
+        service = null;
         super.onDestroy();
     }
 
@@ -310,4 +319,9 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         setServiceInfo(config);
     }
+    public void checkPermission() {
+//      int permission = checkSelfPermission(Manifest.permission.BIND_ACCESSIBILITY_SERVICE);
+//      Log.d(TAG, String.valueOf(ContextCompat.checkSelfPermission(this, Manifest.permission.BIND_ACCESSIBILITY_SERVICE)));
+    }
+
 }
