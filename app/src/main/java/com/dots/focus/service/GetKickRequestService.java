@@ -104,7 +104,7 @@ public class GetKickRequestService extends Service {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null && !objects.isEmpty()) {
+                if (e == null && objects != null) {
                     friendKickRequestList.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickMessage = new JSONObject();
@@ -168,5 +168,14 @@ public class GetKickRequestService extends Service {
                 }
             }
         });
+    }
+    public static void deleteExpired(String objectId) {
+        for (int i = 0, length = friendKickRequestList.size(); i < length; ++i) {
+          if (friendKickRequestList.get(i).optString("objectId", "").equals(objectId)) {
+            friendKickRequestList.remove(i);
+            break;
+          }
+        }
+        KickUtil.deleteKickHistory(objectId);
     }
 }

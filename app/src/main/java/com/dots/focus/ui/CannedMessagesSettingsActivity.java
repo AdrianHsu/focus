@@ -46,6 +46,9 @@ public class CannedMessagesSettingsActivity extends BaseActivity {
     kickRequestEditText.setText(SettingsUtil.getString("kickRequest"));
     kickHistoryEditText.setText(SettingsUtil.getString("kickHistory"));
     kickResponseEditText.setText(SettingsUtil.getString("kickResponse"));
+    kickRequestEditText.setTextColor(getResources().getColor(R.color.white));
+    kickHistoryEditText.setTextColor(getResources().getColor(R.color.white));
+    kickResponseEditText.setTextColor(getResources().getColor(R.color.white));
 
     kickRequestEditText.setOnKeyListener(new View.OnKeyListener() {
       public boolean onKey(View v, int keyCode, KeyEvent event) {

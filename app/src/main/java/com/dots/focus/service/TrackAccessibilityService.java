@@ -3,7 +3,9 @@ package com.dots.focus.service;
 import android.Manifest;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -317,12 +319,9 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         setServiceInfo(config);
     }
-
     public void checkPermission() {
-      int permission = checkSelfPermission(Manifest.permission.BIND_ACCESSIBILITY_SERVICE);
-      Log.d(TAG, String.valueOf(ContextCompat.checkSelfPermission(this, Manifest.permission.BIND_ACCESSIBILITY_SERVICE)));
+//      int permission = checkSelfPermission(Manifest.permission.BIND_ACCESSIBILITY_SERVICE);
+//      Log.d(TAG, String.valueOf(ContextCompat.checkSelfPermission(this, Manifest.permission.BIND_ACCESSIBILITY_SERVICE)));
     }
-
-
 
 }

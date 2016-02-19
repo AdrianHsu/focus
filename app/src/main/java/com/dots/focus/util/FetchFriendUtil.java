@@ -30,6 +30,7 @@ public class FetchFriendUtil {
     public static ArrayList<Long> mConfirmingFriendList = new ArrayList<>();
     public static ArrayList<JSONObject> mConfirmedFriendList = new ArrayList<>();
     public static ArrayList<JSONObject> mInvitingFriendList = new ArrayList<>();
+    public static JSONArray FBFriendsArray = new JSONArray();
 
     public static int checkFriend(Long id) throws JSONException {
         JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
@@ -52,6 +53,28 @@ public class FetchFriendUtil {
     }
 
     public static void refresh() {
+        mFriendList.clear();
+        mConfirmedFriendList.clear();
+        for (int i = 0, length = FBFriendsArray.length(); i < length; ++i) {
+            try {
+                JSONObject jsonObject = FBFriendsArray.getJSONObject(i);
+                Long id = jsonObject.getLong("id");
+                if (mConfirmingFriendList.contains(id))
+                    continue;
+                if (checkFriend(id) == -1) {
+                    jsonObject.put("state",
+                            FriendRelationship.NOT_FRIEND.getValue());
+                    mFriendList.add(jsonObject);
+                } else {
+                    jsonObject.put("state",
+                            FriendRelationship.IS_FRIEND.getValue());
+                    mConfirmedFriendList.add(jsonObject);
+                }
+            } catch (JSONException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+
         GraphRequestBatch batch = new GraphRequestBatch(
                 GraphRequest.newMyFriendsRequest(
                         AccessToken.getCurrentAccessToken(),
@@ -60,28 +83,8 @@ public class FetchFriendUtil {
                             public void onCompleted(JSONArray jsonArray, GraphResponse response) {
                                 // Application code for users friends
                                 if (jsonArray != null && response != null) {
-
-                                    mFriendList.clear();
-                                    mConfirmedFriendList.clear();
-                                    for (int i = 0, length = jsonArray.length(); i < length; ++i) {
-                                        try {
-                                            Long id = jsonArray.getJSONObject(i).getLong("id");
-                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                            if (mConfirmingFriendList.contains(id))
-                                                continue;
-                                            if (checkFriend(id) == -1) {
-                                                jsonObject.put("state",
-                                                        FriendRelationship.NOT_FRIEND.getValue());
-                                                mFriendList.add(jsonObject);
-                                            } else {
-                                                jsonObject.put("state",
-                                                        FriendRelationship.IS_FRIEND.getValue());
-                                                mConfirmedFriendList.add(jsonObject);
-                                            }
-                                        } catch (JSONException e) {
-                                            Log.d(TAG, e.getMessage());
-                                        }
-                                    }
+                                    if (!jsonArray.equals(FBFriendsArray))
+                                        FBFriendsArray = jsonArray;
                                 }
                             }
                         })

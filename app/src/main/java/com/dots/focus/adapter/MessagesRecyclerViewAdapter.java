@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.dots.focus.R;
 import com.dots.focus.config.KickState;
+import com.dots.focus.service.GetKickRequestService;
 import com.dots.focus.ui.KickHistoryActivity;
 import com.dots.focus.ui.KickRequestActivity;
 import com.dots.focus.ui.KickResponseActivity;
@@ -95,6 +96,8 @@ public class MessagesRecyclerViewAdapter extends
       final int period = jsonObject.getInt("period");
       final long time = jsonObject.getLong("time1");
       final String content = jsonObject.getString("content1");
+      final String mContent = SettingsUtil.getString("kickHistory");
+
 
       final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
       final Boolean expire = (time < expire_time);
@@ -105,27 +108,34 @@ public class MessagesRecyclerViewAdapter extends
         holder.expireTv.setText("ONLINE");
         holder.expireTv.setTextColor(mContext.getResources().getColor(R.color.red));
 
-        holder.buttonSample.setEnabled(true);
+        holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            KickUtil.kick(mContent, objectId);
+            int index = indexOf(jsonObject);
+            if (index != -1)
+              remove(index);
+          }
+        });
         holder.buttonSample.setText("戳");
       } else {
         holder.expireTv.setText("EXPIRED");
         holder.expireTv.setTextColor(mContext.getResources().getColor(R.color.semi_black));
 
-        holder.buttonSample.setEnabled(false);
         holder.buttonSample.setText("移除");
+        holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            GetKickRequestService.deleteExpired(objectId);
+            int index = indexOf(jsonObject);
+            if (index != -1)
+              remove(index);
+          }
+        });
       }
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
-      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          KickUtil.kick(SettingsUtil.getString("kickHistory"), objectId);
-          int index = indexOf(jsonObject);
-          if (index != -1)
-            remove(index);
-        }
-      });
       holder.item_view.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
