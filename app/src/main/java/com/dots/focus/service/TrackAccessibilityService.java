@@ -10,8 +10,11 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
@@ -55,6 +58,10 @@ public class TrackAccessibilityService extends AccessibilityService {
                 Log.d(TAG, "Get HourReceiver's broadcast...");
                 checkWindowState(previousPackageName, intent.getExtras().getLong("time"));
             }
+            else if (action.equals("check permission")) {
+                Log.d(TAG, "get check permission");
+                checkPermission();
+            }
         }
     };
 
@@ -65,6 +72,7 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("HourReceiver_broadcast_an_hour");
+        filter.addAction("check permission");
 
         registerReceiver(receiver, filter);
 
@@ -310,6 +318,7 @@ public class TrackAccessibilityService extends AccessibilityService {
     public void onServiceConnected() {
         super.onServiceConnected();
         //Configure these here for compatibility with API 13 and below.
+        Log.v(TAG, "onServiceConnected...");
         AccessibilityServiceInfo config = new AccessibilityServiceInfo();
         config.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
         config.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
@@ -320,8 +329,16 @@ public class TrackAccessibilityService extends AccessibilityService {
         setServiceInfo(config);
     }
     public void checkPermission() {
-//      int permission = checkSelfPermission(Manifest.permission.BIND_ACCESSIBILITY_SERVICE);
-//      Log.d(TAG, String.valueOf(ContextCompat.checkSelfPermission(this, Manifest.permission.BIND_ACCESSIBILITY_SERVICE)));
+        int permission1 = PermissionChecker.checkSelfPermission(this, Manifest.permission
+                .BIND_ACCESSIBILITY_SERVICE);
+        int permission2 = PermissionChecker.checkCallingOrSelfPermission(this, Manifest.permission
+                .BIND_ACCESSIBILITY_SERVICE);
+        int permission3 = PermissionChecker.checkCallingPermission(this, Manifest.permission
+                .BIND_ACCESSIBILITY_SERVICE, this.getPackageName());
+        Log.d(TAG, "standard: " + PermissionChecker.PERMISSION_DENIED + ", " +
+                                    PermissionChecker.PERMISSION_DENIED_APP_OP + ", " +
+                                    PermissionChecker.PERMISSION_GRANTED);
+        Log.d(TAG, permission1 + ", " + permission2 + ", " + permission3);
     }
 
 }

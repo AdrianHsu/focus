@@ -7,6 +7,7 @@ package com.dots.focus.ui;
  */
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -27,6 +28,8 @@ public class AdvancedSettingsActivity extends BaseActivity {
   private Boolean checked;
   private Switch access;
 
+  private static String TAG = "AdvancedSettingsActivity";
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -38,6 +41,12 @@ public class AdvancedSettingsActivity extends BaseActivity {
     getSupportActionBar().setTitle(getResources().getString(R.string.title_advanced_setting));
 
     access = (Switch) findViewById(R.id.switch2);
+
+    Intent intent = new Intent();
+    intent.setAction("check permission");
+    sendBroadcast(intent);
+
+
     int permissionCheck = ContextCompat.checkSelfPermission(TrackAccessibilityService.service,
                             android.Manifest.permission
                             .BIND_ACCESSIBILITY_SERVICE);
