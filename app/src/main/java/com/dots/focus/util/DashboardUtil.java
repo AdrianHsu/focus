@@ -36,6 +36,7 @@ public class DashboardUtil {
                                 currentUser.put("installationId", currentInstallation.getInstallationId());
                                 currentUser.put("user_id", id);
                                 currentUser.put("user_name", name);
+                                currentUser.put("lock_max_period", 15); // sec
                                 currentInstallation.put("fbId", id);
 
                                 currentUser.saveEventually(new SaveCallback() {

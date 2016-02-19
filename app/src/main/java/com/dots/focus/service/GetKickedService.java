@@ -139,6 +139,7 @@ public class GetKickedService extends Service {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null && objects != null) {
                     respondList.clear();
+                    Log.d(TAG, "checkRespond objects.size(): " + objects.size());
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickMessage = new JSONObject();
                         ParseObject object = objects.get(i);
@@ -148,10 +149,10 @@ public class GetKickedService extends Service {
                             kickMessage.put("user_id", id);
                             kickMessage.put("user_name", FetchFriendUtil.getFriendName(id));
                             kickMessage.put("state", object.getLong("state"));
-                          kickMessage.put("LimitType", object.getInt("LimitType"));
-                          kickMessage.put("period", object.getInt("period"));
-                          kickMessage.put("time1", object.getLong("time1"));
-                          kickMessage.put("content1", object.getString("content1"));
+                            kickMessage.put("LimitType", object.getInt("LimitType"));
+                            kickMessage.put("period", object.getInt("period"));
+                            kickMessage.put("time1", object.getLong("time1"));
+                            kickMessage.put("content1", object.getString("content1"));
                             kickMessage.put("time2", object.getLong("time2"));
                             kickMessage.put("content2", object.getString("content2"));
                             kickMessage.put("time3", object.getLong("time3"));
@@ -166,5 +167,21 @@ public class GetKickedService extends Service {
                 }
             }
         });
+    }
+    public static void removeKickedInList(String objectId) {
+        for (int i = 0, length = kickedList.size(); i < length; ++i) {
+            if (kickedList.get(i).optString("objectId", "").equals(objectId)) {
+                kickedList.remove(i);
+                break;
+            }
+        }
+    }
+    public static void removeRespondInList(String objectId) {
+        for (int i = 0, length = respondList.size(); i < length; ++i) {
+            if (respondList.get(i).optString("objectId", "").equals(objectId)) {
+                respondList.remove(i);
+                break;
+            }
+        }
     }
 }
