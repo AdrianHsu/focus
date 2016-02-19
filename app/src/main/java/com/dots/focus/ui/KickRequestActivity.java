@@ -5,7 +5,9 @@ package com.dots.focus.ui;
  */
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -13,12 +15,15 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.dots.focus.adapter.DiscussSelfRecyclerViewAdapter;
 import com.dots.focus.util.FetchFriendUtil;
@@ -38,17 +43,20 @@ public class KickRequestActivity extends BaseActivity {
   private TextView profileNameTv;
   private TextView friendStateTv;
   private TextView expireTv;
+  private Switch lockSwitch;
+  private TextView lockTimeTv;
 
-
-
-  private Boolean expire;
   private String name;
   private String objectId;
   private long id;
   private int period;
   private long time;
   private String content;
+  private int lockPickedTime;
+  private int lockMaxTime = 0;
   private static final String TAG = "KickRequest";
+  private Boolean timeLocked = false;
+  private Boolean timeLock = false;
 
   private UltimateRecyclerView mRecyclerView;
   private DiscussSelfRecyclerViewAdapter discussRecyclerViewAdapter = null;
@@ -96,6 +104,9 @@ public class KickRequestActivity extends BaseActivity {
     profileImage = (ImageView) findViewById(R.id.profile_image);
     profileNameTv = (TextView) findViewById(R.id.profile_name);
 
+    lockSwitch = (Switch) findViewById(R.id.switch_lock);
+    lockTimeTv = (TextView) findViewById(R.id.lock_time);
+
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
       name = extras.getString("user_name");
@@ -116,6 +127,7 @@ public class KickRequestActivity extends BaseActivity {
       expireTv.setText("EXPIRED");
       expireTv.setTextColor(getResources().getColor(R.color.semi_black));
       sendBtn.setEnabled(false);
+
       editText1.setEnabled(false);
       editText1.setText("已經過期、無法傳送訊息。");
     }
@@ -128,6 +140,30 @@ public class KickRequestActivity extends BaseActivity {
                             "/picture?process=large";
     Picasso.with(this).load(url).into(profileImage);
     profileNameTv.setText(name);
+
+    JSONObject jsonObject = FetchFriendUtil.getFriendById(id);
+
+    try {
+      lockMaxTime = jsonObject.getInt("lock_max_period");
+    } catch(JSONException e) {
+      Log.v(TAG, e.getMessage());
+    }
+
+    lockSwitch.setEnabled(timeLocked);
+    lockSwitch.setChecked(false);
+    lockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        if(b) {
+          //dialog
+          createDialog();
+          lockTimeTv.setText(timeToString(lockPickedTime));
+        } else {
+          lockPickedTime = 0;
+          lockTimeTv.setText("");
+        }
+      }
+    });
 
     JSONObject mRequest = new JSONObject();
     try {
@@ -177,8 +213,6 @@ public class KickRequestActivity extends BaseActivity {
   }
   protected String getFriendRelation(JSONObject friend) {
 
-    Boolean timeLocked = false;
-    Boolean timeLock = false;
     try {
       timeLocked = friend.getBoolean("timeLocked");
       timeLock = friend.getBoolean("timeLock");
@@ -194,5 +228,40 @@ public class KickRequestActivity extends BaseActivity {
     else
       return getResources().getString(R.string.relation_just_friend);
   }
+  private String timeToString(int seconds) {
+    int day = (int) TimeUnit.SECONDS.toDays(seconds);
+    long hours = TimeUnit.SECONDS.toHours(seconds) - (day * 24);
+    long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
+    long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
+    return String.format("%02d:%02d:%02d", hours, minute, second);
+  }
+  private void createDialog() {
 
+    // Create and show a non-indeterminate dialog with a max value of 150
+// If the showMinMax parameter is true, a min/max ratio will be shown to the left of the seek bar.
+    boolean showMinMax = true;
+    MaterialDialog dialog = new MaterialDialog.Builder(this)
+                            .title("想鎖住委託人多久呢？（秒鐘）")
+                            .content("修改中")
+                            .progress(false, lockMaxTime, showMinMax)
+                            .show();
+
+//// Loop until the dialog's progress value reaches the max (150)
+//    while (dialog.getCurrentProgress() != dialog.getMaxProgress()) {
+//      // If the progress dialog is cancelled (the user closes it before it's done), break the loop
+//      if (dialog.isCancelled()) break;
+//      // Wait 50 milliseconds to simulate doing work that requires progress
+//      try {
+//        Thread.sleep(50);
+//      } catch (InterruptedException e) {
+//        break;
+//      }
+//      // Increment the dialog's progress by 1 after sleeping for 50ms
+//      dialog.incrementProgress(1);
+//    }
+
+// When the loop exits, set the dialog content to a string that equals "Done"
+    lockPickedTime =  dialog.getCurrentProgress();
+    dialog.setContent(getResources().getString(R.string.done));
+  }
 }

@@ -100,6 +100,7 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="upgrade_permissions">升級權限</string>
     <!--KickRequestActivity-->
     <!--KickResponseActivity-->
+    <string name="lock_your_friend">鎖住他！</string>
     <!--LockSettingsActivity-->
     <string name="lock_time_upper_bound">鎖定時間長度上限</string>
     <string name="lock_settings">鎖屏功能設定</string>

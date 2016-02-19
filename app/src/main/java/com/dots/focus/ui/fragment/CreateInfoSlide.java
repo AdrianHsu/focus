@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.parse.ParseUser;
 import com.rey.material.widget.Slider;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -204,7 +206,9 @@ public class CreateInfoSlide extends Fragment {
 
       case R.layout.set_lock:
         slider3 = (Slider) view.findViewById(R.id.slider1);
-        final int temp = SettingsUtil.getInt("lock");
+        ParseUser user = ParseUser.getCurrentUser();
+
+        final int temp = user.getInt("lock_max_period");
         progressLock = temp;
         slider3.setValue(temp, true);
         textView3 = (TextView) view.findViewById(R.id.textView1);
@@ -241,9 +245,9 @@ public class CreateInfoSlide extends Fragment {
   public static void onDonePressed() {
     SettingsUtil.put("goal", progressGoal);
     SettingsUtil.put("idle", progressIdle);
-    SettingsUtil.put("lock", progressLock);
     SettingsUtil.put("friendLock", friendLock);
-
+    ParseUser user = ParseUser.getCurrentUser();
+    user.put("lock_max_period", progressLock);
   }
 
 
