@@ -41,7 +41,7 @@ public class AdvancedSettingsActivity extends BaseActivity {
     int permissionCheck = ContextCompat.checkSelfPermission(TrackAccessibilityService.service,
                             android.Manifest.permission
                             .BIND_ACCESSIBILITY_SERVICE);
-    
+
     if(permissionCheck == PackageManager.PERMISSION_GRANTED)
       checked = true;
     else if(permissionCheck == PackageManager.PERMISSION_DENIED)

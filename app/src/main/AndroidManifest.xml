@@ -60,13 +60,13 @@
             android:screenOrientation="portrait">
 
         </activity>
-        <activty
+        <activity
             android:name=".ui.CannedMessagesSettingsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/SecondaryAppTheme">
 
-        </activty>
+        </activity>
         <activity android:name=".ui.KickRequestActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">
