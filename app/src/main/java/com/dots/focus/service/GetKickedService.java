@@ -78,7 +78,6 @@ public class GetKickedService extends Service {
                             kickMessage.put("content1", object.getString("content1"));
                             kickMessage.put("time2", object.getLong("time2"));
                             kickMessage.put("content2", object.getString("content2"));
-                            kickMessage.put("is_me", false);
                             kickMessage.put("objectId", object.getObjectId());
                             kickedList.add(kickMessage);
                         } catch (JSONException e1) {
@@ -118,7 +117,6 @@ public class GetKickedService extends Service {
                             kickMessage.put("content1", object.getString("content1"));
                             kickMessage.put("time2", object.getLong("time2"));
                             kickMessage.put("content2", object.getString("content2"));
-                            kickMessage.put("is_me", false);
                             kickMessage.put("objectId", object.getObjectId());
                             kickedList.add(kickMessage);
                         } catch (JSONException e1) {

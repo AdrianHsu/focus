@@ -57,7 +57,6 @@ public class GetKickRequestService extends Service {
     }
 
     public static void queryKickRequest() {
-        final long expire_time = System.currentTimeMillis() + KickUtil.expire_period;
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
@@ -81,7 +80,6 @@ public class GetKickRequestService extends Service {
                             kickMessage.put("period", object.getInt("period"));
                             kickMessage.put("time1", time1);
                             kickMessage.put("content1", object.getString("content1"));
-                            kickMessage.put("expired", time1 > expire_time);
                             kickMessage.put("objectId", object.getObjectId());
                             friendKickRequestList.add(kickMessage);
                         } catch (JSONException e1) {
@@ -120,8 +118,7 @@ public class GetKickRequestService extends Service {
                             kickMessage.put("period", object.getInt("period"));
                             kickMessage.put("time1", time1);
                             kickMessage.put("content1", object.getString("content1"));
-                          kickMessage.put("is_me", true);
-                          kickMessage.put("objectId", object.getObjectId());
+                            kickMessage.put("objectId", object.getObjectId());
                             friendKickRequestList.add(kickMessage);
                         } catch (JSONException e1) {
                             e1.printStackTrace();
@@ -158,7 +155,6 @@ public class GetKickRequestService extends Service {
                           kickMessage.put("time2", object.getLong("time2"));
                           kickMessage.put("content1", object.getString("content1"));
                           kickMessage.put("content2", object.getString("content2"));
-                            kickMessage.put("is_me", true);
                             kickMessage.put("objectId", object.getObjectId());
                             friendWaitingKickResponse.add(kickMessage);
                         } catch (JSONException e1) {
