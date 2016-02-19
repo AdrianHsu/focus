@@ -30,6 +30,7 @@ import com.dots.focus.util.FetchFriendUtil;
 import com.dots.focus.util.KickUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.rey.material.app.Dialog;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -116,21 +117,6 @@ public class KickRequestActivity extends BaseActivity {
       time = extras.getLong("time");
       content = extras.getString("content");
     }
-    final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
-    final Boolean expire = (time < expire_time);
-
-    expireTv = (TextView) findViewById(R.id.expire);
-    if(!expire) {
-      expireTv.setText("ONLINE");
-      expireTv.setTextColor(getResources().getColor(R.color.red));
-    } else {
-      expireTv.setText("EXPIRED");
-      expireTv.setTextColor(getResources().getColor(R.color.semi_black));
-      sendBtn.setEnabled(false);
-
-      editText1.setEnabled(false);
-      editText1.setText("已經過期、無法傳送訊息。");
-    }
 
     friendStateTv = (TextView) findViewById(R.id.friend_state);
     JSONObject friend = FetchFriendUtil.getFriendById(id);
@@ -154,16 +140,30 @@ public class KickRequestActivity extends BaseActivity {
     lockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        if(b) {
+        if (b) {
           //dialog
           createDialog();
-          lockTimeTv.setText(timeToString(lockPickedTime));
-        } else {
-          lockPickedTime = 0;
-          lockTimeTv.setText("");
         }
       }
     });
+
+    final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
+    final Boolean expire = (time < expire_time);
+
+    expireTv = (TextView) findViewById(R.id.expire);
+    if(!expire) {
+      expireTv.setText("ONLINE");
+      expireTv.setTextColor(getResources().getColor(R.color.red));
+    } else {
+      expireTv.setText("EXPIRED");
+      expireTv.setTextColor(getResources().getColor(R.color.semi_black));
+      lockSwitch.setTextColor(getResources().getColor(R.color.semi_black));
+      lockSwitch.setEnabled(false);
+      sendBtn.setEnabled(false);
+
+      editText1.setEnabled(false);
+      editText1.setText("已經過期、無法傳送訊息。");
+    }
 
     JSONObject mRequest = new JSONObject();
     try {
@@ -237,31 +237,43 @@ public class KickRequestActivity extends BaseActivity {
   }
   private void createDialog() {
 
-    // Create and show a non-indeterminate dialog with a max value of 150
-// If the showMinMax parameter is true, a min/max ratio will be shown to the left of the seek bar.
-    boolean showMinMax = true;
-    MaterialDialog dialog = new MaterialDialog.Builder(this)
-                            .title("想鎖住委託人多久呢？（秒鐘）")
-                            .content("修改中")
-                            .progress(false, lockMaxTime, showMinMax)
+    LockTimeView view = new LockTimeView(this, lockMaxTime);
+    final Dialog mDialog = new Dialog(this);
+    mDialog.title("鎖朋友多久呢？（秒鐘）")
+                            .positiveAction(getResources().getString(R.string.done))
+                            .negativeAction(getResources().getString(R.string.cancel))
+                            .contentView(view)
+                            .maxHeight(600)
+                            .cancelable(true)
                             .show();
+    mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+      @Override
+      public void onCancel(DialogInterface dialogInterface) {
+        //
+        lockPickedTime = 0;
+        lockTimeTv.setText("");
+        mDialog.cancel();
+        lockSwitch.setChecked(false);
+      }
+    });
+    mDialog.setCanceledOnTouchOutside(true);
+    mDialog.negativeActionClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        lockPickedTime = 0;
+        lockTimeTv.setText("");
+        mDialog.cancel();
+        lockSwitch.setChecked(false);
+      }
+    });
+    mDialog.positiveActionClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        lockPickedTime = LockTimeView.val;
+        lockTimeTv.setText(timeToString(lockPickedTime));
 
-//// Loop until the dialog's progress value reaches the max (150)
-//    while (dialog.getCurrentProgress() != dialog.getMaxProgress()) {
-//      // If the progress dialog is cancelled (the user closes it before it's done), break the loop
-//      if (dialog.isCancelled()) break;
-//      // Wait 50 milliseconds to simulate doing work that requires progress
-//      try {
-//        Thread.sleep(50);
-//      } catch (InterruptedException e) {
-//        break;
-//      }
-//      // Increment the dialog's progress by 1 after sleeping for 50ms
-//      dialog.incrementProgress(1);
-//    }
-
-// When the loop exits, set the dialog content to a string that equals "Done"
-    lockPickedTime =  dialog.getCurrentProgress();
-    dialog.setContent(getResources().getString(R.string.done));
+        mDialog.dismiss();
+      }
+    });
   }
 }

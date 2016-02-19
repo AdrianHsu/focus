@@ -108,7 +108,7 @@ public class GetKickRequestService extends Service {
                         JSONObject kickMessage = new JSONObject();
                         ParseObject object = objects.get(i);
                         long id = object.getLong("user_id_kicked"),
-                             time1 = object.getLong("time1");
+                                time1 = object.getLong("time1");
                         // add to friendKickRequestList
                         try {
                             kickMessage.put("user_id", id);
@@ -148,13 +148,13 @@ public class GetKickRequestService extends Service {
                         try {
                             kickMessage.put("user_id", id);
                             kickMessage.put("user_name", FetchFriendUtil.getFriendName(id));
-                          kickMessage.put("state", object.getLong("state"));
-                          kickMessage.put("LimitType", object.getInt("LimitType"));
-                          kickMessage.put("period", object.getInt("period"));
-                          kickMessage.put("time1", object.getLong("time1"));
-                          kickMessage.put("time2", object.getLong("time2"));
-                          kickMessage.put("content1", object.getString("content1"));
-                          kickMessage.put("content2", object.getString("content2"));
+                            kickMessage.put("state", object.getLong("state"));
+                            kickMessage.put("LimitType", object.getInt("LimitType"));
+                            kickMessage.put("period", object.getInt("period"));
+                            kickMessage.put("time1", object.getLong("time1"));
+                            kickMessage.put("time2", object.getLong("time2"));
+                            kickMessage.put("content1", object.getString("content1"));
+                            kickMessage.put("content2", object.getString("content2"));
                             kickMessage.put("objectId", object.getObjectId());
                             friendWaitingKickResponse.add(kickMessage);
                         } catch (JSONException e1) {
@@ -165,6 +165,15 @@ public class GetKickRequestService extends Service {
             }
         });
     }
+    public static void removeKickRequestInList(String objectId) {
+        for (int i = 0, length = friendKickRequestList.size(); i < length; ++i) {
+            if (friendKickRequestList.get(i).optString("objectId", "").equals(objectId)) {
+                friendKickRequestList.remove(i);
+                break;
+            }
+        }
+    }
+
     public static void deleteExpired(String objectId) {
         for (int i = 0, length = friendKickRequestList.size(); i < length; ++i) {
           if (friendKickRequestList.get(i).optString("objectId", "").equals(objectId)) {

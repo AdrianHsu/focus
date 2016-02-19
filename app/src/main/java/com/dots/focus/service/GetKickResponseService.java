@@ -132,4 +132,12 @@ public class GetKickResponseService extends Service {
             }
         });
     }
+    public static void removeResponseInList(String objectId) {
+        for (int i = 0, length = kickResponseList.size(); i < length; ++i) {
+            if (kickResponseList.get(i).optString("objectId", "").equals(objectId)) {
+                kickResponseList.remove(i);
+                break;
+            }
+        }
+    }
 }

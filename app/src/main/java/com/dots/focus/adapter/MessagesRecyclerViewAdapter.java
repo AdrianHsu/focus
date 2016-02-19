@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.dots.focus.R;
 import com.dots.focus.config.KickState;
 import com.dots.focus.service.GetKickRequestService;
+import com.dots.focus.service.GetKickResponseService;
+import com.dots.focus.service.GetKickedService;
 import com.dots.focus.ui.KickHistoryActivity;
 import com.dots.focus.ui.KickRequestActivity;
 import com.dots.focus.ui.KickResponseActivity;
@@ -96,8 +98,6 @@ public class MessagesRecyclerViewAdapter extends
       final int period = jsonObject.getInt("period");
       final long time = jsonObject.getLong("time1");
       final String content = jsonObject.getString("content1");
-      final String mContent = SettingsUtil.getString("kickHistory");
-
 
       final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
       final Boolean expire = (time < expire_time);
@@ -111,7 +111,8 @@ public class MessagesRecyclerViewAdapter extends
         holder.buttonSample.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            KickUtil.kick(mContent, objectId);
+            KickUtil.kick(SettingsUtil.getString("kickHistory"), objectId);
+            GetKickRequestService.removeKickRequestInList(objectId);
             int index = indexOf(jsonObject);
             if (index != -1)
               remove(index);
@@ -176,7 +177,6 @@ public class MessagesRecyclerViewAdapter extends
       final long time2 = jsonObject.getLong("time2");
       final String content1 = jsonObject.getString("content1");
       final String content2 = jsonObject.getString("content2");
-      final String mContent = SettingsUtil.getString("kickResponse");
 
       holder.textViewSample.setText(name);
 
@@ -185,7 +185,8 @@ public class MessagesRecyclerViewAdapter extends
         @Override
         public void onClick(View view) {
 
-          KickUtil.kickResponse(mContent, objectId);
+          KickUtil.kickResponse(SettingsUtil.getString("kickResponse"), objectId);
+          GetKickedService.removeKickedInList(objectId);
           Log.v(TAG, "called kickResponse with objectId:" + objectId);
           int index = indexOf(jsonObject);
           if (index != -1)
@@ -257,13 +258,14 @@ public class MessagesRecyclerViewAdapter extends
         holder.buttonSample.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
+            GetKickedService.removeRespondInList(objectId);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
             query.fromLocalDatastore();
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
               @Override
               public void done(ParseObject kickHistory, ParseException e) {
                 if (e == null && kickHistory != null) {
-                  kickHistory.put("state", KickState.READED.getValue());
+                  kickHistory.put("state", KickState.READ.getValue());
                   Log.d(TAG, "kickResponse known");
                 } else if (e != null) {
                   Log.d(TAG, e.getMessage());
@@ -280,13 +282,14 @@ public class MessagesRecyclerViewAdapter extends
         holder.buttonSample.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
+            GetKickResponseService.removeResponseInList(objectId);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
             query.fromLocalDatastore();
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
               @Override
               public void done(ParseObject kickHistory, ParseException e) {
                 if (e == null && kickHistory != null) {
-                  kickHistory.put("state", KickState.READED.getValue());
+                  kickHistory.put("state", KickState.READ.getValue());
                   Log.d(TAG, "kickResponse known");
                 } else if (e != null) {
                   Log.d(TAG, e.getMessage());
@@ -362,7 +365,7 @@ public class MessagesRecyclerViewAdapter extends
       return KICK_HISTORY_ITEM;
     else if(process <= KICK_RESPONSE_ITEM && process > KICK_HISTORY_ITEM)
       return KICK_RESPONSE_ITEM;
-    else if(process == KickState.READED.getValue())
+    else if(process == KickState.READ.getValue())
       return -1; // error
 
     return process; // error

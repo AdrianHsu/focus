@@ -54,9 +54,6 @@ public class MessagesFragment extends Fragment {
 //    context.startService(new Intent(context, GetKickRequestService.class));
 //    context.startService(new Intent(context, GetKickedService.class));
 //    context.startService(new Intent(context, GetKickResponseService.class));
-    GetKickRequestService.checkLocal();
-    GetKickedService.checkLocal();
-    GetKickResponseService.checkLocal();
 
     View v = inflater.inflate(R.layout.fragment_messages, container, false);
 
@@ -86,6 +83,10 @@ public class MessagesFragment extends Fragment {
                             ("user_id") ) + "/picture?type=large";
     Picasso.with(context).load(url).into(profileImageView);
 
+    GetKickRequestService.checkLocal();
+    GetKickedService.checkLocal();
+    GetKickResponseService.checkLocal();
+
     GetKickRequestService.queryKickRequest();
     GetKickedService.queryKicked();
     GetKickResponseService.queryKickResponse();
@@ -111,16 +112,14 @@ public class MessagesFragment extends Fragment {
 
             messages.clear();
             mRecyclerView.getAdapter().notifyDataSetChanged();
-            Log.v(TAG, "(before)friendKickRequestList.size() == " + GetKickRequestService
-                                    .friendKickRequestList
-                                    .size());
+
+            GetKickRequestService.checkLocal();
+            GetKickedService.checkLocal();
+            GetKickResponseService.checkLocal();
+
             GetKickRequestService.queryKickRequest();
             GetKickedService.queryKicked();
             GetKickResponseService.queryKickResponse();
-            Log.v(TAG, "(after)friendKickRequestList.size() == " + GetKickRequestService
-                                    .friendKickRequestList
-                                    .size());
-            Log.v(TAG, "friendWaitingKickResponse size: " + GetKickRequestService.friendWaitingKickResponse.size());
 
             messages.addAll(GetKickRequestService.friendKickRequestList);
             messages.addAll(GetKickedService.kickedList);

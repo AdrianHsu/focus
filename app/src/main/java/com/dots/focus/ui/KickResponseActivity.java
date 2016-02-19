@@ -147,7 +147,7 @@ public class KickResponseActivity extends BaseActivity {
     DiscussSelfRecyclerViewAdapter selfAdapter = null;
     linearLayoutManager = new LinearLayoutManager(this);
 
-    if(is_me) {
+    if(!is_me) {
       selfAdapter = new DiscussSelfRecyclerViewAdapter(messages, this);
       mRecyclerView.setAdapter(selfAdapter);
 
