@@ -5,17 +5,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
 import com.dots.focus.util.SettingsUtil;
+import com.rey.material.widget.Slider;
 
 public class GoalSettingsActivity extends BaseActivity {
 
-  private Button doneBtn;
-  private SeekBar seekBar;
+  private Slider slider;
   private TextView textView;
 
   private int progress;
@@ -29,41 +28,22 @@ public class GoalSettingsActivity extends BaseActivity {
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle(getResources().getString(R.string.title_goal_setting));
-    seekBar = (SeekBar) findViewById(R.id.seekBar1);
+    slider = (Slider) findViewById(R.id.slider1);
     progress = SettingsUtil.getInt("goal");
-    seekBar.setProgress(progress);
+    slider.setValue(progress, true);
     textView = (TextView) findViewById(R.id.textView1);
-    doneBtn =(Button) findViewById(R.id.button);
 
     // Initialize the textview with '0'.
-    textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
+    textView.setText(slider.getValue() + "/" + slider.getMaxValue() + " (以分鐘計)");
 
-    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
+    slider.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
       @Override
-      public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-        progress = progresValue;
-        textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
+      public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
+
+        progress = newValue;
+        textView.setText(newValue + "/" + slider.getMaxValue() + " (以分鐘計)");
         Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
-      }
 
-      @Override
-      public void onStartTrackingTouch(SeekBar seekBar) {
-        Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
-      }
-
-      @Override
-      public void onStopTrackingTouch(SeekBar seekBar) {
-        textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
-        Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
-      }
-    });
-
-    doneBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        SettingsUtil.put("goal", progress);
-        onBackPressed();
       }
     });
   }
@@ -71,5 +51,10 @@ public class GoalSettingsActivity extends BaseActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     onBackPressed();
     return true;
+  }
+  @Override
+  public void onBackPressed() {
+    SettingsUtil.put("goal", progress);
+    super.onBackPressed();
   }
 }

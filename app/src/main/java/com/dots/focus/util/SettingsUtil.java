@@ -55,6 +55,10 @@ public class SettingsUtil {
             // 訊息顯示
         settings.put("screenOn", false);
         settings.put("screenOff", false);
+        settings.put("friendLock", true);
+        settings.put("kickRequest", "我在耍廢～快來戳我一下！");
+        settings.put("kickHistory", "你被戳了一下！這是預設訊息。");
+        settings.put("kickResponse", "謝謝你戳了我一下。");
 
         // 進階設定
 
@@ -70,11 +74,18 @@ public class SettingsUtil {
         settings.put(s, i);
         Log.d(TAG, "Set " + s + ": " + i);
     }
+  public static void put(String s, String i) {
+    settings.put(s, i);
+    Log.d(TAG, "Set " + s + ": " + i);
+  }
     public static boolean getBooleen(String s) {
         return settings.getBoolean(s);
     }
     public static int getInt(String s) {
         return settings.getInt(s);
+    }
+    public static String getString(String s) {
+        return settings.getString(s);
     }
 
 }

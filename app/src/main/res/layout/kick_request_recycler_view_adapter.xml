@@ -26,7 +26,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:id="@+id/textview"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:paddingLeft="10dip"
@@ -62,8 +62,8 @@
             android:text="EXPIRED"
             android:id="@+id/expire"
             android:textSize="8sp"
-            android:layout_alignBottom="@+id/textview"
-            android:layout_alignEnd="@+id/kick_request_content1"/>
+            android:layout_alignTop="@+id/textview"
+            android:layout_toEndOf="@+id/textview"/>
 
 
     </RelativeLayout>

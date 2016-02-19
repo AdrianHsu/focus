@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.rey.material.widget.Slider;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -46,10 +46,10 @@ public class CreateInfoSlide extends Fragment {
   private Button birthBtn;
   private Button occupationBtn;
   private EditText emailEdt;
-  private SeekBar seekBar1;
+  private Slider slider1;
   private TextView textView1;
   private Button doneBtn1;
-  private SeekBar seekBar2;
+  private Slider slider2;
   private TextView textView2;
   private TextView appPickedTv;
   private Button doneBtn2;
@@ -59,17 +59,17 @@ public class CreateInfoSlide extends Fragment {
   private Button doneBtn3;
   private Button cancelBtn3;
   private Button lockBtn3;
-  private SeekBar seekBar3;
+  private Slider slider3;
 
   private static Context mContext;
   public static Integer[] defaultMultiChoice = null;
   public static Integer[] pickedMultiChoice = null;
-  private int progressGoal;
-  private int progressIdle;
-  private int progressLock;
+  public static int progressGoal;
+  public static int progressIdle;
+  public static int progressLock;
+  public static boolean friendLock;
   private int layoutResId;
 
-  private int APP_LENGTH = 0;
 
   public static CreateInfoSlide newInstance(int layoutResId, Context _this) {
     CreateInfoSlide setInfoSlide = new CreateInfoSlide();
@@ -154,51 +154,31 @@ public class CreateInfoSlide extends Fragment {
         break;
       case R.layout.set_goal:
 
-        seekBar1 = (SeekBar) view.findViewById(R.id.seekBar1);
+        slider1 = (Slider) view.findViewById(R.id.slider1);
         textView1 = (TextView) view.findViewById(R.id.textView1);
-        doneBtn1 =(Button) view.findViewById(R.id.button);
-        seekBar1.setProgress(progressGoal);
+        slider1.setValue(progressGoal, true);
 
         // Initialize the textview with '0'.
-        textView1.setText(seekBar1.getProgress() + "/" + seekBar1.getMax() + " (以分鐘計)");
+        textView1.setText(slider1.getValue() + "/" + slider1.getMaxValue() + " (以分鐘計)");
 
-        seekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
+        slider1.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
           @Override
-          public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-            progressGoal = progresValue;
-            textView1.setText(seekBar1.getProgress() + "/" + seekBar1.getMax() + " (以分鐘計)");
-            Toast.makeText(mContext, "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
-          }
+          public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
+            progressGoal = newValue;
+            textView1.setText(newValue + "/" + slider1.getMaxValue() + " (以分鐘計)");
+            Toast.makeText(mContext, "Changing slider's progress", Toast.LENGTH_SHORT).show();
 
-          @Override
-          public void onStartTrackingTouch(SeekBar seekBar) {
-            Toast.makeText(mContext, "Started tracking seekbar", Toast.LENGTH_SHORT).show();
-          }
-
-          @Override
-          public void onStopTrackingTouch(SeekBar seekBar) {
-            textView1.setText(seekBar1.getProgress() + "/" + seekBar1.getMax() + " (以分鐘計)");
-            Toast.makeText(mContext, "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
           }
         });
 
-        doneBtn1.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            SettingsUtil.put("goal", progressGoal);
-
-          }
-        });
         break;
       case R.layout.set_idle:
-        seekBar2 = (SeekBar) view.findViewById(R.id.seekBar1);
+        slider2 = (Slider) view.findViewById(R.id.slider1);
         textView2 = (TextView) view.findViewById(R.id.textView1);
         appPickedTv = (TextView) view.findViewById(R.id.app_picked);
-        doneBtn2 = (Button) view.findViewById(R.id.button);
         pickAppBtn = (Button) view.findViewById(R.id.pick_app_button);
         progressIdle = SettingsUtil.getInt("idle");
-        seekBar2.setProgress(progressIdle);
+        slider2.setValue(progressIdle, true);
         // Adrian: 連續要改掉..
 
         pickAppBtn.setOnClickListener(new View.OnClickListener() {
@@ -209,80 +189,42 @@ public class CreateInfoSlide extends Fragment {
           }
         });
         // Initialize the textview with '0'.
-        textView2.setText(seekBar2.getProgress() + "/" + seekBar2.getMax() + " (以分鐘計)");
+        textView2.setText(slider2.getValue() + "/" + slider2.getMaxValue() + " (以分鐘計)");
 
-        seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        slider2.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
           @Override
-          public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-            progressIdle = progresValue;
-            textView2.setText(seekBar2.getProgress() + "/" + seekBar2.getMax() + " (以分鐘計)");
-            Toast.makeText(mContext, "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
-          }
-
-          @Override
-          public void onStartTrackingTouch(SeekBar seekBar) {
-            Toast.makeText(mContext, "Started tracking seekbar", Toast.LENGTH_SHORT).show();
-          }
-
-          @Override
-          public void onStopTrackingTouch(SeekBar seekBar) {
-            textView2.setText(seekBar2.getProgress() + "/" + seekBar2.getMax() + " (以分鐘計)");
-            Toast.makeText(mContext, "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+          public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
+            progressIdle = newValue;
+            textView2.setText(newValue + "/" + slider2.getMaxValue() + " (以分鐘計)");
+            Toast.makeText(mContext, "Changing slider's progress", Toast.LENGTH_SHORT).show();
           }
         });
 
-        doneBtn2.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            SettingsUtil.put("idle", progressIdle);
-          }
-        });
         break;
 
       case R.layout.set_lock:
-        seekBar3 = (SeekBar) view.findViewById(R.id.seekBar1);
+        slider3 = (Slider) view.findViewById(R.id.slider1);
         final int temp = SettingsUtil.getInt("lock");
         progressLock = temp;
-        seekBar3.setProgress(temp);
+        slider3.setValue(temp, true);
         textView3 = (TextView) view.findViewById(R.id.textView1);
         typeTextView = (TextView) view.findViewById(R.id.type);
-        doneBtn3 =(Button) view.findViewById(R.id.button);
-        cancelBtn3 = (Button) view.findViewById(R.id.cancel_button);
         lockBtn3 = (Button) view.findViewById(R.id.lock_condition_button);
+        Boolean mFriendLock = SettingsUtil.getBooleen("friendLock");
+        if(mFriendLock)
+          typeTextView.setText(getResources().getString(R.string.lock_friend_to_self));
+        else
+          typeTextView.setText(getResources().getString(R.string.lock_never));
 
         // Initialize the textview with '0'.
-        textView3.setText(seekBar3.getProgress() + "/" + seekBar3.getMax() + " (以分鐘計)");
+        textView3.setText(slider3.getValue() + "/" + slider3.getMaxValue() + " (以分鐘計)");
 
-        seekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
+        slider3.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
           @Override
-          public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-            progressLock = progresValue;
-            textView3.setText(seekBar3.getProgress() + "/" + seekBar3.getMax() + " (以分鐘計)");
-            Toast.makeText(mContext, "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
-          }
-
-          @Override
-          public void onStartTrackingTouch(SeekBar seekBar) {
-            Toast.makeText(mContext, "Started tracking seekbar", Toast.LENGTH_SHORT).show();
-          }
-
-          @Override
-          public void onStopTrackingTouch(SeekBar seekBar) {
-            textView3.setText(seekBar3.getProgress() + "/" + seekBar3.getMax() + " (以分鐘計)");
-            Toast.makeText(mContext, "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
-          }
-        });
-
-        doneBtn3.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            SettingsUtil.put("lock", progressLock);
-          }
-        });
-        cancelBtn3.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
+          public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
+            progressLock = newValue;
+            textView3.setText(newValue + "/" + slider3.getMaxValue() + " (以分鐘計)");
+            Toast.makeText(mContext, "Changing slider's progress", Toast.LENGTH_SHORT).show();
           }
         });
         lockBtn3.setOnClickListener(new View.OnClickListener() {
@@ -296,6 +238,15 @@ public class CreateInfoSlide extends Fragment {
 
     return view;
   }
+  public static void onDonePressed() {
+    SettingsUtil.put("goal", progressGoal);
+    SettingsUtil.put("idle", progressIdle);
+    SettingsUtil.put("lock", progressLock);
+    SettingsUtil.put("friendLock", friendLock);
+
+  }
+
+
   private void createLockConditionDialog() {
     new MaterialDialog.Builder(mContext)
                             .title("選擇您欲使用的鎖屏監護")
@@ -311,6 +262,10 @@ public class CreateInfoSlide extends Fragment {
                                   String temp = text.toString();
                                   typeTextView.setText(temp);
                                 }
+                                if(which == 0)
+                                  friendLock = true;
+                                else if(which == 1)
+                                  friendLock = false;
                                 return true;
                               }
                             })
@@ -320,7 +275,6 @@ public class CreateInfoSlide extends Fragment {
     Log.d(TAG, "createPickAppDialog state 0...");
 
     final int length = FetchAppUtil.getSize();
-    APP_LENGTH = length;
     final String [] appNameList = new String [length];
     for (int i = 0; i < length; ++i)
       appNameList[i] = FetchAppUtil.getApp(i).getName();

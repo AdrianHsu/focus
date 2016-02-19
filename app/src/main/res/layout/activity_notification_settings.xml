@@ -10,49 +10,50 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/transparent"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/daily_report_settings"
-        android:layout_margin="15dp"/>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/daily_report_notif"
-            android:layout_margin="10dp"/>
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/daily_report_settings"-->
+        <!--android:layout_margin="15dp"/>-->
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/daily_report_notif"-->
+            <!--android:layout_margin="10dp"/>-->
 
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:id="@+id/switch1"
-            android:layout_gravity="right"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="10dp"/>
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notif_time"
-            android:layout_margin="10dp"/>
+        <!--<Switch-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text=""-->
+            <!--android:id="@+id/switch1"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_margin="10dp"/>-->
+    <!--</RelativeLayout>-->
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/notif_time"-->
+            <!--android:layout_margin="10dp"/>-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:id="@+id/noti_time_textview"
-            android:layout_gravity="right"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="10dp"/>
-    </RelativeLayout>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="TEST"-->
+            <!--android:color="@color/yellow"-->
+            <!--android:id="@+id/noti_time_textview"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_margin="10dp"/>-->
+    <!--</RelativeLayout>-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:id="@+id/switch2"
+            android:id="@+id/sound"
             android:layout_gravity="right"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
@@ -90,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:id="@+id/switch3"
+            android:id="@+id/vibrate"
             android:layout_gravity="right"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
@@ -114,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:id="@+id/switch4"
+        android:id="@+id/turn_on_screen"
         android:layout_gravity="right"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -133,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:id="@+id/switch5"
+            android:id="@+id/turn_off_screen"
             android:layout_gravity="right"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"

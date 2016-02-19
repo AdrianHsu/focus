@@ -50,6 +50,7 @@ public class CreateInfoActivity extends AppIntro2 {
     CreateInfoUtil.update();
     FetchAppUtil.printApps();
     FetchAppUtil.setApps();
+    CreateInfoSlide.onDonePressed();
     //Intent intent = new Intent(this, GetAppsService.class);
     //startService(intent);
     startTrackService();

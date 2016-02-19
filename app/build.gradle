@@ -64,6 +64,8 @@ dependencies {
     compile 'com.prolificinteractive:material-calendarview:1.1.0'
 //    https://github.com/wdullaer/MaterialDateTimePicker
     compile 'com.wdullaer:materialdatetimepicker:2.1.1'
+//    https://github.com/rey5137/material
+    compile 'com.github.rey5137:material:1.2.2'
 
 }
 

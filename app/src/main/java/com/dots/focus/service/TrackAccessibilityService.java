@@ -1,5 +1,6 @@
 package com.dots.focus.service;
 
+import android.Manifest;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.admin.DevicePolicyManager;
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
@@ -20,6 +22,7 @@ import com.dots.focus.ui.FocusModeActivity;
 import com.dots.focus.ui.FocusModeView;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.KickUtil;
+import com.dots.focus.util.SettingsUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -80,12 +83,13 @@ public class TrackAccessibilityService extends AccessibilityService {
             appsUsage[5] += (int)((blockTime - startTime) / 1000);
         }
 
+
         for (int i = 0; i < 6; ++i)
             count += appsUsage[i];
 //        if (count >= 1200) // 20 mins
           if(count >= 10) {
             KickUtil.sendKickRequest(LimitType.HOUR_LIMIT.getValue(), count, blockTime,
-                                    "我在耍廢，快來踢我！");
+                                    SettingsUtil.getString("kickRequest"));
           }
 
         List<Integer> appLength = TrackAccessibilityUtil.getCurrentDay(blockTime).getAppLength();
@@ -95,7 +99,7 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         if (count >= 7200) // 2 hours
             KickUtil.sendKickRequest(LimitType.DAY_LIMIT.getValue(), count, blockTime,
-                    "我在耍廢，快來踢我！");
+                    SettingsUtil.getString("kickRequest"));
 
         /*for (int i = 0; i < 5; ++i)
             appsUsage[i] = appsUsage[i + 1];*/
@@ -305,10 +309,5 @@ public class TrackAccessibilityService extends AccessibilityService {
             config.flags = AccessibilityServiceInfo.FLAG_INCLUDE_NOT_IMPORTANT_VIEWS;
 
         setServiceInfo(config);
-
-        DevicePolicyManager devicePolicyManager = (DevicePolicyManager)getSystemService(
-                Context.DEVICE_POLICY_SERVICE);
-        devicePolicyManager.isAdminActive(new ComponentName(this.getPackageName(),
-                TrackAccessibilityService.class.getName()));
     }
 }

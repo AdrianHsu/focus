@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/pink"
               android:orientation="vertical">
 
@@ -13,15 +14,22 @@
         android:layout_alignParentLeft="true"
         android:layout_margin="14dp" />
 
-    <SeekBar
-        android:id="@+id/seekBar1"
+    <com.rey.material.widget.Slider
+        android:id="@+id/slider1"
+        style="@style/Material.Widget.Slider.Discrete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
         android:layout_marginTop="26dp"
-        android:max="120"/>
+        app:sl_stepValue="10"
+        app:sl_minValue="10"
+        app:sl_maxValue="120"
+        app:sl_travelAnimDuration="5"
+        app:sl_transformAnimDuration="20"
+        app:sl_primaryColor="@color/primary"
+        app:sl_secondaryColor="@color/primary_dark"/>
 
     <TextView
         android:id="@+id/textView1"
@@ -53,11 +61,4 @@
         android:text="@string/modify"
         android:id="@+id/pick_app_button"
         android:layout_gravity="center_horizontal"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/done"
-        android:id="@+id/button"
-        android:layout_gravity="center_horizontal"/>
-
 </LinearLayout>

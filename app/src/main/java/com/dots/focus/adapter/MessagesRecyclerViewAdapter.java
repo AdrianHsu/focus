@@ -18,6 +18,7 @@ import com.dots.focus.ui.KickHistoryActivity;
 import com.dots.focus.ui.KickRequestActivity;
 import com.dots.focus.ui.KickResponseActivity;
 import com.dots.focus.util.KickUtil;
+import com.dots.focus.util.SettingsUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.parse.GetCallback;
@@ -103,6 +104,7 @@ public class MessagesRecyclerViewAdapter extends
       if(!expire) {
         holder.expireTv.setText("ONLINE");
         holder.expireTv.setTextColor(mContext.getResources().getColor(R.color.red));
+
         holder.buttonSample.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
@@ -112,6 +114,8 @@ public class MessagesRecyclerViewAdapter extends
               remove(index);
           }
         });
+        holder.buttonSample.setEnabled(true);
+        holder.buttonSample.setText("戳");
       } else {
         holder.expireTv.setText("EXPIRED");
         holder.expireTv.setTextColor(mContext.getResources().getColor(R.color.semi_black));
@@ -130,7 +134,6 @@ public class MessagesRecyclerViewAdapter extends
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
-
       holder.item_view.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -172,10 +175,14 @@ public class MessagesRecyclerViewAdapter extends
       final String content1 = jsonObject.getString("content1");
       final String content2 = jsonObject.getString("content2");
       final Boolean is_me = jsonObject.getBoolean("is_me");
-      final String mContent = "謝謝你踢我！";
+      final String mContent = SettingsUtil.getString("kickResponse");
 
       holder.textViewSample.setText(name);
-      holder.kickHistoryContentTextView.setText(content2);
+      if(is_me)
+        holder.kickHistoryContentTextView.setText("你：" + content2);
+      else
+        holder.kickHistoryContentTextView.setText(content2);
+
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
