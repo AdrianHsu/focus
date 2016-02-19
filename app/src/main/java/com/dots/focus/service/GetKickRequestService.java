@@ -65,7 +65,7 @@ public class GetKickRequestService extends Service {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null && !objects.isEmpty()) {
+                if (e == null && objects != null) {
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickMessage = new JSONObject();
                         objects.get(i).put("state", KickState.REQUEST_DOWNLOADED.getValue());
@@ -141,7 +141,7 @@ public class GetKickRequestService extends Service {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null && !objects.isEmpty()) {
+                if (e == null && objects != null) {
                     friendWaitingKickResponse.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickMessage = new JSONObject();

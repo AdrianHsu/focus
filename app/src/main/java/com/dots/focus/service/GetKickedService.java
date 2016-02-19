@@ -61,7 +61,7 @@ public class GetKickedService extends Service {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null && !objects.isEmpty()) {
+                if (e == null && objects != null) {
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         objects.get(i).put("state", KickState.KICK_DOWNLOADED.getValue());
                         JSONObject kickMessage = new JSONObject();
@@ -101,7 +101,7 @@ public class GetKickedService extends Service {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null && !objects.isEmpty()) {
+                if (e == null && objects != null) {
                     kickedList.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickMessage = new JSONObject();
@@ -139,7 +139,7 @@ public class GetKickedService extends Service {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null && objects != null && !objects.isEmpty()) {
+                if (e == null && objects != null) {
                     respondList.clear();
                     for (int i = 0, size = objects.size(); i < size; ++i) {
                         JSONObject kickMessage = new JSONObject();
