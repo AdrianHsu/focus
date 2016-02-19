@@ -63,7 +63,7 @@ public class KickUtil {
         }
       });
     }
-    public static void deleteParseObject(String objectId) {
+    public static void deleteKickHistory(String objectId) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.fromLocalDatastore();
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
@@ -73,6 +73,8 @@ public class KickUtil {
                     parseObject.unpinInBackground();
                     parseObject.deleteEventually();
                 }
+                else if (e != null)
+                  Log.d(TAG, "deleteParseObject: " + e.getMessage());
             }
         });
     }

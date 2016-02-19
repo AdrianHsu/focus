@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.dots.focus.R;
 import com.dots.focus.config.KickState;
+import com.dots.focus.service.GetKickRequestService;
 import com.dots.focus.ui.KickHistoryActivity;
 import com.dots.focus.ui.KickRequestActivity;
 import com.dots.focus.ui.KickResponseActivity;
@@ -95,6 +96,8 @@ public class MessagesRecyclerViewAdapter extends
       final int period = jsonObject.getInt("period");
       final long time = jsonObject.getLong("time1");
       final String content = jsonObject.getString("content1");
+      final String mContent = SettingsUtil.getString("kickHistory");
+
 
       final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
       final Boolean expire = (time < expire_time);
@@ -108,13 +111,12 @@ public class MessagesRecyclerViewAdapter extends
         holder.buttonSample.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            KickUtil.kick("你被踢了！這是測試訊息。", objectId);
+            KickUtil.kick(mContent, objectId);
             int index = indexOf(jsonObject);
             if (index != -1)
               remove(index);
           }
         });
-        holder.buttonSample.setEnabled(true);
         holder.buttonSample.setText("戳");
       } else {
         holder.expireTv.setText("EXPIRED");
@@ -124,7 +126,7 @@ public class MessagesRecyclerViewAdapter extends
         holder.buttonSample.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            KickUtil.deleteParseObject(objectId);
+            GetKickRequestService.deleteExpired(objectId);
             int index = indexOf(jsonObject);
             if (index != -1)
               remove(index);
