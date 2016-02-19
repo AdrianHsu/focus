@@ -20,6 +20,7 @@ import android.widget.Switch;
 
 import com.dots.focus.Manifest;
 import com.dots.focus.R;
+import com.dots.focus.service.TrackAccessibilityService;
 
 public class AdvancedSettingsActivity extends BaseActivity {
 
@@ -37,8 +38,10 @@ public class AdvancedSettingsActivity extends BaseActivity {
     getSupportActionBar().setTitle(getResources().getString(R.string.title_advanced_setting));
 
     access = (Switch) findViewById(R.id.switch2);
-    int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission
+    int permissionCheck = ContextCompat.checkSelfPermission(TrackAccessibilityService.service,
+                            android.Manifest.permission
                             .BIND_ACCESSIBILITY_SERVICE);
+    
     if(permissionCheck == PackageManager.PERMISSION_GRANTED)
       checked = true;
     else if(permissionCheck == PackageManager.PERMISSION_DENIED)
