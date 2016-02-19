@@ -107,34 +107,25 @@ public class MessagesRecyclerViewAdapter extends
 
         holder.buttonSample.setEnabled(true);
         holder.buttonSample.setText("戳");
-        holder.buttonSample.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            KickUtil.kick(SettingsUtil.getString("kickHistory"), objectId);
-            int index = indexOf(jsonObject);
-            if (index != -1)
-              remove(index);
-          }
-        });
       } else {
         holder.expireTv.setText("EXPIRED");
         holder.expireTv.setTextColor(mContext.getResources().getColor(R.color.semi_black));
 
-        holder.buttonSample.setEnabled(true);
+        holder.buttonSample.setEnabled(false);
         holder.buttonSample.setText("移除");
-        holder.buttonSample.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-
-            int index = indexOf(jsonObject);
-            if (index != -1)
-              remove(index);
-          }
-        });      }
+      }
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
-
+      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          KickUtil.kick(SettingsUtil.getString("kickHistory"), objectId);
+          int index = indexOf(jsonObject);
+          if (index != -1)
+            remove(index);
+        }
+      });
       holder.item_view.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
