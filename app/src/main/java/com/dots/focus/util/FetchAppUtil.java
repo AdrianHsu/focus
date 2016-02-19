@@ -127,7 +127,9 @@ public class FetchAppUtil {
             public void done(ParseObject object, ParseException e) {
                 if (e == null && object != null) {
                     ParseApps = object;
-                    ParseApps.put("User", ParseUser.getCurrentUser());
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    if (currentUser != null)
+                        ParseApps.put("User", currentUser);
                     mergeApps();
 
                     searching = false;

@@ -103,25 +103,34 @@ public class MessagesRecyclerViewAdapter extends
       if(!expire) {
         holder.expireTv.setText("ONLINE");
         holder.expireTv.setTextColor(mContext.getResources().getColor(R.color.red));
+        holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            KickUtil.kick("你被踢了！這是測試訊息。", objectId);
+            int index = indexOf(jsonObject);
+            if (index != -1)
+              remove(index);
+          }
+        });
       } else {
         holder.expireTv.setText("EXPIRED");
         holder.expireTv.setTextColor(mContext.getResources().getColor(R.color.semi_black));
 
-        holder.buttonSample.setEnabled(false);
         holder.buttonSample.setText("移除");
+        holder.buttonSample.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            KickUtil.deleteParseObject(objectId);
+            int index = indexOf(jsonObject);
+            if (index != -1)
+              remove(index);
+          }
+        });
       }
       String url = "https://graph.facebook.com/" + String.valueOf(id) +
         "/picture?process=large";
       Picasso.with(mContext).load(url).into(holder.imageViewSample);
-      holder.buttonSample.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          KickUtil.kick("你被踢了！這是測試訊息。", objectId);
-          int index = indexOf(jsonObject);
-          if (index != -1)
-            remove(index);
-        }
-      });
+
       holder.item_view.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {

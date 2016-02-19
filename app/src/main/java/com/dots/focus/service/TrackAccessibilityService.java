@@ -2,7 +2,9 @@ package com.dots.focus.service;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -303,9 +305,10 @@ public class TrackAccessibilityService extends AccessibilityService {
             config.flags = AccessibilityServiceInfo.FLAG_INCLUDE_NOT_IMPORTANT_VIEWS;
 
         setServiceInfo(config);
+
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager)getSystemService(
+                Context.DEVICE_POLICY_SERVICE);
+        devicePolicyManager.isAdminActive(new ComponentName(this.getPackageName(),
+                TrackAccessibilityService.class.getName()));
     }
-
-
-
-
 }

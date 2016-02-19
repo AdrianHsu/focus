@@ -63,4 +63,17 @@ public class KickUtil {
         }
       });
     }
+    public static void deleteParseObject(String objectId) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
+        query.fromLocalDatastore();
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null && parseObject != null) {
+                    parseObject.unpinInBackground();
+                    parseObject.deleteEventually();
+                }
+            }
+        });
+    }
 }
