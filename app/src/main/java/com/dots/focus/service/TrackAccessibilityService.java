@@ -117,6 +117,21 @@ public class TrackAccessibilityService extends AccessibilityService {
             Log.v(TAG, "***** onAccessibilityEvent");
             final String tempPackageName = event.getPackageName().toString();
             Log.d(TAG, "getPackageName: " + tempPackageName);
+
+            if (inLockMode && !tempPackageName.equals(FocusModeView.callApp)
+                    && !tempPackageName.equals(FocusModeView.messageApp)) {
+                inLockMode = false;
+
+                Intent intent = new Intent(this, FocusModeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setAction(FocusModeService.LOCK_ACTION);
+                startActivity(intent);
+
+//                Intent intent = new Intent();
+//                intent.setAction("resume lock mode");
+//                sendBroadcast(intent);
+            }
+
             Thread thread = new Thread() {
                 @Override
                 public void run() {
@@ -133,15 +148,6 @@ public class TrackAccessibilityService extends AccessibilityService {
     }
 
     public void checkWindowState(String tempPackageName, long now) {
-
-        if (inLockMode && !tempPackageName.equals(FocusModeView.callApp)
-                        && !tempPackageName.equals(FocusModeView.messageApp)) {
-            inLockMode = false;
-            Intent intent = new Intent(this, FocusModeActivity.class);
-            intent.setAction(FocusModeService.LOCK_ACTION);
-            startActivity(intent);
-        }
-
         if (startTime == 0 || previousPackageName.contentEquals("") || appIndex < 0) {
             startTime = now;
             startHour = TrackAccessibilityUtil.anHour * (now / TrackAccessibilityUtil.anHour);

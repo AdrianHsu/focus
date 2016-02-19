@@ -67,8 +67,7 @@ public class FocusModeHistoryActivity extends BaseActivity {
           onBackPressed();
           break;
         case R.id.action_focus_mode:
-          Intent intent;
-          intent = new Intent(this, FocusModeActivity.class);
+          Intent intent = new Intent(this, FocusModeActivity.class);
           startActivity(intent);
           break;
       }
