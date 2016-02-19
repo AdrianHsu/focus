@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -18,15 +19,22 @@
         android:layout_alignParentLeft="true"
         android:layout_margin="14dp" />
 
-    <SeekBar
-        android:id="@+id/seekBar1"
+    <com.rey.material.widget.Slider
+        android:id="@+id/slider1"
+        style="@style/Material.Widget.Slider.Discrete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
         android:layout_marginTop="26dp"
-        android:max="30"/>
+        app:sl_stepValue="1"
+        app:sl_minValue="1"
+        app:sl_maxValue="30"
+        app:sl_travelAnimDuration="5"
+        app:sl_transformAnimDuration="20"
+        app:sl_primaryColor="@color/primary_blue"
+        app:sl_secondaryColor="@color/anchor_navy"/>
 
     <TextView
         android:id="@+id/textView1"
@@ -49,34 +57,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
     <TextView
-        android:id="@+id/type"
-        android:text="@string/lock_self_to_self"
+        android:id="@+id/friend_lock"
+        android:text="TEST"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="14dp" />
+    </LinearLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/modify"
-        android:id="@+id/lock_condition_button"/>
-        </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:id="@+id/cancel_button"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/done"
-            android:id="@+id/button"/>
-    </LinearLayout>
+        android:id="@+id/lock_condition_button"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

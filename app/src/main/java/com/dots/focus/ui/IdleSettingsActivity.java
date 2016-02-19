@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SeekBar;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,14 +22,14 @@ import com.dots.focus.R;
 import com.dots.focus.ui.fragment.CreateInfoSlide;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.SettingsUtil;
+import com.rey.material.widget.Slider;
 
 import org.w3c.dom.Text;
 
 public class IdleSettingsActivity extends BaseActivity {
 
-  private Button doneBtn;
   private Button pickAppBtn;
-  private SeekBar seekBar;
+  private Slider slider;
   private TextView textView;
   public static Integer[] defaultMultiChoice = null;
   private static Integer[] pickedMultiChoice = null;
@@ -48,13 +48,12 @@ public class IdleSettingsActivity extends BaseActivity {
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle(getResources().getString(R.string.title_idle_setting));
-    seekBar = (SeekBar) findViewById(R.id.seekBar1);
+    slider = (Slider) findViewById(R.id.slider1);
     appPickedTv = (TextView) findViewById(R.id.app_picked);
     progress = SettingsUtil.getInt("idle");
-    seekBar.setProgress(progress);
+    slider.setValue(progress, true);
     // Adrian: 連續要改掉..
     textView = (TextView) findViewById(R.id.textView1);
-    doneBtn = (Button) findViewById(R.id.button);
     pickAppBtn = (Button) findViewById(R.id.pick_app_button);
 
     final int length = FetchAppUtil.getSize();
@@ -72,33 +71,14 @@ public class IdleSettingsActivity extends BaseActivity {
     });
 
     // Initialize the textview with '0'.
-    textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
+    textView.setText(slider.getValue() + "/" + slider.getMaxValue() + " (以分鐘計)");
 
-    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+    slider.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
       @Override
-      public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-        progress = progresValue;
-        textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
+      public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
+        progress = newValue;
+        textView.setText(newValue + "/" + slider.getMaxValue() + " (以分鐘計)");
         Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
-      }
-
-      @Override
-      public void onStartTrackingTouch(SeekBar seekBar) {
-        Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
-      }
-
-      @Override
-      public void onStopTrackingTouch(SeekBar seekBar) {
-        textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
-        Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
-      }
-    });
-
-    doneBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        SettingsUtil.put("idle", progress);
-        onBackPressed();
       }
     });
   }
@@ -144,5 +124,10 @@ public class IdleSettingsActivity extends BaseActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     onBackPressed();
     return true;
+  }
+  @Override
+  public void onBackPressed() {
+    SettingsUtil.put("idle", progress);
+    super.onBackPressed();
   }
 }

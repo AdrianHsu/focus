@@ -190,8 +190,10 @@ public class KickResponseActivity extends BaseActivity {
 //    String text = editText1.getText().toString();
 //    try {
 //      tmp.put("content", text);
-//      tmp.put("time", System.currentTimeMillis());
-//    } catch (JSONException e) {
+//String timeString = TrackAccessibilityUtil.getDateByMilli(System.currentTimeMillis());
+//
+//  tmp.put("time", timeString);
+  //    } catch (JSONException e) {
 //      e.printStackTrace();
 //    }
 //    messages.add(tmp);

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +21,9 @@ import com.dots.focus.service.GetFriendInviteService;
 import com.dots.focus.service.GetKickRequestService;
 import com.dots.focus.service.GetKickResponseService;
 import com.dots.focus.service.GetKickedService;
+import com.dots.focus.ui.CannedMessagesSettingsActivity;
+import com.dots.focus.ui.ProfileActivity;
+import com.dots.focus.util.SettingsUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
@@ -34,6 +38,7 @@ public class MessagesFragment extends Fragment {
   private UltimateRecyclerView mRecyclerView;
   private View mStickyView;
   private Context context;
+  private Button resetBtn;
   public MessagesRecyclerViewAdapter messagesRecyclerViewAdapter = null;
   private LinearLayoutManager linearLayoutManager;
   private static String TAG = "MessagesFragment";
@@ -54,11 +59,23 @@ public class MessagesFragment extends Fragment {
     View v = inflater.inflate(R.layout.fragment_messages, container, false);
 
     mRecyclerView = (UltimateRecyclerView) v.findViewById(R.id.messages_recycler_view);
-
     mStickyView = v.findViewById(R.id.messages_sticky_view);
 
     ImageView profileImageView = (ImageView) mStickyView.findViewById(R.id.profile_image);
     TextView profileTextView = (TextView) mStickyView.findViewById(R.id.profile_name);
+
+    TextView myKickRequestTv = (TextView) mStickyView.findViewById(R.id.my_kick_request);
+    String myKickRequest = SettingsUtil.getString("kickRequest");
+    myKickRequestTv.setText(myKickRequest);
+
+    resetBtn = (Button) mStickyView.findViewById(R.id.resetBtn);
+    resetBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(context, CannedMessagesSettingsActivity.class);
+        context.startActivity(intent);
+      }
+    });
 
     ParseUser user = ParseUser.getCurrentUser();
     String name = user.getString("user_name");
@@ -118,4 +135,5 @@ public class MessagesFragment extends Fragment {
 
     return v;
   }
+
 }

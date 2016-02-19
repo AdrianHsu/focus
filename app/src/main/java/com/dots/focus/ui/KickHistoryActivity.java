@@ -142,12 +142,12 @@ public class KickHistoryActivity extends BaseActivity {
     if(is_me) {
       selfAdapter = new DiscussSelfRecyclerViewAdapter(messages, this);
       mRecyclerView.setAdapter(selfAdapter);
-
-    } else {
       editText1.setEnabled(false);
       editText1.setAllCaps(true);
       editText1.setText("等待回覆中，無法輸入訊息。");
       sendBtn.setEnabled(false);
+
+    } else {
       friendAdapter = new DiscussFriendRecyclerViewAdapter(messages, this);
       mRecyclerView.setAdapter(friendAdapter);
 
@@ -167,16 +167,19 @@ public class KickHistoryActivity extends BaseActivity {
     String text = editText1.getText().toString();
     try {
       tmp.put("content", text);
-      tmp.put("time", System.currentTimeMillis());
+      String timeString = TrackAccessibilityUtil.getDateByMilli(System.currentTimeMillis());
+
+      tmp.put("time", timeString);
     } catch (JSONException e) {
       e.printStackTrace();
     }
     messages.add(tmp);
+
     mRecyclerView.getAdapter().notifyItemInserted(messages.size() - 1);
     mRecyclerView.scrollVerticallyToPosition(messages.size() - 1);
     KickUtil.kickResponse(text, objectId);
 
-    editText1.setText("");
+    editText1.setEnabled(false);
     sendBtn.setEnabled(false);
     editText1.setText("訊息已傳送！");
     Toast.makeText(this, "訊息已傳送！", Toast.LENGTH_SHORT);

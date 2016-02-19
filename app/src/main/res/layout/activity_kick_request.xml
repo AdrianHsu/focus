@@ -62,9 +62,11 @@
                 android:text="EXPIRED"
                 android:id="@+id/expire"
                 android:textSize="8sp"
-                android:layout_alignParentTop="true"
-                android:layout_margin="5dp"
-                android:layout_toStartOf="@+id/button"/>
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_alignTop="@+id/profile_name"
+                android:layout_toEndOf="@+id/profile_name"
+                android:layout_centerHorizontal="true"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -11,23 +11,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.dots.focus.util.SettingsUtil;
+import com.rey.material.widget.Slider;
 
 public class LockSettingsActivity extends BaseActivity {
 
-  private Button doneBtn;
-  private Button cancelBtn;
   private Button lockBtn;
-  private SeekBar seekBar;
+  private Slider slider;
   private TextView textView;
   private TextView typeTextView;
-
+  private Boolean friendLock = true;
   private int progress = 0;
 
   @Override
@@ -39,53 +37,32 @@ public class LockSettingsActivity extends BaseActivity {
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle(getResources().getString(R.string.title_lock_setting));
-    seekBar = (SeekBar) findViewById(R.id.seekBar1);
+    slider = (Slider) findViewById(R.id.slider1);
     final int temp = SettingsUtil.getInt("lock");
     progress = temp;
-    seekBar.setProgress(temp);
+    slider.setValue(temp, true);
     textView = (TextView) findViewById(R.id.textView1);
     typeTextView = (TextView) findViewById(R.id.type);
-    doneBtn =(Button) findViewById(R.id.button);
-    cancelBtn = (Button) findViewById(R.id.cancel_button);
     lockBtn = (Button) findViewById(R.id.lock_condition_button);
 
+    friendLock = SettingsUtil.getBooleen("friendLock");
+    if(friendLock)
+      typeTextView.setText(getResources().getString(R.string.lock_friend_to_self));
+    else
+      typeTextView.setText(getResources().getString(R.string.lock_never));
     // Initialize the textview with '0'.
-    textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
+    textView.setText(slider.getValue() + "/" + slider.getMaxValue() + " (以分鐘計)");
 
-    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
+    slider.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
       @Override
-      public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-        progress = progresValue;
-        textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
+      public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
+        progress = newValue;
+        textView.setText(newValue + "/" + slider.getMaxValue() + " (以分鐘計)");
         Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
-      }
 
-      @Override
-      public void onStartTrackingTouch(SeekBar seekBar) {
-        Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
-      }
-
-      @Override
-      public void onStopTrackingTouch(SeekBar seekBar) {
-        textView.setText(seekBar.getProgress() + "/" + seekBar.getMax() + " (以分鐘計)");
-        Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
       }
     });
 
-    doneBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        SettingsUtil.put("lock", progress);
-        onBackPressed();
-      }
-    });
-    cancelBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        onBackPressed();
-      }
-    });
     lockBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -108,6 +85,11 @@ public class LockSettingsActivity extends BaseActivity {
                                   String temp = text.toString();
                                   typeTextView.setText(temp);
                                 }
+                                if(which == 0)
+                                  friendLock = true;
+                                else if(which == 1)
+                                  friendLock = false;
+
                                 return true;
                               }
                             })
@@ -115,7 +97,14 @@ public class LockSettingsActivity extends BaseActivity {
   }
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
+
     onBackPressed();
     return true;
+  }
+  @Override
+  public void onBackPressed() {
+    SettingsUtil.put("lock", progress);
+    SettingsUtil.put("friendLock", friendLock);
+    super.onBackPressed();
   }
 }

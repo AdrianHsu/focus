@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="gender">
-        <item>Male</item>
-        <item>Female</item>
+        <item>男性</item>
+        <item>女性</item>
     </string-array>
 
     <string-array name="birth">
@@ -167,7 +167,6 @@
 
     <string-array name="lockConditionList">
         <item>朋友鎖自己</item>
-        <item>自己鎖自己</item>
         <item>永遠不鎖</item>
     </string-array>
 </resources>

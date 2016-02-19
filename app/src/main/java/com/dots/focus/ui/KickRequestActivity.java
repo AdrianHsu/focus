@@ -158,7 +158,9 @@ public class KickRequestActivity extends BaseActivity {
     String text = editText1.getText().toString();
     try {
       tmp.put("content", text);
-      tmp.put("time", System.currentTimeMillis());
+      String timeString = TrackAccessibilityUtil.getDateByMilli(System.currentTimeMillis());
+
+      tmp.put("time", timeString);
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -167,8 +169,8 @@ public class KickRequestActivity extends BaseActivity {
     mRecyclerView.scrollVerticallyToPosition(messages.size() - 1);
     KickUtil.kick(text, objectId);
 
-    editText1.setText("");
     sendBtn.setEnabled(false);
+    editText1.setEnabled(false);
     editText1.setText("訊息已傳送！");
     Toast.makeText(this, "訊息已傳送！", Toast.LENGTH_SHORT);
 
