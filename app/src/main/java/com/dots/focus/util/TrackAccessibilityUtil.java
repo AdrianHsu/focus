@@ -99,33 +99,33 @@ public class TrackAccessibilityUtil {
             currentDay.saveEventually();
         currentDay = new DayBlock(dayInLong);
         currentDay.saveEventually(new SaveCallback() {
-          @Override
-          public void done(ParseException e) {
-            if (e != null) {
-              Log.d(TAG, "currentDay pin error: " + e.getMessage());
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.d(TAG, "currentDay pin error: " + e.getMessage());
+                }
+                List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
+                if (hourBlocks == null) {
+                    Log.d(TAG, "hourBlocks is null.");
+                    return;
+                }
+                if (hourBlocks.size() < 24) {
+                    Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
+                    return;
+                }
+                for (int i = 0; i < 24; ++i) {
+                    if (!hourBlocks.get(i).equals("")) {
+                        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
+                        query.getInBackground(hourBlocks.get(i), new GetCallback<HourBlock>() {
+                            @Override
+                            public void done(HourBlock hourBlock, ParseException e) {
+                                if (hourBlock != null && e == null)
+                                    hourBlock.setDayBlock(getCurrentDay(dayInLong).getObjectId());
+                            }
+                        });
+                    }
+                }
             }
-            List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
-            if (hourBlocks == null) {
-              Log.d(TAG, "hourBlocks is null.");
-              return;
-            }
-            if (hourBlocks.size() < 24) {
-              Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
-              return;
-            }
-            for (int i = 0; i < 24; ++i) {
-              if (!hourBlocks.get(i).equals("")) {
-                ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
-                query.getInBackground(hourBlocks.get(i), new GetCallback<HourBlock>() {
-                  @Override
-                  public void done(HourBlock hourBlock, ParseException e) {
-                    if (hourBlock != null && e == null)
-                      hourBlock.setDayBlock(getCurrentDay(dayInLong).getObjectId());
-                  }
-                });
-              }
-            }
-          }
         });
         currentDay.pinInBackground();
     }
@@ -213,6 +213,14 @@ public class TrackAccessibilityUtil {
                 x[day] += appLength.get(j);
         }
         return x;
+    }
+
+    public static int getTotalInArray(int[] data) {
+        int count = 0;
+        for (int x : data) {
+            count += x;
+        }
+        return count;
     }
 
     public static int[] dayUsage(long time0) {
@@ -510,7 +518,7 @@ public class TrackAccessibilityUtil {
     }
 
     public static int[] dayCategoryClicksInWeek(int week) {
-        int[] x = {0, 0, 0, 0, 0, 0, 0};
+        int[] x = new int[] {0, 0, 0, 0, 0, 0, 0};
 
         Long time = getPrevXWeek(week);
         List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
@@ -531,6 +539,23 @@ public class TrackAccessibilityUtil {
         int offset = getTimeOffset() * anHour;
         return aDay * ((System.currentTimeMillis() + offset) / aDay - day) - offset;
     }
+
+    public static int[] getUsageValuation(int[] data) { // input week clicks
+        if (data.length != 7)
+            Log.d(TAG, "getUsageValuation: length is not 7: " + data.length);
+        int[] x = new int[] {0, 0, 0};
+        for (int click : data) {
+            if (click >= 60)
+                ++x[0];
+            else if (click >= 40)
+                ++x[1];
+            else if (click >= 20)
+                ++x[2];
+        }
+        return x; // 重度、中度、輕度
+    }
+
+
 
     public static long getPrevXWeek(int week) { // 0: current week
         Calendar calendar = Calendar.getInstance();
@@ -585,6 +610,5 @@ public class TrackAccessibilityUtil {
       String timeStr = String.format("%02d:%02d:%02d", hr, min, sec);
       return calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月" +
                               calendar.get(Calendar.DAY_OF_MONTH) + "日 " + timeStr;
-
     }
 }

@@ -79,8 +79,8 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textviewNum1"
-                        android:text="5"
+                        android:id="@+id/addict_day"
+                        android:text="null"
                         android:textSize="70sp"
                         android:paddingTop="20dp"
                         android:layout_width="wrap_content"
@@ -113,8 +113,8 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textviewNum2"
-                        android:text="13.5"
+                        android:id="@+id/week_total"
+                        android:text="null"
                         android:textSize="70sp"
                         android:paddingTop="20dp"
                         android:layout_width="wrap_content"
