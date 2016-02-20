@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.dots.focus.util.SettingsUtil;
+import com.parse.ParseUser;
 import com.rey.material.widget.Slider;
 
 public class LockSettingsActivity extends BaseActivity {
@@ -38,7 +39,9 @@ public class LockSettingsActivity extends BaseActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle(getResources().getString(R.string.title_lock_setting));
     slider = (Slider) findViewById(R.id.slider1);
-    final int temp = SettingsUtil.getInt("lock");
+
+    ParseUser user = ParseUser.getCurrentUser();
+    final int temp = user.getInt("lock_max_period");
     progress = temp;
     slider.setValue(temp, true);
     textView = (TextView) findViewById(R.id.textView1);
@@ -103,7 +106,8 @@ public class LockSettingsActivity extends BaseActivity {
   }
   @Override
   public void onBackPressed() {
-    SettingsUtil.put("lock", progress);
+    ParseUser user = ParseUser.getCurrentUser();
+    user.put("lock_max_period", progress);
     SettingsUtil.put("friendLock", friendLock);
     super.onBackPressed();
   }

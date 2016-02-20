@@ -56,13 +56,13 @@
                 android:textSize="10sp"
                 android:layout_below="@+id/profile_name"
                 android:layout_toEndOf="@+id/profile_image"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/upgrade_permissions"
-                android:id="@+id/button"
-                android:layout_alignTop="@+id/profile_name"
-                android:layout_alignParentEnd="true"/>
+            <!--<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/upgrade_permissions"-->
+                <!--android:id="@+id/button"-->
+                <!--android:layout_alignTop="@+id/profile_name"-->
+                <!--android:layout_alignParentEnd="true"/>-->
 
 
         </RelativeLayout>

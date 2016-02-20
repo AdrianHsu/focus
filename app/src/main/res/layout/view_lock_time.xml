@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.rey.material.widget.Slider
+        android:id="@+id/slider1"
+        style="@style/Material.Widget.Slider.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:layout_marginTop="26dp"
+        app:sl_stepValue="1"
+        app:sl_minValue="1"
+        app:sl_travelAnimDuration="5"
+        app:sl_transformAnimDuration="20"
+        app:sl_primaryColor="@color/red"
+        app:sl_secondaryColor="@color/yellow"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="00:00:00"
+        android:id="@+id/timeTv"
+        android:textColor="@color/red"
+        android:layout_below="@+id/slider1"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

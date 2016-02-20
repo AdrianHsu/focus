@@ -366,7 +366,7 @@ public class MessagesRecyclerViewAdapter extends
     else if(process <= KICK_RESPONSE_ITEM && process > KICK_HISTORY_ITEM)
       return KICK_RESPONSE_ITEM;
     else if(process == KickState.READ.getValue())
-      return KICK_RESPONSE_ITEM;
+      return -1; // error
 
     return process; // error
   }

@@ -5,7 +5,9 @@ package com.dots.focus.ui;
  */
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -13,18 +15,22 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.dots.focus.adapter.DiscussSelfRecyclerViewAdapter;
 import com.dots.focus.util.FetchFriendUtil;
 import com.dots.focus.util.KickUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.rey.material.app.Dialog;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -38,17 +44,20 @@ public class KickRequestActivity extends BaseActivity {
   private TextView profileNameTv;
   private TextView friendStateTv;
   private TextView expireTv;
+  private Switch lockSwitch;
+  private TextView lockTimeTv;
 
-
-
-  private Boolean expire;
   private String name;
   private String objectId;
   private long id;
   private int period;
   private long time;
   private String content;
+  private int lockPickedTime;
+  private int lockMaxTime = 0;
   private static final String TAG = "KickRequest";
+  private Boolean timeLocked = false;
+  private Boolean timeLock = false;
 
   private UltimateRecyclerView mRecyclerView;
   private DiscussSelfRecyclerViewAdapter discussRecyclerViewAdapter = null;
@@ -96,6 +105,9 @@ public class KickRequestActivity extends BaseActivity {
     profileImage = (ImageView) findViewById(R.id.profile_image);
     profileNameTv = (TextView) findViewById(R.id.profile_name);
 
+    lockSwitch = (Switch) findViewById(R.id.switch_lock);
+    lockTimeTv = (TextView) findViewById(R.id.lock_time);
+
     Bundle extras = getIntent().getExtras();
     if (extras != null) {
       name = extras.getString("user_name");
@@ -104,20 +116,6 @@ public class KickRequestActivity extends BaseActivity {
       period = extras.getInt("period");
       time = extras.getLong("time");
       content = extras.getString("content");
-    }
-    final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
-    final Boolean expire = (time < expire_time);
-
-    expireTv = (TextView) findViewById(R.id.expire);
-    if(!expire) {
-      expireTv.setText("ONLINE");
-      expireTv.setTextColor(getResources().getColor(R.color.red));
-    } else {
-      expireTv.setText("EXPIRED");
-      expireTv.setTextColor(getResources().getColor(R.color.semi_black));
-      sendBtn.setEnabled(false);
-      editText1.setEnabled(false);
-      editText1.setText("已經過期、無法傳送訊息。");
     }
 
     friendStateTv = (TextView) findViewById(R.id.friend_state);
@@ -128,6 +126,47 @@ public class KickRequestActivity extends BaseActivity {
                             "/picture?process=large";
     Picasso.with(this).load(url).into(profileImage);
     profileNameTv.setText(name);
+
+    JSONObject jsonObject = FetchFriendUtil.getFriendById(id);
+
+    try {
+      lockMaxTime = jsonObject.getInt("lock_max_period");
+    } catch(JSONException e) {
+      Log.v(TAG, e.getMessage());
+    }
+
+    lockSwitch.setEnabled(timeLocked);
+    lockSwitch.setChecked(false);
+    lockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        if (b) {
+          //dialog
+          createDialog();
+        } else {
+          lockPickedTime = 0;
+          lockTimeTv.setText("");g
+        }
+      }
+    });
+
+    final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
+    final Boolean expire = (time < expire_time);
+
+    expireTv = (TextView) findViewById(R.id.expire);
+    if(!expire) {
+      expireTv.setText("ONLINE");
+      expireTv.setTextColor(getResources().getColor(R.color.red));
+    } else {
+      expireTv.setText("EXPIRED");
+      expireTv.setTextColor(getResources().getColor(R.color.semi_black));
+      lockSwitch.setTextColor(getResources().getColor(R.color.semi_black));
+      lockSwitch.setEnabled(false);
+      sendBtn.setEnabled(false);
+
+      editText1.setEnabled(false);
+      editText1.setText("已經過期、無法傳送訊息。");
+    }
 
     JSONObject mRequest = new JSONObject();
     try {
@@ -177,8 +216,6 @@ public class KickRequestActivity extends BaseActivity {
   }
   protected String getFriendRelation(JSONObject friend) {
 
-    Boolean timeLocked = false;
-    Boolean timeLock = false;
     try {
       timeLocked = friend.getBoolean("timeLocked");
       timeLock = friend.getBoolean("timeLock");
@@ -194,5 +231,52 @@ public class KickRequestActivity extends BaseActivity {
     else
       return getResources().getString(R.string.relation_just_friend);
   }
+  private String timeToString(int seconds) {
+    int day = (int) TimeUnit.SECONDS.toDays(seconds);
+    long hours = TimeUnit.SECONDS.toHours(seconds) - (day * 24);
+    long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
+    long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
+    return String.format("%02d:%02d:%02d", hours, minute, second);
+  }
+  private void createDialog() {
 
+    LockTimeView view = new LockTimeView(this, lockMaxTime);
+    final Dialog mDialog = new Dialog(this);
+    mDialog.title("鎖朋友多久呢？（秒鐘）")
+                            .positiveAction(getResources().getString(R.string.done))
+                            .negativeAction(getResources().getString(R.string.cancel))
+                            .contentView(view)
+                            .maxHeight(600)
+                            .cancelable(true)
+                            .show();
+    mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+      @Override
+      public void onCancel(DialogInterface dialogInterface) {
+        //
+        lockPickedTime = 0;
+        lockTimeTv.setText("");
+        mDialog.cancel();
+        lockSwitch.setChecked(false);
+      }
+    });
+    mDialog.setCanceledOnTouchOutside(true);
+    mDialog.negativeActionClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        lockPickedTime = 0;
+        lockTimeTv.setText("");
+        mDialog.cancel();
+        lockSwitch.setChecked(false);
+      }
+    });
+    mDialog.positiveActionClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        lockPickedTime = LockTimeView.val;
+        lockTimeTv.setText(timeToString(lockPickedTime));
+
+        mDialog.dismiss();
+      }
+    });
+  }
 }
