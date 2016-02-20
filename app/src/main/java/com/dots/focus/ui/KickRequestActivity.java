@@ -145,7 +145,7 @@ public class KickRequestActivity extends BaseActivity {
           createDialog();
         } else {
           lockPickedTime = 0;
-          lockTimeTv.setText("");g
+          lockTimeTv.setText("");
         }
       }
     });
