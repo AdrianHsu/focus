@@ -145,6 +145,11 @@
                   android:theme="@style/SecondaryAppTheme">
 
         </activity>
+        <activity android:name=".ui.HelpPoliceActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SecondaryAppTheme">
+        </activity>
         <activity android:name=".ui.LockSettingsActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"

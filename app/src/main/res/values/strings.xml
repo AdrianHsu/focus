@@ -96,6 +96,10 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="focus_reminder">FOCUS小提醒</string>
     <string name="description_addiction">根據Yahoo!的Flurry Report，本應用軟體將定義上癮程度如下（單位為點擊應用軟體次數/天）</string>
     <string name="done">完成</string>
+    <!--HelpPoliceActivity-->
+    <string name="title_help_police">什麼是時間警察？</string>
+    <string name="intro_time_police">一般的「好友關係」可以即時戳朋友一下，而升級權限後的「時間警察」可以短暫鎖屏委託人的手機畫面，達到小小警惕的效果。
+您可委託最信任的 2 位好友，成為您的時間警察。</string>
     <!--IdleSettingsActivity-->
     <string name="descrpition_conti_total_used">某應用軟體連續使用時間超過：</string>
     <string name="excluded_app">排除在外應用軟體</string>

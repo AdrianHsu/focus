@@ -43,15 +43,15 @@ public class FocusModeHistoryActivity extends BaseActivity {
       mRecyclerView = (UltimateRecyclerView) findViewById(R.id.focus_mode_history_recycler_view);
       final List<JSONObject> jsonObjectList = new ArrayList<>();
 
-      for(int i = 0; i < 100; i++) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-          jsonObject.put("content", "讀完微積分第二章" + i);
-        } catch (JSONException e) {
-          e.printStackTrace();
-        }
-        jsonObjectList.add(jsonObject);
-      }
+//      for(int i = 0; i < 100; i++) {
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//          jsonObject.put("content", "讀完微積分第二章" + i);
+//        } catch (JSONException e) {
+//          e.printStackTrace();
+//        }
+//        jsonObjectList.add(jsonObject);
+//      }
       focusModeHistoryAdapter = new FocusModeHistoryAdapter(jsonObjectList, this);
       linearLayoutManager = new LinearLayoutManager(this);
 
