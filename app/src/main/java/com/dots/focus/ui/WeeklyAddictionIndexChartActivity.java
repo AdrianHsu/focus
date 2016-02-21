@@ -44,6 +44,8 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
   private TextView weekSwitchTv;
   private Button daySwitchLeftBtn;
   private Button daySwitchRightBtn;
+  private TextView addictAdviceTv;
+  private String addictAdvice;
   private int CURRENT_WEEK = 0;
 //  private ArrayAdapter<String> timeInterval;
 //  private String[] timeIntervalArray = {"小時", "分鐘"};
@@ -60,9 +62,13 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setTitle(getResources().getString(R.string.title_addiction_index_overview));
 
+
+    addictAdviceTv = (TextView) findViewById(R.id.addict_advice);
     weekSwitchTv = (TextView) findViewById(R.id.week_switch_textview);
     String week = TrackAccessibilityUtil.weekPeriodString(0);
     weekSwitchTv.setText(week);
+
+    refreshAdvice();
 
     daySwitchLeftBtn = (Button) findViewById(R.id.day_switch_left_btn);
     daySwitchLeftBtn.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +76,8 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
       public void onClick(View view) {
 
         CURRENT_WEEK++;
+        refreshAdvice();
+
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
         setData();
@@ -84,6 +92,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
       public void onClick(View view) {
 
         CURRENT_WEEK--;
+        refreshAdvice();
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
         setData();
@@ -180,6 +189,14 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
   public void onStopTrackingTouch(SeekBar seekBar) {
     // TODO Auto-generated method stub
 
+  }
+
+  private void refreshAdvice() {
+    int[] data = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK);
+    int[] addict = TrackAccessibilityUtil.getUsageValuation(data);
+    String text = "本週有 " + addict[0] + " 天達到重度上癮、以及 " + addict[1] + " 天達到中度上癮，提醒您、讓眼睛多休息！";
+
+    addictAdviceTv.setText(text);
   }
 
   private void setData() {

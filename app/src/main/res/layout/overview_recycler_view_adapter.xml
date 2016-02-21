@@ -6,7 +6,7 @@
     android:layout_height="180dp"
     android:clickable="true"
     android:layout_margin="5dp"
-    android:background="@drawable/community_background"
+    android:background="@drawable/overview_bg"
     style="@style/SelectableItemTheme">
 
     <TextView

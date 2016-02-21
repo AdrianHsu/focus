@@ -94,16 +94,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     addictDayTv = (TextView) findViewById(R.id.addict_day);
     weekTotalTv = (TextView) findViewById(R.id.week_total);
 
-
-
-    int[] weekUsage = TrackAccessibilityUtil.weekUsage(CURRENT_WEEK);
-    int weekTotal = TrackAccessibilityUtil.getTotalInArray(weekUsage);
-    int[] addict = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK);
-    int[] addictDay = TrackAccessibilityUtil.getUsageValuation(addict);
-    int heavyAddict = addictDay[0];
-
-    addictDayTv.setText(String.valueOf(heavyAddict));
-    weekTotalTv.setText(String.valueOf(weekTotal));
+    refreshCard();
 
     weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
     String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
@@ -116,14 +107,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
         CURRENT_WEEK++;
 
-        int[] weekUsage = TrackAccessibilityUtil.weekUsage(CURRENT_WEEK);
-        int weekTotal = TrackAccessibilityUtil.getTotalInArray(weekUsage);
-        int[] addict = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK);
-        int[] addictDay = TrackAccessibilityUtil.getUsageValuation(addict);
-        int heavyAddict = addictDay[0];
-
-        addictDayTv.setText(String.valueOf(heavyAddict));
-        weekTotalTv.setText(String.valueOf(weekTotal));
+        refreshCard();
 
         weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
@@ -142,14 +126,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
         CURRENT_WEEK--;
 
-        int[] weekUsage = TrackAccessibilityUtil.weekUsage(CURRENT_WEEK);
-        int weekTotal = TrackAccessibilityUtil.getTotalInArray(weekUsage);
-        int[] addict = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK);
-        int[] addictDay = TrackAccessibilityUtil.getUsageValuation(addict);
-        int heavyAddict = addictDay[0];
-
-        addictDayTv.setText(String.valueOf(heavyAddict));
-        weekTotalTv.setText(String.valueOf(weekTotal));
+        refreshCard();
 
         weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
@@ -312,6 +289,19 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     // dont forget to refresh the drawing
     mChart.invalidate();
   }
+  private void refreshCard() {
+
+    int[] weekUsage = TrackAccessibilityUtil.weekUsage(CURRENT_WEEK);
+    int weekTotal = TrackAccessibilityUtil.getTotalInArray(weekUsage);
+    int[] addict = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK);
+    int[] addictDay = TrackAccessibilityUtil.getUsageValuation(addict);
+    int heavyAddict = addictDay[0];
+
+    addictDayTv.setText(String.valueOf(heavyAddict));
+    weekTotalTv.setText(String.valueOf(weekTotal));
+  }
+
+
   private ArrayList<Entry> setData(int week, boolean IS_MINUTE) { // 0: current week, 1: last week
     long time = TrackAccessibilityUtil.getPrevXWeek(week);
     int[] x = TrackAccessibilityUtil.weekUsage(time);

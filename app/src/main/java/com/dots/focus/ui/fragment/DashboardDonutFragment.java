@@ -31,6 +31,7 @@ import com.dots.focus.R;
 import com.dots.focus.model.AppInfo;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.FetchFriendUtil;
+import com.dots.focus.util.SettingsUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.DecoDrawEffect;
@@ -49,7 +50,7 @@ public class DashboardDonutFragment extends SampleFragment {
   final private boolean mPie = false;
   final private int mTotalAngle = 360;
   final private int mRotateAngle = 0;
-  final private float seriesMax = 100f;
+  private float seriesMax = 100f;
   private float [] accumulateOutput = new float[4];
   private int mBackIndex;
   private int mSeries1Index; // others
@@ -224,10 +225,9 @@ public class DashboardDonutFragment extends SampleFragment {
 //    data[2][0] = 0;
 //    data[3][0] = 0;
 
-    float total = 0;
-    for(int i = 0; i < 4; i++) {
-      total += data[i][1];
-    }
+    float total;
+    total = SettingsUtil.getInt("goal") * 60; // second
+
     float [] separableOutput = new float [4];
 
     for(int i = 0; i < 4; i ++) {
@@ -297,8 +297,8 @@ public class DashboardDonutFragment extends SampleFragment {
   }
   private void initTotalUsage(View view, int[][] data) {
     final TextView textPercent = (TextView) view.findViewById(R.id.textPercentage);
+    int time = 0;
     if (textPercent != null) {
-      int time = 0;
       for(int i = 0 ; i < 4; i++)
         time += data[i][1];
 
@@ -307,7 +307,13 @@ public class DashboardDonutFragment extends SampleFragment {
     }
 
     final TextView textToGo = (TextView) view.findViewById(R.id.textRemaining);
-    textToGo.setText("剩餘00:34:07");
+    int left = (int)seriesMax - time;
+    if(left < 0) {
+      textToGo.setText("超過" + timeToString(left));
+      textToGo.setTextColor(getResources().getColor(R.color.red));
+    }
+    else
+      textToGo.setText("剩餘" + timeToString(left));
 //    addProgressRemainingListener(seriesItem1, textToGo, "%.0f min to goal", seriesMax);
 
   }

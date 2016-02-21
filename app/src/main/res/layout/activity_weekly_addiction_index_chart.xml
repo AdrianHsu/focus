@@ -79,6 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    android:id="@+id/addict_advice"
                     android:textSize="24dp"
                     android:text="@string/addiction_advice"
                     android:textColor="@color/semi_white"/>

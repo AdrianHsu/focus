@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -14,7 +13,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="當你耍廢時，系統自動邀請朋友戳你"
+        android:text="@string/emoji_reminder"
+        android:textColor="@color/yellow"
+        android:layout_margin="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/canned_1"
         android:layout_margin="15dp"/>
     <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"
@@ -23,7 +28,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="戳一下朋友的訊息內容"
+        android:text=""
         android:layout_margin="15dp"/>
     <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"
@@ -32,7 +37,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="回覆朋友戳你的感謝訊息"
+        android:text=""
         android:layout_margin="15dp"/>
     <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"

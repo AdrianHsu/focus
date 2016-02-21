@@ -5,6 +5,7 @@ package com.dots.focus.adapter;
  */
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
+import com.dots.focus.ui.ProfileActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 
@@ -40,6 +42,9 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
 
       String str = "";
+      if(position == 2) {
+        holder.textViewSample.setTextSize(16);
+      }
       if(position == 4) {
         str = mContext.getResources().getString(R.string.profile_birth_text);
       }
@@ -67,7 +72,7 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
 
   private void createGenderDialog(final TextView textView) {
     new MaterialDialog.Builder(mContext)
-                            .title("Gender")
+                            .title("重設性別")
                             .items(R.array.gender)
                             .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                               @Override
@@ -80,6 +85,8 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
                                   String temp = text.toString();
                                   textView.setText(temp);
                                 }
+                                ProfileActivity.gender = (which == 0);
+
                                 return true;
                               }
                             })
@@ -88,7 +95,7 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
   }
   private void createOccupationDialog(final TextView textview) {
     new MaterialDialog.Builder(mContext)
-                            .title("Occupation")
+                            .title("重設職業")
                             .items(R.array.occupation)
                             .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                               @Override
@@ -100,6 +107,8 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
                                 if (textview != null && text != null) {
                                   String temp = text.toString();
                                   textview.setText(temp);
+
+                                  ProfileActivity.occupation = temp;
                                 }
                                 return true;
                               }
@@ -109,7 +118,7 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
   }
   private void createBirthDialog(final TextView textview) {
     new MaterialDialog.Builder(mContext)
-                            .title("Year Of Birth")
+                            .title("重設出生年份")
                             .items(R.array.birth)
                             .itemsCallback(new MaterialDialog.ListCallback() {
                               @Override
@@ -118,10 +127,12 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
                                 if (textview != null && text != null) {
                                   String temp = text.toString();
                                   textview.setText(temp);
+                                  int year = Integer.parseInt(temp);
+                                  ProfileActivity.yearOfBirth = year;
                                 }
                               }
                             })
-                            .positiveText("Done")
+                            .positiveText("完成")
                             .show();
   }
   @Override

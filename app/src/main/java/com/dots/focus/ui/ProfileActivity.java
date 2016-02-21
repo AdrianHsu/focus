@@ -10,13 +10,21 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.ProfileRecyclerViewAdapter;
+import com.dots.focus.util.TrackAccessibilityUtil;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +35,12 @@ public class ProfileActivity extends BaseActivity {
   private ProfileRecyclerViewAdapter mProfileRecyclerViewAdapter;
   private GridLayoutManager layoutManager;
   private CollapsingToolbarLayout collapsingToolbarLayout;
+  public static boolean gender;
+  public static String occupation;
+  public static int yearOfBirth;
+
+  private static final String TAG = "Profile";
+
   final int GRID_COLUMN = 2;
 
   @Override
@@ -47,26 +61,33 @@ public class ProfileActivity extends BaseActivity {
     mRecyclerView = (UltimateRecyclerView) findViewById(R.id.profile_recycler_view);
 
     final List<String> stringList = new ArrayList<>();
+//    getCoverPhoto();
 
-
-    String gender = "Male";
+    String gender = "男性";
     if(user.getBoolean("Gender") == false)
-      gender = "Female";
+      gender = "女性";
     String location = installation.getString("timeZone");
-    String occupation = user.getString("Occupation");
+    occupation = user.getString("Occupation");
     String localeIdentifier = installation.getString("localeIdentifier");
-    String birth = String.valueOf(user.getInt("Birth"));
-    String numOfFriend = "137";
-    String totalTimeSaved = "13.5";
+    yearOfBirth = user.getInt("Birth");
+
+
+    JSONArray jsonArray = user.getJSONArray("Friends");
+    int num = jsonArray.length();
+
+    String numOfFriend = String.valueOf(num);
+    long[] data = TrackAccessibilityUtil.getSavedTimeAndRank();
+    long total = data[0];
+    String totalTimeSaved = String.valueOf(total);
 
     stringList.add(gender);
     stringList.add(location);
     stringList.add(occupation);
     stringList.add(localeIdentifier);
-    stringList.add(birth);
+    stringList.add(String.valueOf(yearOfBirth));
     stringList.add(numOfFriend);
     stringList.add(totalTimeSaved);
-
+    
     mProfileRecyclerViewAdapter = new ProfileRecyclerViewAdapter(stringList, this);
     layoutManager = new GridLayoutManager(this, GRID_COLUMN);
 
@@ -79,5 +100,15 @@ public class ProfileActivity extends BaseActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     onBackPressed();
     return true;
+  }
+  @Override
+  public void onBackPressed(){
+
+    ParseUser user = ParseUser.getCurrentUser();
+    user.put("Gender", gender);
+    user.put("Occupation", occupation);
+    user.put("Birth", yearOfBirth);
+    user.saveEventually();
+    super.onBackPressed();
   }
 }

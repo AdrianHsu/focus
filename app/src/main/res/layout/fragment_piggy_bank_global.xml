@@ -19,7 +19,8 @@
             android:layout_gravity="center_horizontal"
             android:textSize="75sp"
             android:textColor="@color/yellow"
-            android:text="+1202843"/>
+            android:id="@+id/total"
+            android:text="null"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

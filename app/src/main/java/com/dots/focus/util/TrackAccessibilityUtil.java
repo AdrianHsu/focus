@@ -8,6 +8,7 @@ import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -130,6 +131,7 @@ public class TrackAccessibilityUtil {
         currentDay.pinInBackground();
     }
     public static void newHour(final long hourInLong, final int h) {
+        storeSavedTime();
         storeHourInDay(hourInLong, h);
 
         currentHour = new HourBlock(hourInLong, h, ParseUser.getCurrentUser().getInt("AppIndex"));
@@ -159,6 +161,17 @@ public class TrackAccessibilityUtil {
         long localDay = getLocalDay(hourInLong);
         if (localDay != currentDay.getLong("time"))
             newDay(localDay);
+    }
+    private static void storeSavedTime() {
+        Integer goal = SettingsUtil.getInt("goal");
+        if (goal == null)   goal = 120;
+        goal *= 60;
+        List<Integer> appLength = currentDay.getAppLength();
+        for (int i = 0, length = appLength.size(); i < length; ++i)
+            goal -= appLength.get(i);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser.put("SavedTotalTime", currentUser.getInt("SavedTotalTime") + goal);
     }
     public static int[][] getDayFirstThreeApp(int day) {
         int[][] x = new int[4][2];
@@ -367,7 +380,9 @@ public class TrackAccessibilityUtil {
             }
         }
 //        x[7] -= 2 * anHour * (maxDay - minDay + 1);
-        x[7] = 2 * (anHour / 1000) * (maxDay - minDay + 1) - x[7];
+        double goalHour = SettingsUtil.getInt("goal") / 60;
+
+        x[7] = (int)(goalHour * (anHour / 1000) * (maxDay - minDay + 1) - x[7]);
 
         return x;
     }
@@ -610,5 +625,31 @@ public class TrackAccessibilityUtil {
       String timeStr = String.format("%02d:%02d:%02d", hr, min, sec);
       return calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月" +
                               calendar.get(Calendar.DAY_OF_MONTH) + "日 " + timeStr;
+    }
+
+    public static long[] getSavedTimeAndRank() {
+        long[] x = new long[] {0, 100, 0, 0, 0}; // 個人省時(sec), rank percentage, rank, 總省時(hr), user
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        x[0] = currentUser.getInt("SavedTotalTime");
+        x[2] = currentUser.getInt("save_time_ranking");
+        ParseObject rankInfo = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("RankInfo");
+//        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            rankInfo = query.getFirst();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+        if (rankInfo != null) {
+            x[3] = rankInfo.getLong("SavedTimeOfAllUsers") / 3600;
+            int NumOfUsers = rankInfo.getInt("NumOfUsers");
+            x[4] = NumOfUsers;
+            if (NumOfUsers != 0) {
+                x[1] = x[2] / NumOfUsers;
+                if (x[1] != 100)    ++x[1];
+            }
+        }
+
+        return x;
     }
 }

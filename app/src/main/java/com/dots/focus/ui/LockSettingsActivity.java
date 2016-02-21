@@ -109,6 +109,7 @@ public class LockSettingsActivity extends BaseActivity {
     ParseUser user = ParseUser.getCurrentUser();
     user.put("lock_max_period", progress);
     SettingsUtil.put("friendLock", friendLock);
+    user.saveEventually();
     super.onBackPressed();
   }
 }

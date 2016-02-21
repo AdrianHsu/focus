@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.WeeklyPiggyBankRecyclerViewAdapter;
+import com.dots.focus.util.SettingsUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.data.Entry;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
@@ -115,7 +116,9 @@ public class WeeklyPiggyBankFragment extends Fragment {
       if(timeBox[i] == -1)
         mStringList.add(weekString[i] + " +" + "00:00:00");
       else {
-        int t = (2 * (TrackAccessibilityUtil.anHour / 1000)) - timeBox[i];
+        double goalHour = SettingsUtil.getInt("goal") / 60;
+
+        int t = (int)((goalHour * (TrackAccessibilityUtil.anHour / 1000)) - timeBox[i]);
         if(t >= 0) {
           mStringList.add(weekString[i] + " +" + timeToString(t));
           positiveColor[i] = true;
@@ -128,7 +131,7 @@ public class WeeklyPiggyBankFragment extends Fragment {
       }
     }
 
-    if(total >= 0) {
+    if(total > 0) {
       totalTimeTv.setText("+" + timeToString(total));
       totalTimeTv.setTextColor(ContextCompat.getColor(mContext, R.color
                               .yellow));

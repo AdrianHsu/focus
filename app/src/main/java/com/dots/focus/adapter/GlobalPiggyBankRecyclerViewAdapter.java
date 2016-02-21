@@ -2,6 +2,7 @@ package com.dots.focus.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.ui.fragment.GlobalPiggyBankFragment;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
@@ -22,41 +25,40 @@ import java.util.ArrayList;
 public class GlobalPiggyBankRecyclerViewAdapter extends
   UltimateViewAdapter<GlobalPiggyBankRecyclerViewAdapter.SimpleAdapterViewHolder> {
 
-  private ArrayList<JSONObject> transformList;
+  private ArrayList<JSONObject> convertList;
   private Context mContext;
 
-  private static final String TAG = "transform";
+  private static final String TAG = "convert";
 
-  public GlobalPiggyBankRecyclerViewAdapter(ArrayList<JSONObject> _transformList, Context context) {
-    transformList = _transformList;
+  public GlobalPiggyBankRecyclerViewAdapter(ArrayList<JSONObject> _convertList, Context context) {
+    convertList = _convertList;
     mContext = context;
   }
 
 
   @Override
   public void onBindViewHolder(final SimpleAdapterViewHolder holder, int position) {
-    if (position < getItemCount() && (customHeaderView != null ? position <= transformList.size() :
-                            position < transformList.size()) && (customHeaderView != null ? position
+    if (position < getItemCount() && (customHeaderView != null ? position <= convertList.size() :
+                            position < convertList.size()) && (customHeaderView != null ? position
                             > 0
                             : true)) {
-      JSONObject tmp = transformList.get(customHeaderView != null ? position - 1 : position);
-//      try {
-//        holder.textViewSample.setText(tmp.getString("duration"));
-        if(position % 2 == 1) {
-          String str = mContext.getResources().getString(R.string.unit_reading_book);
-          holder.textViewSample.setText(str);
-          holder.timeTextViewSample.setText("239.5");
-          Picasso.with(mContext).load(R.drawable.soccer).into(holder.imageViewSample);
-        }
-//      } catch (JSONException e) {
-//        e.printStackTrace();
-//      }
+      try {
+        JSONObject jsonObject = convertList.get(position);
+        holder.textTv.setText(jsonObject.getString("text"));
+        int id = jsonObject.getInt("id");
+        holder.image.setImageResource(id);
+        double convert = convertList.get(position).getDouble("convert");
+        double time = (GlobalPiggyBankFragment.total / convert);
+        holder.timeTv.setText(String.valueOf(time));
+      } catch(JSONException e) {
+        Log.v("Piggy", e.getMessage());
+      }
     }
   }
 
   @Override
   public int getAdapterItemCount() {
-    return transformList.size();
+    return convertList.size();
   }
 
   @Override
@@ -83,16 +85,16 @@ public class GlobalPiggyBankRecyclerViewAdapter extends
   }
 
 
-  public void insert(JSONObject transform, int position) {
-    insert(transformList, transform, position);
+  public void insert(JSONObject convert, int position) {
+    insert(convertList, convert, position);
   }
 
   public void remove(int position) {
-    remove(transformList, position);
+    remove(convertList, position);
   }
 
   public void clear() {
-    clear(transformList);
+    clear(convertList);
   }
 
   @Override
@@ -112,7 +114,7 @@ public class GlobalPiggyBankRecyclerViewAdapter extends
 
 
   public void swapPositions(int from, int to) {
-    swapPositions(transformList, from, to);
+    swapPositions(convertList, from, to);
   }
 
 
@@ -166,19 +168,19 @@ public class GlobalPiggyBankRecyclerViewAdapter extends
 
   public class SimpleAdapterViewHolder extends UltimateRecyclerviewViewHolder {
 
-    TextView textViewSample;
-    TextView timeTextViewSample;
-    ImageView imageViewSample;
+    TextView textTv;
+    TextView timeTv;
+    ImageView image;
     View item_view;
 
     public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
       super(itemView);
       if (isItem) {
-        textViewSample = (TextView) itemView.findViewById(
+        textTv = (TextView) itemView.findViewById(
                                 R.id.textview);
-        timeTextViewSample = (TextView) itemView.findViewById(
+        timeTv = (TextView) itemView.findViewById(
                                 R.id.time_textview);
-        imageViewSample = (ImageView) itemView.findViewById(R.id.imageview);
+        image = (ImageView) itemView.findViewById(R.id.imageview);
         item_view = itemView.findViewById(R.id.itemview);
       }
     }
@@ -197,8 +199,8 @@ public class GlobalPiggyBankRecyclerViewAdapter extends
   public JSONObject getItem(int position) {
     if (customHeaderView != null)
       position--;
-    if (position < transformList.size())
-      return transformList.get(position);
+    if (position < convertList.size())
+      return convertList.get(position);
     else return null;
   }
 

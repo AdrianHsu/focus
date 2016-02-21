@@ -5,8 +5,11 @@ import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -36,7 +39,7 @@ public class DashboardUtil {
                                 currentUser.put("installationId", currentInstallation.getInstallationId());
                                 currentUser.put("user_id", id);
                                 currentUser.put("user_name", name);
-                                currentUser.put("lock_max_period", 15); // sec
+                                initializeUser(currentUser);
                                 currentInstallation.put("fbId", id);
 
                                 currentUser.saveEventually(new SaveCallback() {
@@ -76,6 +79,23 @@ public class DashboardUtil {
                 });
 
         request.executeAsync();
+    }
+
+    private static void initializeUser(final ParseUser currentUser) {
+        currentUser.put("lock_max_period", 15); // sec
+        currentUser.put("SavedTotalTime", 0);
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("RankInfo");
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null && parseObject != null && parseObject.has("NumOfUsers")) {
+                    currentUser.put("save_time_ranking", parseObject.getInt("NumOfUsers"));
+                }
+                else if (e != null)
+                    Log.d(TAG, e.getMessage());
+            }
+        });
     }
 
 }

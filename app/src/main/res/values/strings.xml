@@ -72,6 +72,11 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--AppLeaderBoardActivity-->
     <!--CannedMessagesActivity-->
     <string name="title_canned_message_setting">罐頭訊息重設</string>
+    <string name="emoji_reminder">＊使用表情符號（emoji）也可以哦！</string>
+    <string name="canned_1">當你耍廢時，系統自動邀請朋友戳你</string>
+    <string name="canned_2">戳一下朋友的訊息內容</string>
+    <string name="canned_3">回覆朋友戳你的感謝訊息</string>
+
     <!--CustomDialogActivity-->
     <string name="title_activity_custom_dialog">朋友戳了你一下</string>
     <!--DailyAppUsageChartActivity-->
@@ -209,8 +214,16 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="wait_for_reply">等待回覆</string>
     <!--FriendRecyclerViewAdapter-->
     <!--GlobalPiggyBankRecyclerViewAdapter-->
-    <string name="unit_reading_book">閱讀這麼多數量的書（本）</string>
-    <string name="unit_playing_soccer">足球賽的賽事時間長度（場）</string>
+    <string name="unit_book">閱讀這麼多數量的書（本）</string>
+    <string name="unit_soccer">足球賽的賽事時間長度（場）</string>
+    <string name="unit_basketball">籃球賽的賽事時間長度（場）</string>
+    <string name="unit_workout">上健身房鍛鍊身體（次）</string>
+    <string name="unit_jogging">在附近的公園路跑（次）</string>
+    <string name="unit_diet">做一套完整的瘦身操（次）</string>
+    <string name="unit_movie">看一場新上映的電影（次）</string>
+
+
+
     <!--KickHistoryRecyclerViewAdapter-->
     <string name="title_kick_messages">戳朋友一下</string>
     <string name="kick_action_reply">回覆</string>
