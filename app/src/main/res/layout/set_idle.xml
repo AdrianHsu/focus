@@ -48,11 +48,11 @@
         android:layout_alignParentLeft="true"
         android:layout_margin="14dp" />
     <TextView
-        android:text="example app name here"
+        android:text="ex, Home Launcher, System Update, Settings.."
         android:textSize="14sp"
         android:id="@+id/app_picked"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="14dp" />
     <Button

@@ -28,7 +28,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="@string/canned_2"
         android:layout_margin="15dp"/>
     <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="@string/canned_3"
         android:layout_margin="15dp"/>
     <com.rengwuxian.materialedittext.MaterialEditText
         android:layout_width="match_parent"

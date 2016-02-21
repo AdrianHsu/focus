@@ -56,7 +56,7 @@ public class SettingsUtil {
         settings.put("screenOn", false);
         settings.put("screenOff", false);
         settings.put("friendLock", true);
-        settings.put("kickRequest", "我手機玩太久～快戳我一下！");
+        settings.put("kickRequest", "我手機玩太久～快戳我一下QQ");
         settings.put("kickHistory", "你被戳了一下！不要再當低頭族囉^_^");
         settings.put("kickResponse", "謝謝你戳了我一下。");
 

@@ -130,7 +130,9 @@ public class KickRequestActivity extends BaseActivity {
     JSONObject jsonObject = FetchFriendUtil.getFriendById(id);
 
     try {
-      lockMaxTime = jsonObject.getInt("lock_max_period");
+      if (jsonObject != null) {
+        lockMaxTime = jsonObject.getInt("lock_max_period");
+      }
     } catch(JSONException e) {
       Log.v(TAG, e.getMessage());
     }
@@ -259,7 +261,7 @@ public class KickRequestActivity extends BaseActivity {
         lockSwitch.setChecked(false);
       }
     });
-    mDialog.setCanceledOnTouchOutside(true);
+    mDialog.setCanceledOnTouchOutside(false);
     mDialog.negativeActionClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -273,9 +275,14 @@ public class KickRequestActivity extends BaseActivity {
       @Override
       public void onClick(View view) {
         lockPickedTime = LockTimeView.val;
-        lockTimeTv.setText(timeToString(lockPickedTime));
-
-        mDialog.dismiss();
+        if(lockPickedTime != 0) {
+          lockTimeTv.setText(timeToString(lockPickedTime));
+          mDialog.dismiss();
+        } else {
+          lockTimeTv.setText("");
+          mDialog.cancel();
+          lockSwitch.setChecked(false);
+        }
       }
     });
   }
