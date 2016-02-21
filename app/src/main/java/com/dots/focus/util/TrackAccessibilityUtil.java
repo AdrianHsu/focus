@@ -26,6 +26,11 @@ public class TrackAccessibilityUtil {
     private static HourBlock currentHour = null;
     private static String TAG = "TrackAccessibilityUtil";
 
+    public static String[] characters = new String[] {"社交高手", "理財專家", "知識王", "生活達人", "遊戲王",
+            "影音高手", "交際咖", "商業土豪", "兩腳書櫥", "享樂主義", "遊戲宅宅", "影音狂人"};
+    public static String[] categories = new String[] {"社交行為", "理財工作", "汲取新知", "生活資訊",
+                                                        "遊戲動漫", "影音娛樂"};
+
     public static int getTimeOffset() {
         return TimeZone.getDefault().getOffset(System.currentTimeMillis()) / anHour;
     }
@@ -393,15 +398,10 @@ public class TrackAccessibilityUtil {
         DayBlock dayBlock = getDayBlockByTime(time);
 
         int size = FetchAppUtil.getSize();
-        List<Integer> appLength = new ArrayList<>(size);
-        for (int i = 0; i < size; ++i)
-            appLength.add(0);
+        List<Integer> appLength = new ArrayList<>();
 
-        if (dayBlock != null) {
-            List<Integer> appLength1 = dayBlock.getAppLength();
-            for (int i = 0, temp = appLength1.size(); i < temp && i < size; ++i)
-                appLength.set(i, appLength.get(i) + appLength1.get(i));
-        }
+        if (dayBlock != null)
+            appLength = dayBlock.getAppLength();
 
         for (int i = 0; i < size; ++i) {
             AppInfo appInfo = FetchAppUtil.getApp(i);
@@ -411,6 +411,51 @@ public class TrackAccessibilityUtil {
                 data[index] += appLength.get(i);
         }
         return data;
+    }
+
+    public static String getCategoryClicks(int day) {
+        Long time = getPrevXDayInMilli(day);
+        int[] data = new int[] {0, 0, 0, 0, 0, 0, 0};
+        int[] data2 = data.clone();
+        DayBlock dayBlock = getDayBlockByTime(time);
+
+        int size = FetchAppUtil.getSize();
+        List<Integer> clicks = new ArrayList<>();
+        List<Integer> appLength = new ArrayList<>();
+
+        if (dayBlock != null) {
+            appLength = dayBlock.getAppLength();
+            clicks = dayBlock.getCategoryClick();
+        }
+
+        for (int i = 0; i < size; ++i) {
+            AppInfo appInfo = FetchAppUtil.getApp(i);
+            if (appInfo == null)    continue;
+            int index = getCategoryUnion(appInfo.getCategory());
+            if (index != -1) {
+                data[index] += appLength.get(i);
+                data2[index] += clicks.get(i);
+            }
+        }
+
+        int maxIndex = 0, maxIndex2 = 0;
+        for (int i = 1; i < 6; ++i) {
+            if (data[i] > data[maxIndex])
+                maxIndex = i;
+            if (data2[i] > data2[maxIndex2])
+                maxIndex2 = i;
+        }
+        String string;
+
+        if (data2[maxIndex] >= 60) {
+             string = "您是一個" + characters[maxIndex2 + 6] + "！（單日應用軟體點擊次數 60 次以上），";
+        }
+        else {
+            string = "您是一個" + characters[maxIndex2] + "！（單日應用軟體點擊次數 60 次以下），";
+        }
+        string += categories[maxIndex2] + " 類別軟體佔總時間比例最長）";
+
+        return string;
     }
 
     public static int getCategoryUnion(String category) {
@@ -634,7 +679,6 @@ public class TrackAccessibilityUtil {
         x[2] = currentUser.getInt("save_time_ranking");
         ParseObject rankInfo = null;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("RankInfo");
-//        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
         try {
             rankInfo = query.getFirst();
         } catch (ParseException e) {
@@ -645,7 +689,7 @@ public class TrackAccessibilityUtil {
             int NumOfUsers = rankInfo.getInt("NumOfUsers");
             x[4] = NumOfUsers;
             if (NumOfUsers != 0) {
-                x[1] = x[2] / NumOfUsers;
+                x[1] = 100 * x[2] / NumOfUsers;
                 if (x[1] != 100)    ++x[1];
             }
         }
