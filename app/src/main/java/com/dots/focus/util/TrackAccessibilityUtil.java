@@ -413,7 +413,7 @@ public class TrackAccessibilityUtil {
         return data;
     }
 
-    public static String getCategoryClicks(int day) {
+    public static int[] getCategoryClicks(int day) {
         Long time = getPrevXDayInMilli(day);
         int[] data = new int[] {0, 0, 0, 0, 0, 0, 0};
         int[] data2 = data.clone();
@@ -445,17 +445,18 @@ public class TrackAccessibilityUtil {
             if (data2[i] > data2[maxIndex2])
                 maxIndex2 = i;
         }
-        String string;
 
         if (data2[maxIndex] >= 60) {
-             string = "您是一個" + characters[maxIndex2 + 6] + "！（單日應用軟體點擊次數 60 次以上），";
+             maxIndex += 6;
         }
-        else {
-            string = "您是一個" + characters[maxIndex2] + "！（單日應用軟體點擊次數 60 次以下），";
-        }
-        string += categories[maxIndex2] + " 類別軟體佔總時間比例最長）";
 
-        return string;
+        return new int[] {maxIndex, maxIndex2};
+    }
+    public static String descriptionOfCharacter(int[] indexes) {
+        if (indexes.length != 2)
+            Log.d(TAG, "descriptionOfCharacter: error length: " + indexes.length);
+        return "您是一個" + characters[indexes[0]] + "！（單日應用軟體點擊次數 60 次以上），" +
+                categories[indexes[1]] + " 類別軟體佔總時間比例最長）";
     }
 
     public static int getCategoryUnion(String category) {
