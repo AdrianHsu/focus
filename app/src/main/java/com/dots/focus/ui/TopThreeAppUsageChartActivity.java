@@ -33,6 +33,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
 import com.dots.focus.model.AppInfo;
 import com.dots.focus.util.FetchAppUtil;
+import com.dots.focus.util.SettingsUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -333,7 +334,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
 
     mChart.getAxisRight().setEnabled(false);
 
-    int DAILY_USAGE_UPPER_LIMIT_SECOND = 5 * 60;
+    int DAILY_USAGE_UPPER_LIMIT_SECOND = SettingsUtil.getInt("goal") * 60;
 
     LimitLine ll1;
     if(!IS_MINUTE)

@@ -77,7 +77,7 @@ public class ProfileActivity extends BaseActivity {
 
     String numOfFriend = String.valueOf(num);
     long[] data = TrackAccessibilityUtil.getSavedTimeAndRank();
-    long total = data[0];
+    double total = data[0] / 3600;
     String totalTimeSaved = String.valueOf(total);
 
     stringList.add(gender);
@@ -87,7 +87,7 @@ public class ProfileActivity extends BaseActivity {
     stringList.add(String.valueOf(yearOfBirth));
     stringList.add(numOfFriend);
     stringList.add(totalTimeSaved);
-    
+
     mProfileRecyclerViewAdapter = new ProfileRecyclerViewAdapter(stringList, this);
     layoutManager = new GridLayoutManager(this, GRID_COLUMN);
 

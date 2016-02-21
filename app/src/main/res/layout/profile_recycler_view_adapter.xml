@@ -37,7 +37,7 @@
             android:layout_centerHorizontal="true"/>
         <TextView
             android:id="@+id/modify"
-            android:text="@string/profile_click_modify"
+            android:text=""
             android:textSize="12sp"
             android:textColor="@color/semi_black"
             android:layout_width="wrap_content"

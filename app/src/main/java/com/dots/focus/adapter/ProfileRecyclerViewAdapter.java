@@ -42,11 +42,17 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
       holder.textViewSample.setText(stringList.get(customHeaderView != null ? position - 1 : position));
 
       String str = "";
-      if(position == 2) {
+      if(position == 0 ) {
+        String modify = mContext.getResources().getString(R.string.profile_click_modify);
+        holder.modifyTv.setText(modify);
+      } else if(position == 2) {
         holder.textViewSample.setTextSize(16);
-      }
-      if(position == 4) {
+        String modify = mContext.getResources().getString(R.string.profile_click_modify);
+        holder.modifyTv.setText(modify);
+      } else if(position == 4) {
         str = mContext.getResources().getString(R.string.profile_birth_text);
+        String modify = mContext.getResources().getString(R.string.profile_click_modify);
+        holder.modifyTv.setText(modify);
       }
       else if (position == 5) {
         str = mContext.getResources().getString(R.string.profile_friend_num_text);
@@ -271,6 +277,7 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
 
     TextView textViewSample;
     TextView textViewContent;
+    TextView modifyTv;
     View item_view;
 
     public  SimpleAdapterViewHolder(View itemView, boolean isItem) {
@@ -279,6 +286,7 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
         textViewSample = (TextView) itemView.findViewById(
           R.id.textview);
         textViewContent = (TextView) itemView.findViewById(R.id.content);
+        modifyTv = (TextView) itemView.findViewById(R.id.modify);
         item_view = itemView.findViewById(R.id.itemview);
       }
     }

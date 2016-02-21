@@ -151,7 +151,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
 
     mChart.getAxisRight().setEnabled(false);
 
-    LimitLine ll1 = new LimitLine(130f, "Upper Limit");
+    LimitLine ll1 = new LimitLine(60f, "Upper Limit"); // 60 times
     ll1.setLineWidth(2f);
     ll1.enableDashedLine(2f, 2f, 2f);
     ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);

@@ -307,7 +307,7 @@ public class DashboardDonutFragment extends SampleFragment {
     }
 
     final TextView textToGo = (TextView) view.findViewById(R.id.textRemaining);
-    int left = (int)seriesMax - time;
+    int left = SettingsUtil.getInt("goal") * 60 - time;
     if(left < 0) {
       textToGo.setText("超過" + timeToString(left));
       textToGo.setTextColor(getResources().getColor(R.color.red));

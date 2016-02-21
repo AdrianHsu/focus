@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 
 import com.dots.focus.service.TrackAccessibilityService;
+import com.dots.focus.util.SettingsUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -235,7 +236,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
 
     LimitLine ll1;
-    int DAILY_USAGE_UPPER_LIMIT_MINUTE = 5;
+    int DAILY_USAGE_UPPER_LIMIT_MINUTE = SettingsUtil.getInt("goal");
     if(IS_MINUTE)
       ll1= new LimitLine(DAILY_USAGE_UPPER_LIMIT_MINUTE, "Upper Limit");
     else
