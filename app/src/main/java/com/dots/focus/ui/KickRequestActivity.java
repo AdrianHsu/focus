@@ -139,8 +139,8 @@ public class KickRequestActivity extends BaseActivity {
     }
     Log.v(TAG, "Friend's lockMaxTime: " + lockMaxTime);
 
-    lockSwitch.setEnabled(timeLocked);
-    if(timeLocked)
+    lockSwitch.setEnabled(timeLock);
+    if(!timeLock)
       lockSwitch.setText("權限不足");
 
     lockSwitch.setChecked(false);
