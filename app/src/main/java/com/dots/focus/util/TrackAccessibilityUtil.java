@@ -156,8 +156,16 @@ public class TrackAccessibilityUtil {
     }
     private static void storeHourInDay(final long hourInLong, final int h) {
         if (currentHour == null)    return;
-        if (currentDay != null)
-            currentHour.setDayBlock(currentDay.getObjectId());
+        if (currentDay != null) {
+            String objectId = currentDay.getObjectId();
+            if (objectId != null)
+                currentHour.setDayBlock(objectId);
+            else {
+                Log.d(TAG, "currentDay.getObjectId() is null...\n" +
+                        "day time: " + currentDay.getTime() + "\n" +
+                        "hour time: " + currentHour.getTime());
+            }
+        }
         currentHour.saveEventually();
 
         if (currentDay == null)  return;

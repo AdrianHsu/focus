@@ -59,7 +59,7 @@ public class GetAppsService extends IntentService {
         try {
             obj.put("packages", list);
 
-            HttpPost httpPost = new HttpPost("http://getdatafor.appspot.com/data");
+            HttpPost httpPost = new HttpPost("http://androidmarket-1228.appspot.com/");
             httpPost.setHeader("Content-type", "application/json");
             StringEntity params = new StringEntity(obj.toString());
             httpPost.setEntity(params);
