@@ -9,9 +9,11 @@ import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.SettingsUtil;
 import com.dots.focus.util.TimePoliceUtil;
 import com.facebook.FacebookSdk;
+import com.flurry.android.FlurryAgent;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
+
 
 public class MainApplication extends Application {
 
@@ -29,6 +31,8 @@ public class MainApplication extends Application {
       Config.FOCUS_APPLICATION_ID,
       Config.FOCUS_CLIENT_ID
     );
+
+    FlurryAgent.init(this, Config.FLURRY_KEY);
 
     ParseFacebookUtils.initialize(this);
     initialize();
