@@ -56,7 +56,15 @@ public class TrackAccessibilityService extends AccessibilityService {
             String action = intent.getAction();
             if (action.equals("HourReceiver_broadcast_an_hour")) {
                 Log.d(TAG, "Get HourReceiver's broadcast...");
-                checkWindowState(previousPackageName, intent.getExtras().getLong("time"));
+                final long time = intent.getExtras().getLong("time");
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        checkWindowState(previousPackageName, time);
+                    }
+                };
+                thread.start();
+
             }
             else if (action.equals("check permission")) {
                 Log.d(TAG, "get check permission");

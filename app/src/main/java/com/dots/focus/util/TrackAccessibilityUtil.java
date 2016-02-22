@@ -110,27 +110,30 @@ public class TrackAccessibilityUtil {
                 if (e != null) {
                     Log.d(TAG, "currentDay pin error: " + e.getMessage());
                 }
-                List<String> hourBlocks = getCurrentDay(dayInLong).getHourBlocks();
-                if (hourBlocks == null) {
-                    Log.d(TAG, "hourBlocks is null.");
-                    return;
-                }
-                if (hourBlocks.size() < 24) {
-                    Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
-                    return;
-                }
-                for (int i = 0; i < 24; ++i) {
-                    if (!hourBlocks.get(i).equals("")) {
-                        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
-                        query.getInBackground(hourBlocks.get(i), new GetCallback<HourBlock>() {
-                            @Override
-                            public void done(HourBlock hourBlock, ParseException e) {
-                                if (hourBlock != null && e == null)
-                                    hourBlock.setDayBlock(getCurrentDay(dayInLong).getObjectId());
-                            }
-                        });
-                    }
-                }
+                String objectId = currentDay.getObjectId();
+                if (objectId != null)
+                    Log.d(TAG, "new DayBlock's objectId: " + objectId);
+//                List<String> hourBlocks = currentDay.getHourBlocks();
+//                if (hourBlocks == null) {
+//                    Log.d(TAG, "hourBlocks is null.");
+//                    return;
+//                }
+//                if (hourBlocks.size() < 24) {
+//                    Log.d(TAG, "hourBlocks.size(): " + hourBlocks.size());
+//                    return;
+//                }
+//                for (int i = 0; i < 24; ++i) {
+//                    if (!hourBlocks.get(i).equals("")) {
+//                        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
+//                        query.getInBackground(hourBlocks.get(i), new GetCallback<HourBlock>() {
+//                            @Override
+//                            public void done(HourBlock hourBlock, ParseException e) {
+//                                if (hourBlock != null && e == null)
+//                                    hourBlock.setDayBlock(currentDay.getObjectId());
+//                            }
+//                        });
+//                    }
+//                }
             }
         });
         currentDay.pinInBackground();
