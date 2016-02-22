@@ -693,7 +693,7 @@ public class TrackAccessibilityUtil {
             int NumOfUsers = rankInfo.getInt("NumOfUsers");
             x[4] = NumOfUsers;
             if (NumOfUsers != 0) {
-                x[1] = 100 * x[2] / NumOfUsers;
+                x[1] = (x[2] / NumOfUsers) * 100;
                 if (x[1] != 100)    ++x[1];
             }
         }

@@ -228,16 +228,26 @@ public class DashboardDonutFragment extends SampleFragment {
     float total;
     total = SettingsUtil.getInt("goal") * 60; // second
 
-    float [] separableOutput = new float [4];
-
+    int overTotal = 0;
     for(int i = 0; i < 4; i ++) {
-      separableOutput[i] = (data[i][1] / total) * seriesMax;
+      overTotal = data[i][1];
+    }
+    float[] separableOutput = new float[4];
+
+
+    for (int i = 0; i < 4; i++) {
+      if(total >= overTotal)
+        separableOutput[i] = (data[i][1] / total) * seriesMax;
+      else
+        separableOutput[i] = (data[i][1] / overTotal) * seriesMax;
+
     }
     accumulateOutput[3] = separableOutput[0] + separableOutput[1] + separableOutput[2] +
                             separableOutput[3];
     accumulateOutput[2] = separableOutput[0] + separableOutput[1] + separableOutput[2];
     accumulateOutput[1] = separableOutput[0] + separableOutput[1];
     accumulateOutput[0] = separableOutput[0];
+
   }
   private void initSeriesIndex(float inset, DecoView decoView) {
 
@@ -309,6 +319,9 @@ public class DashboardDonutFragment extends SampleFragment {
     final TextView textToGo = (TextView) view.findViewById(R.id.textRemaining);
     int left = SettingsUtil.getInt("goal") * 60 - time;
     if(left < 0) {
+      left = left * (-1);
+
+      textPercent.setTextColor(getResources().getColor(R.color.red));
       textToGo.setText("超過" + timeToString(left));
       textToGo.setTextColor(getResources().getColor(R.color.red));
     }

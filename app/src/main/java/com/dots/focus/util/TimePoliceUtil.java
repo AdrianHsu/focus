@@ -201,6 +201,8 @@ public class TimePoliceUtil {
             try {
                 JSONObject object = friends.getJSONObject(i);
                 if (object.getLong("user_id") == id) {
+                    if(policeNum != 0)
+                    --policeNum;
                     if (!object.getBoolean("timeLocked"))
                         Log.d(TAG, "timePoliceCancel, id: " + id + ", name: " +
                                 object.getString("user_name") + " was not my time police...");

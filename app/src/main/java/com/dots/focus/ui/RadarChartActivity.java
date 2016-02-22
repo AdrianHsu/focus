@@ -4,10 +4,13 @@ package com.dots.focus.ui;
  * Created by AdrianHsu on 2016/1/19.
  */
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dots.focus.R;
 import com.dots.focus.util.TrackAccessibilityUtil;
@@ -27,6 +30,8 @@ import java.util.ArrayList;
 public class RadarChartActivity extends OverviewChartActivity {
 
   private RadarChart mChart;
+  private TextView textTv;
+  private ImageView image;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,10 @@ public class RadarChartActivity extends OverviewChartActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     getSupportActionBar().setTitle(getResources().getString(R.string.title_my_radar_chart_overview));
+
+    textTv = (TextView) findViewById(R.id.text);
+    image = (ImageView) findViewById(R.id.image);
+    createCard();
 
     mChart = (RadarChart) findViewById(R.id.chart1);
 
@@ -127,7 +136,31 @@ public class RadarChartActivity extends OverviewChartActivity {
     mChart.setData(data);
     mChart.getData().setHighlightEnabled(true);
     mChart.invalidate();
+
   }
+
+  private void createCard() {
+
+    int CURRENT_DAY = 1; // yesterday
+    int[] index = TrackAccessibilityUtil.getCategoryClicks(CURRENT_DAY);
+    String text = TrackAccessibilityUtil.descriptionOfCharacter(index);
+
+    int imageIndex = index[0];
+    textTv.setText(text);
+    if(imageIndex % 6 == 0)
+      image.setImageResource(R.drawable.avatar_social);
+    else if (imageIndex % 6 == 1)
+      image.setImageResource(R.drawable.avatar_fin);
+    else if (imageIndex % 6 == 2)
+      image.setImageResource(R.drawable.avatar_knowledge);
+    else if (imageIndex % 6 == 3)
+      image.setImageResource(R.drawable.avatar_lifestyle);
+    else if (imageIndex % 6 == 4)
+      image.setImageResource(R.drawable.avatar_game);
+    else if (imageIndex % 6 == 5)
+      image.setImageResource(R.drawable.avatar_video);
+  }
+
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     onBackPressed();

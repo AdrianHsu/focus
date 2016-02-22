@@ -75,8 +75,8 @@ public class MoreFragment extends Fragment {
     stringList.add(getResources().getString(R.string.title_idle_setting));
     stringList.add(getResources().getString(R.string.title_lock_setting));
     stringList.add(getResources().getString(R.string.title_notif_setting));
-    stringList.add(getResources().getString(R.string.title_focus_community));
-    stringList.add(getResources().getString(R.string.title_parental_control));
+//    stringList.add(getResources().getString(R.string.title_focus_community));
+//    stringList.add(getResources().getString(R.string.title_parental_control));
     stringList.add(getResources().getString(R.string.title_advanced_setting));
     stringList.add(getResources().getString(R.string.title_logout));
     simpleRecyclerViewAdapter = new MoreRecyclerViewAdapter(stringList);

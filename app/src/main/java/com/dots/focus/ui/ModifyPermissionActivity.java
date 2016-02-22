@@ -27,6 +27,8 @@ import java.sql.Time;
  */
 public class ModifyPermissionActivity extends FriendPermissionActivity {
 
+  private TextView policeNumTv;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -113,7 +115,9 @@ public class ModifyPermissionActivity extends FriendPermissionActivity {
     getNotifBtn = (CheckBox) findViewById(R.id.getNotifBtn);
     timeLockedBtn = (CheckBox) findViewById(R.id.timeLockedBtn);
     timeLockBtn = (CheckBox)findViewById(R.id.timeLockBtn);
+    policeNumTv = (TextView) findViewById(R.id.police_num);
 
+    policeNumTv.setText(String.valueOf(TimePoliceUtil.policeNum) + " / 2 (人)");
     try {
       originalTimeLocked = friend.getBoolean("timeLocked");
       originalTimeLock = friend.getBoolean("timeLock");

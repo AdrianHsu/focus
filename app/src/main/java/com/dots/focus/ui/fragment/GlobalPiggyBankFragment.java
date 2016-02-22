@@ -36,8 +36,6 @@ public class GlobalPiggyBankFragment extends Fragment {
     mContext = getActivity();
     View v = inflater.inflate(R.layout.fragment_piggy_bank_global, container, false);
 
-    if (savedInstanceState == null) {
-
       totalTv = (TextView) v.findViewById(R.id.total);
 
       long[] data = TrackAccessibilityUtil.getSavedTimeAndRank();
@@ -56,25 +54,25 @@ public class GlobalPiggyBankFragment extends Fragment {
       JSONObject movie = new JSONObject();
       try {
         soccer.put("id", R.drawable.icon_soccer);
-        soccer.put("convert", (90 / 60));
+        soccer.put("convert", 1.5);
         soccer.put("text", getResources().getString(R.string.unit_soccer));
         book.put("id", R.drawable.icon_book);
         book.put("convert", 3);
         book.put("text", getResources().getString(R.string.unit_book));
         basketball.put("id", R.drawable.icon_basketball);
-        basketball.put("convert", (40 / 60)); // 40 mins
+        basketball.put("convert", 0.66); // 40 mins
         basketball.put("text", getResources().getString(R.string.unit_basketball));
         workout.put("id", R.drawable.icon_workout);
-        workout.put("convert", (50 / 60)); // 50 mins
+        workout.put("convert", 0.83); // 50 mins
         workout.put("text", getResources().getString(R.string.unit_workout));
         jogging.put("id", R.drawable.icon_jogging);
-        jogging.put("convert", (30 / 60));
+        jogging.put("convert", 0.5);
         jogging.put("text", getResources().getString(R.string.unit_jogging));
         diet.put("id", R.drawable.icon_diet);
-        diet.put("convert", (7 / 60));
+        diet.put("convert", 0.116);
         diet.put("text", getResources().getString(R.string.unit_diet));
         movie.put("id", R.drawable.icon_movie);
-        movie.put("convert", (100 / 60));
+        movie.put("convert", 1.66);
         movie.put("text", getResources().getString(R.string.unit_movie));
 
       } catch (JSONException e) {
@@ -97,7 +95,7 @@ public class GlobalPiggyBankFragment extends Fragment {
 
       mRecyclerView.setLayoutManager(linearLayoutManager);
       mRecyclerView.setAdapter(globalPiggyBankRecyclerViewAdapter);
-    }
+
     return v;
   }
 }

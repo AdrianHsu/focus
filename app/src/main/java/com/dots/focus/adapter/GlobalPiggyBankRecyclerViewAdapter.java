@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class GlobalPiggyBankRecyclerViewAdapter extends
@@ -47,9 +48,12 @@ public class GlobalPiggyBankRecyclerViewAdapter extends
         holder.textTv.setText(jsonObject.getString("text"));
         int id = jsonObject.getInt("id");
         holder.image.setImageResource(id);
-        double convert = convertList.get(position).getDouble("convert");
-        double time = (GlobalPiggyBankFragment.total / convert);
-        holder.timeTv.setText(String.valueOf(time));
+        Double convert = convertList.get(position).getDouble("convert");
+        Double time = (GlobalPiggyBankFragment.total / convert);
+
+        DecimalFormat df = new DecimalFormat("#.#");
+        String s = df.format(time);
+        holder.timeTv.setText(s);
       } catch(JSONException e) {
         Log.v("Piggy", e.getMessage());
       }

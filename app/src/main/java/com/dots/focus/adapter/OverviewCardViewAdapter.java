@@ -125,10 +125,10 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
           intent = new Intent(v.getContext(), TopThreeAppUsageChartActivity.class);
         } else if (vh.getAdapterPosition() == 5) {
           intent = new Intent(v.getContext(), AppLeaderBoardChartActivity.class);
+//        } else if (vh.getAdapterPosition() == 6) {
+//          intent = new Intent(v.getContext(), RadarChartActivity.class);
+////          intent = new Intent(v.getContext(), DailyReportChartActivity.class);
         } else if (vh.getAdapterPosition() == 6) {
-          intent = new Intent(v.getContext(), RadarChartActivity.class);
-//          intent = new Intent(v.getContext(), DailyReportChartActivity.class);
-        } else if (vh.getAdapterPosition() == 7) {
           intent = new Intent(v.getContext(), TimePiggyBankActivity.class);
         } else {
           intent = null;

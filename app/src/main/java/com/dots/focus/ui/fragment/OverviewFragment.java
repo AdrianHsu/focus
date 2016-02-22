@@ -40,7 +40,7 @@ public class OverviewFragment extends Fragment {
     stringList.add(getResources().getString(R.string.title_addiction_index_overview));
     stringList.add(getResources().getString(R.string.title_top_three_app_usage_overview));
     stringList.add(getResources().getString(R.string.title_app_leader_board_overview));
-    stringList.add(getResources().getString(R.string.title_ads_overview));
+//    stringList.add(getResources().getString(R.string.title_ads_overview));
 //    stringList.add(getResources().getString(R.string.title_my_daily_report_overview));
     stringList.add(getResources().getString(R.string.title_my_piggy_bank_overview));
     mOverviewCardViewAdapter = new OverviewCardViewAdapter(stringList);

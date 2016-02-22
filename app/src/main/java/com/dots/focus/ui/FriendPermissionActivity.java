@@ -1,8 +1,10 @@
 package com.dots.focus.ui;
 
 
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,6 +37,7 @@ public class FriendPermissionActivity extends BaseActivity {
   protected Boolean originalTimeLocked;
   protected Boolean originalTimeLock;
   protected static final String TAG = "Permission";
+
   protected String getFriendRelation(JSONObject friend) {
 
     Boolean timeLocked = false;
@@ -54,10 +57,25 @@ public class FriendPermissionActivity extends BaseActivity {
     else
       return getResources().getString(R.string.relation_just_friend);
   }
+
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
-    onBackPressed();
+    switch (item.getItemId()) {
+
+      case android.R.id.home:
+        FetchFriendUtil.modifyPopUp(id, getNotifBtn.isChecked());
+        onBackPressed();
+        break;
+      case R.id.action_help:
+        Intent intent = new Intent(this, HelpPoliceActivity.class);
+        startActivity(intent);
+        break;
+    }
+    return true;
+  }
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.permission, menu);
     return true;
   }
 
