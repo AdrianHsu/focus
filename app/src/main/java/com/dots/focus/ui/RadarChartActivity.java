@@ -142,8 +142,23 @@ public class RadarChartActivity extends OverviewChartActivity {
   private void createCard() {
 
     int CURRENT_DAY = 1; // yesterday
-    String text = TrackAccessibilityUtil.getCategoryClicks(CURRENT_DAY);
+    int[] index = TrackAccessibilityUtil.getCategoryClicks(CURRENT_DAY);
+    String text = TrackAccessibilityUtil.descriptionOfCharacter(index);
+
+    int imageIndex = index[0];
     textTv.setText(text);
+    if(imageIndex % 6 == 0)
+      image.setImageResource(R.drawable.avatar_social);
+    else if (imageIndex % 6 == 1)
+      image.setImageResource(R.drawable.avatar_fin);
+    else if (imageIndex % 6 == 2)
+      image.setImageResource(R.drawable.avatar_knowledge);
+    else if (imageIndex % 6 == 3)
+      image.setImageResource(R.drawable.avatar_lifestyle);
+    else if (imageIndex % 6 == 4)
+      image.setImageResource(R.drawable.avatar_game);
+    else if (imageIndex % 6 == 5)
+      image.setImageResource(R.drawable.avatar_video);
   }
 
   @Override

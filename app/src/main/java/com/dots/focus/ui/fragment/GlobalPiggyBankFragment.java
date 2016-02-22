@@ -36,8 +36,6 @@ public class GlobalPiggyBankFragment extends Fragment {
     mContext = getActivity();
     View v = inflater.inflate(R.layout.fragment_piggy_bank_global, container, false);
 
-    if (savedInstanceState == null) {
-
       totalTv = (TextView) v.findViewById(R.id.total);
 
       long[] data = TrackAccessibilityUtil.getSavedTimeAndRank();
@@ -97,7 +95,7 @@ public class GlobalPiggyBankFragment extends Fragment {
 
       mRecyclerView.setLayoutManager(linearLayoutManager);
       mRecyclerView.setAdapter(globalPiggyBankRecyclerViewAdapter);
-    }
+
     return v;
   }
 }

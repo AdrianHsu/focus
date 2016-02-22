@@ -45,6 +45,7 @@ public class KickRequestActivity extends BaseActivity {
   private TextView friendStateTv;
   private TextView expireTv;
   private Switch lockSwitch;
+  private TextView SwitchLockTv;
   private TextView lockTimeTv;
 
   private String name;
@@ -136,8 +137,12 @@ public class KickRequestActivity extends BaseActivity {
     } catch(JSONException e) {
       Log.v(TAG, e.getMessage());
     }
+    Log.v(TAG, "Friend's lockMaxTime: " + lockMaxTime);
 
     lockSwitch.setEnabled(timeLocked);
+    if(timeLocked)
+      lockSwitch.setText("權限不足");
+
     lockSwitch.setChecked(false);
     lockSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override

@@ -63,16 +63,16 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
         case 4:
           Picasso.with(mContext).load(R.drawable.more_noti_settings).into(holder.imageViewSample);
           break;
+//        case 5:
+//          Picasso.with(mContext).load(R.drawable.more_focus_community).into(holder.imageViewSample);
+//          break;
+//        case 6:
+//          Picasso.with(mContext).load(R.drawable.more_parental_control).into(holder.imageViewSample);
+//          break;
         case 5:
-          Picasso.with(mContext).load(R.drawable.more_focus_community).into(holder.imageViewSample);
-          break;
-        case 6:
-          Picasso.with(mContext).load(R.drawable.more_parental_control).into(holder.imageViewSample);
-          break;
-        case 7:
           Picasso.with(mContext).load(R.drawable.more_advanced_settings).into(holder.imageViewSample);
           break;
-        case 8:
+        case 6:
           Picasso.with(mContext).load(R.drawable.more_logout).into(holder.imageViewSample);
           break;
 
@@ -131,10 +131,10 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
           case 4:
             intent = new Intent(mContext, NotificationSettingsActivity.class);
             break;
-          case 5:
-            intent = new Intent(mContext, FocusCommunityActivity.class);
-            break;
-          case 7:
+//          case 5:
+//            intent = new Intent(mContext, FocusCommunityActivity.class);
+//            break;
+          case 5: // 7
             intent = new Intent(mContext, AdvancedSettingsActivity.class);
             break;
 
