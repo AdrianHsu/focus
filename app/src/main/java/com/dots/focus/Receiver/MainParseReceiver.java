@@ -1,9 +1,7 @@
 package com.dots.focus.receiver;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,27 +25,40 @@ public class MainParseReceiver extends ParsePushBroadcastReceiver {
         super.onPushReceive(context, intent);
         Log.d(TAG, "onPushReceive");
 
-        JSONObject data;
+        JSONObject data = null;
+        boolean is_kicked = false;
+        try {
+            data = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+            if (data.has("type") || data.getString("type").equals("focus_kicked"))
+                is_kicked = true;
+        } catch (JSONException e) {
+            Log.d(TAG, e.getMessage());
+        }
+        if (!is_kicked)
+            return;
+
         String title = null;
         String alert = null;
         Boolean dialog = null;
-        Long id = null;
+        long id = 0;
+        long time2 = 0;
         int lock_period = 0;
         int lock_max_period = ParseUser.getCurrentUser().getInt("lock_max_period");
         boolean canLock = false;
 
         try {
-            data = new JSONObject(intent.getExtras().getString("com.parse.Data"));
-
             title = data.getString("title");
             alert = data.getString("alert");
             dialog = data.getBoolean("dialog");
             id = data.getLong("id");
+            time2 = data.getLong("time2");
             lock_period = data.getInt("lock_period");
             if (lock_period > lock_max_period)
                 lock_period = lock_max_period;
             try {
-                canLock = FetchFriendUtil.getFriendInfo(id).optBoolean("timeLocked");
+                JSONObject friend = FetchFriendUtil.getFriendInfo(id);
+                if (friend != null)
+                    canLock = friend.optBoolean("timeLocked");
             } catch (JSONException e) {
                 Log.d(TAG, e.getMessage());
             } finally {
@@ -71,13 +82,14 @@ public class MainParseReceiver extends ParsePushBroadcastReceiver {
             if (dialog) {
                 // use lock_period here to lock myself
               Log.v(TAG, "lock_period: " + lock_period + "canLock:" + canLock);
-              if(lock_period != 0 && canLock) {
+              if (title != null && alert != null && id != 0 && time2 != 0 && lock_period != 0) {
                 Intent i = new Intent(context, LockService.class);
                 i.setAction(FocusModeService.LOCK_ACTION);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("title", title);
                 i.putExtra("alert", alert);
                 i.putExtra("id", id);
+                i.putExtra("time2", time2);
                 i.putExtra("lock_period", lock_period);
 
                 context.startService(i);

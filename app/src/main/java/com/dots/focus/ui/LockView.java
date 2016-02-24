@@ -27,7 +27,8 @@ public class LockView extends RelativeLayout
   public static String callApp = "com.asus.contacts";
   public static String messageApp = "com.asus.message";
 
-  public LockView(Context context) {
+  public LockView(Context context, String title, String alert, long id, long time2, int
+          lock_period) {
     super(context);
     mContext = context;
     LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
