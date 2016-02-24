@@ -39,22 +39,13 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="TIME POLICE NAME"
-        android:id="@+id/profile_name"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true"/>
-
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/profile_image"
         android:background="@drawable/more_icon"
-        android:layout_alignTop="@+id/profile_name"
-        android:layout_alignStart="@+id/time_police"/>
+        android:layout_below="@+id/time_police"
+        android:layout_centerHorizontal="true"/>
 
     <ImageView
         android:layout_width="300dp"
@@ -70,8 +61,8 @@
         android:textSize="18sp"
         android:text="LOCK ALERT CONTENT"
         android:id="@+id/alert"
-        android:layout_alignBottom="@+id/profile_image"
-        android:layout_alignStart="@+id/profile_name"/>
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -79,13 +70,13 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/title"
-        android:layout_below="@+id/time_police"
+        android:layout_below="@+id/profile_image"
         android:layout_centerHorizontal="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:text="00:00:00"
         android:id="@+id/lock_time_left"
         android:layout_alignBottom="@+id/btn_mes"
