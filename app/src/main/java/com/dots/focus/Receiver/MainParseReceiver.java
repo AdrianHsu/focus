@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.dots.focus.ui.CustomDialogActivity;
 import com.dots.focus.ui.MainActivity;
+import com.dots.focus.util.FetchFriendUtil;
 import com.parse.ParsePushBroadcastReceiver;
 import com.parse.ParseUser;
 
@@ -39,6 +40,15 @@ public class MainParseReceiver extends ParsePushBroadcastReceiver {
             lock_period = data.getInt("lock_period");
             if (lock_period > lock_max_period)
                 lock_period = lock_max_period;
+            boolean canLock = false;
+            try {
+                canLock = FetchFriendUtil.getFriendInfo(id).optBoolean("timeLocked");
+            } catch (JSONException e) {
+                Log.d(TAG, e.getMessage());
+            } finally {
+                if (!canLock)
+                    lock_period = 0;
+            }
 
             if (title != null)
                 Log.d(TAG, "title: " + title);
