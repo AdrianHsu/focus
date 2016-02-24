@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_focus_mode"
+    android:background="@color/black"
     tools:context="com.dots.focus.ui.FocusModeActivity" >
 
     <Button
@@ -11,11 +11,12 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:text="解鎖"
-        android:layout_centerVertical="true"
+        android:layout_above="@+id/btn_mes"
         android:layout_centerHorizontal="true"/>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout">
 
     </RelativeLayout>
 
@@ -37,4 +38,39 @@
         android:layout_alignTop="@+id/btn_tel"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="TIME POLICE NAME"
+        android:id="@+id/textView3"
+        android:layout_marginBottom="80dp"
+        android:layout_above="@+id/btn_unlock_screen"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/profile_image"
+        android:background="@drawable/more_icon"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_alignStart="@+id/imageView3"/>
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:id="@+id/imageView3"
+        android:background="@drawable/time_police"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="LOCK ALERT CONTENT"
+        android:id="@+id/textView4"
+        android:layout_alignBottom="@+id/profile_image"
+        android:layout_alignStart="@+id/textView3"/>
 </RelativeLayout>

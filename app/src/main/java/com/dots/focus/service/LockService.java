@@ -30,21 +30,8 @@ public class LockService extends Service
   private LockView screenView;
   private static Timer timer = new Timer();
 
-  private String title;
-  private String alert;
-  private long id;
-  private int lock_period;
-
   @Override
   public IBinder onBind(Intent intent) {
-
-    Bundle extras = intent.getExtras();
-
-    title = extras.getString("title");
-    alert = extras.getString("alert");
-    id = extras.getLong("id");
-    lock_period = extras.getInt("lock_period");
-
     return null;
   }
 
@@ -65,7 +52,7 @@ public class LockService extends Service
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     String action = intent.getAction();
-    timer.scheduleAtFixedRate(new mainTask(), 0, lock_period);
+    timer.scheduleAtFixedRate(new mainTask(), 0, 5000);
 
     if(TextUtils.equals(action, LOCK_ACTION))
       addView();
