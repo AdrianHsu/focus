@@ -12,6 +12,9 @@ import com.dots.focus.R;
 import com.dots.focus.service.LockService;
 import com.dots.focus.service.TrackAccessibilityService;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by AdrianHsu on 2016/2/16.
  */
@@ -23,6 +26,8 @@ public class LockView extends RelativeLayout
   private Button btnUnlock;
   private Button btnTel;
   private Button btnMes;
+  private Timer timer;
+  private int remainSecond = 0;
 
   public static String callApp = "com.asus.contacts";
   public static String messageApp = "com.asus.message";
@@ -74,10 +79,25 @@ public class LockView extends RelativeLayout
 
       }
     });
-
-
-
+    setTimer(time2, lock_period);
   }
+  private void setTimer(long time2, int lock_period) {
+    remainSecond = (int) (time2 / 1000 + lock_period - System.currentTimeMillis() / 1000);
+    timer = new Timer();
+    timer.schedule(new EverySecond(), 0, 1000);
+  }
+  private void terminateTheLock() {
+    // destroy the view and the service...
+  }
+  class EverySecond extends TimerTask {
+    public void run() {
+      if (--remainSecond == 0) {
+        timer.cancel();
+        terminateTheLock();
+      }
+    }
+  }
+
 
 
 }
