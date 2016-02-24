@@ -31,6 +31,8 @@ import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.security.Key;
+import java.security.KeyFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -133,6 +135,7 @@ public class TrackAccessibilityService extends AccessibilityService {
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy");
         unregisterReceiver(receiver);
         service = null;
         super.onDestroy();
@@ -335,6 +338,7 @@ public class TrackAccessibilityService extends AccessibilityService {
             config.flags = AccessibilityServiceInfo.FLAG_INCLUDE_NOT_IMPORTANT_VIEWS;
 
         setServiceInfo(config);
+        Key k;
     }
     public void checkPermission() {
         int permission1 = PermissionChecker.checkSelfPermission(this, Manifest.permission
