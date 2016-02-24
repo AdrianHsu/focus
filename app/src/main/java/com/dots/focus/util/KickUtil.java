@@ -47,6 +47,30 @@ public class KickUtil {
             }
         });
     }
+    public static void lock(final String content, String objectId, final int lock_period) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
+        query.fromLocalDatastore();
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject kickHistory, ParseException e) {
+                if (e == null && kickHistory != null) {
+                    int temp = lock_period;
+                    int lock_max_period = kickHistory.getInt("lock_max_period");
+                    if (temp > lock_max_period)
+                        temp = lock_max_period;
+
+                    kickHistory.put("time2", System.currentTimeMillis());
+                    kickHistory.put("content2", content);
+                    kickHistory.put("lock_period", temp);
+                    kickHistory.put("state", KickState.KICK_NOT_DOWNLOADED.getValue());
+
+                    kickHistory.saveEventually();
+                } else if (e != null) {
+                    Log.d(TAG, e.getMessage());
+                }
+            }
+        });
+    }
     public static void kickResponse(final String content, String objectId) {
       ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
       query.fromLocalDatastore();
