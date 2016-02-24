@@ -8,27 +8,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Toast;
 
 import com.dots.focus.ui.LockView;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class LockService extends Service
 {
   public static final String LOCK_ACTION = "lock";
   public static final String UNLOCK_ACTION = "unlock";
-  private static Context mContext;
+  private Context mContext;
   private WindowManager mWinMng;
   private LockView screenView;
-  private static Timer timer = new Timer();
 
   @Override
   public IBinder onBind(Intent intent) {
@@ -38,51 +31,44 @@ public class LockService extends Service
   @Override
   public void onCreate() {
     super.onCreate();
-    mContext = getApplicationContext();
 
+    mContext = getApplicationContext();
     mWinMng = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
   }
 
   @Override
   public void onDestroy() {
-    Toast.makeText(this, "Service Stopped ...", Toast.LENGTH_SHORT).show();
     super.onDestroy();
   }
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     String action = intent.getAction();
-    timer.scheduleAtFixedRate(new mainTask(), 0, 5000);
 
-    if(TextUtils.equals(action, LOCK_ACTION))
-      addView();
-    else if(TextUtils.equals(action, UNLOCK_ACTION))
+
+    if(TextUtils.equals(action, LOCK_ACTION)) {
+      Bundle extras = intent.getExtras();
+      String title = extras.getString("title");
+      String alert = extras.getString("alert");
+      long id = extras.getLong("id");
+      long time2 = extras.getLong("time2");
+      int lock_period = extras.getInt("lock_period");
+      if (title != null && alert != null && id != 0 && time2 != 0 && lock_period != 0)
+        addView(title, alert, id, time2, lock_period);
+    }
+    else if (TextUtils.equals(action, UNLOCK_ACTION))
     {
       removeView();
       stopSelf();
     }
     return super.onStartCommand(intent, flags, startId);
   }
-  private class mainTask extends TimerTask
-  {
-    public void run()
-    {
-      toastHandler.sendEmptyMessage(0);
-    }
-  }
-  private static final Handler toastHandler = new Handler()
-  {
-    @Override
-    public void handleMessage(Message msg)
-    {
-      Toast.makeText(mContext, "test", Toast.LENGTH_SHORT).show();
-    }
-  };
-  public void addView()
+
+  public void addView(String title, String alert, long id, long time2, int lock_period)
   {
     if(screenView == null)
     {
-      screenView = new LockView(mContext);
+      screenView = new LockView(mContext, title, alert, id, time2, lock_period);
 
       LayoutParams param = new LayoutParams();
       param.type = LayoutParams.TYPE_SYSTEM_ALERT;

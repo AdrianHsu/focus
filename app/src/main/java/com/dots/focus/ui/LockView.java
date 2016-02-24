@@ -5,12 +5,16 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
 import com.dots.focus.service.LockService;
 import com.dots.focus.service.TrackAccessibilityService;
+
+import org.w3c.dom.Text;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,6 +30,11 @@ public class LockView extends RelativeLayout
   private Button btnUnlock;
   private Button btnTel;
   private Button btnMes;
+  private TextView profileName;
+  private ImageView profileImage;
+  private TextView alertTv;
+  private TextView titleTv;
+  private TextView leftLockTimeTv;
 
   public static String callApp = "com.asus.contacts";
   public static String messageApp = "com.asus.message";
@@ -36,8 +45,8 @@ public class LockView extends RelativeLayout
   private String alert;
   private long id;
 
-  public LockView(Context context, long time2, int lock_period, String title, String alert,
-                  long id) {
+  public LockView(Context context, String _title, String _alert, long _id, long _time2, int
+          _lock_period) {
     super(context);
     mContext = context;
     LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -45,6 +54,18 @@ public class LockView extends RelativeLayout
     btnUnlock = (Button) rootView.findViewById(R.id.btn_unlock_screen);
     btnTel = (Button) rootView.findViewById(R.id.btn_tel);
     btnMes = (Button) rootView.findViewById(R.id.btn_mes);
+    profileName = (TextView) rootView.findViewById(R.id.profile_name);
+    profileImage = (ImageView) rootView.findViewById(R.id.profile_image);
+    alertTv = (TextView) rootView.findViewById(R.id.alert);
+    titleTv = (TextView) rootView.findViewById(R.id.title);
+    leftLockTimeTv = (TextView) rootView.findViewById(R.id.lock_time_left);
+
+    title = _title;
+    alert = _alert;
+    id = _id;
+    time2 = _time2;
+    lock_period = _lock_period;
+
 
     btnUnlock.setOnClickListener(new OnClickListener() {
       @Override
@@ -84,17 +105,7 @@ public class LockView extends RelativeLayout
       }
     });
 
-    Timer timer = new Timer(true);
-    timer.schedule(new MyTimerTask(), 1000, 1000);
 
   }
-  public class MyTimerTask extends TimerTask
-  {
-    public void run()
-    {
-      
-    }
-  };
-
 
 }
