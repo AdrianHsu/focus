@@ -213,7 +213,15 @@ public class KickRequestActivity extends BaseActivity {
     messages.add(tmp);
     mRecyclerView.getAdapter().notifyItemInserted(messages.size() - 1);
     mRecyclerView.scrollVerticallyToPosition(messages.size() - 1);
-    KickUtil.kick(text, objectId);
+
+    if(lockSwitch.isEnabled() && lockSwitch.isChecked() && lockPickedTime != 0) {
+      KickUtil.lock(text, objectId, lockPickedTime);
+
+      lockSwitch.setEnabled(false);
+      lockSwitch.setChecked(true);
+    } else
+      KickUtil.kick(text, objectId);
+
 
     sendBtn.setEnabled(false);
     editText1.setEnabled(false);

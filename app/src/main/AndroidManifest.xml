@@ -238,6 +238,8 @@
             </intent-filter>
         </service>
         <service android:name="com.dots.focus.service.FocusModeService"></service>
+        <service android:name="com.dots.focus.service.LockService"></service>
+
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.dots.focus.receiver.MainParseReceiver"
                   android:permission="com.google.android.c2dm.permission.SEND"
