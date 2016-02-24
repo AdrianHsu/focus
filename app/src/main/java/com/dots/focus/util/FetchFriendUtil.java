@@ -52,6 +52,17 @@ public class FetchFriendUtil {
         return "";
     }
 
+    public static JSONObject getFriendInfo(Long id) throws JSONException {
+        JSONArray friends = ParseUser.getCurrentUser().getJSONArray("Friends");
+        if (friends == null) return null;
+        for (int i = 0, length = friends.length(); i < length; ++i) {
+            JSONObject jsonObject = friends.getJSONObject(i);
+            if (id.equals(jsonObject.getLong("user_id")))
+                return jsonObject;
+        }
+        return null;
+    }
+
     public static void refresh() {
         mFriendList.clear();
         mConfirmedFriendList.clear();
