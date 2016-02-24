@@ -16,14 +16,16 @@ public class KickUtil {
     public static long expire_period = 300000;
 
     public static void sendKickRequest(int limitType, int period, long time, String content) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
         ParseObject kickRequest = new ParseObject("KickRequest");
-        kickRequest.put("user_id", ParseUser.getCurrentUser().getLong("user_id"));
+        kickRequest.put("user_id", currentUser.getLong("user_id"));
         kickRequest.put("LimitType", limitType);
         kickRequest.put("period", period);
         kickRequest.put("time", time);
         kickRequest.put("content", content);
         kickRequest.put("state", KickState.REQUEST_NOT_DOWNLOADED.getValue());
-        kickRequest.put("userId", ParseUser.getCurrentUser().getObjectId());
+        kickRequest.put("userId", currentUser.getObjectId());
+        kickRequest.put("lock_max_period", currentUser.getInt("lock_max_period"));
 
         kickRequest.saveEventually();
     }
