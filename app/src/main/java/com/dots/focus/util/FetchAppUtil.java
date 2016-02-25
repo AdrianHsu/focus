@@ -1,5 +1,6 @@
 package com.dots.focus.util;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.dots.focus.model.AppInfo;
@@ -169,47 +170,67 @@ public class FetchAppUtil {
         Log.d(TAG, "new database done.");
     }
     private static void mergeApps() {
-        String localTAG = "mergeApps";
         List<String> name, packageName, category;
 
         name = ParseApps.getList("name");
         packageName = ParseApps.getList("packageName");
         category = ParseApps.getList("category");
-        List<AppInfo> extras = new ArrayList<>();
 
-        int i = 0;
-        for (int size = apps.size(); i < size; ++i) {
-            if (i < packageName.size()) {
-                if(! packageName.get(i).equals(apps.get(i).getPackageName())) {
-                    boolean flag = false;
-                    int j = i + 1;
-                    String p = apps.get(i).getPackageName();
-                    for(; j < packageName.size(); ++j){
-                        if(packageName.get(j).equals(p)){
-                            flag = true;
-                            break;
-                        }
-                    }
-                    if (flag) {
-                        for(int c = i; c < j; ++c)
-                            apps.add(c, new AppInfo(name.get(c), packageName.get(c), category.get(c)));
-                        i = j;
-                    }
-                    else {
-                        extras.add(apps.remove(i));
-                        --i;
-                    }
+        List<AppInfo> tempApps = new ArrayList<>(apps);
+        apps.clear();
+
+        int length = name.size(), length1 = packageName.size(), length2 = category.size();
+        if (length > length1)   length = length1;
+        if (length > length2)   length = length2;
+        for (int i = 0; i < length; ++i) {
+            String theName = name.get(i);
+            AppInfo appInfo = new AppInfo(theName, packageName.get(i), category.get(i));
+            for (int j = 0, size = tempApps.size(); j < size; ++j) {
+                if (tempApps.get(j).getName().equals(theName)) {
+                    Drawable icon = tempApps.get(j).getIcon();
+                    if (icon != null)
+                        appInfo.setIcon(icon);
+                    tempApps.remove(j);
                 }
             }
+            apps.add(appInfo);
         }
-        Log.d(localTAG, "i: " + i + ", packageName.size(): " + packageName.size());
-        for(int size = packageName.size(); i < size; ++i){
-            Log.d(localTAG, "packageName: " + packageName.get(i));
-            addApp(new AppInfo(name.get(i), packageName.get(i), category.get(i)));
-        }
-        i = 0;
-        for (int size = extras.size(); i < size; ++i)
-            addApp(extras.get(i));
+        apps.addAll(tempApps);
+
+//        List<AppInfo> extras = new ArrayList<>();
+//        int i = 0;
+//        for (int size = apps.size(); i < size; ++i) {
+//            if (i < packageName.size()) {
+//                if(! packageName.get(i).equals(apps.get(i).getPackageName())) {
+//                    boolean flag = false;
+//                    int j = i + 1;
+//                    String p = apps.get(i).getPackageName();
+//                    for(; j < packageName.size(); ++j){
+//                        if(packageName.get(j).equals(p)){
+//                            flag = true;
+//                            break;
+//                        }
+//                    }
+//                    if (flag) {
+//                        for(int c = i; c < j; ++c)
+//                            apps.add(c, new AppInfo(name.get(c), packageName.get(c), category.get(c)));
+//                        i = j;
+//                    }
+//                    else {
+//                        extras.add(apps.remove(i));
+//                        --i;
+//                    }
+//                }
+//            }
+//        }
+//        Log.d(localTAG, "i: " + i + ", packageName.size(): " + packageName.size());
+//        for(int size = packageName.size(); i < size; ++i){
+//            Log.d(localTAG, "packageName: " + packageName.get(i));
+//            addApp(new AppInfo(name.get(i), packageName.get(i), category.get(i)));
+//        }
+//        i = 0;
+//        for (int size = extras.size(); i < size; ++i)
+//            addApp(extras.get(i));
 
     }
 }

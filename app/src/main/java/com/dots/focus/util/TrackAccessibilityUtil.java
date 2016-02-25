@@ -6,7 +6,7 @@ import android.util.Log;
 import com.dots.focus.model.AppInfo;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
-import com.parse.GetCallback;
+import com.dots.focus.ui.IdleSettingsActivity;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -15,6 +15,7 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -25,6 +26,7 @@ public class TrackAccessibilityUtil {
     private static DayBlock currentDay = null;
     private static HourBlock currentHour = null;
     private static String TAG = "TrackAccessibilityUtil";
+    private static List<Integer> localIdle = null;
 
     public static String[] characters = new String[] {"社交高手", "理財專家", "知識王", "生活達人", "遊戲王",
             "影音高手", "交際咖", "商業土豪", "兩腳書櫥", "享樂主義", "遊戲宅宅", "影音狂人"};
@@ -180,7 +182,7 @@ public class TrackAccessibilityUtil {
     }
     private static void storeSavedTime() {
         Integer goal = SettingsUtil.getInt("goal");
-        if (goal == null)   goal = 120;
+        if (goal == 0)   goal = 120;
         goal *= 60;
         List<Integer> appLength = currentDay.getAppLength();
         for (int i = 0, length = appLength.size(); i < length; ++i)
@@ -190,6 +192,8 @@ public class TrackAccessibilityUtil {
         currentUser.put("SavedTotalTime", currentUser.getInt("SavedTotalTime") + goal);
     }
     public static int[][] getDayFirstThreeApp(int day) {
+        initializeLocalIdle();
+
         int[][] x = new int[4][2];
         for (int i = 0; i < 4; ++i) {
             x[i][0] = -1;
@@ -201,7 +205,7 @@ public class TrackAccessibilityUtil {
 
         if (dayBlock != null) {
             List<Integer> appLength = dayBlock.getAppLength();
-            for (int i = 0, s = appLength.size(); i < s; ++i) {
+            for (int i = 0, s = appLength.size(); i < s && !inIdle(i); ++i) {
                 int length = appLength.get(i);
                 boolean flag = true;
                 for (int j = 0; j < 3; ++j) {
@@ -228,13 +232,14 @@ public class TrackAccessibilityUtil {
     }
 
     public static int[] weekUsage(long time) {
-        int[] x = new int[7];
+        initializeLocalIdle();
 
+        int[] x = new int[7];
         List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
 
         if (dayBlocks == null)  return x;
 
-        for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+        for (int i = 0, size = dayBlocks.size(); i < size && !inIdle(i); ++i) {
             int day = (int) ((dayBlocks.get(i).getLong("time") - time) / aDay);
             List<Integer> appLength = dayBlocks.get(i).getAppLength();
 
@@ -253,6 +258,8 @@ public class TrackAccessibilityUtil {
     }
 
     public static int[] dayUsage(long time0) {
+        initializeLocalIdle();
+
         int[] x = new int[24];
         ArrayList<Long> times = new ArrayList<>();
         times.ensureCapacity(24);
@@ -271,7 +278,7 @@ public class TrackAccessibilityUtil {
             Log.d(TAG, e.getMessage());
         }
 
-        for (int i = 0, size = hourBlocks.size(); i < size; ++i) {
+        for (int i = 0, size = hourBlocks.size(); i < size && !inIdle(i); ++i) {
             int hour = (int) ((hourBlocks.get(i).getLong("time") - time0) / anHour);
             List<Integer> appLength = hourBlocks.get(i).getAppLength();
 
@@ -283,6 +290,8 @@ public class TrackAccessibilityUtil {
     }
 
     public static List<List<Integer>> hourAppLength(long time0) {
+        initializeLocalIdle();
+
         ArrayList<List<Integer>> x = new ArrayList<>();
 
         ArrayList<Long> times = new ArrayList<>();
@@ -303,7 +312,7 @@ public class TrackAccessibilityUtil {
             Log.d(TAG, e.getMessage());
         }
 
-        for (int i = 0, size = hourBlocks.size(); i < size; ++i) {
+        for (int i = 0, size = hourBlocks.size(); i < size && !inIdle(i); ++i) {
             int hour = (int) ((hourBlocks.get(i).getLong("time") - time0) / anHour);
             List<Integer> appLength = hourBlocks.get(i).getAppLength();
             x.set(hour, appLength);
@@ -312,11 +321,13 @@ public class TrackAccessibilityUtil {
         return x;
     }
     public static int[] getFirstThree(List<Integer> appLength) {
+        initializeLocalIdle();
+
         int[] x = new int[3], value = new int[3];
         for (int i = 0; i < 3; ++i) {
             x[i] = -1;   value[i] = 0;
         }
-        for (int i = 0, size = appLength.size(); i < size; ++i) {
+        for (int i = 0, size = appLength.size(); i < size && !inIdle(i); ++i) {
             int length = appLength.get(i);
             for (int j = 0; j < 3; ++j) {
                 if (length > value[j]) {
@@ -326,7 +337,7 @@ public class TrackAccessibilityUtil {
                     }
                     x[j] = i;
                     value[j] = length;
-                  break;
+                    break;
                 }
             }
         }
@@ -350,9 +361,10 @@ public class TrackAccessibilityUtil {
 
         if (dayBlocks != null) {
             for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+                initializeLocalIdle();
                 int day = (int) ((dayBlocks.get(i).getTime() - time) / aDay);
                 List<Integer> appLength2 = dayBlocks.get(i).getAppLength();
-                for (int j = 0, n = appLength2.size(); j < n && j < temp; ++j)
+                for (int j = 0, n = appLength2.size(); j < n && j < temp && !inIdle(j); ++j)
                     appLength.set(j, appLength.get(j) + appLength2.get(j));
                 appLengths.set(day, appLength2);
             }
@@ -380,9 +392,10 @@ public class TrackAccessibilityUtil {
         int maxDay = 0, minDay = 0;
 
         for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
+            initializeLocalIdle();
             int count = 0, day = (int)((dayBlocks.get(i).getTime() - time) / 86400000);
             List<Integer> appLength = dayBlocks.get(i).getAppLength();
-            for (int j = 0, n = appLength.size(); j < n; ++j)
+            for (int j = 0, n = appLength.size(); j < n && !inIdle(j); ++j)
                 count += appLength.get(j);
             if (day < 7 && day > -1)    x[day] = count;
             x[7] += count;
@@ -404,6 +417,8 @@ public class TrackAccessibilityUtil {
     }
 
     public static int[] getCategory(int day) {
+        initializeLocalIdle();
+
         Long time = getPrevXDayInMilli(day);
         int[] data = new int[] {0, 0, 0, 0, 0, 0, 0};
         DayBlock dayBlock = getDayBlockByTime(time);
@@ -416,7 +431,7 @@ public class TrackAccessibilityUtil {
 
         int size1 = appLength.size();
         if (size > size1)   size = size1;
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0; i < size && !inIdle(i); ++i) {
             AppInfo appInfo = FetchAppUtil.getApp(i);
             if (appInfo == null)    continue;
             int index = getCategoryUnion(appInfo.getCategory());
@@ -427,6 +442,8 @@ public class TrackAccessibilityUtil {
     }
 
     public static int[] getCategoryClicks(int day) {
+        initializeLocalIdle();
+
         Long time = getPrevXDayInMilli(day);
         int[] data = new int[] {0, 0, 0, 0, 0, 0, 0};
         int[] data2 = data.clone();
@@ -447,7 +464,7 @@ public class TrackAccessibilityUtil {
             else                size = size2;
         }
 
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0; i < size && !inIdle(i); ++i) {
             AppInfo appInfo = FetchAppUtil.getApp(i);
             if (appInfo == null)    continue;
             int index = getCategoryUnion(appInfo.getCategory());
@@ -579,12 +596,14 @@ public class TrackAccessibilityUtil {
     }
 
     public static int dayCategoryClicksLevel(int day) {
+        initializeLocalIdle();
+
         long time = getPrevXDayInMilli(day);
         DayBlock dayBlock = getDayBlockByTime(time);
         int count = 0;
         if (dayBlock != null) {
             List<Integer> clicks = dayBlock.getCategoryClick();
-            for (int i = 0, length = clicks.size(); i < length; ++i)
+            for (int i = 0, length = clicks.size(); i < length && !inIdle(i); ++i)
                 count += clicks.get(i);
             count = (count + 19) / 20;
             if (count > 3) count = 3;
@@ -722,5 +741,19 @@ public class TrackAccessibilityUtil {
         }
 
         return x;
+    }
+
+    private static void initializeLocalIdle() {
+        Integer[] temp = IdleSettingsActivity.defaultMultiChoice;
+        localIdle = new LinkedList<>();
+        for (int i : temp)
+            localIdle.add(i);
+    }
+    private static boolean inIdle(int i) {
+        if (localIdle != null && localIdle.size() != 0 && localIdle.get(i) == i) {
+            localIdle.remove(0);
+            return true;
+        }
+        return false;
     }
 }

@@ -26,6 +26,8 @@ import com.rey.material.widget.Slider;
 
 import org.w3c.dom.Text;
 
+import java.util.Arrays;
+
 public class IdleSettingsActivity extends BaseActivity {
 
   private Button pickAppBtn;
@@ -106,6 +108,7 @@ public class IdleSettingsActivity extends BaseActivity {
           public void onDismiss(DialogInterface dialogInterface) {
             Log.v(TAG, "on dismiss");
             defaultMultiChoice = pickedMultiChoice;
+            Arrays.sort(defaultMultiChoice);
             appPickedTv.setText(CreateInfoSlide.getExcludedApps(appNameList, defaultMultiChoice,
                     length));
           }
@@ -129,5 +132,11 @@ public class IdleSettingsActivity extends BaseActivity {
   public void onBackPressed() {
     SettingsUtil.put("idle", progress);
     super.onBackPressed();
+  }
+
+  public static void setDefaultMultiChoice(Integer[] idles) {
+    defaultMultiChoice = idles;
+    Arrays.sort(defaultMultiChoice);
+    SettingsUtil.setIdles(defaultMultiChoice);
   }
 }
