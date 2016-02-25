@@ -2,6 +2,7 @@ package com.dots.focus.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -115,9 +116,20 @@ public class LockView extends RelativeLayout
     setTimer(time2, lock_period);
   }
   private void setTimer(long time2, int lock_period) {
-    remainSecond = (int) (time2 / 1000 + lock_period - System.currentTimeMillis() / 1000);
-    timer = new Timer();
-    timer.schedule(new EverySecond(), 0, 1000);
+    remainSecond = (int) (time2 / 1000 + lock_period - System.currentTimeMillis() / 1000) * 1000;
+//    timer = new Timer();
+//    timer.schedule(new EverySecond(), 0, 1000);
+    new CountDownTimer(remainSecond, 1000) {
+
+      public void onTick(long millisUntilFinished) {
+        int time = (int)millisUntilFinished / 1000;
+        leftLockTimeTv.setText( timeToString(time));
+      }
+
+      public void onFinish() {
+        terminateTheLock();
+      }
+    }.start();
   }
   private void terminateTheLock() {
     // destroy the view and the service...
@@ -125,17 +137,17 @@ public class LockView extends RelativeLayout
     i.setAction(LockService.UNLOCK_ACTION);
     mContext.startService(i);
   }
-  class EverySecond extends TimerTask {
-    public void run() {
-      if (--remainSecond == 0) {
-        timer.cancel();
-        terminateTheLock();
-      } else {
-
-//        leftLockTimeTv.setText(timeToString(remainSecond));
-      }
-    }
-  }
+//  class EverySecond extends TimerTask {
+//    public void run() {
+//      if (--remainSecond == 0) {
+//        timer.cancel();
+//        terminateTheLock();
+//      } else {
+//
+////        leftLockTimeTv.setText(timeToString(remainSecond));
+//      }
+//    }
+//  }
 
   private String timeToString(int seconds) {
     int day = (int) TimeUnit.SECONDS.toDays(seconds);
