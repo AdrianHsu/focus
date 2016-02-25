@@ -439,13 +439,16 @@ public class TrackAccessibilityUtil {
             clicks = dayBlock.getCategoryClick();
         }
 
-        for (int i = 0; i < size; ++i) {
+
+        for (int i = 0, size1 = appLength.size(), size2 = clicks.size(); i < size; ++i) {
             AppInfo appInfo = FetchAppUtil.getApp(i);
             if (appInfo == null)    continue;
             int index = getCategoryUnion(appInfo.getCategory());
             if (index != -1) {
-                data[index] += appLength.get(i);
-                data2[index] += clicks.get(i);
+                if (i < size1)
+                    data[index] += appLength.get(i);
+                if (i < size2)
+                    data2[index] += clicks.get(i);
             }
         }
 
