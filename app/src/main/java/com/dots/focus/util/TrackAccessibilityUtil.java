@@ -471,12 +471,17 @@ public class TrackAccessibilityUtil {
              maxIndex += 6;
         }
 
-        return new int[] {maxIndex, maxIndex2};
+        return new int[] {maxIndex, maxIndex2, data[maxIndex]};
     }
     public static String descriptionOfCharacter(int[] indexes) {
         if (indexes.length != 2)
             Log.d(TAG, "descriptionOfCharacter: error length: " + indexes.length);
-        return "您是一個" + characters[indexes[0]] + "！（單日應用軟體點擊次數 60 次以上），" +
+        String string = "您是一個" + characters[indexes[0]] + "！（單日應用軟體點擊次數 60 次以";
+        if (indexes[2] >= 60)
+            string += "上";
+        else
+            string += "下";
+        return string + "），" +
                 categories[indexes[1]] + " 類別軟體佔總時間比例最長）";
     }
 

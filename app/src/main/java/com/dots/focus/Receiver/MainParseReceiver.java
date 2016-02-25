@@ -10,6 +10,7 @@ import com.dots.focus.service.LockService;
 import com.dots.focus.ui.CustomDialogActivity;
 import com.dots.focus.ui.MainActivity;
 import com.dots.focus.util.FetchFriendUtil;
+import com.dots.focus.util.SettingsUtil;
 import com.parse.ParsePushBroadcastReceiver;
 import com.parse.ParseUser;
 
@@ -79,7 +80,7 @@ public class MainParseReceiver extends ParsePushBroadcastReceiver {
 
         if (dialog != null) {
 
-            if (dialog) {
+            if (dialog && SettingsUtil.getBooleen("friendLock")) {
                 // use lock_period here to lock myself
               Log.v(TAG, "lock_period: " + lock_period + "canLock:" + canLock);
               if (title != null && alert != null && id != 0 && time2 != 0 && lock_period != 0) {
