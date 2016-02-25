@@ -82,7 +82,7 @@ public class DashboardUtil {
     }
 
     private static void initializeUser(final ParseUser currentUser) {
-        currentUser.put("lock_max_period", 15); // second
+        currentUser.put("lock_max_period", 30); // second
         currentUser.put("SavedTotalTime", 0);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("RankInfo");

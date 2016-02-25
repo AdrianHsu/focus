@@ -98,6 +98,7 @@ public class MessagesRecyclerViewAdapter extends
       final int period = jsonObject.getInt("period");
       final long time = jsonObject.getLong("time1");
       final String content = jsonObject.getString("content1");
+      final int lock_max_period = jsonObject.getInt("lock_max_period");
 
       final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
       final Boolean expire = (time < expire_time);
@@ -153,6 +154,7 @@ public class MessagesRecyclerViewAdapter extends
           intent.putExtra("period", period);
           intent.putExtra("time", time);
           intent.putExtra("content", content);
+          intent.putExtra("lock_max_period", lock_max_period);
           mContext.startActivity(intent);
         }
       });

@@ -117,6 +117,7 @@ public class KickRequestActivity extends BaseActivity {
       period = extras.getInt("period");
       time = extras.getLong("time");
       content = extras.getString("content");
+      lockMaxTime = extras.getInt("lock_max_period");
     }
 
     friendStateTv = (TextView) findViewById(R.id.friend_state);
@@ -128,15 +129,6 @@ public class KickRequestActivity extends BaseActivity {
     Picasso.with(this).load(url).into(profileImage);
     profileNameTv.setText(name);
 
-    JSONObject jsonObject = FetchFriendUtil.getFriendById(id);
-
-    try {
-      if (jsonObject != null) {
-        lockMaxTime = jsonObject.getInt("lock_max_period");
-      }
-    } catch(JSONException e) {
-      Log.v(TAG, e.getMessage());
-    }
     Log.v(TAG, "Friend's lockMaxTime: " + lockMaxTime);
 
     lockSwitch.setEnabled(timeLock);

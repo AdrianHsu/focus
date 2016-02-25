@@ -88,7 +88,7 @@ public class LockView extends RelativeLayout
         Intent i = new Intent(mContext, LockService.class);
         i.setAction(LockService.UNLOCK_ACTION);
         mContext.startService(i);
-        g
+
         Toast.makeText(mContext, "click on Phone", Toast.LENGTH_SHORT).show();
 
         TrackAccessibilityService.inLockMode = true;
@@ -130,10 +130,12 @@ public class LockView extends RelativeLayout
         timer.cancel();
         terminateTheLock();
       } else {
+
         leftLockTimeTv.setText(timeToString(remainSecond));
       }
     }
   }
+
   private String timeToString(int seconds) {
     int day = (int) TimeUnit.SECONDS.toDays(seconds);
     long hours = TimeUnit.SECONDS.toHours(seconds) - (day * 24);
