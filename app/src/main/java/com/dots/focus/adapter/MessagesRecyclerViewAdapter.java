@@ -100,6 +100,8 @@ public class MessagesRecyclerViewAdapter extends
       final String content = jsonObject.getString("content1");
       final int lock_max_period = jsonObject.getInt("lock_max_period");
 
+      Log.v(TAG, "lock_max_period in kickHistory:" + lock_max_period);
+
       final long expire_time = System.currentTimeMillis() - KickUtil.expire_period;
       final Boolean expire = (time < expire_time);
 

@@ -45,7 +45,6 @@ public class KickRequestActivity extends BaseActivity {
   private TextView friendStateTv;
   private TextView expireTv;
   private Switch lockSwitch;
-  private TextView SwitchLockTv;
   private TextView lockTimeTv;
 
   private String name;

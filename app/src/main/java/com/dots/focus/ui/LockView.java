@@ -68,6 +68,7 @@ public class LockView extends RelativeLayout
 
     titleTv.setText(title);
     alertTv.setText(alert);
+    leftLockTimeTv.setText(timeToString(lock_period));
     String url ="https://graph.facebook.com/" + String.valueOf(id)+
                             "/picture?type=large";
     Picasso.with(mContext).load(url).into(profileImage);
@@ -131,7 +132,7 @@ public class LockView extends RelativeLayout
         terminateTheLock();
       } else {
 
-        leftLockTimeTv.setText(timeToString(remainSecond));
+//        leftLockTimeTv.setText(timeToString(remainSecond));
       }
     }
   }
