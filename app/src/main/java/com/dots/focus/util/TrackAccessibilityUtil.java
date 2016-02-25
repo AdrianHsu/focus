@@ -414,6 +414,8 @@ public class TrackAccessibilityUtil {
         if (dayBlock != null)
             appLength = dayBlock.getAppLength();
 
+        int size1 = appLength.size();
+        if (size > size1)   size = size1;
         for (int i = 0; i < size; ++i) {
             AppInfo appInfo = FetchAppUtil.getApp(i);
             if (appInfo == null)    continue;
@@ -439,8 +441,13 @@ public class TrackAccessibilityUtil {
             clicks = dayBlock.getCategoryClick();
         }
 
+        int size1 = appLength.size(), size2 = clicks.size();
+        if (size > size1 && size > size2) {
+            if (size1 > size2)  size = size1;
+            else                size = size2;
+        }
 
-        for (int i = 0, size1 = appLength.size(), size2 = clicks.size(); i < size; ++i) {
+        for (int i = 0; i < size; ++i) {
             AppInfo appInfo = FetchAppUtil.getApp(i);
             if (appInfo == null)    continue;
             int index = getCategoryUnion(appInfo.getCategory());

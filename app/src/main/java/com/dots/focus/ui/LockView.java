@@ -3,6 +3,7 @@ package com.dots.focus.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -70,6 +71,7 @@ public class LockView extends RelativeLayout
     titleTv.setText(title);
     alertTv.setText(alert);
     leftLockTimeTv.setText(timeToString(lock_period));
+    Log.v("Lock", "lock time initial:" + timeToString(lock_period));
     String url ="https://graph.facebook.com/" + String.valueOf(id)+
                             "/picture?type=large";
     Picasso.with(mContext).load(url).into(profileImage);
