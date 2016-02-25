@@ -221,13 +221,13 @@ public class CreateInfoSlide extends Fragment {
           typeTextView.setText(getResources().getString(R.string.lock_never));
 
         // Initialize the textview with '0'.
-        textView3.setText(slider3.getValue() + "/" + slider3.getMaxValue() + " (以分鐘計)");
+        textView3.setText(slider3.getValue() + "/" + slider3.getMaxValue() + " (以秒鐘計)");
 
         slider3.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
           @Override
           public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
             progressLock = newValue;
-            textView3.setText(newValue + "/" + slider3.getMaxValue() + " (以分鐘計)");
+            textView3.setText(newValue + "/" + slider3.getMaxValue() + " (以秒鐘計)");
             Toast.makeText(mContext, "Changing slider's progress", Toast.LENGTH_SHORT).show();
           }
         });

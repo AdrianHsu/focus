@@ -34,6 +34,7 @@ public class LockTimeView extends RelativeLayout {
     slider.setValueRange(1, lockMaxTime, true);
     val = (lockMaxTime / 2);
     timeTv.setText(timeToString(val));
+    slider.setValue(val, true);
     slider.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
       @Override
       public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
