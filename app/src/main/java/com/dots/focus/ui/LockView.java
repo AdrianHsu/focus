@@ -68,6 +68,7 @@ public class LockView extends RelativeLayout
 
     titleTv.setText(title);
     alertTv.setText(alert);
+    leftLockTimeTv.setText(timeToString(lock_period));
     String url ="https://graph.facebook.com/" + String.valueOf(id)+
                             "/picture?type=large";
     Picasso.with(mContext).load(url).into(profileImage);
@@ -88,7 +89,7 @@ public class LockView extends RelativeLayout
         Intent i = new Intent(mContext, LockService.class);
         i.setAction(LockService.UNLOCK_ACTION);
         mContext.startService(i);
-        g
+
         Toast.makeText(mContext, "click on Phone", Toast.LENGTH_SHORT).show();
 
         TrackAccessibilityService.inLockMode = true;
@@ -130,10 +131,12 @@ public class LockView extends RelativeLayout
         timer.cancel();
         terminateTheLock();
       } else {
-        leftLockTimeTv.setText(timeToString(remainSecond));
+
+//        leftLockTimeTv.setText(timeToString(remainSecond));
       }
     }
   }
+
   private String timeToString(int seconds) {
     int day = (int) TimeUnit.SECONDS.toDays(seconds);
     long hours = TimeUnit.SECONDS.toHours(seconds) - (day * 24);

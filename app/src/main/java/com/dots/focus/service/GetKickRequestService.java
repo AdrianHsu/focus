@@ -81,6 +81,7 @@ public class GetKickRequestService extends Service {
                             kickMessage.put("time1", time1);
                             kickMessage.put("content1", object.getString("content1"));
                             kickMessage.put("objectId", object.getObjectId());
+                            kickMessage.put("lock_max_period", object.getInt("lock_max_period"));
                             friendKickRequestList.add(kickMessage);
                         } catch (JSONException e1) {
                             e1.printStackTrace();

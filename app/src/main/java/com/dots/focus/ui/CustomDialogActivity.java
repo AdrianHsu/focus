@@ -48,9 +48,9 @@ public class CustomDialogActivity extends Activity {
     btn_confirm.setOnClickListener(new View.OnClickListener() {
       @Override            public void onClick(View v) {
         Toast.makeText(CustomDialogActivity.this, "you click confirm!", Toast.LENGTH_SHORT).show();
-//        Intent mIntent = new Intent(CustomDialogActivity.this, MainActivity.class);
-//        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        CustomDialogActivity.this.startActivity(mIntent);
+        Intent mIntent = new Intent(CustomDialogActivity.this, MainActivity.class);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        CustomDialogActivity.this.startActivity(mIntent);
         finish();
       }
     });
