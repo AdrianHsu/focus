@@ -230,7 +230,7 @@ public class DashboardDonutFragment extends SampleFragment {
 
     int overTotal = 0;
     for(int i = 0; i < 4; i ++) {
-      overTotal = data[i][1];
+      overTotal += data[i][1];
     }
     float[] separableOutput = new float[4];
 
