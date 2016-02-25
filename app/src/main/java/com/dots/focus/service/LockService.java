@@ -45,6 +45,7 @@ public class LockService extends Service
   public int onStartCommand(Intent intent, int flags, int startId) {
     String action = intent.getAction();
 
+
     if(TextUtils.equals(action, LOCK_ACTION)) {
       Bundle extras = intent.getExtras();
       String title = extras.getString("title");
