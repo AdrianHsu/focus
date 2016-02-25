@@ -96,8 +96,8 @@ public class RadarChartActivity extends OverviewChartActivity {
 
     ArrayList<Entry> yVals1 = new ArrayList<Entry>();
     ArrayList<Entry> yVals2 = new ArrayList<Entry>();
-    int[] categoryUsage = TrackAccessibilityUtil.getCategory(1);
-    int[] categoryAddict = TrackAccessibilityUtil.dayCategoryClicks(1);
+    int[] categoryUsage = TrackAccessibilityUtil.getCategory(0);
+    int[] categoryAddict = TrackAccessibilityUtil.dayCategoryClicks(0);
 
     // IMPORTANT: In a PieChart, no values (Entry) should have the same
     // xIndex (even if from different DataSets), since no values can be

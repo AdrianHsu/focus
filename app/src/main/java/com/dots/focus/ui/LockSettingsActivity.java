@@ -54,13 +54,13 @@ public class LockSettingsActivity extends BaseActivity {
     else
       typeTextView.setText(getResources().getString(R.string.lock_never));
     // Initialize the textview with '0'.
-    textView.setText(slider.getValue() + "/" + slider.getMaxValue() + " (以分鐘計)");
+    textView.setText(slider.getValue() + "/" + slider.getMaxValue() + " (以秒鐘計)");
 
     slider.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
       @Override
       public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
         progress = newValue;
-        textView.setText(newValue + "/" + slider.getMaxValue() + " (以分鐘計)");
+        textView.setText(newValue + "/" + slider.getMaxValue() + " (以秒鐘計)");
         Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
 
       }
