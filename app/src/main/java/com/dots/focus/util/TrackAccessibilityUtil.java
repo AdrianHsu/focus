@@ -745,6 +745,7 @@ public class TrackAccessibilityUtil {
 
     private static void initializeLocalIdle() {
         Integer[] temp = IdleSettingsActivity.defaultMultiChoice;
+        if (temp == null)   return;
         localIdle = new LinkedList<>();
         for (int i : temp)
             localIdle.add(i);

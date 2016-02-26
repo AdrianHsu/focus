@@ -10,18 +10,16 @@ import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 
 public class LoginUtil {
-    static final String TAG = "LoginUtil";
+//    static final String TAG = "LoginUtil";
 
     public static boolean hasLoggedIn() {
         // Check if there is a currently logged in user
         // and if it's linked to a Facebook account.
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
+        if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser))
             return true;
-        }
-        else {
-            return false;
-        }
+
+        return false;
     }
     public static boolean checkPreviousLogin(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

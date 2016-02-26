@@ -50,20 +50,8 @@ public class LoginActivity extends AppCompatActivity {
         if (LoginUtil.hasLoggedIn()) {
             ParseUser currentUser = ParseUser.getCurrentUser();
             Log.d(TAG, "Already Login...");
-            if (currentUser.has("user_id"))
-                Log.d(TAG, "" + currentUser.getLong("user_id"));
-            if (currentUser.has("user_name"))
-                Log.d(TAG, "" + currentUser.getString("user_name"));
-            currentUser.saveEventually(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null)
-                        Log.d(TAG, "save succeeded.");
-                    else
-                        Log.d(TAG, e.getMessage());
-                }
-            });
-            showSetInfoActivity();
+            if (currentUser != null && currentUser.has("user_id") && currentUser.has("user_name"))
+                resumeFocus();
 //          showMainActivity();
 //      Parse.enableLocalDatastore(this); //Exception not yet resolved
         }
@@ -106,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("FBUser", "makeMeRequest...");
                         DashboardUtil.makeMeRequest();
                     }
-                    showSetInfoActivity();
+                    signUp();
 //                    showMainActivity();
                 } else {
                     Log.d("FBUser", "is not new...");
@@ -116,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("FBUser", "makeMeRequest...");
                         DashboardUtil.makeMeRequest();
                     }
-                    showSetInfoActivity();
+                    signIn();
 //                    showMainActivity();
                 }
 
@@ -129,21 +117,41 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 //
-    private void showSetInfoActivity() {
+    private void signUp() {
         afterLoginInitialize();
 
         startServices();
 
-        Intent intent = new Intent(this, CreateInfoActivity.class);
-        startActivity(intent);
+        showCreateInfoActivity();
     }
 //    private void showDashboardActivity() {
 //        Intent intent = new Intent(this, DashboardActivity.class);
 //        startActivity(intent);
 //    }
+
+    private void signIn() {
+        // search data on cloud...?
+
+        afterLoginInitialize();
+
+        startServices();
+
+        showMainActivity();
+    }
+
+
+    private void resumeFocus() {
+        startServices();
+
+        showMainActivity();
+    }
+    private void showCreateInfoActivity() {
+        Intent intent = new Intent(this, CreateInfoActivity.class);
+        startActivity(intent);
+    }
     private void showMainActivity() {
-      Intent intent = new Intent(this, MainActivity.class);
-      startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void afterLoginInitialize() {
