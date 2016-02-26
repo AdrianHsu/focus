@@ -126,7 +126,7 @@ public class FetchAppUtil {
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
-                if (e == null && object != null) {
+                if (e == null && object != null && !ParseApps.equals(object)) {
                     ParseApps = object;
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     if (currentUser != null)

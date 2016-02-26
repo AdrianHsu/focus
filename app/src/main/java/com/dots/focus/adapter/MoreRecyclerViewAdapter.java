@@ -23,10 +23,12 @@ import com.dots.focus.ui.FocusModeHistoryActivity;
 import com.dots.focus.ui.GoalSettingsActivity;
 import com.dots.focus.ui.IdleSettingsActivity;
 import com.dots.focus.ui.LockSettingsActivity;
+import com.dots.focus.ui.LoginActivity;
 import com.dots.focus.ui.NotificationSettingsActivity;
 import com.dots.focus.ui.ProfileActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -87,7 +89,6 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
         });
       }
     }
-
   }
 
   @Override
@@ -137,7 +138,10 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
           case 5: // 7
             intent = new Intent(mContext, AdvancedSettingsActivity.class);
             break;
-
+          case 6:
+            logOut();
+            intent = new Intent(mContext, LoginActivity.class);
+            break;
         }
         if(intent != null)
           mContext.startActivity(intent);
@@ -145,7 +149,10 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
     });
     return vh;
   }
-
+  private void logOut() {
+    // delete the data...?
+    ParseUser.logOut();
+  }
 
   public void insert(String string, int position) {
     insert(stringList, string, position);
