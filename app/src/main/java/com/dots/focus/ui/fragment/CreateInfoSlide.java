@@ -316,7 +316,7 @@ public class CreateInfoSlide extends Fragment {
                 defaultMultiChoice = pickedMultiChoice;
                 appPickedTv.setText(getExcludedApps(appNameList, defaultMultiChoice, length));
 
-                IdleSettingsActivity.defaultMultiChoice = defaultMultiChoice;
+                IdleSettingsActivity.setDefaultMultiChoice(defaultMultiChoice);
               }
             })
 
