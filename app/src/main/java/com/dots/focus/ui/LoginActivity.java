@@ -18,6 +18,7 @@ import com.dots.focus.service.GetKickedService;
 import com.dots.focus.service.GetTimePoliceCancelOrDeleteService;
 import com.dots.focus.service.GetTimePoliceInviteService;
 import com.dots.focus.service.GetTimePoliceReplyService;
+import com.dots.focus.service.TrackAccessibilityService;
 import com.dots.focus.util.DashboardUtil;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.LoginUtil;
@@ -160,6 +161,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startServices() {
+        startService(new Intent(this, TrackAccessibilityService.class));
+
         startService(new Intent(this, GetAppsService.class));
 
         startService(new Intent(this, GetFriendInviteService.class));
