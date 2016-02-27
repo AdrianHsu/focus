@@ -16,6 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dots.focus.R;
+import com.dots.focus.service.GetAppsService;
+import com.dots.focus.service.GetFriendConfirmService;
+import com.dots.focus.service.GetFriendInviteService;
+import com.dots.focus.service.GetKickRequestService;
+import com.dots.focus.service.GetKickResponseService;
+import com.dots.focus.service.GetKickedService;
+import com.dots.focus.service.GetTimePoliceCancelOrDeleteService;
+import com.dots.focus.service.GetTimePoliceInviteService;
+import com.dots.focus.service.GetTimePoliceReplyService;
+import com.dots.focus.service.TrackAccessibilityService;
 import com.dots.focus.ui.AdvancedSettingsActivity;
 import com.dots.focus.ui.FocusCommunityActivity;
 import com.dots.focus.ui.FocusModeActivity;
@@ -151,7 +161,24 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
   }
   private void logOut() {
     // delete the data...?
+    stopServices();
     ParseUser.logOut();
+  }
+  private void stopServices() {
+    mContext.stopService(new Intent(mContext, TrackAccessibilityService.class));
+
+    mContext.stopService(new Intent(mContext, GetAppsService.class));
+
+    mContext.stopService(new Intent(mContext, GetFriendInviteService.class));
+    mContext.stopService(new Intent(mContext, GetFriendConfirmService.class));
+
+    mContext.stopService(new Intent(mContext, GetKickRequestService.class));
+    mContext.stopService(new Intent(mContext, GetKickedService.class));
+    mContext.stopService(new Intent(mContext, GetKickResponseService.class));
+
+    mContext.stopService(new Intent(mContext, GetTimePoliceInviteService.class));
+    mContext.stopService(new Intent(mContext, GetTimePoliceReplyService.class));
+    mContext.stopService(new Intent(mContext, GetTimePoliceCancelOrDeleteService.class));
   }
 
   public void insert(String string, int position) {
