@@ -252,7 +252,8 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <string name="profile_click_modify">點擊以修改</string>
     <!--CreateInfoSlide-->
     <string name="description_access">授權背景偵測</string>
-    <string name="access_intro">為了獲取應用軟體使用頻率，\n本應用軟體希望能和您要求背景偵測之權限。\n確認背景偵測已經開啟後，請點選下一步。</string>
+    <string name="access_intro">為了獲取應用軟體使用頻率，\n本應用軟體希望能和您要求背景偵測之權限。\n
+        確認背景偵測已經開啟後，請回到頁面，點選下一步。</string>
     <string name="email_hint">請輸入您的電子信箱</string>
     <string name="email_helper_text">無效的信箱將造成註冊失敗，請仔細填寫。</string>
     <string name="title_goal">什麼是目標？</string>
