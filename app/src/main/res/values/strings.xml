@@ -171,7 +171,11 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
 
     <!--DashboardDonutFragment-->
     <string name="today_total_usage_text">已使用時間</string>
-    <string name="dashboard_reminder">您有點太沈迷於手機囉！去外面走走吧！</string>
+    <string name="dashboard_reminder">您有點太沈迷於手機囉！\n去外面走走吧！</string>
+    <string name="addict_remind_0">健康的用量讓時間管理更好，\n祝您有個愉快的一天！</string>
+    <string name="addict_remind_1">表現不錯、但要小心哦。\n繼續維持吧！</string>
+    <string name="addict_remind_2">您太沈迷於手機囉！\n去外面走走吧！</string>
+    <string name="addict_remind_3">噢不，您今日已達手機上癮標準。\n明天請繼續加油！</string>
     <!--MessagesFragment-->
     <string name="reset">重設</string>
     <!--MoreFragment-->

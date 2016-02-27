@@ -15,6 +15,7 @@
  */
 package com.dots.focus.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
@@ -28,7 +29,10 @@ import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
 import com.dots.focus.R;
+import com.dots.focus.adapter.AppLeaderBoardRecyclerViewAdapter;
 import com.dots.focus.model.AppInfo;
+import com.dots.focus.ui.AppLeaderBoardChartActivity;
+import com.dots.focus.ui.WeeklyAddictionIndexChartActivity;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.FetchFriendUtil;
 import com.dots.focus.util.SettingsUtil;
@@ -115,8 +119,9 @@ public class DashboardDonutFragment extends SampleFragment {
     final TextView textPercent = (TextView) view.findViewById(R.id.textPercentage);
     final TextView textToGo = (TextView) view.findViewById(R.id.textRemaining);
     final TextView textTodayUsage = (TextView) view.findViewById(R.id.textTodayUsage);
-    final View layout = view.findViewById(R.id.layoutActivities);
-    final View[] linkedViews = {textPercent, textToGo, textTodayUsage, layout};
+//    final View layout = view.findViewById(R.id.layoutActivities);
+//    final View[] linkedViews = {textPercent, textToGo, textTodayUsage, layout};
+    final View[] linkedViews = {textPercent, textToGo, textTodayUsage};
     final int fadeDuration = 2000;
 
     if (mPie) {
@@ -339,8 +344,18 @@ public class DashboardDonutFragment extends SampleFragment {
     itemViewArray[2] = v.findViewById(R.id.third_adapter);
     itemViewArray[3] = v.findViewById(R.id.others_adapter);
 
+
     for(int i = 0; i < 4; i++) {
       AppInfo mAppInfo = FetchAppUtil.getApp(data[i][0]);
+
+      itemViewArray[i].setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          Intent intent;
+          intent = new Intent(getActivity(), AppLeaderBoardChartActivity.class);
+          getActivity().startActivity(intent);
+        }
+      });
 
       TextView appNameTv = (TextView) itemViewArray[i].findViewById(R.id.app_name);
       TextView appTimeTv = (TextView) itemViewArray[i].findViewById(R.id.app_time);

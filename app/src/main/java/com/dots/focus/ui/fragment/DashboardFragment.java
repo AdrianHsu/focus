@@ -1,6 +1,7 @@
 package com.dots.focus.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -8,9 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dots.focus.R;
+import com.dots.focus.ui.LoginActivity;
+import com.dots.focus.ui.TopThreeAppUsageChartActivity;
+import com.dots.focus.ui.WeeklyAddictionIndexChartActivity;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.data.Entry;
 
@@ -26,6 +32,8 @@ public class DashboardFragment extends Fragment {
   private TextView textReminderTv;
   private Button daySwitchLeftBtn;
   private Button daySwitchRightBtn;
+  private RelativeLayout addictLayout;
+
   public static int CURRENT_DAY;
 
   @Override
@@ -46,6 +54,16 @@ public class DashboardFragment extends Fragment {
 
     }
     textReminderTv = (TextView) v.findViewById(R.id.textReminder);
+    addictLayout = (RelativeLayout) v.findViewById(R.id.addict_index_layout);
+    addictLayout.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent;
+        intent = new Intent(mContext, WeeklyAddictionIndexChartActivity.class);
+        mContext.startActivity(intent);
+      }
+    });
+
     daySwitchTv = (TextView) v.findViewById(R.id.day_switch_textview);
     String day = TrackAccessibilityUtil.dayString(CURRENT_DAY);
     daySwitchTv.setText(day);
@@ -108,18 +126,21 @@ public class DashboardFragment extends Fragment {
 
       addictionIndexTv.setText(getResources().getString(R.string.addict_0));
       addictionIndexTv.setTextColor(getResources().getColor(R.color.addict_0));
-      textReminderTv.setText("更好的時間管理，祝您有個美好的一天！");
+      textReminderTv.setText(getResources().getString(R.string.addict_remind_0));
     } else if (state == 1) {
       addictionIndexTv.setText(getResources().getString(R.string.addict_1));
       addictionIndexTv.setTextColor(getResources().getColor(R.color.addict_1));
+      textReminderTv.setText(getResources().getString(R.string.addict_remind_1));
 
     } else if (state == 2) {
       addictionIndexTv.setText(getResources().getString(R.string.addict_2));
       addictionIndexTv.setTextColor(getResources().getColor(R.color.addict_2));
+      textReminderTv.setText(getResources().getString(R.string.addict_remind_2));
 
     } else if (state == 3) {
       addictionIndexTv.setText(getResources().getString(R.string.addict_3));
       addictionIndexTv.setTextColor(getResources().getColor(R.color.addict_3));
+      textReminderTv.setText(getResources().getString(R.string.addict_remind_3));
 
     }
   }
