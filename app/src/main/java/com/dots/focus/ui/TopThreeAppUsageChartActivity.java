@@ -31,6 +31,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dots.focus.R;
+import com.dots.focus.config.MyValueFormatter;
+import com.dots.focus.config.MyValueYFormatter;
 import com.dots.focus.model.AppInfo;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.SettingsUtil;
@@ -44,6 +46,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.FillFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 
@@ -62,7 +66,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
   private LineChart mChart;
   private Spinner spinner;
   private ArrayAdapter<String> timeInterval;
-  private String[] timeIntervalArray = {"秒鐘", "分鐘"};
+  private String[] timeIntervalArray = {"分鐘", "小時"};
   private Button pickAppBtn = null;
   private ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
   private boolean initTopThree = true;
@@ -73,7 +77,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
   private TextView weekSwitchTv;
   private Button daySwitchLeftBtn;
   private Button daySwitchRightBtn;
-  private boolean IS_MINUTE = false;
+  private boolean IS_MINUTE = true;
   private int CURRENT_WEEK = 0;
 
   private static final String TAG = "TopThree";
@@ -148,10 +152,10 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int j, long l) {
-        if (j == 0) { // second by default
-          IS_MINUTE = false;
-        } else if(j == 1){
+        if (j == 0) { // minute by default
           IS_MINUTE = true;
+        } else if(j == 1){
+          IS_MINUTE = false;
         }
         for(int i = 0; i < 3; i++) {
           if(defaultMultiChoice[i] != null) {
@@ -249,6 +253,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     LineData data = new LineData(xVals, dataSets);
     data.setValueTextSize(9f);
     data.setDrawValues(true);
+    data.setValueFormatter(new MyValueFormatter());
 
     mChart.setData(data);
     mChart.getLegend().setEnabled(false);
@@ -265,11 +270,11 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     ArrayList<Entry> vals1 = new ArrayList<>();
 
     for (int i = 0; i < 7; i++) {
-      int mTime = appLengths.get(i).get(defaultMultiChoice[appRank]);
+      float mTime = (float)appLengths.get(i).get(defaultMultiChoice[appRank]);
       if (IS_MINUTE)
-        vals1.add(new Entry((float)(mTime / 60), i));
+        vals1.add(new Entry((mTime / 60), i));
       else
-        vals1.add(new Entry(mTime, i));
+        vals1.add(new Entry((mTime / 3600), i));
     }
     return vals1;
   }
@@ -296,11 +301,11 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
       defaultMultiChoice[i] = indexList.get(i).getXIndex();
     }
     for (int i = 0; i < 7; i++) {
-      int mTime = appLengths.get(i).get(defaultMultiChoice[appRank]);
+      float mTime = (float)appLengths.get(i).get(defaultMultiChoice[appRank]);
       if (IS_MINUTE)
-        vals1.add(new Entry((float)(mTime / 60), i));
+        vals1.add(new Entry((mTime / 60), i));
       else
-        vals1.add(new Entry(mTime, i));
+        vals1.add(new Entry((mTime / 3600), i));
     }
 
     return vals1;
@@ -329,18 +334,19 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     y.setDrawGridLines(false);
     y.setAxisLineWidth(3.0f);
     y.setTextSize(5);
+    y.setValueFormatter(new MyValueYFormatter());
 //    y.setAxisLineColor(Color.parseColor("#F3AE4E"));
     y.setAxisLineColor(Color.TRANSPARENT);
 
     mChart.getAxisRight().setEnabled(false);
 
-    int DAILY_USAGE_UPPER_LIMIT_SECOND = SettingsUtil.getInt("goal") * 60;
+    float DAILY_USAGE_UPPER_LIMIT_MINUTE = SettingsUtil.getInt("goal");
 
     LimitLine ll1;
     if(!IS_MINUTE)
-      ll1 = new LimitLine(DAILY_USAGE_UPPER_LIMIT_SECOND, "Upper Limit");
+      ll1 = new LimitLine((DAILY_USAGE_UPPER_LIMIT_MINUTE / 60), "Upper Limit");
     else
-      ll1 = new LimitLine((DAILY_USAGE_UPPER_LIMIT_SECOND / 60), "Upper Limit");
+      ll1 = new LimitLine((DAILY_USAGE_UPPER_LIMIT_MINUTE), "Upper Limit");
 
     ll1.setLineWidth(2f);
     ll1.enableDashedLine(2f, 2f, 2f);

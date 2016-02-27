@@ -73,7 +73,11 @@ public class ProfileActivity extends BaseActivity {
 
 
     JSONArray jsonArray = user.getJSONArray("Friends");
-    int num = jsonArray.length();
+    int num;
+    if(jsonArray == null)
+      num = 0;
+    else
+      num = jsonArray.length();
 
     String numOfFriend = String.valueOf(num);
     long[] data = TrackAccessibilityUtil.getSavedTimeAndRank();

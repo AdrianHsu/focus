@@ -23,7 +23,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 
+import com.dots.focus.config.MyValueFormatter;
+import com.dots.focus.config.MyValueYFormatter;
 import com.dots.focus.service.TrackAccessibilityService;
+import com.dots.focus.ui.fragment.GlobalPiggyBankFragment;
 import com.dots.focus.util.SettingsUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;
@@ -39,6 +42,7 @@ import com.github.mikephil.charting.interfaces.LineDataProvider;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -47,13 +51,13 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
   private LineChart mChart;
   private Spinner spinner;
   private ArrayAdapter<String> timeInterval;
-  private String[] timeIntervalArray = {"秒鐘", "分鐘"};
+  private String[] timeIntervalArray = {"分鐘", "小時"};
   private TextView weekSwitchTv;
   private TextView addictDayTv;
   private TextView weekTotalTv;
   private Button daySwitchLeftBtn;
   private Button daySwitchRightBtn;
-  private boolean IS_MINUTE = false;
+  private boolean IS_MINUTE = true;
   private int CURRENT_WEEK = 0;
 
   @Override
@@ -78,13 +82,16 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (i == 0) { // second by default
-          IS_MINUTE = false;
-        } else if (i == 1) {
           IS_MINUTE = true;
+        } else if (i == 1) {
+          IS_MINUTE = false;
         }
         // add data
-        ArrayList<Entry> val = setData(0, IS_MINUTE);
-        drawChart(val, IS_MINUTE);
+        CURRENT_WEEK = 0;
+        if (CURRENT_WEEK == 0)
+          daySwitchRightBtn.setEnabled(false);
+        ArrayList<Entry> val = setData(CURRENT_WEEK);
+        drawChart(val);
       }
 
       @Override
@@ -113,8 +120,8 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
         weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
-        ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);
-        drawChart(val, IS_MINUTE);
+        ArrayList<Entry> val = setData(CURRENT_WEEK);
+        drawChart(val);
         daySwitchRightBtn.setEnabled(true);
 //        daySwitchLeftBtn.setEnabled(false);
       }
@@ -132,8 +139,8 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
         weekSwitchTv = (TextView) findViewById(R.id.day_switch_textview);
         String week = TrackAccessibilityUtil.weekPeriodString(CURRENT_WEEK);
         weekSwitchTv.setText(week);
-        ArrayList<Entry> val = setData(CURRENT_WEEK, IS_MINUTE);
-        drawChart(val, IS_MINUTE);
+        ArrayList<Entry> val = setData(CURRENT_WEEK);
+        drawChart(val);
         if (CURRENT_WEEK == 0)
           daySwitchRightBtn.setEnabled(false);
         daySwitchLeftBtn.setEnabled(true);
@@ -143,8 +150,8 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     mChart = (LineChart) findViewById(R.id.chart1);
     initChart();
     // add data
-    ArrayList<Entry> val = setData(0, false);
-    drawChart(val, false);
+    ArrayList<Entry> val = setData(0);
+    drawChart(val);
   }
 
   @Override
@@ -216,6 +223,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     y.setDrawGridLines(false);
     y.setAxisLineWidth(3.0f);
     y.setTextSize(5);
+    y.setValueFormatter(new MyValueYFormatter());
 //    y.setAxisLineColor(Color.parseColor("#F3AE4E"));
     y.setAxisLineColor(Color.TRANSPARENT);
 
@@ -225,7 +233,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
     mChart.getAxisRight().setEnabled(false);
   }
-  private void drawChart(ArrayList<Entry> vals1, boolean IS_MINUTE) {
+  private void drawChart(ArrayList<Entry> vals1) {
 
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
@@ -240,13 +248,14 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     if(IS_MINUTE)
       ll1= new LimitLine(DAILY_USAGE_UPPER_LIMIT_MINUTE, "Upper Limit");
     else
-      ll1= new LimitLine(DAILY_USAGE_UPPER_LIMIT_MINUTE * 60, "Upper Limit");
+      ll1= new LimitLine( ((float)DAILY_USAGE_UPPER_LIMIT_MINUTE) / 60, "Upper Limit");
 
     ll1.setLineWidth(2f);
     ll1.enableDashedLine(2f, 2f, 2f);
     ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
     ll1.setTextSize(10f);
     ll1.setTextColor(Color.WHITE);
+
     YAxis y = mChart.getAxisLeft();
     y.removeAllLimitLines();
     y.addLimitLine(ll1);
@@ -278,6 +287,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     LineData data = new LineData(xVals, dataSets);
     data.setValueTextSize(9f);
     data.setDrawValues(true);
+    data.setValueFormatter(new MyValueFormatter());
 
     mChart.setData(data);
     mChart.getLegend().setEnabled(false);
@@ -303,17 +313,19 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
   }
 
 
-  private ArrayList<Entry> setData(int week, boolean IS_MINUTE) { // 0: current week, 1: last week
+  private ArrayList<Entry> setData(int week) { // 0: current week, 1: last week
     long time = TrackAccessibilityUtil.getPrevXWeek(week);
     int[] x = TrackAccessibilityUtil.weekUsage(time);
 
     ArrayList<Entry> vals1 = new ArrayList<>();
 
     for (int i = 0; i < 7; i++) {
+
+      float val = (float)x[i];
       if(IS_MINUTE)
-        vals1.add(new Entry( (((float)x[i]) / 60), i));
+        vals1.add(new Entry( (val / 60), i));
       else
-        vals1.add(new Entry(x[i], i));
+        vals1.add(new Entry((val / 3600), i));
     }
     return vals1;
   }

@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
+import com.dots.focus.config.MyValueFormatter;
+import com.dots.focus.config.MyValueYFormatter;
 import com.dots.focus.util.SettingsUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;
@@ -204,14 +206,15 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
     y.setDrawGridLines(false);
     y.setAxisLineWidth(3.0f);
+    y.setValueFormatter(new MyValueYFormatter());
 //    y.setAxisLineColor(Color.parseColor("#F3AE4E"));
     y.setAxisLineColor(Color.TRANSPARENT);
 
     mChart.getAxisRight().setEnabled(false);
 
-    int DAILY_USAGE_UPPER_LIMIT_SECOND = SettingsUtil.getInt("goal") * 60;
+    int DAILY_USAGE_UPPER_LIMIT_MINUTE = SettingsUtil.getInt("goal");
 
-    LimitLine ll1 = new LimitLine(DAILY_USAGE_UPPER_LIMIT_SECOND, "Upper Limit");
+    LimitLine ll1 = new LimitLine(DAILY_USAGE_UPPER_LIMIT_MINUTE, "Upper Limit");
     ll1.setLineWidth(2f);
     ll1.enableDashedLine(2f, 2f, 2f);
     ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
@@ -225,8 +228,8 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     mChart.setMarkerView(mv);
     // create a dataset and give it a type
     LineDataSet set1 = new LineDataSet(vals1, "DataSet 1");
-    set1.setDrawCubic(true);
-    set1.setCubicIntensity(0.2f);
+    set1.setDrawCubic(false);
+//    set1.setCubicIntensity(0.2f);
     set1.setDrawFilled(true);
     set1.setDrawCircles(false);
     set1.setLineWidth(1.8f);
@@ -256,8 +259,8 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
     LineData data = new LineData(xVals, dataSets);
     data.setValueTextSize(9f);
     data.setDrawValues(true);
+    data.setValueFormatter(new MyValueFormatter());
     mChart.setData(data);
-
 
     mChart.getLegend().setEnabled(false);
 
@@ -280,13 +283,13 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
 
     if(!IS_ACCUMULATE) {
       for (int i = 0; i < 24; i++) {
-        vals1.add(new Entry((float)x[i], i));
+        vals1.add(new Entry((((float)x[i]) / 60), i));
       }
     } else {
       int count = 0;
       for (int i = 0; i < 24; i++) {
         count += x[i];
-        vals1.add(new Entry(count, i));
+        vals1.add(new Entry((((float)count) / 60), i));
       }
     }
 

@@ -220,16 +220,6 @@ public class DashboardDonutFragment extends SampleFragment {
   }
   private void initData(int [][] data) {
 
-//    int [][] data = new int [4][2];
-//    data[0][1] = 555; // second
-//    data[1][1] = 444;
-//    data[2][1] = 333;
-//    data[3][1] = 111;
-//    data[0][0] = 0; // app index
-//    data[1][0] = 0;
-//    data[2][0] = 0;
-//    data[3][0] = 0;
-
     float total;
     total = SettingsUtil.getInt("goal") * 60; // second
 

@@ -151,13 +151,32 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
 
     mChart.getAxisRight().setEnabled(false);
 
-    LimitLine ll1 = new LimitLine(60f, "Upper Limit"); // 60 times
+    LimitLine ll1 = new LimitLine(60f, "嚴重"); // 60 times
     ll1.setLineWidth(2f);
     ll1.enableDashedLine(2f, 2f, 2f);
     ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
     ll1.setTextSize(10f);
+    ll1.setLineColor(getResources().getColor(R.color.addict_3));
     ll1.setTextColor(Color.WHITE);
+    LimitLine ll2 = new LimitLine(40f, "中度"); // 40 times
+    ll2.setLineWidth(2f);
+    ll2.enableDashedLine(2f, 2f, 2f);
+    ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+    ll2.setTextSize(10f);
+    ll2.setLineColor(getResources().getColor(R.color.addict_2));
+    ll2.setTextColor(Color.WHITE);
+    LimitLine ll3 = new LimitLine(20f, "輕微"); // 20 times
+    ll3.setLineWidth(2f);
+    ll3.enableDashedLine(2f, 2f, 2f);
+    ll3.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+    ll3.setTextSize(10f);
+    ll3.setLineColor(getResources().getColor(R.color.addict_1));
+    ll3.setTextColor(Color.WHITE);
+
+    y.removeAllLimitLines();
     y.addLimitLine(ll1);
+    y.addLimitLine(ll2);
+    y.addLimitLine(ll3);
 
     ChartMarkerView mv = new ChartMarkerView(this, R.layout.chart_marker_view);
     // set the marker to the chart
