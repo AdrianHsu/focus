@@ -23,6 +23,7 @@ public class DashboardFragment extends Fragment {
   public static View topThreeCardView;
   private TextView daySwitchTv;
   private TextView addictionIndexTv;
+  private TextView textReminderTv;
   private Button daySwitchLeftBtn;
   private Button daySwitchRightBtn;
   public static int CURRENT_DAY;
@@ -44,6 +45,7 @@ public class DashboardFragment extends Fragment {
         .commit();
 
     }
+    textReminderTv = (TextView) v.findViewById(R.id.textReminder);
     daySwitchTv = (TextView) v.findViewById(R.id.day_switch_textview);
     String day = TrackAccessibilityUtil.dayString(CURRENT_DAY);
     daySwitchTv.setText(day);
@@ -106,6 +108,7 @@ public class DashboardFragment extends Fragment {
 
       addictionIndexTv.setText(getResources().getString(R.string.addict_0));
       addictionIndexTv.setTextColor(getResources().getColor(R.color.addict_0));
+      textReminderTv.setText("更好的時間管理，祝您有個美好的一天！");
     } else if (state == 1) {
       addictionIndexTv.setText(getResources().getString(R.string.addict_1));
       addictionIndexTv.setTextColor(getResources().getColor(R.color.addict_1));

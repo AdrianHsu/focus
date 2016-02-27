@@ -751,9 +751,12 @@ public class TrackAccessibilityUtil {
             localIdle.add(i);
     }
     private static boolean inIdle(int i) {
-        if (localIdle != null && localIdle.size() != 0 && localIdle.get(i) == i) {
-            localIdle.remove(0);
-            return true;
+        if (localIdle != null) {
+          if(localIdle.size() != 0)
+            if(localIdle.get(0) == i) {
+              localIdle.remove(0);
+              return true;
+            }
         }
         return false;
     }
