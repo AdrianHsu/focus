@@ -1,9 +1,5 @@
 package com.dots.focus.adapter;
 
-/**
- * Created by AdrianHsu on 2015/12/12.
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -27,15 +23,13 @@ import com.dots.focus.service.GetTimePoliceInviteService;
 import com.dots.focus.service.GetTimePoliceReplyService;
 import com.dots.focus.service.TrackAccessibilityService;
 import com.dots.focus.ui.AdvancedSettingsActivity;
-import com.dots.focus.ui.FocusCommunityActivity;
-import com.dots.focus.ui.FocusModeActivity;
 import com.dots.focus.ui.FocusModeHistoryActivity;
 import com.dots.focus.ui.GoalSettingsActivity;
 import com.dots.focus.ui.IdleSettingsActivity;
+import com.dots.focus.ui.IntroActivity;
 import com.dots.focus.ui.LockSettingsActivity;
 import com.dots.focus.ui.LoginActivity;
 import com.dots.focus.ui.NotificationSettingsActivity;
-import com.dots.focus.ui.ProfileActivity;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.parse.ParseUser;
@@ -150,7 +144,6 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
             break;
           case 6:
             logOut();
-            intent = new Intent(mContext, LoginActivity.class);
             break;
         }
         if(intent != null)
@@ -163,6 +156,7 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
     // delete the data...?
     stopServices();
     ParseUser.logOut();
+    IntroActivity.checkLogin(mContext);
   }
   private void stopServices() {
     mContext.stopService(new Intent(mContext, TrackAccessibilityService.class));
