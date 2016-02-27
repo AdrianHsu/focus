@@ -4,7 +4,15 @@
               android:layout_height="wrap_content"
               android:background="@color/yellow"
               android:orientation="vertical">
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingLeft="32dp"
+        android:textColor="#ffffff"
+        android:padding="32dp"
+        android:textSize="26sp"
+        android:text="@string/done"/>
     <TextView
         android:text="@string/set_explore_focus"
         android:textSize="14sp"

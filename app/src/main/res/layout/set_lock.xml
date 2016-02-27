@@ -3,14 +3,63 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:background="@color/purple"
+              android:background="@color/primary_dark"
               android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingLeft="32dp"
+        android:textColor="#ffffff"
+        android:padding="32dp"
+        android:textSize="26sp"
+        android:text="@string/lock_settings"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/time_police"
+            android:id="@+id/imageView4"
+            android:layout_gravity="center_horizontal"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:text="@string/title_help_police"
+                android:textColor="@color/white"
+                android:maxWidth="200dp"
+                android:id="@+id/textView4"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:text="@string/intro_time_police"
+                android:textColor="@color/semi_white"
+                android:maxWidth="200dp"
+                android:id="@+id/textView3"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
         android:text="@string/lock_time_upper_bound"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/semi_white"
         android:layout_alignParentLeft="true"
         android:layout_margin="14dp" />
 
@@ -25,11 +74,11 @@
         android:layout_marginTop="26dp"
         app:sl_stepValue="1"
         app:sl_minValue="0"
-        app:sl_maxValue="30"
+        app:sl_maxValue="300"
         app:sl_travelAnimDuration="5"
         app:sl_transformAnimDuration="20"
-        app:sl_primaryColor="@color/primary"
-        app:sl_secondaryColor="@color/primary_dark"/>
+        app:sl_primaryColor="@color/red"
+        app:sl_secondaryColor="@color/yellow"/>
 
     <TextView
         android:id="@+id/textView1"
@@ -38,6 +87,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/seekBar1"
         android:layout_marginRight="29dp"
+        android:textColor="@color/semi_white"
         android:layout_marginTop="14dp" />
 
     <TextView
@@ -45,6 +95,7 @@
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/semi_white"
         android:layout_alignParentLeft="true"
         android:layout_margin="14dp" />
     <LinearLayout
@@ -55,6 +106,7 @@
         android:id="@+id/type"
         android:text="TEST"
         android:textSize="14sp"
+        android:textColor="@color/semi_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

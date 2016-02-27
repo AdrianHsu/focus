@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="gender">
-        <item>男性</item>
-        <item>女性</item>
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
 
     <string-array name="birth">
@@ -166,7 +166,7 @@
     </string-array>
 
     <string-array name="lockConditionList">
-        <item>朋友鎖自己</item>
-        <item>永遠不鎖</item>
+        <item>允許時間警察鎖住您的屏幕</item>
+        <item>禁止時間警察鎖住您的屏幕</item>
     </string-array>
 </resources>

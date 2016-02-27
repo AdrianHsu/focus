@@ -63,9 +63,9 @@ public class ProfileActivity extends BaseActivity {
     final List<String> stringList = new ArrayList<>();
 //    getCoverPhoto();
 
-    String gender = "男性";
+    String gender = "Male";
     if(user.getBoolean("Gender") == false)
-      gender = "女性";
+      gender = "Female";
     String location = installation.getString("timeZone");
     occupation = user.getString("Occupation");
     String localeIdentifier = installation.getString("localeIdentifier");

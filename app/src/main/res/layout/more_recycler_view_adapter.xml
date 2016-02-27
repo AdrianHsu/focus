@@ -25,6 +25,6 @@
         android:paddingLeft="10dip"
         android:paddingTop="5dip"
         android:text="Header Item"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
 </RelativeLayout>

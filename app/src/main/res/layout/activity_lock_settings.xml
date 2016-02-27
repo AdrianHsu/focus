@@ -30,7 +30,7 @@
         android:layout_marginTop="26dp"
         app:sl_stepValue="1"
         app:sl_minValue="1"
-        app:sl_maxValue="30"
+        app:sl_maxValue="300"
         app:sl_travelAnimDuration="5"
         app:sl_transformAnimDuration="20"
         app:sl_primaryColor="@color/primary_blue"
