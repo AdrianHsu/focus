@@ -1,13 +1,16 @@
 package com.dots.focus.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.dots.focus.R;
+import com.dots.focus.util.LoginUtil;
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;
+import com.parse.ParseUser;
 
 public class IntroActivity extends AppIntro2 {
 
@@ -57,11 +60,23 @@ public class IntroActivity extends AppIntro2 {
   @Override
   public void onDonePressed() {
     // Do something when users tap on Done button.
-    showLoginActivity();
+    checkLogin(this);
   }
-  private void showLoginActivity() {
-    Log.d(TAG, "IntroActivity Login...");
-    Intent intent = new Intent(this, LoginActivity.class);
-    startActivity(intent);
+  public static void checkLogin(Context context) {
+    if (LoginUtil.hasLoggedIn()) {
+      ParseUser currentUser = ParseUser.getCurrentUser();
+      Log.d(TAG, "Already Login...");
+      if (currentUser != null && currentUser.has("user_id") && currentUser.has("user_name")) {
+        showMainActivity(context);
+        return;
+      }
+    }
+    showLoginActivity(context);
+  }
+  private static void showLoginActivity(Context context) {
+    context.startActivity(new Intent(context, LoginActivity.class));
+  }
+  private static void showMainActivity(Context context) {
+    context.startActivity(new Intent(context, MainActivity.class));
   }
 }

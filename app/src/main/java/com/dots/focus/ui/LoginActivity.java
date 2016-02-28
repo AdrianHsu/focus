@@ -48,14 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_login);
-        if (LoginUtil.hasLoggedIn()) {
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            Log.d(TAG, "Already Login...");
-            if (currentUser != null && currentUser.has("user_id") && currentUser.has("user_name"))
-                resumeFocus();
-//          showMainActivity();
-//      Parse.enableLocalDatastore(this); //Exception not yet resolved
-        }
     }
 
     @Override
