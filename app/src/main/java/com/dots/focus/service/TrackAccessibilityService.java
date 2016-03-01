@@ -340,6 +340,11 @@ public class TrackAccessibilityService extends AccessibilityService {
         setServiceInfo(config);
         Key k;
     }
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.v(TAG, "onUnbind...");
+        return super.onUnbind(intent);
+    }
     public void checkPermission() {
         int permission1 = PermissionChecker.checkSelfPermission(this, Manifest.permission
                 .BIND_ACCESSIBILITY_SERVICE);
