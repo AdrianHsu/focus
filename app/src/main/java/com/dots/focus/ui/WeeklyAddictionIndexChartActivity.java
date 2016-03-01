@@ -211,7 +211,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
   }
 
   private void refreshAdvice() {
-    int[] data = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK);
+    int[] data = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK, this);
     int[] addict = TrackAccessibilityUtil.getUsageValuation(data);
     String text = "本週有 " + addict[0] + " 天達到重度上癮、以及 " + addict[1] + " 天達到中度上癮，提醒您、讓眼睛多休息！";
 
@@ -226,7 +226,7 @@ public class WeeklyAddictionIndexChartActivity extends OverviewChartActivity imp
     }
 
     ArrayList<Entry> vals1 = new ArrayList<>();
-    int[] addictionIndex = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK);
+    int[] addictionIndex = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK, this);
 
     for (int i = 0; i < 7; i ++) {
       vals1.add(new Entry(addictionIndex[i], i));

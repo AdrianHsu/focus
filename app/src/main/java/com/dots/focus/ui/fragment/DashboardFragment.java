@@ -121,7 +121,7 @@ public class DashboardFragment extends Fragment {
 
   private void setAddictionIndex() {
 
-    int state = TrackAccessibilityUtil.dayCategoryClicksLevel(CURRENT_DAY);
+    int state = TrackAccessibilityUtil.dayCategoryClicksLevel(CURRENT_DAY, getContext());
     if(state == 0) {
 
       addictionIndexTv.setText(getResources().getString(R.string.addict_0));

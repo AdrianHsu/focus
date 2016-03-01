@@ -1,12 +1,16 @@
 package com.dots.focus.util;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.dots.focus.model.AppInfo;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.dots.focus.ui.IdleSettingsActivity;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -15,6 +19,7 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
@@ -193,7 +198,7 @@ public class TrackAccessibilityUtil {
         currentUser.put("SavedTotalTime", currentUser.getInt("SavedTotalTime") + goal);
     }
 
-    public static int[][] getDayFirstThreeApp(int day) {
+    public static int[][] getDayFirstThreeApp(int day, Context context) {
         initializeLocalIdle();
 
         int[][] x = new int[4][2];
@@ -203,7 +208,7 @@ public class TrackAccessibilityUtil {
         }
         long time = getPrevXDayInMilli(day);
 
-        DayBlock dayBlock = getDayBlockByTime(time);
+        DayBlock dayBlock = getDayBlockByTime(time, checkNetworkAvailable(context));
 
         if (dayBlock != null) {
             List<Integer> appLength = dayBlock.getAppLength();
@@ -234,11 +239,11 @@ public class TrackAccessibilityUtil {
         return x;
     }
 
-    public static int[] weekUsage(long time) {
+    public static int[] weekUsage(long time, Context context) {
         initializeLocalIdle();
 
         int[] x = new int[7];
-        List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
+        List<DayBlock> dayBlocks = getDayBlocksInWeek(time, checkNetworkAvailable(context));
 
         if (dayBlocks == null) return x;
 
@@ -261,30 +266,17 @@ public class TrackAccessibilityUtil {
         return count;
     }
 
-    public static int[] dayUsage(long time0) {
+    public static int[] dayUsage(long time, Context context) {
         initializeLocalIdle();
 
         int[] x = new int[24];
-        ArrayList<Long> times = new ArrayList<>();
-        times.ensureCapacity(24);
-        for (int i = 0; i < 24; ++i) {
-            x[i] = 0;
-            times.add(time0 + i * anHour);
-        }
-        List<HourBlock> hourBlocks = new ArrayList<>();
 
-        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
-        query.whereContainedIn("time", times);
-        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
-        try {
-            hourBlocks = query.find();
-        } catch (ParseException e) {
-            Log.d(TAG, e.getMessage());
-        }
+        List<HourBlock> hourBlocks = getHourBlocksInDay(time, checkNetworkAvailable(context));
 
+        if (hourBlocks == null) return x;
         for (int i = 0, size = hourBlocks.size(); i < size; ++i) {
             if (inIdle(i))  continue;
-            int hour = (int) ((hourBlocks.get(i).getLong("time") - time0) / anHour);
+            int hour = (int) ((hourBlocks.get(i).getLong("time") - time) / anHour);
             List<Integer> appLength = hourBlocks.get(i).getAppLength();
 
             for (int j = 0, n = appLength.size(); j < n; ++j)
@@ -294,33 +286,24 @@ public class TrackAccessibilityUtil {
         return x;
     }
 
-    public static List<List<Integer>> hourAppLength(long time0) {
+    public static List<List<Integer>> hourAppLength(long time, Context context) {
         initializeLocalIdle();
 
         ArrayList<List<Integer>> x = new ArrayList<>();
+        List<HourBlock> hourBlocks = getHourBlocksInDay(time, checkNetworkAvailable(context));
 
-        ArrayList<Long> times = new ArrayList<>();
-        times.ensureCapacity(24);
-        for (int i = 0; i < 24; ++i) {
-//            x.set(i, new ArrayList<Integer>()); //edit by Adrian
-            x.add(i, new ArrayList<Integer>());
-            times.add(time0 + i * anHour);
-        }
-        List<HourBlock> hourBlocks = new ArrayList<>();
-
-        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
-        query.whereContainedIn("time", times);
-        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
-        try {
-            hourBlocks = query.find();
-        } catch (ParseException e) {
-            Log.d(TAG, e.getMessage());
-        }
+        if (hourBlocks == null) return x;
 
         for (int i = 0, size = hourBlocks.size(); i < size; ++i) {
             if (inIdle(i))  continue;
-            int hour = (int) ((hourBlocks.get(i).getLong("time") - time0) / anHour);
+            int hour = (int) ((hourBlocks.get(i).getLong("time") - time) / anHour);
             List<Integer> appLength = hourBlocks.get(i).getAppLength();
+            if (hour < 0)   continue;
+            if (hour >= x.size()) {
+                for (int j = x.size(); j <= hour; ++j) {
+                    x.add(new ArrayList<Integer>());
+                }
+            }
             x.set(hour, appLength);
         }
 
@@ -353,7 +336,7 @@ public class TrackAccessibilityUtil {
         return x;
     }
 
-    public static List<List<Integer>> weekAppUsage(long time) {
+    public static List<List<Integer>> weekAppUsage(long time, Context context) {
         List<List<Integer>> appLengths = new ArrayList<>(8);
         int temp = FetchAppUtil.getSize();
 
@@ -367,7 +350,7 @@ public class TrackAccessibilityUtil {
         for (int i = 0; i < temp; ++i)
             appLength.add(0);
 
-        List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
+        List<DayBlock> dayBlocks = getDayBlocksInWeek(time, checkNetworkAvailable(context));
 
         if (dayBlocks != null) {
             for (int i = 0, size = dayBlocks.size(); i < size; ++i) {
@@ -387,7 +370,7 @@ public class TrackAccessibilityUtil {
 
     }
 
-    public static int[] timeBox(long time) { // time: start of the week
+    public static int[] timeBox(long time, Context context) {
         int[] x = new int[8];
         for (int i = 0; i < 7; ++i)
             x[i] = -1;
@@ -395,7 +378,8 @@ public class TrackAccessibilityUtil {
 
         List<DayBlock> dayBlocks = new ArrayList<>();
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
-        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        if (!checkNetworkAvailable(context))
+            query.fromLocalDatastore();
         try {
             dayBlocks = query.find();
         } catch (ParseException e) {
@@ -431,12 +415,12 @@ public class TrackAccessibilityUtil {
         return x;
     }
 
-    public static int[] getCategory(int day) {
+    public static int[] getCategory(int day, Context context) {
         initializeLocalIdle();
 
         Long time = getPrevXDayInMilli(day);
         int[] data = new int[]{0, 0, 0, 0, 0, 0, 0};
-        DayBlock dayBlock = getDayBlockByTime(time);
+        DayBlock dayBlock = getDayBlockByTime(time, checkNetworkAvailable(context));
 
         int size = FetchAppUtil.getSize();
         List<Integer> appLength = new ArrayList<>();
@@ -457,13 +441,13 @@ public class TrackAccessibilityUtil {
         return data;
     }
 
-    public static int[] getCategoryClicks(int day) {
+    public static int[] getCategoryClicks(int day, Context context) {
         initializeLocalIdle();
 
         Long time = getPrevXDayInMilli(day);
         int[] data = new int[]{0, 0, 0, 0, 0, 0, 0};
         int[] data2 = data.clone();
-        DayBlock dayBlock = getDayBlockByTime(time);
+        DayBlock dayBlock = getDayBlockByTime(time, checkNetworkAvailable(context));
 
         int size = FetchAppUtil.getSize();
         List<Integer> clicks = new ArrayList<>();
@@ -612,11 +596,11 @@ public class TrackAccessibilityUtil {
                 calendar.get(Calendar.DAY_OF_MONTH) + "日");
     }
 
-    public static int dayCategoryClicksLevel(int day) {
+    public static int dayCategoryClicksLevel(int day, Context context) {
         initializeLocalIdle();
 
         long time = getPrevXDayInMilli(day);
-        DayBlock dayBlock = getDayBlockByTime(time);
+        DayBlock dayBlock = getDayBlockByTime(time, checkNetworkAvailable(context));
         int count = 0;
         if (dayBlock != null) {
             List<Integer> clicks = dayBlock.getCategoryClick();
@@ -630,9 +614,9 @@ public class TrackAccessibilityUtil {
         return count;
     }
 
-    public static int[] dayCategoryClicks(int day) {
+    public static int[] dayCategoryClicks(int day, Context context) {
         long time = getPrevXDayInMilli(day);
-        DayBlock dayBlock = getDayBlockByTime(time);
+        DayBlock dayBlock = getDayBlockByTime(time, checkNetworkAvailable(context));
         int[] x = new int[7];
         if (dayBlock != null) {
             List<Integer> clicks = dayBlock.getCategoryClick();
@@ -642,11 +626,11 @@ public class TrackAccessibilityUtil {
         return x;
     }
 
-    public static int[] dayCategoryClicksInWeek(int week) {
+    public static int[] dayCategoryClicksInWeek(int week, Context context) {
         int[] x = new int[]{0, 0, 0, 0, 0, 0, 0};
 
         Long time = getPrevXWeek(week);
-        List<DayBlock> dayBlocks = getDayBlocksInWeek(time);
+        List<DayBlock> dayBlocks = getDayBlocksInWeek(time, checkNetworkAvailable(context));
 
         if (dayBlocks == null) return x;
 
@@ -692,9 +676,12 @@ public class TrackAccessibilityUtil {
                 - (calendar.get(Calendar.DAY_OF_WEEK) - 1) * aDay);
     }
 
-    private static DayBlock getDayBlockByTime(Long time) {
+    private static DayBlock getDayBlockByTime(Long time, boolean networkAvailable) {
         DayBlock dayBlock = null;
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return dayBlock;
+        query.whereEqualTo("User", currentUser);
         query.whereEqualTo("time", time);
         query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
         try {
@@ -702,24 +689,102 @@ public class TrackAccessibilityUtil {
         } catch (ParseException e) {
             Log.d(TAG, e.getMessage());
         }
+        if (dayBlock == null && networkAvailable) {
+            ParseQuery<DayBlock> query2 = ParseQuery.getQuery(DayBlock.class);
+            query2.whereEqualTo("time", time);
+            try {
+                dayBlock = query2.getFirst();
+            } catch (ParseException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
 
         return dayBlock;
     }
 
-    private static List<DayBlock> getDayBlocksInWeek(Long time) {
+    private static List<HourBlock> getHourBlocksInDay(Long time, boolean networkAvailable) {
+        ArrayList<Long> times = new ArrayList<>();
+        times.ensureCapacity(24);
+        List<HourBlock> hourBlocks = new ArrayList<>();
+        for (int i = 0; i < 24; ++i)
+            times.add(time + i * anHour);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return hourBlocks;
+        ParseQuery<HourBlock> query = ParseQuery.getQuery(HourBlock.class);
+        query.whereEqualTo("User", currentUser);
+        query.whereContainedIn("time", times);
+        query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
+        try {
+            hourBlocks = query.find();
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+        if (!networkAvailable)   return hourBlocks;
+        // search cloud's datastore
+        if (hourBlocks != null) {
+            for (int i = 0, size = hourBlocks.size(); i < size; ++i)
+                times.remove(hourBlocks.get(i).getTime());
+        } else {
+            hourBlocks = new ArrayList<>();
+        }
+
+        if (!times.isEmpty()) {
+            List<HourBlock> hourBlocksOnCloud = new ArrayList<>();
+            ParseQuery<HourBlock> query2 = ParseQuery.getQuery(HourBlock.class);
+            query2.whereEqualTo("User", currentUser);
+            query2.whereContainedIn("time", times);
+            try {
+                hourBlocksOnCloud = query2.find();
+            } catch (ParseException e) {
+                Log.d(TAG, e.getMessage());
+            }
+            if (hourBlocksOnCloud != null)
+                hourBlocks.addAll(hourBlocksOnCloud);
+        }
+        return hourBlocks;
+    }
+
+    private static List<DayBlock> getDayBlocksInWeek(Long time, boolean networkAvailable) {
         ArrayList<Long> times = new ArrayList<>();
         times.ensureCapacity(7);
         List<DayBlock> dayBlocks = new ArrayList<>();
         for (int i = 0; i < 7; ++i)
             times.add(time + i * aDay);
-
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return dayBlocks;
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
+        query.whereEqualTo("User", currentUser);
         query.whereContainedIn("time", times);
         query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
         try {
             dayBlocks = query.find();
         } catch (ParseException e) {
             Log.d(TAG, e.getMessage());
+        }
+
+        if (!networkAvailable)   return dayBlocks;
+        // search cloud's datastore
+        if (dayBlocks != null) {
+            for (int i = 0, size = dayBlocks.size(); i < size; ++i)
+                times.remove(dayBlocks.get(i).getTime());
+        } else {
+            dayBlocks = new ArrayList<>();
+        }
+
+        if (!times.isEmpty()) {
+            List<DayBlock> dayBlocksOnCloud = new ArrayList<>();
+            ParseQuery<DayBlock> query2 = ParseQuery.getQuery(DayBlock.class);
+            query2.whereEqualTo("User", currentUser);
+            query2.whereContainedIn("time", times);
+            try {
+                dayBlocksOnCloud = query2.find();
+            } catch (ParseException e) {
+                Log.d(TAG, e.getMessage());
+            }
+            if (dayBlocksOnCloud != null)
+                dayBlocks.addAll(dayBlocksOnCloud);
         }
         return dayBlocks;
     }
@@ -760,6 +825,13 @@ public class TrackAccessibilityUtil {
         }
 
         return x;
+    }
+
+    private static boolean checkNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private static void initializeLocalIdle() {

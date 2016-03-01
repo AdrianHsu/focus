@@ -159,7 +159,7 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
     IntroActivity.checkLogin(mContext);
   }
   private void stopServices() {
-    mContext.stopService(new Intent(mContext, TrackAccessibilityService.class));
+//    mContext.stopService(new Intent(mContext, TrackAccessibilityService.class));
 
     mContext.stopService(new Intent(mContext, GetAppsService.class));
 

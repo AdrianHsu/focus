@@ -168,8 +168,7 @@ public class LoginActivity extends AppCompatActivity {
         startService(new Intent(this, GetTimePoliceReplyService.class));
         startService(new Intent(this, GetTimePoliceCancelOrDeleteService.class));
     }
-//
-//
+
 //    private void setProfile() {
 //        ParseUser user = ParseUser.getCurrentUser();
 //        if (!user.has("profile"))   return;

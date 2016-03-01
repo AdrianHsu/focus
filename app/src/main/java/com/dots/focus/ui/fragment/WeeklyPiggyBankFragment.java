@@ -106,7 +106,7 @@ public class WeeklyPiggyBankFragment extends Fragment {
   private List<String> setData() {
     positiveColor = new boolean[7];
     long time = TrackAccessibilityUtil.getPrevXWeek(CURRENT_WEEK);
-    int[] timeBox = TrackAccessibilityUtil.timeBox(time);
+    int[] timeBox = TrackAccessibilityUtil.timeBox(time, getContext());
     String[] weekString = TrackAccessibilityUtil.weekString(time);
     List<String> mStringList = new ArrayList<>();
     int total = 0;

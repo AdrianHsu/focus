@@ -302,9 +302,9 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
   }
   private void refreshCard() {
 
-    int[] weekUsage = TrackAccessibilityUtil.weekUsage(CURRENT_WEEK);
+    int[] weekUsage = TrackAccessibilityUtil.weekUsage(CURRENT_WEEK, this);
     int weekTotal = TrackAccessibilityUtil.getTotalInArray(weekUsage);
-    int[] addict = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK);
+    int[] addict = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK, this);
     int[] addictDay = TrackAccessibilityUtil.getUsageValuation(addict);
     int heavyAddict = addictDay[0];
 
@@ -315,7 +315,7 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
   private ArrayList<Entry> setData(int week) { // 0: current week, 1: last week
     long time = TrackAccessibilityUtil.getPrevXWeek(week);
-    int[] x = TrackAccessibilityUtil.weekUsage(time);
+    int[] x = TrackAccessibilityUtil.weekUsage(time, this);
 
     ArrayList<Entry> vals1 = new ArrayList<>();
 

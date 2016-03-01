@@ -1,4 +1,4 @@
-package com.dots.focus.receiver;
+package com.dots.focus.Receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -3,17 +3,11 @@ package com.dots.focus.service;
 import android.Manifest;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
-import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
@@ -31,8 +25,6 @@ import com.dots.focus.util.TrackAccessibilityUtil;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.security.Key;
-import java.security.KeyFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -40,6 +32,7 @@ import java.util.TimerTask;
 
 public class TrackAccessibilityService extends AccessibilityService {
     public static TrackAccessibilityService service = null;
+    public static boolean permissionOn = false;
 
     public static String previousPackageName = "";
     public static long startTime = 0;
@@ -67,8 +60,7 @@ public class TrackAccessibilityService extends AccessibilityService {
                 };
                 thread.start();
 
-            }
-            else if (action.equals("check permission")) {
+            } else if (action.equals("check permission")) {
                 Log.d(TAG, "get check permission");
                 checkPermission();
             }
@@ -104,29 +96,30 @@ public class TrackAccessibilityService extends AccessibilityService {
         int count = 0;
         blockTime = System.currentTimeMillis();
         if (appIndex >= 0) {
-            appsUsage[5] += (int)((blockTime - startTime) / 1000);
+            appsUsage[5] += (int) ((blockTime - startTime) / 1000);
         }
-
 
         for (int i = 0; i < 6; ++i)
             count += appsUsage[i];
 //        if (count >= 1200) // 20 mins
-          if(count >= 10) {
+        if (count >= 10 && ParseUser.getCurrentUser() != null) {
+            for (int i = 0; i < 6; ++i)
+                appsUsage[i] = 0;
             KickUtil.sendKickRequest(LimitType.HOUR_LIMIT.getValue(), count, blockTime,
-                                    SettingsUtil.getString("kickRequest"));
-          }
+                    SettingsUtil.getString("kickRequest"));
+        }
 
         List<Integer> appLength = TrackAccessibilityUtil.getCurrentDay(blockTime).getAppLength();
         count = 0;
         for (int i = 0, size = appLength.size(); i < size; ++i)
             count += appLength.get(i);
 
-        if (count >= 7200) // 2 hours
+        if (count >= 7200 && ParseUser.getCurrentUser() != null) // 2 hours
             KickUtil.sendKickRequest(LimitType.DAY_LIMIT.getValue(), count, blockTime,
                     SettingsUtil.getString("kickRequest"));
 
-        /*for (int i = 0; i < 5; ++i)
-            appsUsage[i] = appsUsage[i + 1];*/
+//        for (int i = 0; i < 5; ++i)
+//            appsUsage[i] = appsUsage[i + 1];
         System.arraycopy(appsUsage, 1, appsUsage, 0, 5);
         appsUsage[5] = 0;
 
@@ -200,15 +193,16 @@ public class TrackAccessibilityService extends AccessibilityService {
             startTime = now;
         }
     }
+
     // helper functions
-    private void storeInDatabase (long now) {
-        int duration = (int)((now - startTime) / 1000), blockDuration = duration;
-        if (blockTime > startTime)  blockDuration = (int)((now - blockTime) / 1000);
+    private void storeInDatabase(long now) {
+        int duration = (int) ((now - startTime) / 1000), blockDuration = duration;
+        if (blockTime > startTime) blockDuration = (int) ((now - blockTime) / 1000);
         appsUsage[5] += blockDuration;
 
-        if (appIndex < 0)   return;
+        if (appIndex < 0) return;
         int endIndex = TrackAccessibilityUtil.getCurrentHour(startTime).getInt("endIndex"),
-            AppIndex = ParseUser.getCurrentUser().getInt("AppIndex");
+                AppIndex = ParseUser.getCurrentUser().getInt("AppIndex");
         if (endIndex != AppIndex)
             Log.d("TAG", "Different index, endIndex: " + endIndex + ", AppIndex: " + AppIndex);
 
@@ -220,6 +214,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         temp.put("duration", duration);
         temp.put("index", AppIndex);
 
+        temp.saveEventually();
         temp.pinInBackground();
 
         HourBlock hour = TrackAccessibilityUtil.getCurrentHour(startTime);
@@ -227,7 +222,7 @@ public class TrackAccessibilityService extends AccessibilityService {
 
         clickCount(appIndex, day);
 
-        if (endIndex > AppIndex)    AppIndex = endIndex;
+        if (endIndex > AppIndex) AppIndex = endIndex;
         ++AppIndex;
         hour.put("endIndex", AppIndex);
         if (AppIndex > user.getInt("AppIndex"))
@@ -262,7 +257,7 @@ public class TrackAccessibilityService extends AccessibilityService {
 
     private void clickCount(int i, DayBlock dayBlock) {
         AppInfo appInfo = FetchAppUtil.getApp(i);
-        if (appInfo == null)    return;
+        if (appInfo == null) return;
         Log.d(TAG, "clickCount category: " + appInfo.getCategory());
         int index = TrackAccessibilityUtil.getCategoryUnion(appInfo.getCategory());
         List<Integer> categoryClickToday = dayBlock.getCategoryClick();
@@ -299,8 +294,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         if (appIndex == -1) {
             ignore.add(previousPackageName);
             appIndex = -2;
-        }
-        else {
+        } else {
             resizeAppLength();
         }
     }
@@ -308,7 +302,7 @@ public class TrackAccessibilityService extends AccessibilityService {
     private static void resizeAppLength() {
         long now = System.currentTimeMillis();
         HourBlock hourBlock = TrackAccessibilityUtil.getCurrentHour(now);
-        DayBlock  dayBlock  = TrackAccessibilityUtil.getCurrentDay(now);
+        DayBlock dayBlock = TrackAccessibilityUtil.getCurrentDay(now);
 
         List<Integer> appLength1 = hourBlock.getAppLength(),
                 appLength2 = dayBlock.getAppLength();
@@ -330,6 +324,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         super.onServiceConnected();
         //Configure these here for compatibility with API 13 and below.
         Log.v(TAG, "onServiceConnected...");
+        permissionOn = true;
         AccessibilityServiceInfo config = new AccessibilityServiceInfo();
         config.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
         config.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
@@ -338,13 +333,15 @@ public class TrackAccessibilityService extends AccessibilityService {
             config.flags = AccessibilityServiceInfo.FLAG_INCLUDE_NOT_IMPORTANT_VIEWS;
 
         setServiceInfo(config);
-        Key k;
     }
+
     @Override
     public boolean onUnbind(Intent intent) {
         Log.v(TAG, "onUnbind...");
+        permissionOn = false;
         return super.onUnbind(intent);
     }
+
     public void checkPermission() {
         int permission1 = PermissionChecker.checkSelfPermission(this, Manifest.permission
                 .BIND_ACCESSIBILITY_SERVICE);
@@ -353,8 +350,8 @@ public class TrackAccessibilityService extends AccessibilityService {
         int permission3 = PermissionChecker.checkCallingPermission(this, Manifest.permission
                 .BIND_ACCESSIBILITY_SERVICE, this.getPackageName());
         Log.d(TAG, "standard: " + PermissionChecker.PERMISSION_DENIED + ", " +
-                                    PermissionChecker.PERMISSION_DENIED_APP_OP + ", " +
-                                    PermissionChecker.PERMISSION_GRANTED);
+                PermissionChecker.PERMISSION_DENIED_APP_OP + ", " +
+                PermissionChecker.PERMISSION_GRANTED);
         Log.d(TAG, permission1 + ", " + permission2 + ", " + permission3);
     }
 
