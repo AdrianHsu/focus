@@ -165,13 +165,9 @@ public class TrackAccessibilityService extends AccessibilityService {
         }
     }
 
-    @Override
-    public void onInterrupt() {
-        Log.v(TAG, "***** onInterrupt");
-    }
-
     public void checkWindowState(String tempPackageName, long now) {
-        if (startTime == 0 || previousPackageName.contentEquals("") || appIndex < 0) {
+        if (startTime == 0 || previousPackageName.contentEquals("") || appIndex < 0 ||
+                ParseUser.getCurrentUser() == null) {
             startTime = now;
             startHour = TrackAccessibilityUtil.anHour * (now / TrackAccessibilityUtil.anHour);
             previousPackageName = tempPackageName;
@@ -183,7 +179,6 @@ public class TrackAccessibilityService extends AccessibilityService {
             storeInDatabase(startHour + TrackAccessibilityUtil.anHour);
             startTime = startHour = startHour + TrackAccessibilityUtil.anHour;
         }
-        Log.d(TAG, "appIndex: " + appIndex);
         storeInDatabase(now);
 
         startTime = now;
@@ -340,6 +335,11 @@ public class TrackAccessibilityService extends AccessibilityService {
         Log.v(TAG, "onUnbind...");
         permissionOn = false;
         return super.onUnbind(intent);
+    }
+
+    @Override
+    public void onInterrupt() {
+        Log.v(TAG, "***** onInterrupt");
     }
 
     public void checkPermission() {
