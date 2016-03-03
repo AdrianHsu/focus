@@ -320,12 +320,16 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     ArrayList<Entry> vals1 = new ArrayList<>();
 
     for (int i = 0; i < 7; i++) {
-
-      float val = (float)x[i];
-      if(IS_MINUTE)
-        vals1.add(new Entry( (val / 60), i));
-      else
-        vals1.add(new Entry((val / 3600), i));
+        if (IS_MINUTE)
+          x[i] /= 60;
+        else
+          x[i] /= 3600;
+        float val = (float) x[i];
+        vals1.add(new Entry(val, i));
+//      if(IS_MINUTE)
+//        vals1.add(new Entry((val / 60), i));
+//      else
+//        vals1.add(new Entry((val / 3600), i));
     }
     return vals1;
   }

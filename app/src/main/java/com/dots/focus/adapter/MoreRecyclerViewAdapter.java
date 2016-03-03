@@ -156,6 +156,8 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
     // delete the data...?
     stopServices();
     ParseUser.logOut();
+    TrackAccessibilityService.logOut();
+
     IntroActivity.checkLogin(mContext);
   }
   private void stopServices() {

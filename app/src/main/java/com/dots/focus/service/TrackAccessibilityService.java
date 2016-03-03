@@ -70,6 +70,7 @@ public class TrackAccessibilityService extends AccessibilityService {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.v(TAG, "onCreate...");
         service = this;
 
         IntentFilter filter = new IntentFilter();
@@ -93,6 +94,7 @@ public class TrackAccessibilityService extends AccessibilityService {
 
 
     public static void checkLimit() {
+        if (ParseUser.getCurrentUser() == null) return;
         int count = 0;
         blockTime = System.currentTimeMillis();
         if (appIndex >= 0) {
@@ -102,7 +104,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         for (int i = 0; i < 6; ++i)
             count += appsUsage[i];
 //        if (count >= 1200) // 20 mins
-        if (count >= 10 && ParseUser.getCurrentUser() != null) {
+        if (count >= 10) {
             for (int i = 0; i < 6; ++i)
                 appsUsage[i] = 0;
             KickUtil.sendKickRequest(LimitType.HOUR_LIMIT.getValue(), count, blockTime,
@@ -114,7 +116,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         for (int i = 0, size = appLength.size(); i < size; ++i)
             count += appLength.get(i);
 
-        if (count >= 7200 && ParseUser.getCurrentUser() != null) // 2 hours
+        if (count >= 7200) // 2 hours
             KickUtil.sendKickRequest(LimitType.DAY_LIMIT.getValue(), count, blockTime,
                     SettingsUtil.getString("kickRequest"));
 
@@ -122,13 +124,11 @@ public class TrackAccessibilityService extends AccessibilityService {
 //            appsUsage[i] = appsUsage[i + 1];
         System.arraycopy(appsUsage, 1, appsUsage, 0, 5);
         appsUsage[5] = 0;
-
-
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy");
+        Log.v(TAG, "onDestroy");
         unregisterReceiver(receiver);
         service = null;
         super.onDestroy();
@@ -136,7 +136,8 @@ public class TrackAccessibilityService extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+        if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
+                ParseUser.getCurrentUser() != null) {
             Log.v(TAG, "***** onAccessibilityEvent");
             final String tempPackageName = event.getPackageName().toString();
             Log.d(TAG, "getPackageName: " + tempPackageName);
@@ -206,7 +207,7 @@ public class TrackAccessibilityService extends AccessibilityService {
         temp.put("User", user);
         temp.put("appIndex", appIndex);
         temp.put("startTime", startTime);
-        temp.put("duration", duration);
+        temp.put("endTime", now);
         temp.put("index", AppIndex);
 
         temp.saveEventually();
@@ -355,4 +356,14 @@ public class TrackAccessibilityService extends AccessibilityService {
         Log.d(TAG, permission1 + ", " + permission2 + ", " + permission3);
     }
 
+    public static void logOut() {
+        permissionOn = false;
+        previousPackageName = "";
+        startTime = 0;
+        startHour = 0;
+        appIndex = -1;
+        appsUsage = new int[] {0, 0, 0, 0, 0, 0};
+        blockTime = 0;
+        inLockMode = false;
+    }
 }

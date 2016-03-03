@@ -1,12 +1,10 @@
-package com.dots.focus.Receiver;
+package com.dots.focus.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.dots.focus.service.TrackAccessibilityService;
-import com.dots.focus.ui.MainActivity;
 import com.dots.focus.util.TrackAccessibilityUtil;
 
 import java.util.Calendar;

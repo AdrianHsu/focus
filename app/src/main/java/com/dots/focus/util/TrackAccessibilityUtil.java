@@ -10,7 +10,6 @@ import com.dots.focus.model.AppInfo;
 import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.dots.focus.ui.IdleSettingsActivity;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -19,7 +18,6 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
@@ -255,6 +253,8 @@ public class TrackAccessibilityUtil {
             for (int j = 0, n = appLength.size(); j < n; ++j)
                 x[day] += appLength.get(j);
         }
+        for (int i = 0; i < 7; ++i)
+            Log.d(TAG, "weekUsage " + i + "th: " + x[i]);
         return x;
     }
 
@@ -680,7 +680,7 @@ public class TrackAccessibilityUtil {
         DayBlock dayBlock = null;
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser == null)    return dayBlock;
+        if (currentUser == null)    return null;
         query.whereEqualTo("User", currentUser);
         query.whereEqualTo("time", time);
         query.fromLocalDatastore(); // assume don't delete data from LocalDatastore
@@ -697,6 +697,8 @@ public class TrackAccessibilityUtil {
             } catch (ParseException e) {
                 Log.d(TAG, e.getMessage());
             }
+            if (dayBlock != null)
+                dayBlock.pinInBackground();
         }
 
         return dayBlock;
@@ -740,8 +742,10 @@ public class TrackAccessibilityUtil {
             } catch (ParseException e) {
                 Log.d(TAG, e.getMessage());
             }
-            if (hourBlocksOnCloud != null)
+            if (hourBlocksOnCloud != null) {
+                ParseObject.saveAllInBackground(hourBlocksOnCloud);
                 hourBlocks.addAll(hourBlocksOnCloud);
+            }
         }
         return hourBlocks;
     }
@@ -783,8 +787,10 @@ public class TrackAccessibilityUtil {
             } catch (ParseException e) {
                 Log.d(TAG, e.getMessage());
             }
-            if (dayBlocksOnCloud != null)
+            if (dayBlocksOnCloud != null) {
+                ParseObject.saveAllInBackground(dayBlocksOnCloud);
                 dayBlocks.addAll(dayBlocksOnCloud);
+            }
         }
         return dayBlocks;
     }
@@ -793,8 +799,7 @@ public class TrackAccessibilityUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
 
-        int hr = calendar.get(Calendar
-                .HOUR_OF_DAY);
+        int hr = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
         int sec = calendar.get(Calendar.SECOND);
         String timeStr = String.format("%02d:%02d:%02d", hr, min, sec);

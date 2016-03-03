@@ -8,9 +8,9 @@ import com.dots.focus.model.DayBlock;
 import com.dots.focus.model.HourBlock;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.SettingsUtil;
-import com.dots.focus.util.TimePoliceUtil;
 import com.facebook.FacebookSdk;
 import com.flurry.android.FlurryAgent;
+import com.google.android.gms.analytics.ExceptionReporter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.parse.Parse;
@@ -49,7 +49,6 @@ public class MainApplication extends Application {
 
   }
 
-
   synchronized public Tracker getDefaultTracker() {
     if (tracker == null) {
       GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
@@ -58,6 +57,13 @@ public class MainApplication extends Application {
       tracker.enableExceptionReporting(true);
       tracker.enableAdvertisingIdCollection(true); // ??
       tracker.enableAutoActivityTracking(true); // ??
+
+      Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+              tracker,
+              Thread.getDefaultUncaughtExceptionHandler(),
+              getApplicationContext()
+      );
+      Thread.setDefaultUncaughtExceptionHandler(myHandler);
     }
     return tracker;
   }
