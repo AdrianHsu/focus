@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class TopThreeChartMarkerView extends MarkerView {
 
   private TextView tvContent;
+  private String[] weekDay = {"日", "一", "二", "三", "四", "五", "六"};
 
   public TopThreeChartMarkerView(Context context, int layoutResource) {
     super(context, layoutResource);
@@ -58,7 +59,7 @@ public class TopThreeChartMarkerView extends MarkerView {
 
     View v = TopThreeAppUsageChartActivity.topThreeCardDailyView;
     TextView pickedHourIntervalTv = (TextView) v.findViewById(R.id.picked_day_interval);
-    String interval = "DAY" + String.valueOf(pickedDay);
+    String interval = "星期" + weekDay[pickedDay];
     pickedHourIntervalTv.setText(interval);
 
     View [] itemViewArray = new View [3];

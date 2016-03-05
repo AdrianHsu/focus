@@ -93,9 +93,9 @@ public class CommunityPostCardViewAdapter extends UltimateViewAdapter<CommunityP
 
         Drawable res;
         if(pushBtnBoolean)
-          res = mContext.getResources().getDrawable(R.drawable.ic_heart_outline_white, null);
+          res = mContext.getResources().getDrawable(R.drawable.ic_heart_outline_white);
         else
-          res = mContext.getResources().getDrawable(R.drawable.ic_heart_red, null);
+          res = mContext.getResources().getDrawable(R.drawable.ic_heart_red);
         pushView.setImageDrawable(res);
         pushBtnBoolean = !pushBtnBoolean;
       }

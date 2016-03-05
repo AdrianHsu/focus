@@ -97,7 +97,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
                             android:id="@+id/picked_day_interval"
-                            android:text="Day ?"
+                            android:text=""
                             android:textColor="@color/semi_white"/>
                         <Button
                             android:id="@+id/pick_app_button"

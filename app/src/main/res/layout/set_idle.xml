@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="match_parent"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/primary_dark"
               android:orientation="vertical">
@@ -80,6 +80,32 @@
         app:sl_secondaryColor="@color/yellow"/>
 
     <TextView
+        android:text="@string/excluded_app"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/semi_white"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="14dp" />
+
+    <TextView
+        android:text="舉例來說：電話、LAUNCHER、上班需要的應用程式...等"
+        android:textSize="14sp"
+        android:id="@+id/app_picked"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/semi_white"
+        android:layout_marginLeft="14dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/modify"
+        android:id="@+id/pick_app_button"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,29 +115,4 @@
         android:layout_marginRight="29dp"
         android:layout_marginTop="14dp" />
 
-    <TextView
-        android:text="@string/excluded_app"
-        android:textSize="14sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/semi_white"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="14dp" />
-    <TextView
-        android:text="舉例來說：電話、LAUNCHER、上班需要的應用程式...等"
-        android:textSize="14sp"
-        android:id="@+id/app_picked"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:textColor="@color/semi_white"
-        android:layout_marginLeft="14dp" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/modify"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/transparent"
-        android:id="@+id/pick_app_button"
-        android:layout_gravity="center_horizontal"/>
 </LinearLayout>
