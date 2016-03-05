@@ -115,7 +115,7 @@ public class AppLeaderBoardChartActivity extends OverviewChartActivity {
         return true;
     }
     private ArrayList<Entry> getIndex(long time) {
-      List<List<Integer>> appLengths = TrackAccessibilityUtil.weekAppUsage(time);
+      List<List<Integer>> appLengths = TrackAccessibilityUtil.weekAppUsage(time, this);
       List<Integer> appLength = appLengths.get(7);
 
       ArrayList<Entry> indexList = new ArrayList<>(appLength.size());

@@ -36,6 +36,10 @@ public class FetchAppUtil {
             Log.d(TAG, "setApps: return false");
             return false;
         }
+        storeParseApps();
+        return true;
+    }
+    private static void storeParseApps() {
         List<String> name = new ArrayList<>(), packageName = new ArrayList<>(), category = new ArrayList<>();
         for(int i = 0, size = apps.size(); i < size; ++i) {
             name.add(apps.get(i).getName());
@@ -48,9 +52,7 @@ public class FetchAppUtil {
 
         ParseApps.saveEventually();
         Log.d(TAG, "setApps: return true");
-        return true;
     }
-
     public static void setUser() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null && ParseApps != null)
@@ -126,7 +128,7 @@ public class FetchAppUtil {
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
-                if (e == null && object != null && !ParseApps.equals(object)) {
+                if (e == null && object != null) {
                     ParseApps = object;
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     if (currentUser != null)
@@ -196,6 +198,8 @@ public class FetchAppUtil {
             apps.add(appInfo);
         }
         apps.addAll(tempApps);
+
+        storeParseApps();
 
 //        List<AppInfo> extras = new ArrayList<>();
 //        int i = 0;

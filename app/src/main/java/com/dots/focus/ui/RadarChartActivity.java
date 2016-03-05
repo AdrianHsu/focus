@@ -96,8 +96,8 @@ public class RadarChartActivity extends OverviewChartActivity {
 
     ArrayList<Entry> yVals1 = new ArrayList<Entry>();
     ArrayList<Entry> yVals2 = new ArrayList<Entry>();
-    int[] categoryUsage = TrackAccessibilityUtil.getCategory(0);
-    int[] categoryAddict = TrackAccessibilityUtil.dayCategoryClicks(0);
+    int[] categoryUsage = TrackAccessibilityUtil.getCategory(0, this);
+    int[] categoryAddict = TrackAccessibilityUtil.dayCategoryClicks(0, this);
 
     // IMPORTANT: In a PieChart, no values (Entry) should have the same
     // xIndex (even if from different DataSets), since no values can be
@@ -142,7 +142,7 @@ public class RadarChartActivity extends OverviewChartActivity {
   private void createCard() {
 
     int CURRENT_DAY = 1; // yesterday
-    int[] index = TrackAccessibilityUtil.getCategoryClicks(CURRENT_DAY);
+    int[] index = TrackAccessibilityUtil.getCategoryClicks(CURRENT_DAY, this);
     String text = TrackAccessibilityUtil.descriptionOfCharacter(index);
 
     int imageIndex = index[0];

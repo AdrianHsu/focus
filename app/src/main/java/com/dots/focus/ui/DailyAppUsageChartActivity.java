@@ -278,7 +278,7 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
         offset = TrackAccessibilityUtil.getTimeOffset() * TrackAccessibilityUtil.anHour;
     time = 86400000 * ((time + offset) / 86400000 - day) - offset;
 
-    int[] x = TrackAccessibilityUtil.dayUsage(time);
+    int[] x = TrackAccessibilityUtil.dayUsage(time, this);
     ArrayList<Entry> vals1 = new ArrayList<>();
 
     if(!IS_ACCUMULATE) {

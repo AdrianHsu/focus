@@ -18,7 +18,6 @@ import com.dots.focus.service.GetKickedService;
 import com.dots.focus.service.GetTimePoliceCancelOrDeleteService;
 import com.dots.focus.service.GetTimePoliceInviteService;
 import com.dots.focus.service.GetTimePoliceReplyService;
-import com.dots.focus.service.TrackAccessibilityService;
 import com.dots.focus.util.DashboardUtil;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.LoginUtil;
@@ -27,14 +26,12 @@ import com.parse.LogInCallback;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.Arrays;
 import java.util.List;
-
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -153,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startServices() {
-        startService(new Intent(this, TrackAccessibilityService.class));
+//        startService(new Intent(this, TrackAccessibilityService.class));
 
         startService(new Intent(this, GetAppsService.class));
 
@@ -168,8 +165,7 @@ public class LoginActivity extends AppCompatActivity {
         startService(new Intent(this, GetTimePoliceReplyService.class));
         startService(new Intent(this, GetTimePoliceCancelOrDeleteService.class));
     }
-//
-//
+
 //    private void setProfile() {
 //        ParseUser user = ParseUser.getCurrentUser();
 //        if (!user.has("profile"))   return;

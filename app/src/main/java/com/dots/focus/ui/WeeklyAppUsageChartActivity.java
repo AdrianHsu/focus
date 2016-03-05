@@ -302,9 +302,9 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
   }
   private void refreshCard() {
 
-    int[] weekUsage = TrackAccessibilityUtil.weekUsage(CURRENT_WEEK);
+    int[] weekUsage = TrackAccessibilityUtil.weekUsage(CURRENT_WEEK, this);
     int weekTotal = TrackAccessibilityUtil.getTotalInArray(weekUsage);
-    int[] addict = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK);
+    int[] addict = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK, this);
     int[] addictDay = TrackAccessibilityUtil.getUsageValuation(addict);
     int heavyAddict = addictDay[0];
 
@@ -315,17 +315,21 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
 
   private ArrayList<Entry> setData(int week) { // 0: current week, 1: last week
     long time = TrackAccessibilityUtil.getPrevXWeek(week);
-    int[] x = TrackAccessibilityUtil.weekUsage(time);
+    int[] x = TrackAccessibilityUtil.weekUsage(time, this);
 
     ArrayList<Entry> vals1 = new ArrayList<>();
 
     for (int i = 0; i < 7; i++) {
-
-      float val = (float)x[i];
-      if(IS_MINUTE)
-        vals1.add(new Entry( (val / 60), i));
-      else
-        vals1.add(new Entry((val / 3600), i));
+        if (IS_MINUTE)
+          x[i] /= 60;
+        else
+          x[i] /= 3600;
+        float val = (float) x[i];
+        vals1.add(new Entry(val, i));
+//      if(IS_MINUTE)
+//        vals1.add(new Entry((val / 60), i));
+//      else
+//        vals1.add(new Entry((val / 3600), i));
     }
     return vals1;
   }

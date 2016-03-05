@@ -284,7 +284,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     long time = TrackAccessibilityUtil.getPrevXWeek(CURRENT_WEEK);
     //- 7 * oneDay * week
 
-    appLengths = TrackAccessibilityUtil.weekAppUsage(time);
+    appLengths = TrackAccessibilityUtil.weekAppUsage(time, this);
     List<Integer> appLength = appLengths.get(7);
 
     ArrayList<Entry> indexList = new ArrayList<>(appLength.size());

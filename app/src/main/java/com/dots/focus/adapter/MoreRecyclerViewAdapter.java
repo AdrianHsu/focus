@@ -156,10 +156,12 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
     // delete the data...?
     stopServices();
     ParseUser.logOut();
+    TrackAccessibilityService.logOut();
+
     IntroActivity.checkLogin(mContext);
   }
   private void stopServices() {
-    mContext.stopService(new Intent(mContext, TrackAccessibilityService.class));
+//    mContext.stopService(new Intent(mContext, TrackAccessibilityService.class));
 
     mContext.stopService(new Intent(mContext, GetAppsService.class));
 
