@@ -59,7 +59,7 @@ public class TopThreeChartMarkerView extends MarkerView {
 
     View v = TopThreeAppUsageChartActivity.topThreeCardDailyView;
     TextView pickedHourIntervalTv = (TextView) v.findViewById(R.id.picked_day_interval);
-    String interval = "星期" + weekDay[pickedDay];
+    String interval = " (星期" + weekDay[pickedDay] + ")";
     pickedHourIntervalTv.setText(interval);
 
     View [] itemViewArray = new View [3];

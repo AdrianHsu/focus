@@ -283,13 +283,15 @@ public class DailyAppUsageChartActivity extends OverviewChartActivity implements
 
     if(!IS_ACCUMULATE) {
       for (int i = 0; i < 24; i++) {
-        vals1.add(new Entry((((float)x[i]) / 60), i));
+        int tmp = x[i] / 60;
+        vals1.add(new Entry(((float)tmp), i));
       }
     } else {
       int count = 0;
       for (int i = 0; i < 24; i++) {
         count += x[i];
-        vals1.add(new Entry((((float)count) / 60), i));
+        int tmp = count / 60;
+        vals1.add(new Entry(((float)tmp), i));
       }
     }
 

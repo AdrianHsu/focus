@@ -79,6 +79,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
   private Button daySwitchRightBtn;
   private boolean IS_MINUTE = true;
   private int CURRENT_WEEK = 0;
+  private String[] weekDay = {"日", "一", "二", "三", "四", "五", "六"};
 
   private static final String TAG = "TopThree";
 
@@ -270,11 +271,15 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
     ArrayList<Entry> vals1 = new ArrayList<>();
 
     for (int i = 0; i < 7; i++) {
-      float mTime = (float)appLengths.get(i).get(defaultMultiChoice[appRank]);
-      if (IS_MINUTE)
-        vals1.add(new Entry((mTime / 60), i));
-      else
-        vals1.add(new Entry((mTime / 3600), i));
+      int mTime = appLengths.get(i).get(defaultMultiChoice[appRank]);
+      int tmp;
+      if (IS_MINUTE) {
+        tmp = mTime / 60;
+      } else {
+        tmp = mTime / 3600;
+      }
+      vals1.add(new Entry((float)tmp, i));
+
     }
     return vals1;
   }
@@ -301,11 +306,14 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
       defaultMultiChoice[i] = indexList.get(i).getXIndex();
     }
     for (int i = 0; i < 7; i++) {
-      float mTime = (float)appLengths.get(i).get(defaultMultiChoice[appRank]);
-      if (IS_MINUTE)
-        vals1.add(new Entry((mTime / 60), i));
-      else
-        vals1.add(new Entry((mTime / 3600), i));
+      int mTime = appLengths.get(i).get(defaultMultiChoice[appRank]);
+      int tmp;
+      if (IS_MINUTE) {
+        tmp = mTime / 60;
+      } else {
+        tmp = mTime / 3600;
+      }
+      vals1.add(new Entry((float)tmp, i));
     }
 
     return vals1;
@@ -462,7 +470,7 @@ public class TopThreeAppUsageChartActivity extends OverviewChartActivity impleme
 
     View v = topThreeCardDailyView;
     TextView pickedHourIntervalTv = (TextView) v.findViewById(R.id.picked_day_interval);
-    String interval = "DAY?";
+    String interval = " (請選擇日期)";
     pickedHourIntervalTv.setText(interval);
 
     View [] itemViewArray = new View [3];

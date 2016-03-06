@@ -89,7 +89,7 @@
         android:layout_margin="14dp" />
 
     <TextView
-        android:text="舉例來說：電話、LAUNCHER、上班需要的應用程式...等"
+        android:text="@string/exclude_example"
         android:textSize="14sp"
         android:id="@+id/app_picked"
         android:layout_width="wrap_content"
