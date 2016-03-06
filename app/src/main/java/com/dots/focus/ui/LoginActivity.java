@@ -18,13 +18,17 @@ import com.dots.focus.service.GetKickedService;
 import com.dots.focus.service.GetTimePoliceCancelOrDeleteService;
 import com.dots.focus.service.GetTimePoliceInviteService;
 import com.dots.focus.service.GetTimePoliceReplyService;
+import com.dots.focus.service.TrackAccessibilityService;
 import com.dots.focus.util.DashboardUtil;
 import com.dots.focus.util.FetchAppUtil;
 import com.dots.focus.util.LoginUtil;
 import com.dots.focus.util.TimePoliceUtil;
+import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import android.content.Intent;
@@ -120,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 
     private void signIn() {
-        // search data on cloud...?
+        searchAppUsages();
 
         afterLoginInitialize();
 
@@ -128,13 +132,63 @@ public class LoginActivity extends AppCompatActivity {
 
         showMainActivity();
     }
-
-
-    private void resumeFocus() {
-        startServices();
-
-        showMainActivity();
+    private void searchAppUsages() {
+        final long now = System.currentTimeMillis();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("AppUsage");
+        query.whereGreaterThan("endTime", now - 1800000); // last 30 min
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> appUsages, ParseException e) {
+                if (e == null && appUsages != null) {
+                    for (int i = 0, length = appUsages.size(); i < length; ++i) {
+                        ParseObject appUsage = appUsages.get(i);
+                        loadUsageRecord(now, appUsage.getLong("startTime"),
+                                appUsage.getLong("endTime"));
+                    }
+                } else if (e != null) {
+                    Log.d(TAG, e.getMessage());
+                }
+            }
+        });
     }
+    private void loadUsageRecord(long now, long startTime, long endTime) {
+        if (startTime == 0 || endTime == 0 || endTime > now) return;
+        if (startTime < now - 1800000) startTime = now - 1800000;
+
+        while (true) {
+            long temp = nextFiveMinute(now, startTime);
+            if (endTime > temp) {
+                saveInService(getIndex(now, startTime), (int)((temp - startTime) / 1000));
+                startTime = temp;
+            } else {
+                saveInService(getIndex(now, startTime), (int)((endTime - startTime) / 1000));
+                break;
+            }
+        }
+    }
+    private long nextFiveMinute(long now, long startTime) {
+        int fiveMin = 300000;
+        now -= fiveMin * ((now - startTime) / fiveMin);
+        if (now == startTime) now += fiveMin;
+        return now;
+    }
+    private int getIndex(long now, long startTime) {
+        int fiveMin = 300000, indexBeta = (int)((now - startTime) / fiveMin);
+        if ((now - startTime) % fiveMin == 0)
+            indexBeta -= 1;
+        return TrackAccessibilityService.appsUsage.length - indexBeta - 1;
+    }
+    private void saveInService(int index, int duration) {
+        int[] array = TrackAccessibilityService.appsUsage;
+        if (index < 0 || index >= array.length) return;
+        array[index] += duration;
+    }
+
+//    private void resumeFocus() {
+//        startServices();
+//
+//        showMainActivity();
+//    }
     private void showCreateInfoActivity() {
         Intent intent = new Intent(this, CreateInfoActivity.class);
         startActivity(intent);

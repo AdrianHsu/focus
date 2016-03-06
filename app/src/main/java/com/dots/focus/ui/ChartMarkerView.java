@@ -1,30 +1,14 @@
 package com.dots.focus.ui;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorRes;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dots.focus.R;
-import com.dots.focus.model.AppInfo;
-import com.dots.focus.ui.fragment.DashboardFragment;
-import com.dots.focus.util.FetchAppUtil;
-import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Custom implementation of the MarkerView.

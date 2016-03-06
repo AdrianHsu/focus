@@ -193,11 +193,19 @@ public class FetchAppUtil {
                     if (icon != null)
                         appInfo.setIcon(icon);
                     tempApps.remove(j);
+                    break;
                 }
             }
             apps.add(appInfo);
         }
         apps.addAll(tempApps);
+
+        for (int i = 0; i < length; ++i) {
+            if (!apps.get(i).getPackageName().equals(packageName.get(i))) {
+                Log.d(TAG, "merge error, " + i + "th: " + apps.get(i).getPackageName() + ", " +
+                        packageName.get(i));
+            }
+        }
 
         storeParseApps();
 
