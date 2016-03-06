@@ -40,7 +40,7 @@ public class TrackAccessibilityService extends AccessibilityService {
     public static final String TAG = "TrackService";
     public static List<String> ignore = new ArrayList<>();
     private static int appIndex = -1;
-    private static int[] appsUsage = {0, 0, 0, 0, 0, 0};
+    public static int[] appsUsage = {0, 0, 0, 0, 0, 0};
     private static long blockTime = 0;
 
     public static boolean inLockMode = false;

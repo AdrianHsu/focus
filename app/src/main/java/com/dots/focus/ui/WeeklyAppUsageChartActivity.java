@@ -1,10 +1,5 @@
 package com.dots.focus.ui;
 
-
-
-/**
- * Created by AdrianHsu on 2015/12/13.
- */
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -333,5 +328,4 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
     }
     return vals1;
   }
-
 }
