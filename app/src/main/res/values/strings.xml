@@ -106,6 +106,7 @@ Focus致力於成為您最好的「跨裝置用量監測平台」，藉此提升
     <!--IdleSettingsActivity-->
     <string name="descrpition_conti_total_used">某應用軟體連續使用時間超過：</string>
     <string name="excluded_app">排除在外應用軟體</string>
+    <string name="exclude_example">Ex: 電話、LAUNCHER、上班需要的應用程式...等</string>
     <string name="modify">修改</string>
     <!--KickHistoryActivity-->
     <string name="is_your_friend">是您的好友。</string>

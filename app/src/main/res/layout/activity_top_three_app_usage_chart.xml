@@ -81,32 +81,39 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
                             android:text="@string/app_usage_top_three"
-                            android:textColor="@color/semi_white"/>
+                            android:id="@+id/text"
+                            android:textColor="@color/semi_white"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
                             android:id="@+id/picked_day_interval"
-                            android:text="Day ?"
-                            android:textColor="@color/semi_white"/>
+                            android:text=""
+                            android:textColor="@color/semi_white"
+                            android:layout_alignTop="@+id/text"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"/>
                         <Button
                             android:id="@+id/pick_app_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="50dp"
                             android:text="@string/settings"
-                            />
-                    </LinearLayout>
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"/>
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
