@@ -1,17 +1,18 @@
 {
   "project_info": {
-    "project_id": "focus-2c20a",
-    "project_number": "597923834591",
-    "name": "Focus"
+    "project_id": "focus-bd453",
+    "project_number": "116113572079",
+    "name": "focus"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:597923834591:android:1e943f8b66814332",
+        "mobilesdk_app_id": "1:116113572079:android:1e943f8b66814332",
         "client_id": "android:com.dots.focus",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "com.dots.focus"
+          "package_name": "com.dots.focus",
+          "certificate_hash": []
         }
       },
       "oauth_client": [],
@@ -20,7 +21,7 @@
         "analytics_service": {
           "status": 2,
           "analytics_property": {
-            "tracking_id": "UA-74454475-1"
+            "tracking_id": "UA-74793152-1"
           }
         },
         "cloud_messaging_service": {
@@ -35,7 +36,9 @@
           "status": 1
         },
         "ads_service": {
-          "status": 1
+          "status": 2,
+          "test_banner_ad_unit_id": "ca-app-pub-3940256099942544/6300978111",
+          "test_interstitial_ad_unit_id": "ca-app-pub-3940256099942544/1033173712"
         }
       }
     }
