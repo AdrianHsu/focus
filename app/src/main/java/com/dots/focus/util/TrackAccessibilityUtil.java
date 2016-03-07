@@ -36,6 +36,10 @@ public class TrackAccessibilityUtil {
     public static String[] categories = new String[]{"社交行為", "理財工作", "汲取新知", "生活資訊",
             "遊戲動漫", "影音娛樂"};
 
+    private static List<Long> NotExistDayBlocks = new ArrayList<>();
+    private static List<Long> NotExistHourBlocks = new ArrayList<>();
+
+
     public static int getTimeOffset() {
         return TimeZone.getDefault().getOffset(System.currentTimeMillis()) / anHour;
     }
@@ -107,6 +111,7 @@ public class TrackAccessibilityUtil {
         if (currentDay != null)
             currentDay.saveEventually();
         currentDay = new DayBlock(dayInLong);
+        NotExistDayBlocks.remove(dayInLong);
         currentDay.saveEventually(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -147,6 +152,7 @@ public class TrackAccessibilityUtil {
         storeHourInDay(hourInLong, h);
 
         currentHour = new HourBlock(hourInLong, h, ParseUser.getCurrentUser().getInt("AppIndex"));
+        NotExistHourBlocks.remove(hourInLong);
         currentHour.saveEventually(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -677,6 +683,7 @@ public class TrackAccessibilityUtil {
     }
 
     private static DayBlock getDayBlockByTime(Long time, boolean networkAvailable) {
+        if (NotExistDayBlocks.contains(time))   return null;
         DayBlock dayBlock = null;
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
         ParseUser currentUser = ParseUser.getCurrentUser();
@@ -699,6 +706,8 @@ public class TrackAccessibilityUtil {
             }
             if (dayBlock != null)
                 dayBlock.pinInBackground();
+            else
+                NotExistDayBlocks.add(time);
         }
 
         return dayBlock;
@@ -708,8 +717,10 @@ public class TrackAccessibilityUtil {
         ArrayList<Long> times = new ArrayList<>();
         times.ensureCapacity(24);
         List<HourBlock> hourBlocks = new ArrayList<>();
-        for (int i = 0; i < 24; ++i)
-            times.add(time + i * anHour);
+        for (int i = 0; i < 24; ++i) {
+            if (!NotExistHourBlocks.contains(time + i * anHour))
+                times.add(time + i * anHour);
+        }
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null)    return hourBlocks;
@@ -745,7 +756,10 @@ public class TrackAccessibilityUtil {
             if (hourBlocksOnCloud != null) {
                 ParseObject.saveAllInBackground(hourBlocksOnCloud);
                 hourBlocks.addAll(hourBlocksOnCloud);
+                for (int i = 0, size = hourBlocksOnCloud.size(); i < size; ++i)
+                    times.remove(hourBlocksOnCloud.get(i).getTime());
             }
+            NotExistHourBlocks.addAll(times);
         }
         return hourBlocks;
     }
@@ -754,8 +768,10 @@ public class TrackAccessibilityUtil {
         ArrayList<Long> times = new ArrayList<>();
         times.ensureCapacity(7);
         List<DayBlock> dayBlocks = new ArrayList<>();
-        for (int i = 0; i < 7; ++i)
-            times.add(time + i * aDay);
+        for (int i = 0; i < 7; ++i) {
+            if (!NotExistDayBlocks.contains(time + i * aDay))
+                times.add(time + i * aDay);
+        }
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null)    return dayBlocks;
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
@@ -790,7 +806,10 @@ public class TrackAccessibilityUtil {
             if (dayBlocksOnCloud != null) {
                 ParseObject.saveAllInBackground(dayBlocksOnCloud);
                 dayBlocks.addAll(dayBlocksOnCloud);
+                for (int i = 0, size = dayBlocksOnCloud.size(); i < size; ++i)
+                    times.remove(dayBlocksOnCloud.get(i).getTime());
             }
+            NotExistDayBlocks.addAll(times);
         }
         return dayBlocks;
     }
@@ -836,6 +855,8 @@ public class TrackAccessibilityUtil {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        Log.d(TAG, "checkNetworkAvailable: " + (activeNetworkInfo != null && activeNetworkInfo
+                .isConnected()));
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 

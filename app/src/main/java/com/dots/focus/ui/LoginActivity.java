@@ -91,6 +91,8 @@ public class LoginActivity extends AppCompatActivity {
                     signUp();
 //                    showMainActivity();
                 } else {
+                    ParseUser tempUser = null;
+                    test(tempUser);
                     Log.d("FBUser", "is not new...");
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     Log.d("FBUser", "user == currentUser: " + (user == currentUser));
@@ -98,12 +100,16 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("FBUser", "makeMeRequest...");
                         DashboardUtil.makeMeRequest();
                     }
+
                     signIn();
 //                    showMainActivity();
                 }
 
             }
         });
+    }
+    private void test(ParseUser user) {
+        Log.d(TAG, user.toString());
     }
 
     private void showIntroActivity() {
