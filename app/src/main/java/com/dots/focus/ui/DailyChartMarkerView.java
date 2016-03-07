@@ -63,6 +63,7 @@ public class DailyChartMarkerView extends MarkerView {
     t = 86400000 * ((t + offset) / 86400000 - DailyAppUsageChartActivity.day) - offset;
 
     List<List<Integer>> hourAppLength = TrackAccessibilityUtil.hourAppLength(t, getContext());
+    if (pickedHour < 0 || pickedHour >= hourAppLength.size()) pickedHour = 0;
     int [] topThreeAppIndex = TrackAccessibilityUtil.getFirstThree(hourAppLength.get(pickedHour));
 
     View v = DailyAppUsageChartActivity.topThreeCardHourlyView;
@@ -92,7 +93,9 @@ public class DailyChartMarkerView extends MarkerView {
       }
       int index = topThreeAppIndex[i];
       AppInfo mAppInfo = FetchAppUtil.getApp(index);
-      Drawable mIcon = mAppInfo.getIcon();
+      Drawable mIcon = null;
+      if (mAppInfo != null)
+        mIcon = mAppInfo.getIcon();
 
       int time = hourAppLength.get(pickedHour).get(topThreeAppIndex[i]);
 

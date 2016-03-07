@@ -295,7 +295,10 @@ public class TrackAccessibilityUtil {
     public static List<List<Integer>> hourAppLength(long time, Context context) {
         initializeLocalIdle();
 
-        ArrayList<List<Integer>> x = new ArrayList<>();
+        ArrayList<List<Integer>> x = new ArrayList<>(24);
+        for (int i = 0; i < 24; ++i) {
+            x.add(new ArrayList<Integer>());
+        }
         List<HourBlock> hourBlocks = getHourBlocksInDay(time, checkNetworkAvailable(context));
 
         if (hourBlocks == null) return x;
@@ -304,12 +307,7 @@ public class TrackAccessibilityUtil {
             if (inIdle(i))  continue;
             int hour = (int) ((hourBlocks.get(i).getLong("time") - time) / anHour);
             List<Integer> appLength = hourBlocks.get(i).getAppLength();
-            if (hour < 0)   continue;
-            if (hour >= x.size()) {
-                for (int j = x.size(); j <= hour; ++j) {
-                    x.add(new ArrayList<Integer>());
-                }
-            }
+            if (hour < 0 || hour >= x.size())   continue;
             x.set(hour, appLength);
         }
 

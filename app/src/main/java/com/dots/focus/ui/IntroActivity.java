@@ -18,6 +18,7 @@ public class IntroActivity extends AppIntro2 {
   // Please DO NOT override onCreate. Use init
   @Override
   public void init(Bundle savedInstanceState) {
+    if (checkLogin(this)) return;
 
     int image0 = R.drawable.intro_0;
     int image1 = R.drawable.intro_1;
@@ -60,18 +61,19 @@ public class IntroActivity extends AppIntro2 {
   @Override
   public void onDonePressed() {
     // Do something when users tap on Done button.
-    checkLogin(this);
+    if (!checkLogin(this))
+      showLoginActivity(this);
   }
-  public static void checkLogin(Context context) {
+  public static boolean checkLogin(Context context) {
     if (LoginUtil.hasLoggedIn()) {
       ParseUser currentUser = ParseUser.getCurrentUser();
       Log.d(TAG, "Already Login...");
       if (currentUser != null && currentUser.has("user_id") && currentUser.has("user_name")) {
         showMainActivity(context);
-        return;
+        return true;
       }
     }
-    showLoginActivity(context);
+    return false;
   }
   private static void showLoginActivity(Context context) {
     context.startActivity(new Intent(context, LoginActivity.class));

@@ -91,8 +91,8 @@ public class LoginActivity extends AppCompatActivity {
                     signUp();
 //                    showMainActivity();
                 } else {
-                    ParseUser tempUser = null;
-                    test(tempUser);
+                    ParseUser temp = null;
+                    test(temp);
                     Log.d("FBUser", "is not new...");
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     Log.d("FBUser", "user == currentUser: " + (user == currentUser));
