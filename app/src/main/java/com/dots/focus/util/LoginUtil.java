@@ -23,9 +23,8 @@ public class LoginUtil {
     }
     public static boolean checkPreviousLogin(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean previouslyStarted = prefs.getBoolean(context.getString(R.string
-                        .pref_previously_started),
-                false);
+        boolean previouslyStarted = prefs.getBoolean(context.getString(
+                        R.string.pref_previously_started), false);
         if(!previouslyStarted) {
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(context.getString(R.string.pref_previously_started), Boolean.TRUE);
