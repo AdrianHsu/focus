@@ -230,6 +230,7 @@ public class TrackAccessibilityService extends AccessibilityService {
             appLength.add(0);
             ++size;
         }
+
         Log.d(TAG, "hour appLength.get: " + appLength.get(appIndex) + ", duration: " + duration);
         appLength.set(appIndex, appLength.get(appIndex) + duration);
         hour.put("appLength", appLength);
