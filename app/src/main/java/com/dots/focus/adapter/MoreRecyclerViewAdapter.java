@@ -117,10 +117,10 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
       @Override
       public void onClick(View v) {
         Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-          .LENGTH_SHORT)
-          .show();
+                .LENGTH_SHORT)
+                .show();
         Intent intent = null;
-        switch(vh.getAdapterPosition()) {
+        switch (vh.getAdapterPosition()) {
           case 0:
             intent = new Intent(mContext, FocusModeHistoryActivity.class);
             break;
@@ -146,7 +146,7 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
             logOut();
             break;
         }
-        if(intent != null)
+        if (intent != null)
           mContext.startActivity(intent);
       }
     });
@@ -158,7 +158,9 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
     ParseUser.logOut();
     TrackAccessibilityService.logOut();
 
-    IntroActivity.checkLogin(mContext);
+    if (!IntroActivity.checkLogin(mContext)) {
+      mContext.startActivity(new Intent(mContext, LoginActivity.class));
+    }
   }
   private void stopServices() {
 //    mContext.stopService(new Intent(mContext, TrackAccessibilityService.class));
