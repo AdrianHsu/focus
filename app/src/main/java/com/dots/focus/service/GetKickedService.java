@@ -24,17 +24,27 @@ import java.util.TimerTask;
 
 public class GetKickedService extends Service {
     private final IBinder mBinder = new GetKickedBinder();
+    private Timer timer = null;
     private static String TAG = "GetKickedService";
     public static ArrayList<JSONObject> kickedList = new ArrayList<>();
     public static ArrayList<JSONObject> respondList = new ArrayList<>();
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickedService start...");
-
-        Timer timer = new Timer();
+        if (timer != null) timer.cancel();
+        timer = new Timer();
         timer.schedule(new CheckKicked(), 0, 60000);
 
         return 0;
+    }
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy...");
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        super.onDestroy();
     }
 
     class CheckKicked extends TimerTask {
@@ -55,8 +65,10 @@ public class GetKickedService extends Service {
     }
 
     public static void queryKicked() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
-        query.whereEqualTo("user_id_kicked", ParseUser.getCurrentUser().getLong("user_id"));
+        query.whereEqualTo("user_id_kicked", currentUser.getLong("user_id"));
         query.whereEqualTo("state", KickState.KICK_NOT_DOWNLOADED.getValue());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -93,6 +105,7 @@ public class GetKickedService extends Service {
 
     public static void checkLocal() {
         ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicked", currentUser.getLong("user_id"));
         query.whereEqualTo("state", KickState.KICK_DOWNLOADED.getValue());
@@ -130,6 +143,7 @@ public class GetKickedService extends Service {
     }
     private static void checkRespondHistory() {
         ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicked", currentUser.getLong("user_id"));
         query.whereEqualTo("state", KickState.RESPONSE_NOT_DOWNLOADED.getValue());

@@ -24,16 +24,26 @@ import java.util.TimerTask;
 
 public class GetTimePoliceInviteService extends Service {
     private final IBinder mBinder = new GetTimePoliceInviteBinder();
+    private Timer timer = null;
     private static String TAG = "GetTimePoliceInviteService";
     public static ArrayList<JSONObject> timePoliceInviteList = new ArrayList<>();
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetTimePoliceInviteService start...");
-
-        Timer timer = new Timer();
+        if (timer != null) timer.cancel();
+        timer = new Timer();
         timer.schedule(new CheckTimePoliceInvite(), 0, 60000);
 
         return 0;
+    }
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy...");
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        super.onDestroy();
     }
 
     class CheckTimePoliceInvite extends TimerTask {
@@ -54,9 +64,11 @@ public class GetTimePoliceInviteService extends Service {
     }
 
     public static void refresh() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         Log.d(TAG, "start GetTimePoliceInviteService run...");
         ParseQuery<ParseObject> query = ParseQuery.getQuery("TimePoliceInvitation");
-        query.whereEqualTo("user_id_invited", ParseUser.getCurrentUser().getLong("user_id"));
+        query.whereEqualTo("user_id_invited", currentUser.getLong("user_id"));
         query.whereEqualTo("state", TimePoliceState.INVITE_NOT_DOWNLOADED.getValue());
 
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -93,6 +105,7 @@ public class GetTimePoliceInviteService extends Service {
 
     public static void checkLocal() {
         ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("TimePoliceInvitation");
         query.whereEqualTo("user_id_invited", currentUser.getLong("user_id"));
         query.whereEqualTo("state", TimePoliceState.INVITE_DOWNLOADED.getValue());

@@ -25,6 +25,7 @@ import java.util.TimerTask;
 
 public class GetKickRequestService extends Service {
     private final IBinder mBinder = new GetKickRequestBinder();
+    private Timer timer = null;
     private static String TAG = "GetKickRequestService";
     public static ArrayList<JSONObject> friendKickRequestList = new ArrayList<>();
     public static ArrayList<JSONObject> friendWaitingKickResponse = new ArrayList<>();
@@ -32,11 +33,20 @@ public class GetKickRequestService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickRequestService start...");
-
-        Timer timer = new Timer();
+        if (timer != null) timer.cancel();
+        timer = new Timer();
         timer.schedule(new CheckKickRequest(), 0, 60000);
 
         return 0;
+    }
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy...");
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        super.onDestroy();
     }
 
     class CheckKickRequest extends TimerTask {
@@ -58,6 +68,7 @@ public class GetKickRequestService extends Service {
 
     public static void queryKickRequest() {
         ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
         query.whereEqualTo("state", KickState.REQUEST_NOT_DOWNLOADED.getValue());
@@ -96,6 +107,7 @@ public class GetKickRequestService extends Service {
 
     public static void checkLocal() {
         ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
         query.whereEqualTo("state", KickState.REQUEST_DOWNLOADED.getValue());
@@ -133,6 +145,7 @@ public class GetKickRequestService extends Service {
     }
     private static void checkWaitingKickResponse() {
         ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
         query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
         query.whereEqualTo("state", KickState.KICK_NOT_DOWNLOADED.getValue());
