@@ -224,29 +224,23 @@ public class TrackAccessibilityService extends AccessibilityService {
         if (AppIndex > user.getInt("AppIndex"))
             user.put("AppIndex", AppIndex);
 
+        if (appIndex < 0)   return;
         List<Integer> appLength = hour.getList("appLength");
-        int size = appLength.size();
-        while (size <= appIndex) {
+        while (appLength.size() <= appIndex) {
             appLength.add(0);
-            ++size;
         }
 
-        Log.d(TAG, "hour appLength.get: " + appLength.get(appIndex) + ", duration: " + duration);
         appLength.set(appIndex, appLength.get(appIndex) + duration);
         hour.put("appLength", appLength);
-        Log.d(TAG, "Hour appLength.get: " + hour.getList("appLength").get(appIndex));
 
+        if (appIndex < 0)   return;
         appLength = day.getList("appLength");
-        size = appLength.size();
-        while (size <= appIndex) {
+        while (appLength.size() <= appIndex) {
             appLength.add(0);
-            ++size;
         }
 
-        Log.d(TAG, "day appLength.get: " + appLength.get(appIndex) + ", duration: " + duration);
         appLength.set(appIndex, appLength.get(appIndex) + duration);
         day.put("appLength", appLength);
-        Log.d(TAG, "Hour appLength.get: " + hour.getList("appLength").get(appIndex));
 
         Log.d(TAG, "appName: " + previousPackageName + ", startTime: " + startTime + ", duration: "
                 + duration);

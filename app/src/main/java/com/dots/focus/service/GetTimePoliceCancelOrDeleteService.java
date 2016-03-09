@@ -25,17 +25,27 @@ import java.util.TimerTask;
 
 public class GetTimePoliceCancelOrDeleteService extends Service {
     private final IBinder mBinder = new GetTimePoliceCancelOrDeleteBinder();
+    private Timer timer = null;
     private static String TAG = "GetTimePoliceCancelOrDeleteService";
     public static ArrayList<JSONObject> timePoliceCancelList = new ArrayList<>();
     public static ArrayList<JSONObject> timePoliceDeleteList = new ArrayList<>();
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetTimePoliceCancelOrDeleteService start...");
-
-        Timer timer = new Timer();
+        if (timer != null) timer.cancel();
+        timer = new Timer();
         timer.schedule(new CheckTimeCancelOrDelete(), 0, 60000);
 
         return 0;
+    }
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy...");
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        super.onDestroy();
     }
 
     class CheckTimeCancelOrDelete extends TimerTask {
@@ -56,7 +66,9 @@ public class GetTimePoliceCancelOrDeleteService extends Service {
     }
 
     public static void refresh() {
-        Long myId = ParseUser.getCurrentUser().getLong("user_id");
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
+        Long myId = currentUser.getLong("user_id");
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery("TimePoliceCancellation");
         query1.whereEqualTo("user_id_cancelled", myId);
         query1.findInBackground(new FindCallback<ParseObject>() {

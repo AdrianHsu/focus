@@ -25,14 +25,26 @@ import java.util.TimerTask;
 
 public class GetFriendConfirmService extends Service {
     private final IBinder mBinder = new GetFriendConfirmBinder();
+    private Timer timer = null;
     private static final String TAG = "GetFriendConfirmService";
     public static ArrayList<JSONObject> friendRepliedList = new ArrayList<>();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Timer timer = new Timer();
+        if (timer != null) timer.cancel();
+        timer = new Timer();
         timer.schedule(new CheckFriendConfirmation(), 0, 60000);
         return 0;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy...");
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        super.onDestroy();
     }
 
     class CheckFriendConfirmation extends TimerTask {
@@ -54,42 +66,46 @@ public class GetFriendConfirmService extends Service {
     }
 
     public static void refresh() {
-      ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendConfirmation");
-      query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("user_id"));
-      query.whereEqualTo("downloaded", false);
-      query.findInBackground(new FindCallback<ParseObject>() {
-        public void done(List<ParseObject> inviteList, ParseException e) {
-          if (e == null && inviteList != null) {
-            for (int i = 0, size = inviteList.size(); i < size; ++i) {
-              ParseObject invite = inviteList.get(i);
-              invite.put("downloaded", true);
-              JSONObject jsonObject = new JSONObject();
-              try {
-                Long id = invite.getLong("user_id_invited");
-                String name = invite.getString("user_name_invited");
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendConfirmation");
+        query.whereEqualTo("user_id_inviting", currentUser.getLong("user_id"));
+        query.whereEqualTo("downloaded", false);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> inviteList, ParseException e) {
+                if (e == null && inviteList != null) {
+                    for (int i = 0, size = inviteList.size(); i < size; ++i) {
+                        ParseObject invite = inviteList.get(i);
+                        invite.put("downloaded", true);
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            Long id = invite.getLong("user_id_invited");
+                            String name = invite.getString("user_name_invited");
 
-                jsonObject.put("id", id);
-                jsonObject.put("name", name);
-                jsonObject.put("time", invite.getLong("time"));
-                jsonObject.put("state", FriendRelationship.FRIEND_CONFIRMED.getValue());
-                jsonObject.put("objectId", invite.getObjectId());
-                friendRepliedList.add(jsonObject);
+                            jsonObject.put("id", id);
+                            jsonObject.put("name", name);
+                            jsonObject.put("time", invite.getLong("time"));
+                            jsonObject.put("state", FriendRelationship.FRIEND_CONFIRMED.getValue());
+                            jsonObject.put("objectId", invite.getObjectId());
+                            friendRepliedList.add(jsonObject);
 
-                FetchFriendUtil.getFriendConfirm(id, name);
-              } catch (JSONException e1) {
-                Log.d(TAG, e1.getMessage());
-              }
+                            FetchFriendUtil.getFriendConfirm(id, name);
+                        } catch (JSONException e1) {
+                            Log.d(TAG, e1.getMessage());
+                        }
+                    }
+                    ParseObject.deleteAllInBackground(inviteList);
+                    ParseObject.pinAllInBackground(inviteList);
+                }
             }
-            ParseObject.deleteAllInBackground(inviteList);
-            ParseObject.pinAllInBackground(inviteList);
-          }
-        }
-      });
+        });
     }
 
     public static void checkLocal() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("FriendConfirmation");
-        query.whereEqualTo("user_id_inviting", ParseUser.getCurrentUser().getLong("user_id"));
+        query.whereEqualTo("user_id_inviting", currentUser.getLong("user_id"));
         query.fromLocalDatastore();
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> inviteList, ParseException e) {
@@ -135,7 +151,9 @@ public class GetFriendConfirmService extends Service {
                     friendRepliedList.remove(i);
                     return;
                 }
-            } catch (JSONException e) { Log.d(TAG, e.getMessage()); }
+            } catch (JSONException e) {
+                Log.d(TAG, e.getMessage());
+            }
         }
         Log.d(TAG, "removeRepliedList: cannot find id : " + id);
     }

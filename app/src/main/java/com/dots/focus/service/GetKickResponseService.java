@@ -24,16 +24,26 @@ import java.util.TimerTask;
 
 public class GetKickResponseService extends Service {
     private final IBinder mBinder = new GetKickedBinder();
+    private Timer timer = null;
     private static String TAG = "GetKickResponseService";
     public static ArrayList<JSONObject> kickResponseList = new ArrayList<>();
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "GetKickResponseService start...");
-
-        Timer timer = new Timer();
+        if (timer != null) timer.cancel();
+        timer = new Timer();
         timer.schedule(new CheckKickResponse(), 0, 60000);
 
         return 0;
+    }
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy...");
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        super.onDestroy();
     }
 
     class CheckKickResponse extends TimerTask {
@@ -54,8 +64,10 @@ public class GetKickResponseService extends Service {
     }
 
     public static void queryKickResponse() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
-        query.whereEqualTo("user_id_kicking", ParseUser.getCurrentUser().getLong("user_id"));
+        query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
         query.whereEqualTo("state", KickState.RESPONSE_NOT_DOWNLOADED.getValue());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -94,8 +106,10 @@ public class GetKickResponseService extends Service {
         });
     }
     public static void checkLocal() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null)    return;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("KickHistory");
-        query.whereEqualTo("user_id_kicking", ParseUser.getCurrentUser().getLong("user_id"));
+        query.whereEqualTo("user_id_kicking", currentUser.getLong("user_id"));
         query.whereEqualTo("state", KickState.RESPONSE_DOWNLOADED.getValue());
         query.fromLocalDatastore();
         query.findInBackground(new FindCallback<ParseObject>() {
