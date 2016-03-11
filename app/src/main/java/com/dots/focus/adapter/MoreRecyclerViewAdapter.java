@@ -116,9 +116,9 @@ public class MoreRecyclerViewAdapter extends UltimateViewAdapter<MoreRecyclerVie
     v.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-                .LENGTH_SHORT)
-                .show();
+//        Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+//                .LENGTH_SHORT)
+//                .show();
         Intent intent = null;
         switch (vh.getAdapterPosition()) {
           case 0:

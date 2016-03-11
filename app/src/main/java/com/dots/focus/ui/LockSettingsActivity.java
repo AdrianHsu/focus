@@ -8,6 +8,7 @@ package com.dots.focus.ui;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +27,7 @@ public class LockSettingsActivity extends BaseActivity {
   private Slider slider;
   private TextView textView;
   private TextView typeTextView;
-  private Boolean friendLock = true;
+  private boolean friendLock;
   private int progress = 0;
 
   @Override
@@ -49,6 +50,7 @@ public class LockSettingsActivity extends BaseActivity {
     lockBtn = (Button) findViewById(R.id.lock_condition_button);
 
     friendLock = SettingsUtil.getBooleen("friendLock");
+    Log.v("friendLock", "friendLock: " + String.valueOf(friendLock));
     if(friendLock)
       typeTextView.setText(getResources().getString(R.string.lock_friend_to_self));
     else

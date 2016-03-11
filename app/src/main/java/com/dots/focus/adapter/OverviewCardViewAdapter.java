@@ -109,9 +109,9 @@ public class OverviewCardViewAdapter extends UltimateViewAdapter<OverviewCardVie
     v.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-          .LENGTH_SHORT)
-          .show();
+//        Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+//          .LENGTH_SHORT)
+//          .show();
         Intent intent = null;
         if(vh.getAdapterPosition() == 0) {
           intent = new Intent(v.getContext(), RadarChartActivity.class);

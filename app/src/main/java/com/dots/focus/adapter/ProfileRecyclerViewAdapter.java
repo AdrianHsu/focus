@@ -161,9 +161,9 @@ public class ProfileRecyclerViewAdapter extends UltimateViewAdapter<ProfileRecyc
     v.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-                                .LENGTH_SHORT)
-          .show();
+//        Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+//                                .LENGTH_SHORT)
+//          .show();
 
         switch(vh.getAdapterPosition()) {
           case 0:

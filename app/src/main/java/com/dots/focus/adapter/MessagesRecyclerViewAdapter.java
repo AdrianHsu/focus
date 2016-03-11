@@ -143,10 +143,10 @@ public class MessagesRecyclerViewAdapter extends
       holder.item_view.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition
-                                  (), Toast
-                                  .LENGTH_SHORT)
-                                  .show();
+//          Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition
+//                                  (), Toast
+//                                  .LENGTH_SHORT)
+//                                  .show();
           Intent intent;
           intent = new Intent(mContext, KickRequestActivity.class);
           intent.putExtra("user_name", name);
@@ -209,8 +209,8 @@ public class MessagesRecyclerViewAdapter extends
         holder.item_view.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition()
-                                    , Toast.LENGTH_SHORT).show();
+//            Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition()
+//                                    , Toast.LENGTH_SHORT).show();
             Intent intent;
             intent = new Intent(mContext, KickHistoryActivity.class);
             intent.putExtra("user_name", name);
@@ -311,10 +311,10 @@ public class MessagesRecyclerViewAdapter extends
         holder.item_view.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition()
-                                    , Toast
-                                    .LENGTH_SHORT)
-                                    .show();
+//            Toast.makeText(v.getContext(), "inside viewholder position = " + holder.getAdapterPosition()
+//                                    , Toast
+//                                    .LENGTH_SHORT)
+//                                    .show();
             Intent intent;
             intent = new Intent(mContext, KickResponseActivity.class);
             intent.putExtra("user_name", name);

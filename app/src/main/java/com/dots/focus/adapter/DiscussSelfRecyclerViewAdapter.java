@@ -93,9 +93,9 @@ public class DiscussSelfRecyclerViewAdapter extends
     v.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
-                                .LENGTH_SHORT)
-                                .show();
+//        Toast.makeText(v.getContext(), "inside viewholder position = " + vh.getAdapterPosition(), Toast
+//                                .LENGTH_SHORT)
+//                                .show();
       }
     });
     return vh;
