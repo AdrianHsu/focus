@@ -612,7 +612,7 @@ public class TrackAccessibilityUtil {
                 if (inIdle(i))  continue;
                 count += clicks.get(i);
             }
-            count = (count + 19) / 20;
+            count /= 20;
             if (count > 3) count = 3;
         }
         return count;
@@ -849,7 +849,7 @@ public class TrackAccessibilityUtil {
         return x;
     }
 
-    private static boolean checkNetworkAvailable(Context context) {
+    public static boolean checkNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.dots.focus.R;
 import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
+import com.dots.focus.config.KickState;
 import com.dots.focus.service.GetFriendInviteService;
 import com.dots.focus.service.GetKickRequestService;
 import com.dots.focus.service.GetKickResponseService;
@@ -28,9 +29,13 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class MessagesFragment extends Fragment {
@@ -45,6 +50,10 @@ public class MessagesFragment extends Fragment {
   private LinearLayoutManager linearLayoutManager;
   private static String TAG = "MessagesFragment";
   private ArrayList<JSONObject> messages;
+
+  private static final int KICK_REQUEST_ITEM = KickState.REQUEST_DOWNLOADED.getValue();
+  private static final int KICK_HISTORY_ITEM = KickState.KICK_DOWNLOADED.getValue();
+  private static final int KICK_RESPONSE_ITEM = KickState.RESPONSE_DOWNLOADED.getValue();
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,6 +104,7 @@ public class MessagesFragment extends Fragment {
     messages.addAll(GetKickedService.kickedList);
     messages.addAll(GetKickedService.respondList);
     messages.addAll(GetKickResponseService.kickResponseList);
+    sort();
     Log.v(TAG, "friendKickRequestList.size() == " + GetKickRequestService.friendKickRequestList
       .size());
     messagesRecyclerViewAdapter = new MessagesRecyclerViewAdapter(messages, context);
@@ -126,6 +136,7 @@ public class MessagesFragment extends Fragment {
             messages.addAll(GetKickedService.respondList);
             Log.v(TAG, "respondList size: " + GetKickedService.respondList.size());
             messages.addAll(GetKickResponseService.kickResponseList);
+            sort();
 
             mRecyclerView.getAdapter().notifyDataSetChanged();
             Log.v(TAG, "adapter size: " + mRecyclerView.getAdapter().getItemCount());
@@ -136,6 +147,29 @@ public class MessagesFragment extends Fragment {
     });
 
     return v;
+  }
+  private static class ObjectComparator implements Comparator<JSONObject> {
+    @Override
+    public int compare(JSONObject object1, JSONObject object2) {
+      long time1 = 0, time2 = 0;
+      try {
+        if (object1.has("time3")) time1 = object1.getLong("time3");
+        else if (object1.has("time2")) time1 = object1.getLong("time2");
+        else if (object1.has("time1")) time1 = object1.getLong("time1");
+      } catch (JSONException e1) { Log.d(TAG, e1.getMessage()); }
+
+      try {
+        if (object2.has("time3")) time1 = object2.getLong("time3");
+        else if (object2.has("time2")) time1 = object2.getLong("time2");
+        else if (object2.has("time1")) time1 = object2.getLong("time1");
+      } catch (JSONException e1) { Log.d(TAG, e1.getMessage()); }
+
+      return (int) ((time2 - time1) / 1000);
+    }
+  }
+
+  private void sort() {
+    Collections.sort(messages, new ObjectComparator());
   }
 
 }
