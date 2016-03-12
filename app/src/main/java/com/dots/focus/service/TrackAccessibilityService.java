@@ -202,16 +202,9 @@ public class TrackAccessibilityService extends AccessibilityService {
         if (endIndex != AppIndex)
             Log.d("TAG", "Different index, endIndex: " + endIndex + ", AppIndex: " + AppIndex);
 
-        final ParseObject temp = new ParseObject("AppUsage");
         ParseUser user = ParseUser.getCurrentUser();
-        temp.put("User", user);
-        temp.put("appIndex", appIndex);
-        temp.put("startTime", startTime);
-        temp.put("endTime", now);
-        temp.put("index", AppIndex);
 
-        temp.saveEventually();
-        temp.pinInBackground();
+        storeAppUsage(now, AppIndex);
 
         HourBlock hour = TrackAccessibilityUtil.getCurrentHour(startTime);
         DayBlock day = TrackAccessibilityUtil.getCurrentDay(startTime);
@@ -304,6 +297,20 @@ public class TrackAccessibilityService extends AccessibilityService {
                 appLength2.add(0);
             dayBlock.setAppLength(appLength2);
         }
+    }
+
+    private static void storeAppUsage(long now, int AppIndex) {
+        final ParseObject temp = new ParseObject("AppUsage");
+        ParseUser user = ParseUser.getCurrentUser();
+        temp.put("User", user);
+        temp.put("appIndex", appIndex);
+        temp.put("startTime", startTime);
+        temp.put("endTime", now);
+        temp.put("duration:", (int) ((now - startTime) / 1000));
+        temp.put("index", AppIndex);
+
+        temp.saveEventually();
+        temp.pinInBackground();
     }
 
     @Override
