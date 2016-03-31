@@ -21,14 +21,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dots.focus.R;
-import com.dots.focus.adapter.MessagesRecyclerViewAdapter;
 import com.dots.focus.config.MyValueFormatter;
 import com.dots.focus.config.MyValueYFormatter;
 import com.dots.focus.util.SettingsUtil;
 import com.dots.focus.util.TrackAccessibilityUtil;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
@@ -36,12 +34,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.FillFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.LineDataProvider;
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 

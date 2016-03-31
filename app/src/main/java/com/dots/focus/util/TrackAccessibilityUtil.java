@@ -211,11 +211,13 @@ public class TrackAccessibilityUtil {
             x[i][1] = 0;
         }
         long time = getPrevXDayInMilli(day);
+        Log.d(TAG, "time: " + time);
 
         DayBlock dayBlock = getDayBlockByTime(time, checkNetworkAvailable(context));
 
         if (dayBlock != null) {
             List<Integer> appLength = dayBlock.getAppLength();
+            Log.d(TAG, "appLength: " + appLength);
             for (int i = 0, s = appLength.size(); i < s; ++i) {
                 if (inIdle(i))  continue;
                 int length = appLength.get(i);
@@ -681,6 +683,7 @@ public class TrackAccessibilityUtil {
     }
 
     private static DayBlock getDayBlockByTime(Long time, boolean networkAvailable) {
+        Log.d(TAG, "NotExistDayBlocks: " + NotExistDayBlocks);
         if (NotExistDayBlocks.contains(time))   return null;
         DayBlock dayBlock = null;
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
@@ -719,6 +722,7 @@ public class TrackAccessibilityUtil {
             if (!NotExistHourBlocks.contains(time + i * anHour))
                 times.add(time + i * anHour);
         }
+        Log.d(TAG, "NotExistHourBlocks: " + NotExistHourBlocks);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null)    return hourBlocks;
@@ -770,6 +774,7 @@ public class TrackAccessibilityUtil {
             if (!NotExistDayBlocks.contains(time + i * aDay))
                 times.add(time + i * aDay);
         }
+        Log.d(TAG, "NotExistDayBlocks: " + NotExistDayBlocks);
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null)    return dayBlocks;
         ParseQuery<DayBlock> query = ParseQuery.getQuery(DayBlock.class);
@@ -873,11 +878,9 @@ public class TrackAccessibilityUtil {
             if (localIdle.size() != 0)
                 if (localIdle.get(0) == i) {
                     localIdle.remove(0);
-                    Log.d(TAG, "inIdle: true");
                     return true;
                 }
         }
-        Log.d(TAG, "inIdle: false");
         return false;
     }
 }

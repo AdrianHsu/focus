@@ -55,8 +55,10 @@ public class FetchAppUtil {
     }
     public static void setUser() {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null && ParseApps != null)
+        if (currentUser != null && ParseApps != null) {
             ParseApps.put("User", currentUser);
+            ParseApps.saveEventually();
+        }
     }
 
     public static void addApp(AppInfo app) {
@@ -64,16 +66,15 @@ public class FetchAppUtil {
         Log.d(TAG, "app: " + app.getPackageName() + ", apps.size(): " + apps.size());
     }
 
-    public static boolean findApp(String _packageName) {
-        for (int i = 0, size = apps.size(); i < size; i++)
-            if (apps.get(i).getPackageName().equals(_packageName)) return true;
-        return false;
-    }
+//    public static boolean findApp(String _packageName) {
+//        for (int i = 0, size = apps.size(); i < size; i++)
+//            if (apps.get(i).getPackageName().equals(_packageName)) return true;
+//        return false;
+//    }
 
     public static int getAppIndex(String _packageName) {
         for (int i = 0, size = apps.size(); i < size; i++)
             if (apps.get(i).getPackageName().equals(_packageName)) return i;
-
         return -1;
     }
 
@@ -100,25 +101,6 @@ public class FetchAppUtil {
     }
 
     public static void loadParseApps() {
-        /*
-        Log.d(TAG, "checking currentUser...");
-        try {
-            boolean shouldWait = false;
-            while (ParseUser.getCurrentUser() == null) {
-                Log.d(TAG, "currentUser == null");
-                if (shouldWait) Thread.sleep(5000);
-                shouldWait = true;
-                //if (CreateInfoUtil.loggingIn) // TBD
-                while (CreateInfoUtil.loggingIn) {
-                    Thread.sleep(500);
-                    Log.d(TAG, "loggingIn");
-                }
-            }
-        } catch(Exception e) {
-            Log.d(TAG, e.getMessage());
-        }
-        */
-
         Log.d(TAG, "start loading");
         if (ParseApps != null) return;
         searching = true;
@@ -199,12 +181,30 @@ public class FetchAppUtil {
             apps.add(appInfo);
         }
         apps.addAll(tempApps);
+        boolean hasError = false;
+        ArrayList<String> newName = new ArrayList<>();
+        ArrayList<String> newPackageName = new ArrayList<>();
+        ArrayList<Integer> conflicts = new ArrayList<>();
 
         for (int i = 0; i < length; ++i) {
+            newName.add(apps.get(i).getName());
+            newPackageName.add(apps.get(i).getPackageName());
+
             if (!apps.get(i).getPackageName().equals(packageName.get(i))) {
+                hasError = true;
                 Log.d(TAG, "merge error, " + i + "th: " + apps.get(i).getPackageName() + ", " +
                         packageName.get(i));
+                conflicts.add(i);
             }
+        }
+        if (hasError) {
+            ParseObject object = new ParseObject("MergeError");
+            object.put("Before_PackageName", packageName);
+            object.put("After_Name", newName);
+            object.put("After_PackageName", newPackageName);
+            object.put("conflict_indexes", conflicts);
+
+            object.saveEventually();
         }
 
         storeParseApps();

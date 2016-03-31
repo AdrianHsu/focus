@@ -297,7 +297,8 @@ public class WeeklyAppUsageChartActivity extends OverviewChartActivity implement
   }
   private void refreshCard() {
 
-    int[] weekUsage = TrackAccessibilityUtil.weekUsage(CURRENT_WEEK, this);
+    int[] weekUsage = TrackAccessibilityUtil.weekUsage(
+            TrackAccessibilityUtil.getPrevXWeek(CURRENT_WEEK), this);
     int weekTotal = TrackAccessibilityUtil.getTotalInArray(weekUsage);
     int[] addict = TrackAccessibilityUtil.dayCategoryClicksInWeek(CURRENT_WEEK, this);
     int[] addictDay = TrackAccessibilityUtil.getUsageValuation(addict);
